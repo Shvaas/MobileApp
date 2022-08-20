@@ -6,6 +6,7 @@ export const themeFontFamily = {
   ralewayHeavy: 'Raleway-Heavy',
   ralewayLight: 'Raleway-Light',
   ralewayMedium: 'Raleway-Medium',
+  ralewayRegular: 'Raleway-Regular',
   ralewaySemiBold: 'Raleway-SemiBold',
   ralewayThin: 'Raleway-Thin',
 };

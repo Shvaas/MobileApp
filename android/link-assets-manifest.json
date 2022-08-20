@@ -36,6 +36,10 @@
     {
       "path": "assets/fonts/Raleway-Thin.ttf",
       "sha1": "627bf8be5fb4fa704e13562b401ffd6b07d8696c"
+    },
+    {
+      "path": "assets/fonts/Raleway.ttf",
+      "sha1": "f7c22a60e4bbae4e0b673de414108ec1a5a50edf"
     }
   ]
 }

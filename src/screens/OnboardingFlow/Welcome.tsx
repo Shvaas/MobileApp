@@ -25,7 +25,6 @@ const styles = StyleSheet.create({
     fontSize: themefonts.font32,
     textAlign: 'center',
     fontFamily: themeFontFamily.raleway,
-    fontWeight: '400',
   },
   headingContainer: {},
 });
