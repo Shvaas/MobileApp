@@ -1,5 +1,13 @@
-export const themeObject = {
-  fontRaleway: 'Raleway',
+export const themeFontFamily = {
+  raleway: 'Raleway',
+  ralewayBold: 'Raleway-Bold',
+  ralewayExtraBold: 'Raleway-ExtraBold',
+  ralewayExtraLight: 'Raleway-ExtraLight',
+  ralewayHeavy: 'Raleway-Heavy',
+  ralewayLight: 'Raleway-Light',
+  ralewayMedium: 'Raleway-Medium',
+  ralewaySemiBold: 'Raleway-SemiBold',
+  ralewayThin: 'Raleway-Thin',
 };
 
 export const themefonts = {

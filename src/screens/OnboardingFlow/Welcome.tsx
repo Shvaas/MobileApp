@@ -1,6 +1,8 @@
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {themefonts} from '../../constants/theme';
+
+// local
+import {themeFontFamily, themefonts} from '../../constants/theme';
 
 const Welcome = () => {
   return (
@@ -22,7 +24,8 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: themefonts.font32,
     textAlign: 'center',
-    // fontFamily: themeObject.fontRaleway, TODO: add font family
+    fontFamily: themeFontFamily.raleway,
+    fontWeight: '400',
   },
   headingContainer: {},
 });
