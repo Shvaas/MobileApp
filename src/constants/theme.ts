@@ -46,4 +46,5 @@ export const themeColor = {
   black: '#000000',
   vividRed: '#E6156E',
   white: '#ffffff',
+  transparent: 'transparent',
 };
