@@ -1,6 +1,7 @@
 import React, {FC, ReactElement} from 'react';
 import {Button} from 'react-native-elements';
 import {StyleSheet, TouchableOpacity} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 // Local
 import {ButtonProps} from './types';
@@ -8,14 +9,24 @@ import {themeColor, themeFontFamily, themefonts} from '../../constants/theme';
 
 const SecondaryButton: FC<ButtonProps> = (props): ReactElement => {
   return (
-    <Button
-      titleStyle={[styles.buttonTitle, props.titleStyle]}
-      buttonStyle={[styles.secondaryButton, styles.border, props?.buttonStyle]}
-      title={props.title}
-      onPress={props.onPress}
-      containerStyle={props?.containerStyle}
-      TouchableComponent={TouchableOpacity}
-    />
+    <LinearGradient
+      colors={[`${themeColor.vividRed}21`, themeColor.vividRed]}
+      start={{x: 0, y: 0}}
+      end={{x: 1, y: 0}}
+      style={[styles.border, props?.containerStyle]}>
+      <Button
+        titleStyle={[styles.buttonTitle, props.titleStyle]}
+        buttonStyle={[
+          styles.secondaryButton,
+          styles.border,
+          props?.buttonStyle,
+        ]}
+        title={props.title}
+        onPress={props.onPress}
+        containerStyle={props?.containerStyle}
+        TouchableComponent={TouchableOpacity}
+      />
+    </LinearGradient>
   );
 };
 
@@ -29,12 +40,11 @@ const styles = StyleSheet.create({
     lineHeight: 16,
   },
   secondaryButton: {
-    backgroundColor: themeColor.transparent,
+    backgroundColor: themeColor.white,
     height: 42,
+    margin: 1,
   },
   border: {
-    borderColor: themeColor.vividRed,
     borderRadius: 6,
-    borderWidth: 0.5,
   },
 });
