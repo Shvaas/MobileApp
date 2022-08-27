@@ -15,8 +15,13 @@ import {
   themefonts,
 } from '../../../constants/theme';
 import BottomConent from './components/BottomConent';
+import RouteNames from '../../../constants/routeName';
 
-const Welcome = () => {
+interface PropsType {
+  navigation: any;
+}
+
+const Welcome: React.FC<PropsType> = ({navigation}) => {
   const translateTopContainer = React.useRef(
     new Animated.Value(Dimensions.get('screen').height / 4 - 20),
   ).current;
@@ -38,7 +43,11 @@ const Welcome = () => {
         </Animated.View>
       </View>
       <View style={styles.bottomContainer}>
-        <BottomConent />
+        <BottomConent
+          onButtonPress={() => {
+            navigation.navigate(RouteNames.OnboardingFlow.Focus);
+          }}
+        />
       </View>
     </SafeAreaView>
   );

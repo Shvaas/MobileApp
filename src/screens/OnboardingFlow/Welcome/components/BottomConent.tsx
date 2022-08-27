@@ -13,7 +13,11 @@ import {earphones} from '../../../../images/imageLinks';
 import SecondaryButton from '../../../../common/buttons/SecondaryButton';
 import {themeFontFamily, themefonts} from '../../../../constants/theme';
 
-const BottomConent = () => {
+interface PropsType {
+  onButtonPress: () => void;
+}
+
+const BottomConent: React.FC<PropsType> = ({onButtonPress}) => {
   const translateYAnimate = React.useRef(
     new Animated.Value(Dimensions.get('screen').height / 3),
   ).current;
@@ -41,7 +45,7 @@ const BottomConent = () => {
           title={'Tap to Begin'}
           buttonStyle={styles.buttonStyle}
           containerStyle={styles.btnContainerStyle}
-          onPress={() => {}}
+          onPress={onButtonPress}
         />
       </Animated.View>
     </View>

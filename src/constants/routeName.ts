@@ -5,6 +5,7 @@ export const APP_FLOWS = {
 const RouteNames = {
   [APP_FLOWS.OnboardingFlow]: {
     Welcome: 'Welcome',
+    Focus: 'Focus',
   },
 };
 
