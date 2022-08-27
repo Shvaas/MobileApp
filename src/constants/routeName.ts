@@ -7,6 +7,7 @@ const RouteNames = {
     Welcome: 'Welcome',
     Focus: 'Focus',
     Breathing: 'Breathing',
+    WellDone: 'WellDone',
   },
 };
 

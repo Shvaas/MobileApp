@@ -9,6 +9,7 @@ import RouteNames from '../constants/routeName';
 import Welcome from '../screens/OnboardingFlow/Welcome/Welcome';
 import Focus from '../screens/OnboardingFlow/Focus';
 import Breathing from '../screens/OnboardingFlow/Breathing';
+import WellDone from '../screens/OnboardingFlow/WellDone';
 
 const Stack = createStackNavigator();
 
@@ -28,6 +29,10 @@ const OnboardingStack = () => {
       <Stack.Screen
         name={RouteNames.OnboardingFlow.Breathing}
         component={Breathing}
+      />
+      <Stack.Screen
+        name={RouteNames.OnboardingFlow.WellDone}
+        component={WellDone}
       />
     </Stack.Navigator>
   );

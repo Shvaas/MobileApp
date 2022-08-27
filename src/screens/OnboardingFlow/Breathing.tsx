@@ -3,8 +3,13 @@ import React from 'react';
 
 // Local
 import {themeColor, themeFontFamily, themefonts} from '../../constants/theme';
+import RouteNames from '../../constants/routeName';
 
-const Breathing = () => {
+interface PropsType {
+  navigation: any;
+}
+
+const Breathing: React.FC<PropsType> = ({navigation}) => {
   const breatheInText = React.useRef(new Animated.Value(1)).current;
   const breatheOutText = React.useRef(new Animated.Value(0)).current;
   const loopAnimationRef = React.useRef<any>();
@@ -42,6 +47,7 @@ const Breathing = () => {
     setTimeout(() => {
       // reset animation after 30 sec
       loopAnimationRef.current.reset();
+      navigation.navigate(RouteNames.OnboardingFlow.WellDone);
     }, 30000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -77,7 +83,7 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     flexShrink: 1,
-    marginBottom: 40,
+    marginBottom: 50,
     alignItems: 'center',
   },
   bottomText: {

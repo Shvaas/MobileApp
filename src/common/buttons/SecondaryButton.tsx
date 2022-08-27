@@ -23,7 +23,6 @@ const SecondaryButton: FC<ButtonProps> = (props): ReactElement => {
         ]}
         title={props.title}
         onPress={props.onPress}
-        containerStyle={props?.containerStyle}
         TouchableComponent={TouchableOpacity}
       />
     </LinearGradient>
@@ -34,7 +33,7 @@ export default SecondaryButton;
 
 const styles = StyleSheet.create({
   buttonTitle: {
-    fontFamily: themeFontFamily.raleway,
+    fontFamily: themeFontFamily.ralewayMedium,
     color: themeColor.vividRed,
     fontSize: themefonts.font14,
     lineHeight: 16,
