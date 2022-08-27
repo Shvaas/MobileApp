@@ -2,7 +2,10 @@ import React from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+} from '@react-navigation/stack';
 
 // Local
 import OnboardingStack from './screenStack/OnboardingStack';
@@ -13,7 +16,7 @@ const App = () => {
     SplashScreen.hide();
   }, []);
 
-  const Stack = createNativeStackNavigator();
+  const Stack = createStackNavigator();
 
   return (
     <SafeAreaProvider>
@@ -22,6 +25,7 @@ const App = () => {
           screenOptions={{
             gestureEnabled: false,
             headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           }}>
           <Stack.Screen
             name={APP_FLOWS.OnboardingFlow}

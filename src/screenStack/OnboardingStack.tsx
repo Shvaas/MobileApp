@@ -1,5 +1,8 @@
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+} from '@react-navigation/stack';
 
 // Local
 import RouteNames from '../constants/routeName';
@@ -7,7 +10,7 @@ import Welcome from '../screens/OnboardingFlow/Welcome/Welcome';
 import Focus from '../screens/OnboardingFlow/Focus';
 import Breathing from '../screens/OnboardingFlow/Breathing';
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
 const OnboardingStack = () => {
   return (
@@ -15,6 +18,7 @@ const OnboardingStack = () => {
       screenOptions={{
         gestureEnabled: false,
         headerShown: false,
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
       }}>
       <Stack.Screen
         name={RouteNames.OnboardingFlow.Welcome}
