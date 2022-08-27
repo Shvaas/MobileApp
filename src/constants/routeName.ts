@@ -6,6 +6,7 @@ const RouteNames = {
   [APP_FLOWS.OnboardingFlow]: {
     Welcome: 'Welcome',
     Focus: 'Focus',
+    Breathing: 'Breathing',
   },
 };
 

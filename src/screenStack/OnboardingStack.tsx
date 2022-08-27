@@ -5,6 +5,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import RouteNames from '../constants/routeName';
 import Welcome from '../screens/OnboardingFlow/Welcome/Welcome';
 import Focus from '../screens/OnboardingFlow/Focus';
+import Breathing from '../screens/OnboardingFlow/Breathing';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +21,10 @@ const OnboardingStack = () => {
         component={Welcome}
       />
       <Stack.Screen name={RouteNames.OnboardingFlow.Focus} component={Focus} />
+      <Stack.Screen
+        name={RouteNames.OnboardingFlow.Breathing}
+        component={Breathing}
+      />
     </Stack.Navigator>
   );
 };

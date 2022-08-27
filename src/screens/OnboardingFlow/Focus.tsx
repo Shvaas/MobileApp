@@ -3,8 +3,20 @@ import React from 'react';
 
 // Local
 import {themeColor, themeFontFamily, themefonts} from '../../constants/theme';
+import RouteNames from '../../constants/routeName';
 
-const Focus = () => {
+interface PropsType {
+  navigation: any;
+}
+
+const Focus: React.FC<PropsType> = ({navigation}) => {
+  React.useEffect(() => {
+    setTimeout(() => {
+      navigation.navigate(RouteNames.OnboardingFlow.Breathing);
+    }, 2000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>
