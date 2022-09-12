@@ -16,6 +16,7 @@ import {
 } from '../../../constants/theme';
 import BottomConent from './components/BottomConent';
 import RouteNames from '../../../constants/routeName';
+import BackgroundImage from '../../../common/BackgroundImage';
 
 interface PropsType {
   navigation: any;
@@ -39,7 +40,9 @@ const Welcome: React.FC<PropsType> = ({navigation}) => {
       <View style={styles.topContainer}>
         <Animated.View
           style={{transform: [{translateY: translateTopContainer}]}}>
-          <Text style={styles.heading}>Welcome</Text>
+          <BackgroundImage>
+            <Text style={styles.heading}>Welcome</Text>
+          </BackgroundImage>
         </Animated.View>
       </View>
       <View style={styles.bottomContainer}>
@@ -59,12 +62,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: themeColor.white,
+    backgroundColor: themeColor.background,
   },
   heading: {
     fontSize: themefonts.font32,
     textAlign: 'center',
     fontFamily: themeFontFamily.raleway,
+    color: themeColor.white,
   },
   topContainer: {
     flex: 1,

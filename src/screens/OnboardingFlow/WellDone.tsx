@@ -52,7 +52,7 @@ export default WellDone;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: themeColor.white,
+    backgroundColor: themeColor.background,
   },
   topContainer: {
     flex: 1,
