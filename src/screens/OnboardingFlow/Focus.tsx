@@ -4,6 +4,7 @@ import React from 'react';
 // Local
 import {themeColor, themeFontFamily, themefonts} from '../../constants/theme';
 import RouteNames from '../../constants/routeName';
+import BackgroundImage from '../../common/BackgroundImage';
 
 interface PropsType {
   navigation: any;
@@ -19,9 +20,11 @@ const Focus: React.FC<PropsType> = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.heading}>
-        For the next 30 seconds, try to{'\n'}focus on the screen
-      </Text>
+      <BackgroundImage>
+        <Text style={styles.heading}>
+          For the next 30 seconds, try to{'\n'}focus on the screen
+        </Text>
+      </BackgroundImage>
     </SafeAreaView>
   );
 };
@@ -32,7 +35,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: themeColor.white,
+    backgroundColor: themeColor.background,
   },
   heading: {
     fontSize: themefonts.font16,
