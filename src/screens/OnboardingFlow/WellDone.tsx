@@ -8,11 +8,14 @@ import {
 import React from 'react';
 
 // Local
+import RouteNames from '../../constants/routeName';
 import {themeColor, themeFontFamily, themefonts} from '../../constants/theme';
 import SecondaryButton from '../../common/buttons/SecondaryButton';
 import PrimaryButton from '../../common/buttons/PrimaryButton';
-
-const WellDone = () => {
+interface PropsType {
+  navigation: any;
+}
+const WellDone: React.FC<PropsType> = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topContainer}>
@@ -32,7 +35,7 @@ const WellDone = () => {
         <SecondaryButton
           title={'Do it later'}
           containerStyle={[styles.btnContStyle, styles.secondaryBtnContStyle]}
-          onPress={() => {}}
+          onPress={() => {navigation.navigate(RouteNames.OnboardingFlow.Welcome);}}
         />
       </View>
       <View style={styles.bottomContainer}>
