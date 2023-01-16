@@ -7,6 +7,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 // Local
 import OnboardingStack from './screenStack/OnboardingStack';
 import {APP_FLOWS} from './constants/routeName';
+import HomePageStack from './screenStack/HomePageStack';
 
 const App = () => {
   React.useEffect(() => {
