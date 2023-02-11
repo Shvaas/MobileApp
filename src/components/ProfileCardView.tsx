@@ -24,16 +24,19 @@ import {
                 </View>
                 <View style={styles.textContainerStyle}>
                     <Text style={styles.textStyleBold}>{profile.name}</Text>
-                    <Text style={styles.textStyle}>{profile.yearsOfExp} years</Text>
-                    <Text style={styles.textStyle}>Rating: {profile.rating}</Text>
                     <Text style={styles.textStyle}>{profile.certificates}</Text>
-                    <Text style={styles.textStyle}>{profile.studentsTrained} trained{'\n'}</Text>
+                    <Text style={styles.textStyle}>Experience: {profile.yearsOfExp} years</Text>
+                    <Text style={styles.textStyle}>Rating: {profile.rating}</Text>
+                    
+                    <Text style={styles.textStyle}>Students trained: {profile.studentsTrained}{'\n'}</Text>
                 </View>
             </View>
             <View>
-                <Text style= {styles.textDescription}>Teaching: {profile.description}</Text>
-                <Text style={styles.textDescription}>Active Courses: {profile.ActiveCourses}</Text>
-            </View>  
+
+                <Text style= {styles.textStyle}>Teaching: {profile.description}</Text>
+                <Text style={styles.textStyle}>Active Courses: {profile.ActiveCourses}</Text>
+            </View>   
+
         </View>
       );
   };

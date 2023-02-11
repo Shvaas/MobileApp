@@ -27,7 +27,7 @@ const DATA = [
     image: shikha,
     yearsOfExp: 2,
     rating: 4.5,
-    certificates: "xyz, abc, 123",
+    certificates: "Masters in Yoga",
     studentsTrained: 98,
     description: "Yoga lorem ipsium the random text",
     ActiveCourses: 2
@@ -71,7 +71,7 @@ const DATA = [
     image: nabeel,
     yearsOfExp: 1,
     rating: 4.5,
-    certificates: "xyz, 123",
+    certificates: "Masters in Yoga",
     studentsTrained: 106,
     description: "Meditation",
     ActiveCourses: 3
@@ -87,103 +87,103 @@ const DATA = [
     description: "Yoga",
     ActiveCourses: 3
   },
-  {
-    key: 7,
-    name: "Utkarsh Nath",
-    image: utkarsh,
-    yearsOfExp: 4,
-    rating: 4.5,
-    certificates: "xyz, 123",
-    studentsTrained: 106,
-    description: "Meditation",
-    ActiveCourses: 3
-  },
-  {
-    key: 8,
-    name: "Nabeel Bhattacharya",
-    image: nabeel,
-    yearsOfExp: 1,
-    rating: 4.5,
-    certificates: "xyz, 123",
-    studentsTrained: 106,
-    description: "Meditation",
-    ActiveCourses: 3
-  },
-  {
-    key: 9,
-    name: "Utkarsh Nath",
-    image: utkarsh,
-    yearsOfExp: 4,
-    rating: 4.5,
-    certificates: "xyz, 123",
-    studentsTrained: 106,
-    description: "Meditation",
-    ActiveCourses: 3
-  },
-  {
-    key: 10,
-    name: "Aryan Mittal",
-    image: aryan,
-    yearsOfExp: 1,
-    rating: 4.5,
-    certificates: "xyz, 123",
-    studentsTrained: 106,
-    description: "Yoga",
-    ActiveCourses: 3
-  },
-  {
-    key: 11,
-    name: "Utkarsh Nath",
-    image: utkarsh,
-    yearsOfExp: 4,
-    rating: 4.5,
-    certificates: "xyz, 123",
-    studentsTrained: 106,
-    description: "Meditation",
-    ActiveCourses: 3
-  },
-  {
-    key: 12,
-    name: "Aryan Mittal",
-    image: aryan,
-    yearsOfExp: 1,
-    rating: 4.5,
-    certificates: "xyz, 123",
-    studentsTrained: 106,
-    description: "Yoga",
-    ActiveCourses: 3
-  },
-  {
-    key: 13,
-    name: "Utkarsh Nath",
-    image: utkarsh,
-    yearsOfExp: 4,
-    rating: 4.5,
-    certificates: "xyz, 123",
-    studentsTrained: 106,
-    description: "Meditation",
-    ActiveCourses: 3
-  },
-  {
-    key: 14,
-    name: "Nabeel Bhattacharya",
-    image: nabeel,
-    yearsOfExp: 1,
-    rating: 4.5,
-    certificates: "xyz, 123",
-    studentsTrained: 106,
-    description: "Meditation",
-    ActiveCourses: 3
-  },
+  // {
+  //   key: 7,
+  //   name: "Utkarsh Nath",
+  //   image: utkarsh,
+  //   yearsOfExp: 4,
+  //   rating: 4.5,
+  //   certificates: "xyz, 123",
+  //   studentsTrained: 106,
+  //   description: "Meditation",
+  //   ActiveCourses: 3
+  // },
+  // {
+  //   key: 8,
+  //   name: "Nabeel Bhattacharya",
+  //   image: nabeel,
+  //   yearsOfExp: 1,
+  //   rating: 4.5,
+  //   certificates: "xyz, 123",
+  //   studentsTrained: 106,
+  //   description: "Meditation",
+  //   ActiveCourses: 3
+  // },
+  // {
+  //   key: 9,
+  //   name: "Utkarsh Nath",
+  //   image: utkarsh,
+  //   yearsOfExp: 4,
+  //   rating: 4.5,
+  //   certificates: "xyz, 123",
+  //   studentsTrained: 106,
+  //   description: "Meditation",
+  //   ActiveCourses: 3
+  // },
+  // {
+  //   key: 10,
+  //   name: "Aryan Mittal",
+  //   image: aryan,
+  //   yearsOfExp: 1,
+  //   rating: 4.5,
+  //   certificates: "xyz, 123",
+  //   studentsTrained: 106,
+  //   description: "Yoga",
+  //   ActiveCourses: 3
+  // },
+  // {
+  //   key: 11,
+  //   name: "Utkarsh Nath",
+  //   image: utkarsh,
+  //   yearsOfExp: 4,
+  //   rating: 4.5,
+  //   certificates: "xyz, 123",
+  //   studentsTrained: 106,
+  //   description: "Meditation",
+  //   ActiveCourses: 3
+  // },
+  // {
+  //   key: 12,
+  //   name: "Aryan Mittal",
+  //   image: aryan,
+  //   yearsOfExp: 1,
+  //   rating: 4.5,
+  //   certificates: "xyz, 123",
+  //   studentsTrained: 106,
+  //   description: "Yoga",
+  //   ActiveCourses: 3
+  // },
+  // {
+  //   key: 13,
+  //   name: "Utkarsh Nath",
+  //   image: utkarsh,
+  //   yearsOfExp: 4,
+  //   rating: 4.5,
+  //   certificates: "xyz, 123",
+  //   studentsTrained: 106,
+  //   description: "Meditation",
+  //   ActiveCourses: 3
+  // },
+  // {
+  //   key: 14,
+  //   name: "Nabeel Bhattacharya",
+  //   image: nabeel,
+  //   yearsOfExp: 1,
+  //   rating: 4.5,
+  //   certificates: "xyz, 123",
+  //   studentsTrained: 106,
+  //   description: "Meditation",
+  //   ActiveCourses: 3
+  // },
 ];
 
 const Yogis: React.FC<PropsType> = ({navigation}) => {
     return (
         <SafeAreaView style={styles.container}>
-         
+         <BackgroundImageDup> 
           <ScrollView contentContainerStyle={styles.contentContainer}>
           {/*<View style={styles.topContainer}>*/}
-          <BackgroundImageDup> 
+          
           
           {/* <View style={styles.gridView}>
           {DATA.map((item) => {
@@ -193,21 +193,25 @@ const Yogis: React.FC<PropsType> = ({navigation}) => {
           </TouchableOpacity>
         );
           })}
-          </View> */}
-          <FlatList
-          data={DATA}
-          renderItem = {({item}) => {
-            return(
-              <TouchableOpacity onPress={()=>navigation.navigate('YogiProfile')}>
-            <ProfileCardView profile={item} navigation={navigation}/>
-            </TouchableOpacity>
-            )
-          }
-          }/>
-          </BackgroundImageDup>
+
+          // </View> */}
+          // <FlatList
+          // data={DATA}
+          // renderItem = {({item}) => {
+          //   return(
+          //     <TouchableOpacity onPress={()=>navigation.navigate('YogiProfile')}>
+          //   <ProfileCardView profile={item} navigation={navigation}/>
+          //   </TouchableOpacity>
+          //   )
+          // }
+          // }/>
+          // </BackgroundImageDup>
+
+          </View>
+          
           {/*</View>*/}
           </ScrollView>
-          
+          </BackgroundImageDup>
           
           
           
