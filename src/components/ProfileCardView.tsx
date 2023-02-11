@@ -33,7 +33,7 @@ import {
             <View>
                 <Text style= {styles.textDescription}>Teaching: {profile.description}</Text>
                 <Text style={styles.textDescription}>Active Courses: {profile.ActiveCourses}</Text>
-            </View>   
+            </View>  
         </View>
       );
   };

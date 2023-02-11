@@ -110,7 +110,8 @@ const AllCourses: React.FC<PropsType> = ({navigation}) => {
           <BackgroundImageDup> 
             <View style={styles.gridView}>
             {DATA.map((item) => {
-          return <CourseCardView course={item} />;
+          return (
+          <CourseCardView course={item} />);
             })}
             </View>
           </BackgroundImageDup>

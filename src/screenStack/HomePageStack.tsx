@@ -41,7 +41,7 @@ const HomePageStack = () => {
         }}
       />
       <Tab.Screen
-        name="Yogis"
+        name="YogiNav"
         component={YogiNav}
         options={{
           tabBarLabel: 'Updates',

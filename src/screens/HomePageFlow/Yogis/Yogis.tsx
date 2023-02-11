@@ -185,13 +185,25 @@ const Yogis: React.FC<PropsType> = ({navigation}) => {
           {/*<View style={styles.topContainer}>*/}
           <BackgroundImageDup> 
           
-          <View style={styles.gridView}>
+          {/* <View style={styles.gridView}>
           {DATA.map((item) => {
         return (
+          <TouchableOpacity onPress={() => navigation.navigate("YogiProfile")}>
             <ProfileCardView profile={item} navigation={navigation}/>
+          </TouchableOpacity>
         );
           })}
-          </View>
+          </View> */}
+          <FlatList
+          data={DATA}
+          renderItem = {({item}) => {
+            return(
+              <TouchableOpacity onPress={()=>navigation.navigate('YogiProfile')}>
+            <ProfileCardView profile={item} navigation={navigation}/>
+            </TouchableOpacity>
+            )
+          }
+          }/>
           </BackgroundImageDup>
           {/*</View>*/}
           </ScrollView>

@@ -117,14 +117,14 @@ const DATA = [
 },
 ];
 
-const AllCourses: React.FC<PropsType> = ({navigation}) => {
+const MyCourses: React.FC<PropsType> = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}> 
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <BackgroundImageDup> 
           <View style={styles.gridView}>
           {DATA.map((item) => {
-        return <ActiveCourseCardView course={item} />;
+          return <ActiveCourseCardView course={item} />;
           })}
           </View>
         </BackgroundImageDup>
@@ -133,7 +133,7 @@ const AllCourses: React.FC<PropsType> = ({navigation}) => {
     );
   };
   
-export default AllCourses;
+export default MyCourses;
   
 const styles = StyleSheet.create({
 container: {
