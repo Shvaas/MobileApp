@@ -9,8 +9,13 @@ const RouteNames = {
     Login: 'Login'
   },
   [APP_FLOWS.HomePageFlow]: {
-    Yogis: 'Yogis',
+    AllYogis: 'Yogis',
+    YogiProfile: 'Yogi Profile',
     Feed: 'Feed',
+    MyCourse: 'My Courses',
+    MyCourseDetail: "Course Detail",
+    AllCourses: "All Courses",
+    AllCourseDetail: "Course Detail",
   },
 };
 

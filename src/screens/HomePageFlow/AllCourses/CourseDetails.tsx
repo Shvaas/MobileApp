@@ -8,24 +8,32 @@ import React from 'react';
 
 import BackgroundImage from '../../../common/BackgroundImage';
 import {themeFontFamily, themefonts,themeColor} from '../../../constants/theme';
+import { Button } from 'react-native-elements';
 
 interface PropsType {
-    navigation: any;
+    navigation: any,
+    route: any;
 }
 
-const Yogi: React.FC<PropsType> = ({navigation}) => {
+const CourseDetail: React.FC<PropsType> = ({route, navigation}) => {
+    const { courseDetail } = route.params;
+
+    console.log(courseDetail);
+    
     return (
         <SafeAreaView style={styles.container}>
           <View style={styles.topContainer}>
           <BackgroundImage>
-          <Text>Yogi</Text>
+          <Button title="Go Back" onPress={()=>{navigation.goBack()}} style={styles.buttonStyle}>
+          </Button>
+          <Text>{courseDetail.description}</Text>
           </BackgroundImage>
           </View>
         </SafeAreaView>
       );
     };
     
-export default Yogi;
+export default CourseDetail;
     
 const styles = StyleSheet.create({
     container: {
@@ -48,6 +56,7 @@ const styles = StyleSheet.create({
     },
     buttonStyle: {
     width: 167,
+    
     },
     btnContainerStyle: {
     alignSelf: 'center',

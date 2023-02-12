@@ -14,7 +14,8 @@ import BackgroundImageDup from '../../../common/BackgroundImageFullPage';
 import {themeFontFamily, themefonts,themeColor} from '../../../constants/theme';
 import ProfileCardView from '../../../components/ProfileCardView';
 import {aryan,nabeel,shikha,utkarsh} from '../../../images/imageLinks';
-import Yogi from './Yogi';
+import Yogi from './YogiProfile';
+import RouteNames from '../../../constants/routeName';
 
 interface PropsType {
     navigation: any;
@@ -181,33 +182,21 @@ const Yogis: React.FC<PropsType> = ({navigation}) => {
     return (
         <SafeAreaView style={styles.container}>
          <BackgroundImageDup> 
-          <ScrollView contentContainerStyle={styles.contentContainer}>
+         <ScrollView contentContainerStyle={styles.contentContainer}>
           {/*<View style={styles.topContainer}>*/}
-          
-          
-          {/* <View style={styles.gridView}>
-          {DATA.map((item) => {
-        return (
-          <TouchableOpacity onPress={() => navigation.navigate("YogiProfile")}>
+         
+          <FlatList
+          data={DATA}
+          renderItem = {({item}) => {
+            return(
+              <TouchableOpacity onPress={()=>navigation.navigate(RouteNames.HomePageFlow.YogiProfile, {
+                yogiProfile: item,
+              })}>
             <ProfileCardView profile={item} navigation={navigation}/>
-          </TouchableOpacity>
-        );
-          })}
-
-          // </View> */}
-          // <FlatList
-          // data={DATA}
-          // renderItem = {({item}) => {
-          //   return(
-          //     <TouchableOpacity onPress={()=>navigation.navigate('YogiProfile')}>
-          //   <ProfileCardView profile={item} navigation={navigation}/>
-          //   </TouchableOpacity>
-          //   )
-          // }
-          // }/>
-          // </BackgroundImageDup>
-
-          </View>
+            </TouchableOpacity>
+            )
+          }
+          }/>
           
           {/*</View>*/}
           </ScrollView>

@@ -4,6 +4,8 @@ import {
   Text,
   ScrollView,
   View,
+  FlatList,
+  TouchableOpacity,
 } from 'react-native';
 import React from 'react';
 
@@ -11,6 +13,8 @@ import {themeFontFamily, themefonts,themeColor} from '../../../constants/theme';
 import BackgroundImageDup from '../../../common/BackgroundImageFullPage'
 import ActiveCourseCardView from '../../../components/ActiveCourseCardView';
 import {aryan,nabeel,shikha,utkarsh} from '../../../images/imageLinks';
+
+import RouteNames from '../../../constants/routeName';
 
 interface PropsType {
   navigation: any;
@@ -120,15 +124,23 @@ const DATA = [
 const MyCourses: React.FC<PropsType> = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}> 
+    <BackgroundImageDup> 
       <ScrollView contentContainerStyle={styles.contentContainer}>
-        <BackgroundImageDup> 
-          <View style={styles.gridView}>
-          {DATA.map((item) => {
-          return <ActiveCourseCardView course={item} />;
-          })}
-          </View>
+        
+        <FlatList
+          data={DATA}
+          renderItem = {({item}) => {
+            return(
+              <TouchableOpacity onPress={()=>navigation.navigate(RouteNames.HomePageFlow.MyCourseDetail, {
+                courseDetail: item,
+              })}>
+            <ActiveCourseCardView course={item} />
+            </TouchableOpacity>
+            )
+          }
+          }/>  
+          </ScrollView>
         </BackgroundImageDup>
-      </ScrollView>
     </SafeAreaView>
     );
   };

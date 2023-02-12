@@ -1,14 +1,14 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Yogis from '../screens/HomePageFlow/Yogis/Yogis';
-import Yogi from '../screens/HomePageFlow/Yogis/YogiProfile';
+import AllCourses from '../screens/HomePageFlow/AllCourses/AllCourses';
+import CourseDetail from '../screens/HomePageFlow/AllCourses/CourseDetails';
 
 // Local
 import RouteNames from '../constants/routeName';
 
 const Stack = createNativeStackNavigator();
 
-const YogisStack = () => {
+const AllCoursesStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -16,15 +16,15 @@ const YogisStack = () => {
         headerShown: false,
       }}>
       <Stack.Screen
-        name={RouteNames.HomePageFlow.AllYogis}
-        component={Yogis}
+        name={RouteNames.HomePageFlow.AllCourses}
+        component={AllCourses}
       />
       <Stack.Screen
-        name={RouteNames.HomePageFlow.YogiProfile}
-        component={Yogi} 
+        name={RouteNames.HomePageFlow.AllCourseDetail}
+        component={CourseDetail} 
       />
     </Stack.Navigator>
   );
 };
 
-export default YogisStack;
+export default AllCoursesStack;

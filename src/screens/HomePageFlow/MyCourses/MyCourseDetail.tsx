@@ -3,46 +3,37 @@ import {
     StyleSheet,
     Text,
     View,
-    Button,
   } from 'react-native';
 import React from 'react';
-import axios from "axios";
-import { useState } from "react";
 
 import BackgroundImage from '../../../common/BackgroundImage';
 import {themeFontFamily, themefonts,themeColor} from '../../../constants/theme';
+import { Button } from 'react-native-elements';
 
 interface PropsType {
-    navigation: any;
+    navigation: any,
+    route: any;
 }
 
-const Feed: React.FC<PropsType> = ({navigation}) => {
+const MyCourseDetail: React.FC<PropsType> = ({route, navigation}) => {
+    const { courseDetail } = route.params;
 
-
-  const getRequest = () => {
-    axios.get("https://6sm5d5xzu8.execute-api.us-west-2.amazonaws.com/stage/course")
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-};
-
+    console.log(courseDetail);
+    
     return (
         <SafeAreaView style={styles.container}>
           <View style={styles.topContainer}>
           <BackgroundImage>
-          
-          <Button title="Get Advice" 
-                onPress={getRequest} color="green" />
+          <Button title="Go Back" onPress={()=>{navigation.goBack()}} style={styles.buttonStyle}>
+          </Button>
+          <Text>{courseDetail.description}</Text>
           </BackgroundImage>
           </View>
         </SafeAreaView>
       );
     };
     
-export default Feed;
+export default MyCourseDetail;
     
 const styles = StyleSheet.create({
     container: {
@@ -65,6 +56,7 @@ const styles = StyleSheet.create({
     },
     buttonStyle: {
     width: 167,
+    
     },
     btnContainerStyle: {
     alignSelf: 'center',
