@@ -3,18 +3,44 @@ import {
     StyleSheet,
     Text,
     View,
-    Button,
+    FlatList,
   } from 'react-native';
-import React from 'react';
+import React, { Component } from 'react';
 import axios from "axios";
 import { useState } from "react";
 
 import BackgroundImage from '../../../common/BackgroundImage';
 import {themeFontFamily, themefonts,themeColor} from '../../../constants/theme';
 
+import ProfilePicture from '../../../components/ProfilePicture';
+import Post from '../../../components/Post';
+import {aryan,nabeel,shikha,utkarsh} from '../../../images/imageLinks';
+
 interface PropsType {
     navigation: any;
 }
+
+const post = [{
+      user : {
+        name : 'Utkarsh',
+        image : utkarsh
+      },
+      image: utkarsh,
+      likes: 20,
+      caption: 'random text',
+      createdAt: '20/03/21'
+},
+{
+  user : {
+    name : 'Utkarsh',
+    image : utkarsh
+  },
+  image: utkarsh,
+  likes: 20,
+  caption: 'random text',
+  createdAt: '20/03/21'
+}
+]
 
 const Feed: React.FC<PropsType> = ({navigation}) => {
 
@@ -32,11 +58,17 @@ const Feed: React.FC<PropsType> = ({navigation}) => {
     return (
         <SafeAreaView style={styles.container}>
           <View style={styles.topContainer}>
-          <BackgroundImage>
+         
+          {/* <ProfilePicture uri={shikha} /> */}
+          {/* <Post post={post}/> */}
+          <FlatList
+            data={post}
+            renderItem={({item}) => <Post post={item} />}
+            keyExtractor={({id}) => id}
+          />
+          {/* <Button title="Get Advice" 
+                onPress={getRequest} color="green" /> */}
           
-          <Button title="Get Advice" 
-                onPress={getRequest} color="green" />
-          </BackgroundImage>
           </View>
         </SafeAreaView>
       );
