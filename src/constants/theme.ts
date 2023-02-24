@@ -48,4 +48,6 @@ export const themeColor = {
   white: '#ffffff',
   background: '#ffffff90',
   transparent: 'transparent',
+  facebookBlue: '#2D88FF',
+  googleRed: '#F76D6D',
 };

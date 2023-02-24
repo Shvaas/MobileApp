@@ -4,6 +4,7 @@ import {
    Text,
    View,
    Linking,
+   ImageBackground,
    Button,
  } from 'react-native';
 import React, { Component } from 'react';
@@ -15,6 +16,10 @@ import awsconfig from '../../aws-exports';
 
 import {themeFontFamily, themefonts,themeColor} from '../../constants/theme';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
+import BackgroundImage from './LoginBackgroundImage';
+import {loginbackgroundImage, fb_icon, google_icon} from '../../images/imageLinks';
+
+import LoginButton from '../../common/buttons/LoginButton';
 
 Amplify.configure(awsconfig);
 
@@ -74,22 +79,65 @@ const Login = () => {
 
 
   return (
-    <View>
-      <Text>User: {user ? JSON.stringify(user.attributes) : 'None'}</Text>
-      {user ? (
-        <Button title="Sign Out" onPress={() => Auth.signOut()} />
-      ) : (
-        <>
-          {/* Go to the Cognito Hosted UI */}
-          <Button title="Cognito" onPress={() => Auth.federatedSignIn()} />
+        <ImageBackground source={loginbackgroundImage} style={styles.image}>
+          
+          <View style={styles.container}>
+            
+          </View>
+          
+          <View style={styles.container}>
+            <Text style={styles.heading}>Welcome</Text>
+            <Text style={styles.body}>Sign in to continue</Text>
+          </View>
 
-          {/* Go directly to a configured identity provider */}
-          <Button title="Facebook" onPress={() => Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Facebook })} />
-          <Button title="Google" onPress={() => Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Google })}  />
-          <Button title="Amazon" onPress={() => Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Amazon })} />
-        </>
-      )}
-    </View>
+          <View style={styles.buttonContainer}>
+          <LoginButton title={'Sign in with Facebook'} 
+          titleStyle={styles.fbtextstyle}
+          icon={fb_icon}
+          onPress={() => Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Facebook })}/> 
+
+        <LoginButton title={'Sign in with Google'} 
+          titleStyle={styles.googletextstyle}
+          icon={google_icon}
+          onPress={() => Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Google })}/> 
+          </View>
+
+          
+
+          
+          
+          
+          
+          
+          {/* <LoginButton title={'Sign in with Facebook'}
+            buttonStyle={styles.buttonStyle}
+            titleStyle={styles.titleStyle}
+            containerStyle={styles.btnContainerStyle}
+            onPress={() => Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Facebook })}> fb login</LoginButton>
+         */}
+         
+        </ImageBackground>
+        
+     
+
+
+    // <View>
+    //   <Text>User: {user ? JSON.stringify(user.attributes) : 'None'}</Text>
+    //   {user ? (
+    //     <Button title="Sign Out" onPress={() => Auth.signOut()} />
+    //   ) : (
+    //     <>
+    //       {/* Go to the Cognito Hosted UI */}
+    //       <Button title="Cognito" onPress={() => Auth.federatedSignIn()} />
+
+    //       {/* Go directly to a configured identity provider */}
+    //       <Button title="Facebook" onPress={() => Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Facebook })} />
+    //       <Button title="Google" onPress={() => Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Google })}  />
+    //       <Button title="Amazon" onPress={() => Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Amazon })} />
+    //     </>
+    //   )}
+    // </View>
+
   );
 };
 
@@ -97,15 +145,28 @@ export default Login;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: themeColor.background,
+    flex: 0.5,
+    justifyContent:'center',
+    
+  },
+  buttonContainer: {
+    flex: 0.8,
+    
   },
   heading: {
     fontSize: themefonts.font32,
     textAlign: 'center',
+    fontFamily: themeFontFamily.ralewaySemiBold,
+    color: themeColor.black,
+    marginTop:0
+    
+  },
+  body: {
+    fontSize: themefonts.font14,
+    textAlign: 'center',
     fontFamily: themeFontFamily.raleway,
-    color: themeColor.white,
+    color: themeColor.black,
+    marginTop:10,
   },
   topContainer: {
     flex: 1,
@@ -113,6 +174,36 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     flex: 1,
+  },
+  
+  image: {
+    justifyContent: 'center',
+    height: "100%",
+    width:"100%",
+    // resizeMode: 'cover',
+  },
+
+  buttonStyle: {
+    width: 286,
+  },
+
+  fbtextstyle:{
+    color:themeColor.facebookBlue,
+    fontSize: themefonts.font14,
+    fontFamily: themeFontFamily.ralewayMedium,
+    lineHeight: 16,
+ },
+
+ googletextstyle:{
+  color:themeColor.googleRed,
+  fontSize: themefonts.font14,
+  fontFamily: themeFontFamily.ralewayMedium,
+  lineHeight: 16,
+},
+
+  btnContainerStyle: {
+    alignSelf: 'center',
+    marginTop:20,
   },
 });
 
