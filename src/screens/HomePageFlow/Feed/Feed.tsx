@@ -33,7 +33,7 @@ const post = [{
 {
   user : {
     name : 'Utkarsh',
-    image : utkarsh
+    image : shikha
   },
   image: utkarsh,
   likes: 20,
