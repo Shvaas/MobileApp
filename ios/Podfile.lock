@@ -89,8 +89,12 @@ PODS:
     - FlipperKit/FlipperKitNetworkPlugin
   - fmt (6.2.1)
   - glog (0.3.5)
+  - GoogleAds-IMA-iOS-SDK (3.18.4)
   - libevent (2.1.12)
   - OpenSSL-Universal (1.1.1100)
+  - PromisesObjC (2.2.0)
+  - PromisesSwift (2.2.0):
+    - PromisesObjC (= 2.2.0)
   - RCT-Folly (2021.06.28.00-v2):
     - boost
     - DoubleConversion
@@ -396,6 +400,8 @@ PODS:
     - React-Core
   - RNCAsyncStorage (1.17.11):
     - React-Core
+  - RNFS (2.20.0):
+    - React-Core
   - RNInAppBrowser (3.7.0):
     - React-Core
   - RNScreens (3.16.0):
@@ -458,6 +464,7 @@ DEPENDENCIES:
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-sqlite-storage (from `../node_modules/react-native-sqlite-storage`)
+  - react-native-video (from `../node_modules/react-native-video`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -472,6 +479,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RNAWSCognito (from `../node_modules/amazon-cognito-identity-js`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - RNFS (from `../node_modules/react-native-fs`)
   - RNInAppBrowser (from `../node_modules/react-native-inappbrowser-reborn`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -493,8 +501,11 @@ SPEC REPOS:
     - Flipper-RSocket
     - FlipperKit
     - fmt
+    - GoogleAds-IMA-iOS-SDK
     - libevent
     - OpenSSL-Universal
+    - PromisesObjC
+    - PromisesSwift
     - SocketRocket
     - YogaKit
 
@@ -549,6 +560,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-splash-screen"
   react-native-sqlite-storage:
     :path: "../node_modules/react-native-sqlite-storage"
+  react-native-video:
+    :path: "../node_modules/react-native-video"
   React-perflogger:
     :path: "../node_modules/react-native/ReactCommon/reactperflogger"
   React-RCTActionSheet:
@@ -577,6 +590,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/amazon-cognito-identity-js"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNFS:
+    :path: "../node_modules/react-native-fs"
   RNInAppBrowser:
     :path: "../node_modules/react-native-inappbrowser-reborn"
   RNScreens:
@@ -607,8 +622,11 @@ SPEC CHECKSUMS:
   FlipperKit: cbdee19bdd4e7f05472a66ce290f1b729ba3cb86
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 3d02b25ca00c2d456734d0bcff864cbc62f6ae1a
+  GoogleAds-IMA-iOS-SDK: b01284e3bf3d64ba948de6692ffda531452c3713
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
+  PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
+  PromisesSwift: cf9eb58666a43bbe007302226e510b16c1e10959
   RCT-Folly: b9d9fe1fc70114b751c076104e52f3b1b5e5a95a
   RCTRequired: bd9d2ab0fda10171fcbcf9ba61a7df4dc15a28f4
   RCTTypeSafety: e44e139bf6ec8042db396201834fc2372f6a21cd
@@ -628,6 +646,7 @@ SPEC CHECKSUMS:
   react-native-safe-area-context: 6c12e3859b6f27b25de4fee8201cfb858432d8de
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   react-native-sqlite-storage: f6d515e1c446d1e6d026aa5352908a25d4de3261
+  react-native-video: a38e0a394fd8884fef4a48d866f1ed9a930f8385
   React-perflogger: cb386fd44c97ec7f8199c04c12b22066b0f2e1e0
   React-RCTActionSheet: f803a85e46cf5b4066c2ac5e122447f918e9c6e5
   React-RCTAnimation: 19c80fa950ccce7f4db76a2a7f2cf79baae07fc7
@@ -642,6 +661,7 @@ SPEC CHECKSUMS:
   ReactCommon: 8f67bd7e0a6afade0f20718f859dc8c2275f2e83
   RNAWSCognito: 06ca81fa480fd7f9ff539d01bc41f9d531ff0a19
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
+  RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNInAppBrowser: e36d6935517101ccba0e875bac8ad7b0cb655364
   RNScreens: ee31ecdf23fe81e93c74feaa086cf173d758ab58
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
@@ -649,6 +669,6 @@ SPEC CHECKSUMS:
   Yoga: ff994563b2fd98c982ca58e8cd9db2cdaf4dda74
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: b5500c71a5ba7ad16057ec1fed03596d796861b6
+PODFILE CHECKSUM: dcc9e78d0aef3f9c0cb2562e4574a6f7dc602275
 
 COCOAPODS: 1.11.3

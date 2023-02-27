@@ -6,6 +6,8 @@ install! 'cocoapods', :deterministic_uuids => false
 
 production = ENV["PRODUCTION"] == "1"
 
+pod 'RNFS', :path => '../node_modules/react-native-fs'
+
 target 'MobileApp' do
   config = use_native_modules!
 

@@ -15,8 +15,8 @@ const Post: React.FC<PropsType> = ({ post }) => (
     
   <View>
       
-    <Header imageUri={post.user.image} name={post.user.name} />
-    <Body imageUri={post.image} />
+    <Header imageUri={post.userimage} name={post.username} />
+    <Body imageUri={post.videourl} />
     <Footer
       likesCount={post.likes}
       caption={post.caption}
