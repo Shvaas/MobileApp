@@ -24,7 +24,7 @@ import { Post as Postdb } from '../../../models'
 var RNFS = require('react-native-fs');
 
 // import VideoPlayer from 'react-native-video-player';
-// import Video from 'react-native-video';
+import Video from 'react-native-video';
 import myvideo from '../../../images/Shvaas_presentation.mp4'
 
 DataStore.configure({
@@ -206,26 +206,9 @@ const viewabilityConfigCallbackPairs = useRef([{ viewabilityConfig, onViewableIt
             keyExtractor={({id}) => id}
           /> */}
 
-          <FlatList
-          data={post}
-          keyExtractor={({item,index}) => '${item.user.name}'}
-          renderItem={({item}) => 
-          (
-          <SafeAreaView>
-          <ScrollView>
-            <Text>{item.user.name}</Text>
-            {/* <VideoPlayer 
-            video={{uri:item.videourl}}
-            videoWidth={1600}
-            videoHeight={900}
-            thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}
-            autoplay={false}
-            defaultmuted={true}
-            /> */}
-          </ScrollView>
-          </SafeAreaView>)}
+          <Video source={{uri: "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"}}   // Can be a URL or a local file.
+         />
           
-          />
 
 
           {/* <Button title="Get Advice" 

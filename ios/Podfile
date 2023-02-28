@@ -5,7 +5,7 @@ platform :ios, '12.4'
 install! 'cocoapods', :deterministic_uuids => false
 
 production = ENV["PRODUCTION"] == "1"
-
+pod 'react-native-video', :path => '../node_modules/react-native-video/react-native-video.podspec'
 pod 'RNFS', :path => '../node_modules/react-native-fs'
 
 target 'MobileApp' do
