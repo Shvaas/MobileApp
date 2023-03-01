@@ -4,14 +4,16 @@ import ADIcon from 'react-native-vector-icons/AntDesign';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
+import {themeFontFamily, themefonts,themeColor} from '../../constants/theme';
 
 interface PropsType {
     likesCount : number,
     caption: string,
-    postedAt: string
+    postedAt: string,
+    bodytype: number
   }
 
-const Footer: React.FC<PropsType> = ({likesCount: likesCountProp, caption, postedAt}) => {
+const Footer: React.FC<PropsType> = ({likesCount: likesCountProp, caption, postedAt, bodytype}) => {
 
   const [isLiked, setIsLike] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
@@ -45,7 +47,7 @@ const Footer: React.FC<PropsType> = ({likesCount: likesCountProp, caption, poste
       </View>
 
       <Text style={styles.likes}>{likesCount} Likes</Text>
-      <Text style={styles.caption}>{caption}</Text>
+      {bodytype!=1 && <Text style={styles.caption}>{caption}</Text>}
       <Text style={styles.postedAt}>{postedAt}</Text>
     </View>
   )
@@ -73,6 +75,7 @@ const styles = StyleSheet.create({
     },
     caption: {
       margin: 3,
+      fontFamily: themeFontFamily.raleway,
     },
     postedAt: {
       color: '#8c8c8c',

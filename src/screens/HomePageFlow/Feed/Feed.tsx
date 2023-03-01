@@ -8,7 +8,7 @@ import {
   } from 'react-native';
 import React, {  useRef, Component } from 'react';
 import axios from "axios";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 import BackgroundImage from '../../../common/BackgroundImage';
 import {themeFontFamily, themefonts,themeColor} from '../../../constants/theme';
@@ -25,6 +25,7 @@ var RNFS = require('react-native-fs');
 
 // import VideoPlayer from 'react-native-video-player';
 import Video from 'react-native-video';
+
 import myvideo from '../../../images/Shvaas_presentation.mp4'
 
 DataStore.configure({
@@ -40,10 +41,12 @@ const post = [{
         name : 'Utkarsh',
         image : utkarsh
       },
+      bodyType: 3,
       videourl: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
       image: utkarsh,
       likes: 20,
       caption: 'random text',
+
       createdAt: '20/03/21'
 },
 {
@@ -51,15 +54,43 @@ const post = [{
     name : 'Shikha',
     image : shikha
   },
-  videourl: "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+  bodyType: 2,
+  videourl: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/Sintel.jpg",
   image: utkarsh,
   likes: 20,
   caption: 'random text',
   createdAt: '20/03/21'
+},
+{
+  user : {
+    name : 'Aryan',
+    image : aryan
+  },
+  bodyType: 1,
+  videourl: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
+  image: aryan,
+  likes: 20,
+  caption: 'random text, random textrandom textrandom textrandom text random textrandom text random text random text',
+  createdAt: '20/03/21'
+},
+{
+  user : {
+    name : 'Nabeel',
+    image : aryan
+  },
+  bodyType: 3,
+  videourl: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
+  image: aryan,
+  likes: 20,
+  caption: 'random text',
+  createdAt: '20/03/21'
 }
+
 ]
 
 const Feed: React.FC<PropsType> = ({navigation}) => {
+
+  
   
   const [allPosts, updatePost] = useState([])
   console.log(1, RNFS.DocumentDirectoryPath);
@@ -168,10 +199,10 @@ let viewabilityConfig = {
   
 }
 
-let onViewableItemsChanged = ({viewableItems, changed}) => {
-  console.log("Visible items are", viewableItems);
-  console.log("Changed in this iteration", changed);
-}; 
+// let onViewableItemsChanged = ({viewableItems, changed}) => {
+//   console.log("Visible items are", viewableItems);
+//   console.log("Changed in this iteration", changed);
+// }; 
 
 //  let _onViewableItemsChanged = props => {
 //   const changed = props.changed;
@@ -192,22 +223,48 @@ let onViewableItemsChanged = ({viewableItems, changed}) => {
 //   });
 // };
 
-const viewabilityConfigCallbackPairs = useRef([{ viewabilityConfig, onViewableItemsChanged }])
+// const viewabilityConfigCallbackPairs = useRef([{ viewabilityConfig, onViewableItemsChanged }])
+const [visibleItemIndex, setVisibleItemIndex] = useState(0);
+
+const trackItem = (item) =>
+    console.log("### track " + item.user.name);
+
+const ViewableItemsChanged = useCallback(
+  (info: { changed: ViewToken[] }): void => {
+    const visibleItems = info.changed.filter((entry) => entry.isViewable);
+    if (visibleItems && visibleItems.length !== 0) {
+      setVisibleItemIndex(visibleItems[0].index);
+      console.log("index", visibleItems[0].index);
+      
+    }
+    // visibleItems.forEach((visible) => {
+    //   trackItem(visible.item);
+    // });
+  },
+  []
+);
 
     return (
         <SafeAreaView style={styles.container}>
           <View style={styles.topContainer}>
           {/* <Video  source={myvideo}/> */}
          
-          {/* <FlatList
+          <FlatList
             data={post}
             
-            renderItem={({item}) => <Post post={item} />}
-            keyExtractor={({id}) => id}
-          /> */}
+            renderItem={({item, index}) => <Post post={item} play={index===visibleItemIndex}/>}
+            keyExtractor={(item) => item.user.name }
+            onViewableItemsChanged= {ViewableItemsChanged}
+            viewabilityConfig={{
+              itemVisiblePercentThreshold: 90,
+              minimumViewTime: 500,
+            }}
+          />
 
-          <Video source={{uri: "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"}}   // Can be a URL or a local file.
-         />
+          {/* <Video source={{uri: "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"}} 
+          style={styles.video}
+          controls={true}  
+         /> */}
           
 
 
@@ -245,5 +302,9 @@ const styles = StyleSheet.create({
     },
     btnContainerStyle: {
     alignSelf: 'center',
+    },
+    video:{
+      width:'100%',
+      height:'50%'
     },
 });
