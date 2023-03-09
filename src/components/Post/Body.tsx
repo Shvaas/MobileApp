@@ -21,7 +21,7 @@ const Body: React.FC<PropsType> = ({imageUri, play, bodytype, caption}) => {
     const image1 = bodytype==2
     const text = bodytype==1
     if (bodytype==3){
-      return <Video source={{uri:imageUri}} style={styles.image}
+      return <Video source={{uri:imageUri}} style={styles.image} muted
         controls={true} resizeMode={'stretch'} paused={!play}/>
     }
     else if(bodytype==2){
