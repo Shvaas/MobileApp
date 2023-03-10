@@ -2,17 +2,16 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 // Local
-import RouteNames, {APP_FLOWS} from '../constants/routeName';
+import RouteNames from '../constants/routeName';
 import Welcome from '../screens/OnboardingFlow/Welcome/Welcome';
 import Login from '../screens/OnboardingFlow/Login';
 import HomePageStack from './HomePageStack';
+import Yogi from '../screens/HomePageFlow/Yogis/YogiProfile';
 
 const Stack = createNativeStackNavigator();
 
-function HomeNav(){
-  return(
-      <HomePageStack/>
-  );
+function HomeNav() {
+  return <HomePageStack />;
 }
 
 const OnboardingStack = () => {
@@ -26,13 +25,11 @@ const OnboardingStack = () => {
         name={RouteNames.OnboardingFlow.Welcome}
         component={Welcome}
       />
+      <Stack.Screen name={RouteNames.OnboardingFlow.Login} component={Login} />
+      <Stack.Screen name="Home" component={HomeNav} />
       <Stack.Screen
-        name={RouteNames.OnboardingFlow.Login}
-        component={Login}
-      />
-      <Stack.Screen
-        name='Home'
-        component={HomeNav}
+        name={RouteNames.HomePageFlow.YogiProfile}
+        component={Yogi}
       />
     </Stack.Navigator>
   );

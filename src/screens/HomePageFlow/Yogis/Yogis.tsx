@@ -33,6 +33,26 @@ const DATA = [
     description: 'Yoga lorem ipsium the random text',
     ActiveCourses: 2,
     interest: ['lorem', 'ipsum', 'abc', 'ramdev'],
+    reviews: [
+      {
+        image: utkarsh,
+        name: 'Utkarsh Nath',
+        review:
+          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vitae cumque',
+      },
+      {
+        image: aryan,
+        name: 'Aryan Mittal',
+        review:
+          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vitae cumque, sed, dolor culpa cum praesentium possimus animi quia, omnis quod distinctio magnam qui? Ab dignissimos vero aliquam velit!',
+      },
+      {
+        image: utkarsh,
+        name: 'Utkarsh Nath 2.0',
+        review:
+          ', sed, dolor culpa cum praesentium possimus animi quia, omnis quod distinctio magnam qui? Ab dignissimos vero aliquam velit!',
+      },
+    ],
   },
   {
     key: 2,
@@ -45,6 +65,14 @@ const DATA = [
     description: 'Meditation',
     ActiveCourses: 3,
     interest: ['yoga', 'meditation', 'test', 'lorem', 'ipsum', 'abc', 'ramdev'],
+    reviews: [
+      {
+        image: shikha,
+        name: 'Shikha Asrani',
+        review:
+          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vitae cumque, sed, dolor culpa cum praesentium possimus animi quia, omnis quod distinctio magnam qui? Ab dignissimos vero aliquam velit!',
+      },
+    ],
   },
   {
     key: 3,
@@ -57,6 +85,14 @@ const DATA = [
     description: 'Yoga',
     ActiveCourses: 3,
     interest: ['yoga', 'meditation'],
+    reviews: [
+      {
+        image: utkarsh,
+        name: 'Utkarsh Nath',
+        review:
+          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vitae cumque, sed, dolor culpa cum praesentium possimus animi quia, omnis quod distinctio magnam qui? Ab dignissimos vero aliquam velit!',
+      },
+    ],
   },
   // {
   //   key: 4,
