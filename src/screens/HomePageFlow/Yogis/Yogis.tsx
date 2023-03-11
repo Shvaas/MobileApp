@@ -38,7 +38,7 @@ const DATA = [
         image: utkarsh,
         name: 'Utkarsh Nath',
         review:
-          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vitae cumque',
+          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vitae cumque, sed, dolor culpa cum praesentium possimus animi quia, omnis quod distinctio magnam qui? Ab dignissimos vero aliquam velit!',
       },
       {
         image: aryan,
@@ -50,7 +50,7 @@ const DATA = [
         image: utkarsh,
         name: 'Utkarsh Nath 2.0',
         review:
-          ', sed, dolor culpa cum praesentium possimus animi quia, omnis quod distinctio magnam qui? Ab dignissimos vero aliquam velit!',
+          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vitae cumque, sed, dolor culpa cum praesentium possimus animi quia, omnis quod distinctio magnam qui? Ab dignissimos vero aliquam velit!',
       },
     ],
   },
@@ -72,6 +72,12 @@ const DATA = [
         review:
           'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vitae cumque, sed, dolor culpa cum praesentium possimus animi quia, omnis quod distinctio magnam qui? Ab dignissimos vero aliquam velit!',
       },
+      {
+        image: aryan,
+        name: 'Aryan Mittal',
+        review:
+          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vitae cumque, sed, dolor culpa cum praesentium possimus animi quia, omnis quod distinctio magnam qui? Ab dignissimos vero aliquam velit!',
+      },
     ],
   },
   {
@@ -89,6 +95,12 @@ const DATA = [
       {
         image: utkarsh,
         name: 'Utkarsh Nath',
+        review:
+          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vitae cumque, sed, dolor culpa cum praesentium possimus animi quia, omnis quod distinctio magnam qui? Ab dignissimos vero aliquam velit!',
+      },
+      {
+        image: shikha,
+        name: 'Shikha Asrani',
         review:
           'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vitae cumque, sed, dolor culpa cum praesentium possimus animi quia, omnis quod distinctio magnam qui? Ab dignissimos vero aliquam velit!',
       },

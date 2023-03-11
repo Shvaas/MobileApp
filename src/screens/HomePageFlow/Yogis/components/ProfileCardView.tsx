@@ -82,6 +82,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   imageStyle: {
+    borderColor: themeColor.vividRed,
+    borderWidth: 2,
     borderRadius: 50,
     height: 100,
     width: 100,

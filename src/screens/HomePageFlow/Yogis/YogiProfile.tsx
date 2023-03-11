@@ -1,6 +1,9 @@
 import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Carousel from 'react-native-reanimated-carousel';
+import 'react-native-gesture-handler';
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 import BackgroundImage from '../../../common/BackgroundImage';
 import {
@@ -17,8 +20,20 @@ interface PropsType {
 
 const Yogi: React.FC<PropsType> = ({route, navigation}) => {
   const {yogiProfile} = route.params;
+  const {image, name, certificates, yearsOfExp, studentsTrained, reviews} =
+    yogiProfile;
 
-  const {image, name, certificates, yearsOfExp, studentsTrained} = yogiProfile;
+  const getCarouselItem = ({item}) => {
+    return (
+      <View style={styles.itemContainer}>
+        <View style={styles.itemTopContainer}>
+          <Image source={item.image} style={styles.carousalImage} />
+          <Text style={styles.itemName}>{item.name}</Text>
+        </View>
+        <Text style={styles.itemReview}>{item.review}</Text>
+      </View>
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -51,6 +66,14 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
             Students trained: {studentsTrained}
           </Text>
         </View>
+        <Carousel
+          data={reviews}
+          renderItem={getCarouselItem}
+          loop
+          style={styles.carouselContainer}
+          width={wp(88)}
+          height={220}
+        />
         <PrimaryButton
           title="Enroll"
           onPress={() => {
@@ -68,13 +91,15 @@ export default Yogi;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     backgroundColor: themeColor.background,
   },
   buttonStyle: {
     width: 167,
   },
   imageStyle: {
+    borderColor: themeColor.vividRed,
+    borderWidth: 2,
     borderRadius: 50,
     height: 100,
     width: 100,
@@ -88,14 +113,15 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginHorizontal: 26,
     padding: 15,
-    borderColor: themeColor.vividRed,
-    borderWidth: 1,
-    borderRadius: 6,
+    // borderColor: themeColor.vividRed,
+    // borderWidth: 1,
+    borderRadius: 12,
     width: '70%',
+    backgroundColor: themeColor.background,
   },
   textStyle: {
     fontFamily: themeFontFamily.raleway,
-    fontSize: themefonts.font18,
+    fontSize: themefonts.font16,
     margin: 1,
   },
   textStyleBold: {
@@ -114,5 +140,42 @@ const styles = StyleSheet.create({
   fbIcon: {
     color: '#4267B2',
     marginRight: 5,
+  },
+  carouselContainer: {
+    marginVertical: 20,
+    width: '100%',
+  },
+  itemContainer: {
+    padding: 20,
+    borderRadius: 8,
+    borderColor: themeColor.vividRed,
+    borderWidth: 1,
+    backgroundColor: themeColor.background,
+    flex: 1,
+    marginRight: 10,
+    marginLeft: 5,
+  },
+  itemTopContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  carousalImage: {
+    borderColor: themeColor.vividRed,
+    borderWidth: 2,
+    borderRadius: 50,
+    height: 60,
+    width: 60,
+    resizeMode: 'cover',
+  },
+  itemName: {
+    fontFamily: themeFontFamily.ralewayBold,
+    fontSize: themefonts.font16,
+    marginLeft: 10,
+  },
+  itemReview: {
+    fontFamily: themeFontFamily.raleway,
+    fontSize: themefonts.font14,
+    marginLeft: 10,
   },
 });
