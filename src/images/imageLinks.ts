@@ -6,3 +6,6 @@ export const utkarsh = require('./utkarsh.png');
 export const loginbackgroundImage = require('./login_background.png');
 export const fb_icon = require('./fb_icon.png');
 export const google_icon = require('./google_icon.png');
+export const yoga_instructor1 = require('./yoga_instructor1.jpg');
+export const yoga_instructor2 = require('./yoga_instructor2.webp');
+export const yoga_instructor3 = require('./yoga_instructor3.jpg');

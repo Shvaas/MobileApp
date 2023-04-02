@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
     SafeAreaView,
     StyleSheet,
@@ -17,20 +18,26 @@ import ProfilePicture from '../../../components/ProfilePicture';
 import Post from '../../../components/Post';
 import {aryan,nabeel,shikha,utkarsh} from '../../../images/imageLinks';
 
-import { DataStore } from 'aws-amplify';
-import { SQLiteAdapter } from '@aws-amplify/datastore-storage-adapter/SQLiteAdapter';
-import { Post as Postdb } from '../../../models'
+// import { DataStore } from 'aws-amplify';
+// import { SQLiteAdapter } from '@aws-amplify/datastore-storage-adapter/SQLiteAdapter';
+// import { Post as Postdb } from '../../../models'
+
+import {Amplify} from "aws-amplify";
+import awsconfig from '../../../aws-exports';
+Amplify.configure(awsconfig);
+
 
 var RNFS = require('react-native-fs');
+
 
 // import VideoPlayer from 'react-native-video-player';
 import Video from 'react-native-video';
 
 import myvideo from '../../../images/Shvaas_presentation.mp4'
 
-DataStore.configure({
-  storageAdapter: SQLiteAdapter
-});
+// DataStore.configure({
+//   storageAdapter: SQLiteAdapter
+// });
 
 interface PropsType {
     navigation: any;
@@ -40,7 +47,7 @@ const post = [{
       user : {
         name : 'Utkarsh',
         image : utkarsh
-      },
+    },
       bodyType: 3,
       videourl: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
       image: utkarsh,
@@ -96,33 +103,36 @@ const Feed: React.FC<PropsType> = ({navigation}) => {
   console.log(1, RNFS.DocumentDirectoryPath);
   
   React.useEffect(() => {
-    // const posts = getAllPost()
+    const posts1 = getAllPost()
     // downloadVideo("https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")
   }, []);
 
-  async function createPost() {
-    try {
-      await DataStore.save(
-        new Postdb({
-          username: "My First Post", 
-          caption: "Hi, how are you, khana khaakr jana han"
-        })
-      );
-      console.log("Post saved successfully!");
-    } catch (error) {
-      console.log("Error saving post", error);
-    }
-}
-async function getAllPost() {
-  try {
-    const posts = await DataStore.query(Postdb);
-    updatePost(posts)
-    console.log("Posts retrieved successfully!", JSON.stringify(posts, null, 2));
-    return posts
-  } catch (error) {
-    console.log("Error retrieving posts", error);
-  }
-}
+//   async function createPost() {
+//     try {
+//       await DataStore.save(
+//         new Postdb({
+//           username: 'My First Post',
+//           caption: 'Hi, how are you, khana khaakr jana han',
+//           likes: 5
+//         })
+//       );
+//       console.log('Post saved successfully!');
+//     } catch (error) {
+//       console.log('Error saving post', error);
+//     }
+// }
+
+
+// async function getAllPost() {
+//   try {
+//     const posts = await DataStore.query(Postdb);
+//     updatePost(posts)
+//     console.log("Posts retrieved successfully!", JSON.stringify(posts, null, 2));
+//     return posts
+//   } catch (error) {
+//     console.log("Error retrieving posts", error);
+//   }
+// }
 
 async function downloadVideo(videoUrl: string){
   let filename = videoUrl.substring(videoUrl.lastIndexOf("/") + 1, videoUrl.length);

@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import { Amplify, Auth, Hub } from "aws-amplify";
 
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
-import awsconfig from '../../aws-exports';
+
 
 import {themeFontFamily, themefonts,themeColor} from '../../constants/theme';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
@@ -21,6 +21,7 @@ import {loginbackgroundImage, fb_icon, google_icon} from '../../images/imageLink
 
 import LoginButton from '../../common/buttons/LoginButton';
 
+import awsconfig from '../../aws-exports';
 Amplify.configure(awsconfig);
 
 async function urlOpener(url, redirectUrl) {
