@@ -6,6 +6,7 @@ import {
     View,
     FlatList,
     ScrollView,
+    ActivityIndicator,
   } from 'react-native';
 import React, {  useRef, Component } from 'react';
 import axios from "axios";
@@ -22,10 +23,13 @@ import {aryan,nabeel,shikha,utkarsh} from '../../../images/imageLinks';
 // import { SQLiteAdapter } from '@aws-amplify/datastore-storage-adapter/SQLiteAdapter';
 // import { Post as Postdb } from '../../../models'
 
+import {useDispatch, useSelector} from 'react-redux';
+
 import {Amplify} from "aws-amplify";
 import awsconfig from '../../../aws-exports';
 Amplify.configure(awsconfig);
 
+import {useGetPostsQuery} from '../../../store/apiSlice';
 
 var RNFS = require('react-native-fs');
 
@@ -43,96 +47,62 @@ interface PropsType {
     navigation: any;
 }
 
-const post = [{
-      user : {
-        name : 'Utkarsh',
-        image : utkarsh
-    },
-      bodyType: 3,
-      videourl: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-      image: utkarsh,
-      likes: 20,
-      caption: 'random text',
 
-      createdAt: '20/03/21'
-},
-{
-  user : {
-    name : 'Shikha',
-    image : shikha
-  },
-  bodyType: 2,
-  videourl: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/Sintel.jpg",
-  image: utkarsh,
-  likes: 20,
-  caption: 'random text',
-  createdAt: '20/03/21'
-},
-{
-  user : {
-    name : 'Aryan',
-    image : aryan
-  },
-  bodyType: 1,
-  videourl: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
-  image: aryan,
-  likes: 20,
-  caption: 'random text, random textrandom textrandom textrandom text random textrandom text random text random text',
-  createdAt: '20/03/21'
-},
-{
-  user : {
-    name : 'Nabeel',
-    image : aryan
-  },
-  bodyType: 3,
-  videourl: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
-  image: aryan,
-  likes: 20,
-  caption: 'random text',
-  createdAt: '20/03/21'
-}
-
-]
 
 const Feed: React.FC<PropsType> = ({navigation}) => {
+  const [visibleItemIndex, setVisibleItemIndex] = useState(0);
 
-  
-  
+  const trackItem = (item) =>
+    console.log("### track " + item.user.name);
+
+const ViewableItemsChanged = useCallback(
+  (info: { changed: ViewToken[] }): void => {
+    const visibleItems = info.changed.filter((entry) => entry.isViewable);
+    if (visibleItems && visibleItems.length !== 0) {
+      setVisibleItemIndex(visibleItems[0].index);
+      console.log("index", visibleItems[0].index);
+    }
+    // visibleItems.forEach((visible) => {
+    //   trackItem(visible.item);
+    // });
+  },
+  []
+);
+
+  // let post = useSelector((state) => state.posts.posts);
+
+  const {data,error,isLoading} = useGetPostsQuery();
+
+
   const [allPosts, updatePost] = useState([])
+
+
   console.log(1, RNFS.DocumentDirectoryPath);
   
   React.useEffect(() => {
-    const posts1 = getAllPost()
+    
     // downloadVideo("https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")
   }, []);
 
-//   async function createPost() {
-//     try {
-//       await DataStore.save(
-//         new Postdb({
-//           username: 'My First Post',
-//           caption: 'Hi, how are you, khana khaakr jana han',
-//           likes: 5
-//         })
-//       );
-//       console.log('Post saved successfully!');
-//     } catch (error) {
-//       console.log('Error saving post', error);
-//     }
-// }
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
+
+  // if (error) {
+  //   return <Text>{error.error}</Text>;
+  // }
+
+  let post = null;
+  if (data){
+    console.log(data.status);
+    post = data.data;
+  }
+
+  
+  
 
 
-// async function getAllPost() {
-//   try {
-//     const posts = await DataStore.query(Postdb);
-//     updatePost(posts)
-//     console.log("Posts retrieved successfully!", JSON.stringify(posts, null, 2));
-//     return posts
-//   } catch (error) {
-//     console.log("Error retrieving posts", error);
-//   }
-// }
+
 
 async function downloadVideo(videoUrl: string){
   let filename = videoUrl.substring(videoUrl.lastIndexOf("/") + 1, videoUrl.length);
@@ -193,77 +163,30 @@ async function downloadVideo(videoUrl: string){
 
 
 
-  const getRequest = () => {
-    axios.get("https://6sm5d5xzu8.execute-api.us-west-2.amazonaws.com/stage/course")
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-};
-let viewabilityConfig = {
-  waitForInteraction: true,
-  // At least one of the viewAreaCoveragePercentThreshold or itemVisiblePercentThreshold is required.
-  viewAreaCoveragePercentThreshold: 95,
-  
-}
-
-// let onViewableItemsChanged = ({viewableItems, changed}) => {
-//   console.log("Visible items are", viewableItems);
-//   console.log("Changed in this iteration", changed);
-// }; 
-
-//  let _onViewableItemsChanged = props => {
-//   const changed = props.changed;
-//   changed.forEach(item => {
-//     console.log(111, item);
-//     // const cell = this.cellRefs[item.key];
-    
-//     // if(cell){
-      
-      
-//     //   if(item.isViewable){
-
-//     //   }else{
-
-//     //   }
-//     // }
-    
-//   });
+//   const getRequest = () => {
+//     axios.get('https://6sm5d5xzu8.execute-api.us-west-2.amazonaws.com/stage/feed/313cbfd3-4fc1-4763-9d18-caedd0be4a63')
+//         .then((response) => {
+//           console.log(response.data);
+//         })
+//         .catch((error) => {
+//             console.log(error);
+//         });
 // };
 
-// const viewabilityConfigCallbackPairs = useRef([{ viewabilityConfig, onViewableItemsChanged }])
-const [visibleItemIndex, setVisibleItemIndex] = useState(0);
 
-const trackItem = (item) =>
-    console.log("### track " + item.user.name);
 
-const ViewableItemsChanged = useCallback(
-  (info: { changed: ViewToken[] }): void => {
-    const visibleItems = info.changed.filter((entry) => entry.isViewable);
-    if (visibleItems && visibleItems.length !== 0) {
-      setVisibleItemIndex(visibleItems[0].index);
-      console.log("index", visibleItems[0].index);
-      
-    }
-    // visibleItems.forEach((visible) => {
-    //   trackItem(visible.item);
-    // });
-  },
-  []
-);
+
+
 
     return (
         <SafeAreaView style={styles.container}>
           <View style={styles.topContainer}>
-          {/* <Video  source={myvideo}/> */}
-         
+          {/* <Button title="Get Advice" 
+                onPress={getRequest} color="green" /> */}
           <FlatList
             data={post}
-            
             renderItem={({item, index}) => <Post post={item} play={index===visibleItemIndex}/>}
-            keyExtractor={(item) => item.user.name }
+            keyExtractor={(item) => item.postId}
             onViewableItemsChanged= {ViewableItemsChanged}
             viewabilityConfig={{
               itemVisiblePercentThreshold: 90,
@@ -271,16 +194,8 @@ const ViewableItemsChanged = useCallback(
             }}
           />
 
-          {/* <Video source={{uri: "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"}} 
-          style={styles.video}
-          controls={true}  
-         /> */}
           
 
-
-          {/* <Button title="Get Advice" 
-                onPress={getRequest} color="green" /> */}
-          
           </View>
         </SafeAreaView>
       );
@@ -318,3 +233,5 @@ const styles = StyleSheet.create({
       height:'50%'
     },
 });
+
+

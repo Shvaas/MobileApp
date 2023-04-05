@@ -4,6 +4,9 @@ import SplashScreen from 'react-native-splash-screen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
+import {Provider} from 'react-redux';
+import {store} from './store';
+
 // Local
 import OnboardingStack from './screenStack/OnboardingStack';
 import {APP_FLOWS} from './constants/routeName';
@@ -17,20 +20,22 @@ const App = () => {
   const Stack = createNativeStackNavigator();
 
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            gestureEnabled: false,
-            headerShown: false,
-          }}>
-          <Stack.Screen
-            name={APP_FLOWS.OnboardingFlow}
-            component={OnboardingStack}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </SafeAreaProvider>
+    <Provider store={store}>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              gestureEnabled: false,
+              headerShown: false,
+            }}>
+            <Stack.Screen
+              name={APP_FLOWS.OnboardingFlow}
+              component={OnboardingStack}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </Provider>
   );
 };
 

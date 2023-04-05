@@ -13,8 +13,12 @@ interface PropsType {
     bodytype: number
   }
 
-const Footer: React.FC<PropsType> = ({likesCount: likesCountProp, caption, postedAt, bodytype}) => {
-
+const Footer: React.FC<PropsType> = ({
+  likesCount: likesCountProp,
+  caption,
+  postedAt,
+  bodytype,
+}) => {
   const [isLiked, setIsLike] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
 
