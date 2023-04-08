@@ -6,6 +6,7 @@ import {
     View,
     FlatList,
     ScrollView,
+    Button,
     ActivityIndicator,
   } from 'react-native';
 import React, {  useRef, Component } from 'react';
@@ -38,6 +39,7 @@ var RNFS = require('react-native-fs');
 import Video from 'react-native-video';
 
 import myvideo from '../../../images/Shvaas_presentation.mp4'
+import { postSlice } from '../../../store/postSlice';
 
 // DataStore.configure({
 //   storageAdapter: SQLiteAdapter
@@ -72,10 +74,10 @@ const ViewableItemsChanged = useCallback(
   // let post = useSelector((state) => state.posts.posts);
 
   const {data,error,isLoading} = useGetPostsQuery();
-
+  
 
   const [allPosts, updatePost] = useState([])
-
+  const dispatch = useDispatch();
 
   console.log(1, RNFS.DocumentDirectoryPath);
   
@@ -84,19 +86,33 @@ const ViewableItemsChanged = useCallback(
     // downloadVideo("https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")
   }, []);
 
+  const post = useSelector((state) => state.posts.posts);
+
   if (isLoading) {
     return <ActivityIndicator />;
   }
 
-  // if (error) {
-  //   return <Text>{error.error}</Text>;
-  // }
-
-  let post = null;
-  if (data){
-    console.log(data.status);
-    post = data.data;
+  if (error) {
+    return <Text>{error.error}</Text>;
   }
+
+  console.log(data?.data);
+  
+  if (post.length === 0){    
+    dispatch(postSlice.actions.initialPost(data.data.slice(0, -1)));
+  }
+  
+  // let post = null;
+  // if (data){
+  //   post = data.data.slice(0, -1);
+  //   // console.log(post)
+  // }
+  
+  
+  // console.log('wtf');
+  // console.log("$$$$$$$", post);
+  // console.log('wtf');
+  
 
   
   
@@ -173,6 +189,9 @@ async function downloadVideo(videoUrl: string){
 //         });
 // };
 
+const reinisiallizepost = () => {
+  dispatch(postSlice.actions.initialPost(data.data.slice(0, -1)));
+};
 
 
 
@@ -182,7 +201,7 @@ async function downloadVideo(videoUrl: string){
         <SafeAreaView style={styles.container}>
           <View style={styles.topContainer}>
           {/* <Button title="Get Advice" 
-                onPress={getRequest} color="green" /> */}
+                onPress={reinisiallizepost} color="green" /> */}
           <FlatList
             data={post}
             renderItem={({item, index}) => <Post post={item} play={index===visibleItemIndex}/>}

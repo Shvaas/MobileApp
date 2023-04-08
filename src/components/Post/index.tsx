@@ -10,39 +10,45 @@ interface PropsType {
   play: boolean;
 }
 
-const Post: React.FC<PropsType> = ({post, play}) => (
+const Post: React.FC<PropsType> = ({post, play}) => {  
+  const likes = Object.keys(post.reactions).length;
+  console.log(likes, 'likes');
+  
+  return (
+    <View>
+      <Header imageUri={post.userName} name={post.userName} />
+      <Body
+        imageUri={post.fileURL}
+        play={play}
+        bodytype={post.bodytype}
+        caption={post.caption}
+      />
+      <Footer
+        likesCount={likes}
+        caption={post.caption}
+        postedAt={post.userName}
+        bodytype={post.bodytype}
+        postId={post.postId}
+        isLiked={post.isLiked}
+      />
+    </View>
 
-  <View>
-    <Header imageUri={post.userName} name={post.userName} />
-    <Body
-      imageUri={post.fileURL}
-      play={play}
-      bodytype={post.fileURL.charAt(post.fileURL.length - 1) == 'g' ? 2: 3}
-      caption={post.caption}
-    />
-    <Footer
-      likesCount={20}
-      caption={post.caption}
-      postedAt={post.userName}
-      bodytype={post.fileURL.charAt(post.fileURL.length - 1) == 'g' ? 2: 3}
-    />
-  </View>
-
-  // <View>
-  //   <Header imageUri={post.user.image} name={post.user.name} />
-  //   <Body
-  //     imageUri={post.videourl}
-  //     play={play}
-  //     bodytype={post.bodyType}
-  //     caption={post.caption}
-  //   />
-  //   <Footer
-  //     likesCount={post.likes}
-  //     caption={post.caption}
-  //     postedAt={post.createdAt}
-  //     bodytype={post.bodyType}
-  //   />
-  // </View>
-);
+    // <View>
+    //   <Header imageUri={post.user.image} name={post.user.name} />
+    //   <Body
+    //     imageUri={post.videourl}
+    //     play={play}
+    //     bodytype={post.bodyType}
+    //     caption={post.caption}
+    //   />
+    //   <Footer
+    //     likesCount={post.likes}
+    //     caption={post.caption}
+    //     postedAt={post.createdAt}
+    //     bodytype={post.bodyType}
+    //   />
+    // </View>
+  );
+};
 
 export default Post;

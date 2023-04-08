@@ -17,18 +17,22 @@ interface PropsType {
 // bodytype == 3 Video
 
 const Body: React.FC<PropsType> = ({imageUri, play, bodytype, caption}) => {
-  const video = bodytype == 3;
-  const image1 = bodytype == 2;
-  const text = bodytype == 1;
-  if (bodytype==3){
-      return <Video source={{uri:imageUri}} style={styles.image} muted
+  // const video = bodytype == 3;
+  // const image1 = bodytype == 2;
+  // const text = bodytype == 1;
+  
+  if (bodytype == 3) {
+    return (
+      <Video
+        source={{uri: imageUri}}
+        style={styles.image}
+        muted
         controls={true} resizeMode={'stretch'} paused={!play}/>
-    }
-    else if(bodytype==2){
-       return <Image source={{uri:imageUri}} style={styles.image}/>
-    }
-    else if(bodytype==1){
-      return <Text style={styles.text}>{caption}</Text>
+    )}
+  else if (bodytype == 2) {
+    return <Image source={{uri: imageUri}} style={styles.image} />;
+  } else if (bodytype == 1) {
+    return <Text style={styles.text}>{caption}</Text>;
    }
   };
 

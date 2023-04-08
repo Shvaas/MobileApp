@@ -6,36 +6,46 @@ import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import {themeFontFamily, themefonts,themeColor} from '../../constants/theme';
 
+import {postSlice} from '../../store/postSlice';
+import {useUpdateReactionMutation} from '../../store/apiSlice';
+
+import {useDispatch, useSelector} from 'react-redux';
 interface PropsType {
-    likesCount : number,
-    caption: string,
-    postedAt: string,
-    bodytype: number
-  }
+  likesCount: number;
+  caption: string;
+  postedAt: string;
+  bodytype: number;
+  postId: string;
+  isLiked: boolean;
+}
 
 const Footer: React.FC<PropsType> = ({
-  likesCount: likesCountProp,
+  likesCount,
   caption,
   postedAt,
   bodytype,
+  postId,
+  isLiked,
 }) => {
-  const [isLiked, setIsLike] = useState(false);
-  const [likesCount, setLikesCount] = useState(0);
+  // const [isLiked, setIsLike] = useState(false);
+  // const [likesCount, setLikesCount] = useState(0);
 
-  const onLikePressed = () => {
-    const amount = isLiked ? -1 : 1;
-    setLikesCount(likesCount + amount);
+  const dispatch = useDispatch();
+  const [updateReaction, { data, error, isLoading }] = useUpdateReactionMutation();
 
-    setIsLike(!isLiked);
-  }
+  const onLikePressed = async () => {
+    let like = {userId: '313cbfd3-4fc1-4763-9d18-caedd0be4a63'};
+    if (!isLiked) {
+      like['reactionType'] = 'LIKE';
+    }
+    dispatch(postSlice.actions.setReaction(postId));
 
-  useEffect(() =>{
-    setLikesCount(likesCountProp)
-  }, [])
+    //const result = await updateReaction(like);
+    console.log('put result', result.data);
+  };
 
   return (
     <View style={styles.container}>
-
       <View style={styles.iconsContainer}>
         <View style={styles.leftIcons}>
           <TouchableWithoutFeedback onPress={onLikePressed}>
