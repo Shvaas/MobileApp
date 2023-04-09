@@ -5,6 +5,7 @@ import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import {themeFontFamily, themefonts,themeColor} from '../../constants/theme';
+import Comment from './Comment';
 
 import {postSlice} from '../../store/postSlice';
 import {useUpdateReactionMutation} from '../../store/apiSlice';
@@ -17,6 +18,7 @@ interface PropsType {
   bodytype: number;
   postId: string;
   isLiked: boolean;
+  topComment: any;
 }
 
 const Footer: React.FC<PropsType> = ({
@@ -26,6 +28,7 @@ const Footer: React.FC<PropsType> = ({
   bodytype,
   postId,
   isLiked,
+  topComment,
 }) => {
   // const [isLiked, setIsLike] = useState(false);
   // const [likesCount, setLikesCount] = useState(0);
@@ -40,8 +43,20 @@ const Footer: React.FC<PropsType> = ({
     }
     dispatch(postSlice.actions.setReaction(postId));
 
-    //const result = await updateReaction(like);
+    const result = await updateReaction(like);
     console.log('put result', result.data);
+  };
+
+  const onCommentPressed = async () => {
+    console.log('callind onCommentPressed');
+    dispatch(
+      postSlice.actions.addComment({
+        comment: 'Hey, how are you',
+        postId: postId,
+      }),
+    );
+    //const result = await updateReaction(like);
+    // console.log('put result', result.data);
   };
 
   return (
@@ -54,7 +69,7 @@ const Footer: React.FC<PropsType> = ({
               : <ADIcon name="hearto" size={25} color={"#545454"} />
             }
           </TouchableWithoutFeedback>
-          <FontistoIcon name="comment" size={23} color={"#545454"}/>
+          <FontistoIcon onPress={onCommentPressed} name="comment" size={23} color={"#545454"}/>
           <IoniconsIcon name="paper-plane-outline" size={25} color={"#545454"}/>
         </View>
         <FAIcon name="bookmark-o" size={25} color={"#545454"}/>
@@ -63,6 +78,8 @@ const Footer: React.FC<PropsType> = ({
       <Text style={styles.likes}>{likesCount} Likes</Text>
       {bodytype!=1 && <Text style={styles.caption}>{caption}</Text>}
       <Text style={styles.postedAt}>{postedAt}</Text>
+      {topComment!=null && <Comment comment={{username: 'Utkarsh', text: 'My first comment'}} />}
+      {/* <Comment comment={{name: 'Utkarsh', text: 'My first comment'}} /> */}
     </View>
   )
 }

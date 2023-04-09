@@ -105,7 +105,8 @@ export const postSlice = createSlice({
         tempPost.userProfilePic = serverPost[i].userProfilePic;
         tempPost.userType = serverPost[i].userType;
         tempPost.createdDate = serverPost[i].createdDate;
-
+        tempPost.comments = [];
+        tempPost.topComment = null;
         tempPost.isLiked = serverPost[i].userId in serverPost[i].reactions;
         let bodytype;
         if ('fileURL' in serverPost[i]) {
@@ -115,6 +116,20 @@ export const postSlice = createSlice({
         }
         tempPost.bodytype = bodytype;
         state.posts.push(tempPost);
+      }
+    },
+
+    addComment: (state, action) => {
+      console.log('addComment', action.payload);
+
+      const {comment, postId} = action.payload;
+
+      state.currentPost = state.posts.find(p => p.postId === postId);
+      const user = state.currentPost.userName;
+      if (state.currentPost){
+        const commentObj = {username: user, text: comment};
+        state.currentPost.comments.push(commentObj);
+        state.currentPost.topComment = commentObj;
       }
     },
   },

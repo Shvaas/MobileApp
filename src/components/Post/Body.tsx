@@ -30,7 +30,7 @@ const Body: React.FC<PropsType> = ({imageUri, play, bodytype, caption}) => {
         controls={true} resizeMode={'stretch'} paused={!play}/>
     )}
   else if (bodytype == 2) {
-    return <Image source={{uri: imageUri}} style={styles.image} />;
+    return <Image source={{uri: 'https://storage.googleapis.com/gtv-videos-bucket/sample/images/Sintel.jpg'}} style={styles.image} />;
   } else if (bodytype == 1) {
     return <Text style={styles.text}>{caption}</Text>;
    }

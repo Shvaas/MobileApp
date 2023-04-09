@@ -30,24 +30,9 @@ const Post: React.FC<PropsType> = ({post, play}) => {
         bodytype={post.bodytype}
         postId={post.postId}
         isLiked={post.isLiked}
+        topComment={post.topComment}
       />
     </View>
-
-    // <View>
-    //   <Header imageUri={post.user.image} name={post.user.name} />
-    //   <Body
-    //     imageUri={post.videourl}
-    //     play={play}
-    //     bodytype={post.bodyType}
-    //     caption={post.caption}
-    //   />
-    //   <Footer
-    //     likesCount={post.likes}
-    //     caption={post.caption}
-    //     postedAt={post.createdAt}
-    //     bodytype={post.bodyType}
-    //   />
-    // </View>
   );
 };
 

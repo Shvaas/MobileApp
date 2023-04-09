@@ -197,11 +197,13 @@ const reinisiallizepost = () => {
 
 
 
+
+
     return (
         <SafeAreaView style={styles.container}>
           <View style={styles.topContainer}>
-          {/* <Button title="Get Advice" 
-                onPress={reinisiallizepost} color="green" /> */}
+          <Button title="Create Post" 
+                onPress={reinisiallizepost} color="green" />
           <FlatList
             data={post}
             renderItem={({item, index}) => <Post post={item} play={index===visibleItemIndex}/>}
