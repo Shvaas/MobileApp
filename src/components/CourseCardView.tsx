@@ -16,7 +16,7 @@ import {
   const CourseCardView: React.FC<PropsType> = ({course}) => {
     return (
         <View style={styles.container}>
-            <View style={styles.textContainerStyle}>
+            {/* <View style={styles.textContainerStyle}>
               <Text style={styles.textStyleBold}>{course.title}</Text>
               <Text style={styles.textStyle}>{course.description}</Text>
               <Text style={styles.textStyle}>Level: {course.level}</Text>
@@ -32,6 +32,11 @@ import {
                 <Text style={styles.textStyle}>{course.numOfStudentsEnrolled}{"/"}{course.maxCap}</Text>
                 <Text style={styles.textStyle}>{course.cost}</Text>
               </View>
+            </View> */}
+            <View style={styles.internalContainer}>
+                <Image source={course.instructor} style={styles.imageStyle}></Image>
+                <Text style={styles.textStyleName}>{"Yoga with "}{course.instructor}</Text>
+                <Text style={styles.textStyleTime}>{course.title}{","}{course.rating}</Text>
             </View>
         </View>
       );
@@ -49,7 +54,7 @@ import {
     //   bottom: 0,
     //   right: 0,
       margin: "2.5%",
-      height: 150,
+      height: 100,
       width: "95%",
       shadowColor:"black",
       shadowOpacity: 0.25,
@@ -112,5 +117,20 @@ import {
       flexWrap: 'wrap',
       left: 20,
       top: 10
-    }
+    },
+    textStyleName: {
+      fontFamily: themeFontFamily.raleway,
+      lineHeight: 15,
+      fontSize: themefonts.font14,
+      margin: 2,
+      alignSelf:'center',
+    },
+    textStyleTime: {
+      fontFamily: themeFontFamily.raleway,
+      lineHeight: 15,
+      fontSize: themefonts.font14,
+      margin: 2,
+      right:2,
+      alignSelf:'center',
+    },
   });
