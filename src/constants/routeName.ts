@@ -16,6 +16,7 @@ const RouteNames = {
     MyCourseDetail: "Course Detail",
     AllCourses: "All Courses",
     AllCourseDetail: "Course Detail",
+    CalendarPage: "Calendar Page",
   },
 };
 

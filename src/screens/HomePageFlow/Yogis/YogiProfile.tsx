@@ -4,6 +4,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Carousel from 'react-native-reanimated-carousel';
 import 'react-native-gesture-handler';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import RouteNames from '../../../constants/routeName';
 
 import BackgroundImage from '../../../common/BackgroundImage';
 import {
@@ -20,7 +21,7 @@ interface PropsType {
 
 const Yogi: React.FC<PropsType> = ({route, navigation}) => {
   const {yogiProfile} = route.params;
-  const {image, name, certificates, yearsOfExp, studentsTrained, reviews} =
+  const {image, name, certificates, yearsOfExp, studentsTrained, reviews, rating, description} =
     yogiProfile;
 
   const getCarouselItem = ({item}) => {
@@ -41,8 +42,8 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
         <Image source={image} style={styles.imageStyle} />
         <PrimaryButton
           title="Book an appointment"
-          onPress={() => {}}
-          containerStyle={styles.secondaryButton}
+          onPress={() => {navigation.navigate(RouteNames.HomePageFlow.CalendarPage,yogiProfile)}}
+            containerStyle={styles.secondaryButton}
         />
         <View style={styles.textContainerStyle}>
           <View style={styles.headingContainer}>
@@ -60,11 +61,15 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
               />
             </View>
           </View>
+          <Text style={styles.textStyle}>Rating: {rating} years</Text>
           <Text style={styles.textStyle}>Experience: {yearsOfExp} years</Text>
           <Text style={styles.textStyle}>{certificates}</Text>
           <Text style={styles.textStyle}>
             Students trained: {studentsTrained}
           </Text>
+        </View>
+        <View style={styles.descriptionContainerStyle}>
+          <Text style={styles.textStyle}>{description}</Text>
         </View>
         <Carousel
           data={reviews}
@@ -75,7 +80,7 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
           height={220}
         />
         <PrimaryButton
-          title="Enroll"
+          title="Go Back"
           onPress={() => {
             navigation.goBack();
           }}
@@ -117,6 +122,17 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
     borderRadius: 12,
     width: '70%',
+    backgroundColor: themeColor.background,
+  },
+  descriptionContainerStyle: {
+    marginBottom: 20,
+    alignSelf: 'center',
+    marginHorizontal: 26,
+    padding: 15,
+    // borderColor: themeColor.vividRed,
+    // borderWidth: 1,
+    borderRadius: 12,
+    width: '90%',
     backgroundColor: themeColor.background,
   },
   textStyle: {
