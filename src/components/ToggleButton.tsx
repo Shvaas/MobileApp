@@ -18,6 +18,7 @@ import BackgroundImageDup from '../common/BackgroundImageFullPage'
 import CourseCardView from '../components/CourseCardView';
 import RouteNames from '../constants/routeName';
 import { Header } from 'react-native-elements';
+import UpcomingCourseCardView from './UpcomingCourseCardView';
 
 export interface ToggleButtonProps {
   navigation: any;
@@ -122,78 +123,76 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
   };
   return (
     <View>
-    <BackgroundImageDup>
+      <BackgroundImageDup>
       <View>
-    <View style={styles.container}>
-      <TouchableWithoutFeedback
-        disabled={disabled}
-        onPress={() => handleOptionPress(OPTION.FIRST)}>
-        <View
-          style={[
-            styles.option,
-            styles.FirstContainer,
-            selectedOption === OPTION.FIRST ? styles.activeFirstContainer : {},
-          ]}>
-          <Text
+      <View style={styles.container}>
+        <TouchableWithoutFeedback
+          disabled={disabled}
+          onPress={() => handleOptionPress(OPTION.FIRST)}>
+          <View
             style={[
-              selectedOption === OPTION.FIRST
-                ? styles.firstOption
-                : styles.optionText,
-              styles.firstOption,
+              styles.option,
+              styles.FirstContainer,
+              selectedOption === OPTION.FIRST ? styles.activeFirstContainer : {},
             ]}>
-            {firstOption}
-          </Text>
-        </View>
-      </TouchableWithoutFeedback>
-      <TouchableWithoutFeedback
-        disabled={disabled}
-        onPress={() => handleOptionPress(OPTION.SECOND)}>
-        <View
-          style={[
-            styles.option,
-            styles.SecondContainer,
-            selectedOption === OPTION.SECOND
-              ? styles.activeSecondContainer
-              : {},
-          ]}>
-          <Text
+            <Text
+              style={[
+                selectedOption === OPTION.FIRST
+                  ? styles.firstOption
+                  : styles.optionText,
+                styles.firstOption,
+              ]}>
+              {"Upcoming sessions"}
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback
+          disabled={disabled}
+          onPress={() => handleOptionPress(OPTION.SECOND)}>
+          <View
             style={[
+              styles.option,
+              styles.SecondContainer,
               selectedOption === OPTION.SECOND
-                ? styles.secondOption
-                : styles.optionText,
-              styles.secondOption,
+                ? styles.activeSecondContainer
+                : {},
             ]}>
-            {secondOption}
-          </Text>
-        </View>
-      </TouchableWithoutFeedback>
-    </View>
-    <View>
-    {/* <SafeAreaView style={styles.containerView}>  */}
-           <ScrollView contentContainerStyle={styles.contentContainer}>
-           <FlatList
-           data={selectedOption === OPTION.FIRST
-            ? dataCurrent
-            : dataPast}
-           renderItem = {({item}) => {
-            return(
-              <TouchableOpacity onPress={()=>navigation.navigate(RouteNames.HomePageFlow.AllCourseDetail, {
-                courseDetail: item,
-              })}>
-                {selectedOption === OPTION.FIRST ?
-              <CourseCardView course={item} />
-              : <CourseCardView course={item} />
-            }
-            </TouchableOpacity>
-            )
-          }
-          }/>  
-          </ScrollView>
-      {/* </SafeAreaView> */}
-    </View>
-    </View>
-    </BackgroundImageDup>
-       
+            <Text
+              style={[
+                selectedOption === OPTION.SECOND
+                  ? styles.secondOption
+                  : styles.optionText,
+                styles.secondOption,
+              ]}>
+              {"Completed sessions"}
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
+      <View style={{padding:10}}>
+        <ScrollView contentContainerStyle={styles.contentContainer}>
+            <FlatList
+            data={selectedOption === OPTION.FIRST
+              ? dataCurrent
+              : dataPast}
+            renderItem = {({item}) => {
+              return(
+                <TouchableOpacity onPress={()=>navigation.navigate(RouteNames.HomePageFlow.AllCourseDetail, {
+                  courseDetail: item,
+                })}>
+                  {selectedOption === OPTION.FIRST ?
+                <CourseCardView course={item} />
+                : <UpcomingCourseCardView course={item} />
+                  }
+                </TouchableOpacity>
+              )
+            
+            }}
+            />  
+        </ScrollView>
+      </View>
+      </View>
+      </BackgroundImageDup>
     </View>
   );
 };

@@ -29,8 +29,8 @@ function getTabStyle(route){
           return 'none';
         case allCourseDetail:
           return 'none';
-        case myCourseDetail:
-          return 'none';
+        // case myCourseDetail:
+        //   return 'none';
         default:
           return 'flex';
       }
@@ -68,7 +68,7 @@ const HomePageStack = () => {
         })}
       />
 
-      <Tab.Screen
+      {/* <Tab.Screen
         name={RouteNames.HomePageFlow.MyCourse}
         component={MyCoursesStack}
         options={({route}) => ({
@@ -78,7 +78,7 @@ const HomePageStack = () => {
           ),
           tabBarStyle: { display: getTabStyle(route) },
         })}
-      />
+      /> */}
       <Tab.Screen
         name={RouteNames.HomePageFlow.AllCourses}
         component={AllCoursesStack}

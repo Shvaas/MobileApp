@@ -26,8 +26,12 @@ const OnboardingStack = () => {
         name={RouteNames.OnboardingFlow.Welcome}
         component={Welcome}
       />
-      <Stack.Screen name={RouteNames.OnboardingFlow.Login} component={Login} />
-      <Stack.Screen name="Home" component={HomeNav} />
+      <Stack.Screen
+      name={RouteNames.OnboardingFlow.Login}
+      component={Login} />
+      <Stack.Screen
+      name="Home"
+      component={HomeNav} />
       <Stack.Screen
         name={RouteNames.HomePageFlow.YogiProfile}
         component={Yogi}

@@ -14,7 +14,7 @@ const RouteNames = {
     Feed: 'Feed',
     MyCourse: 'My Courses',
     MyCourseDetail: "Course Detail",
-    AllCourses: "All Courses",
+    AllCourses: "Sessions",
     AllCourseDetail: "Course Detail",
     CalendarPage: "Calendar Page",
   },

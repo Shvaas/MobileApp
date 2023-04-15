@@ -33,9 +33,12 @@ const DATA = [
     maxCap: 20,
     numOfSessions: 4,
     instructor: shikha,
+    name: "Shikha",
     instructorRating: 4.5,
     numOfStudentsEnrolled: 13,
     cost: "50$",
+    date: "10/5/23",
+    time: "5:00 am"
   },
   {
     key: 2,
@@ -45,9 +48,12 @@ const DATA = [
     maxCap: 50,
     numOfSessions: 10,
     instructor: aryan,
+    name: "Aryan",
     instructorRating: 4,
     numOfStudentsEnrolled: 45,
     cost: "30$",
+    date: "10/5/23",
+    time: "5:00 am"
   },
   {
     key: 3,
@@ -57,9 +63,12 @@ const DATA = [
     maxCap: 20,
     numOfSessions: 4,
     instructor: nabeel,
+    name: "Nabeel",
     instructorRating: 4.5,
     numOfStudentsEnrolled: 13,
     cost: "70$",
+    date: "10/5/23",
+    time: "5:00 am"
   },
   {
     key: 4,
@@ -69,9 +78,12 @@ const DATA = [
     maxCap: 20,
     numOfSessions: 4,
     instructor: utkarsh,
+    name: "Utkarsh",
     instructorRating: 4.5,
     numOfStudentsEnrolled: 13,
     cost: "40$",
+    date: "10/5/23",
+    time: "5:00 am"
   },
   {
     key: 5,
@@ -81,9 +93,12 @@ const DATA = [
     maxCap: 20,
     numOfSessions: 4,
     instructor: aryan,
+    name: "Aryan",
     instructorRating: 4.5,
     numOfStudentsEnrolled: 13,
     cost: "90$",
+    date: "10/5/23",
+    time: "5:00 am"
   },
   {
     key: 6,
@@ -93,9 +108,12 @@ const DATA = [
     maxCap: 20,
     numOfSessions: 4,
     instructor: utkarsh,
+    name: "Utkarsh",
     instructorRating: 4.5,
     numOfStudentsEnrolled: 13,
     cost: "150$",
+    date: "10/5/23",
+    time: "5:00 am"
   },
   {
     key: 7,
@@ -105,9 +123,12 @@ const DATA = [
     maxCap: 10,
     numOfSessions: 5,
     instructor: nabeel,
+    name: "Nabeel",
     instructorRating: 3.5,
     numOfStudentsEnrolled: 10,
     cost: "250$",
+    date: "10/5/23",
+    time: "5:00 am"
   },
 ];
 
@@ -120,9 +141,12 @@ const DATA1 = [
     maxCap: 20,
     numOfSessions: 4,
     instructor: aryan,
+    name: "Aryan",
     instructorRating: 4.5,
     numOfStudentsEnrolled: 13,
     cost: "50$",
+    date: "10/5/23",
+    time: "5:00 am"
   },
   {
     key: 2,
@@ -132,9 +156,12 @@ const DATA1 = [
     maxCap: 50,
     numOfSessions: 10,
     instructor: utkarsh,
+    name: "Utkarsh",
     instructorRating: 4,
     numOfStudentsEnrolled: 45,
     cost: "30$",
+    date: "10/5/23",
+    time: "5:00 am"
   },
   {
     key: 3,
@@ -144,9 +171,12 @@ const DATA1 = [
     maxCap: 20,
     numOfSessions: 4,
     instructor: shikha,
+    name: "Shikha",
     instructorRating: 4.5,
     numOfStudentsEnrolled: 13,
     cost: "70$",
+    date: "10/5/23",
+    time: "5:00 am"
   },
   {
     key: 4,
@@ -156,9 +186,12 @@ const DATA1 = [
     maxCap: 20,
     numOfSessions: 4,
     instructor: nabeel,
+    name: "Nabeel",
     instructorRating: 4.5,
     numOfStudentsEnrolled: 13,
     cost: "40$",
+    date: "10/5/23",
+    time: "5:00 am"
   },
   {
     key: 5,
@@ -168,9 +201,12 @@ const DATA1 = [
     maxCap: 20,
     numOfSessions: 4,
     instructor: aryan,
+    name: "Aryan",
     instructorRating: 4.5,
     numOfStudentsEnrolled: 13,
     cost: "90$",
+    date: "10/5/23",
+    time: "5:00 am"
   },
   {
     key: 6,
@@ -180,9 +216,12 @@ const DATA1 = [
     maxCap: 20,
     numOfSessions: 4,
     instructor: utkarsh,
+    name: "Utkarsh",
     instructorRating: 4.5,
     numOfStudentsEnrolled: 13,
     cost: "150$",
+    date: "10/5/23",
+    time: "5:00 am"
   },
   {
     key: 7,
@@ -192,9 +231,12 @@ const DATA1 = [
     maxCap: 10,
     numOfSessions: 5,
     instructor: nabeel,
+    name: "Nabeel",
     instructorRating: 3.5,
     numOfStudentsEnrolled: 10,
     cost: "250$",
+    date: "10/5/23",
+    time: "5:00 am"
   },
 ];
 

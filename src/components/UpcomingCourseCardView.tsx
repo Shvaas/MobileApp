@@ -8,12 +8,14 @@ import {
 
   // local
   import {themeFontFamily, themefonts, themeColor} from '../constants/theme';
+import { Button } from 'react-native-elements/dist/buttons/Button';
+import SecondaryButton from '../common/buttons/SecondaryButton'
   
   interface PropsType {
     course : object
   }
   
-  const CourseCardView: React.FC<PropsType> = ({course}) => {
+  const UpcomingCourseCardView: React.FC<PropsType> = ({course}) => {
     return (
         <View style={styles.container}>
             {/* <View style={styles.textContainerStyle}>
@@ -34,29 +36,44 @@ import {
               </View>
             </View> */}
             <View style={styles.internalContainer}>
-              <View style={{flexDirection:'row'}}> 
+              <View style={{flexDirection:'row',width:'100%',justifyContent:'space-evenly'}}> 
                 <Image source={course.instructor} style={styles.imageStyle}></Image>
-                <Text style={styles.textStyleName}>{"Yoga with "}{course.name}</Text>
+                <View style={{flexDirection:'column',alignSelf:'center'}}>
+                  <Text style={styles.textStyleName}>{"Yoga with "}{course.name}</Text>
+                  <Text style={styles.textStyleName}>{course.description}</Text>
+                  <Text style={styles.textStyleTime}>{course.date}{", "}{course.time}</Text>
+                </View>
               </View>
-                <Text style={styles.textStyleTime}>{course.date}{", "}{course.time}</Text>
+                {/* <Text style={styles.textStyleTime}>{course.date}{", "}{course.time}</Text> */}
+            </View>
+            <View style={styles.internalContainer2}>
+            <SecondaryButton
+            title={'Start'}
+            buttonStyle={styles.buttonStyle}
+            containerStyle={styles.btnContainerStyle}
+            onPress={()=>{}}
+          />
+           <SecondaryButton
+            title={'Cancel'}
+            buttonStyle={styles.buttonStyle}
+            containerStyle={styles.btnContainerStyle}
+            onPress={()=>{}}
+          />
+            {/* <Button title="Start" style={{backgroundColor:themeColor.googleRed,height:35,width:80}} onPress={()=>{}}>
+          </Button>
+          <Button title="Cancel" style={{backgroundColor:themeColor.googleRed,height:35,width:80}} onPress={()=>{}}>
+          </Button> */}
             </View>
         </View>
       );
   };
 
-  export default CourseCardView;
+  export default UpcomingCourseCardView;
 
   const styles = StyleSheet.create({
     container: {
-    //   justifyContent: 'flex-end',
-    //   padding: 0,
-    //   position: 'absolute',
-    //   top: 0,
-    //   left: 0,
-    //   bottom: 0,
-    //   right: 0,
       margin: "2.5%",
-      height: 100,
+      height: 170,
       width: "95%",
       shadowColor:"black",
       shadowOpacity: 0.25,
@@ -68,14 +85,20 @@ import {
       backgroundColor: 'white',
       opacity: 0.78,
       borderRadius:10,
-      flexDirection:"row",
-      justifyContent:'space-between'
+      flexDirection:"column",
+      justifyContent:'space-around'
       
     },
     internalContainer: {
       width:'100%',
         flexDirection: 'row',
         justifyContent:'space-between'
+    },
+    internalContainer2: {
+      width:'100%',
+        flexDirection: 'row',
+        justifyContent:'space-around',
+        alignSelf:'center'
     },
     imageStyle: {
         borderRadius: 50,
@@ -129,15 +152,21 @@ import {
       lineHeight: 15,
       fontSize: themefonts.font14,
       margin: 2,
-      alignSelf:'center',
+      // alignSelf:'center',
     },
     textStyleTime: {
       fontFamily: themeFontFamily.raleway,
       lineHeight: 15,
       fontSize: themefonts.font14,
       // margin: 2,
-      
+      alignSelf:'flex-end'
       // right:0,
-      alignSelf:'flex-end',
+      // alignSelf:'center',
+    },
+    buttonStyle: {
+      width: 167,
+    },
+    btnContainerStyle: {
+      alignSelf: 'center',
     },
   });
