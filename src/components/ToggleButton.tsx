@@ -52,12 +52,14 @@ const styles = StyleSheet.create({
   FirstContainer: {
     // backgroundColor: themeColor.white,
     width: "50%",
+    height: 30,
     padding: 2,
   },
   SecondContainer: {
     // backgroundColor: themeColor.flyfinGreen,
     // backgroundColor: themeColor.googleRed,
     width: "50%",
+    height: 30,
     padding: 2,
   },
   activeFirstContainer: {
@@ -73,6 +75,8 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     paddingHorizontal: 13,
     paddingVertical: 3,
+    alignSelf:'center',
+    textAlignVertical:'center'
   },
   optionText: {
     textAlign: 'center',

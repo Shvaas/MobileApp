@@ -31,9 +31,7 @@ const TimeList: React.FC<PropsType> = ({timings,selectedTime, setSelectedTime}) 
         }}
         /> */}
          <Picker
-        selectedValue={selectedTime}
         style = {{width: 150}}
-        // style={{ height: 10, width: 150 }}
         onValueChange={(itemValue, itemIndex) => setSelectedTime(itemIndex)}
       >
         {/* <Picker.Item label="Java" value="java" />

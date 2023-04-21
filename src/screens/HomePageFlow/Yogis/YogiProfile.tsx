@@ -13,6 +13,8 @@ import {
   themeColor,
 } from '../../../constants/theme';
 import PrimaryButton from '../../../common/buttons/PrimaryButton';
+import {Rating} from 'react-native-elements';
+import SecondaryButton from '../../../common/buttons/SecondaryButton';
 
 interface PropsType {
   navigation: any;
@@ -40,11 +42,20 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
     <SafeAreaView style={styles.container}>
       <BackgroundImage>
         <Image source={image} style={styles.imageStyle} />
+        <View style={{flexDirection:'row',justifyContent:'space-around'}}>
         <PrimaryButton
-          title="Book an appointment"
+          title="Book appointment"
           onPress={() => {navigation.navigate(RouteNames.HomePageFlow.CalendarPage,yogiProfile)}}
-            containerStyle={styles.secondaryButton}
+            containerStyle={styles.primaryButton}
         />
+        <SecondaryButton
+          title="Cancel"
+          onPress={() => {
+            navigation.goBack();
+          }}
+          containerStyle={styles.primaryButton}
+        />
+        </View>
         <View style={styles.textContainerStyle}>
           <View style={styles.headingContainer}>
             <Text style={styles.textStyleBold}>{name}</Text>
@@ -61,14 +72,23 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
               />
             </View>
           </View>
-          <Text style={styles.textStyle}>Rating: {rating} years</Text>
+          <Rating
+           type='custom'
+            readonly
+            // type="custom"
+            // ratingColor={themeColor.vividRed}
+            // tintColor={themeColor.white}
+            imageSize={18}
+            startingValue={rating}
+            style={styles.ratings}
+          />
           <Text style={styles.textStyle}>Experience: {yearsOfExp} years</Text>
           <Text style={styles.textStyle}>{certificates}</Text>
           <Text style={styles.textStyle}>
             Students trained: {studentsTrained}
           </Text>
         </View>
-        <View style={styles.descriptionContainerStyle}>
+        <View style={styles.textContainerStyle}>
           <Text style={styles.textStyle}>{description}</Text>
         </View>
         <Carousel
@@ -78,13 +98,6 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
           style={styles.carouselContainer}
           width={wp(88)}
           height={220}
-        />
-        <PrimaryButton
-          title="Go Back"
-          onPress={() => {
-            navigation.goBack();
-          }}
-          containerStyle={styles.primaryButton}
         />
       </BackgroundImage>
     </SafeAreaView>
@@ -99,6 +112,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: themeColor.background,
   },
+  textContainerStyle: {
+    margin: '2.5%',
+    shadowColor: 'black',
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    shadowOffset: {
+      width: -4,
+      height: 4,
+    },
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 10,
+  },
   buttonStyle: {
     width: 167,
   },
@@ -112,18 +138,18 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   secondaryButton: {marginVertical: 20, alignSelf: 'center'},
-  primaryButton: {marginHorizontal: 16},
-  textContainerStyle: {
-    marginBottom: 20,
-    alignSelf: 'center',
-    marginHorizontal: 26,
-    padding: 15,
-    // borderColor: themeColor.vividRed,
-    // borderWidth: 1,
-    borderRadius: 12,
-    width: '70%',
-    backgroundColor: themeColor.background,
-  },
+  primaryButton: {marginHorizontal: 16,width: 150,alignSelf:'center',marginVertical: 20},
+  // textContainerStyle: {
+  //   marginBottom: 20,
+  //   alignSelf: 'center',
+  //   marginHorizontal: 26,
+  //   padding: 15,
+  //   // borderColor: themeColor.vividRed,
+  //   // borderWidth: 1,
+  //   borderRadius: 12,
+  //   width: '70%',
+  //   backgroundColor: themeColor.background,
+  // },
   descriptionContainerStyle: {
     marginBottom: 20,
     alignSelf: 'center',
@@ -193,5 +219,11 @@ const styles = StyleSheet.create({
     fontFamily: themeFontFamily.raleway,
     fontSize: themefonts.font14,
     marginLeft: 10,
+  },
+    ratings: {
+    alignSelf: 'flex-start',
+    marginBottom: 4,
+    backgroundColor: 'transparent'
+
   },
 });

@@ -78,10 +78,13 @@ import {
         justifyContent:'space-between'
     },
     imageStyle: {
+        borderColor: themeColor.vividRed,
+        borderWidth: 2,
         borderRadius: 50,
         height: 70,
         width: 70,
-        margin: 10
+        margin: 10,
+        resizeMode: 'contain',
     },
     textStyle: {
       fontFamily: themeFontFamily.raleway,
@@ -135,6 +138,7 @@ import {
       fontFamily: themeFontFamily.raleway,
       lineHeight: 15,
       fontSize: themefonts.font14,
+      padding: 10,
       // margin: 2,
       
       // right:0,

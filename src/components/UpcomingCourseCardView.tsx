@@ -10,6 +10,7 @@ import {
   import {themeFontFamily, themefonts, themeColor} from '../constants/theme';
 import { Button } from 'react-native-elements/dist/buttons/Button';
 import SecondaryButton from '../common/buttons/SecondaryButton'
+import PrimaryButton from '../common/buttons/PrimaryButton';
   
   interface PropsType {
     course : object
@@ -47,13 +48,13 @@ import SecondaryButton from '../common/buttons/SecondaryButton'
                 {/* <Text style={styles.textStyleTime}>{course.date}{", "}{course.time}</Text> */}
             </View>
             <View style={styles.internalContainer2}>
-            <SecondaryButton
+            <PrimaryButton
             title={'Start'}
             buttonStyle={styles.buttonStyle}
             containerStyle={styles.btnContainerStyle}
             onPress={()=>{}}
           />
-           <SecondaryButton
+           <PrimaryButton
             title={'Cancel'}
             buttonStyle={styles.buttonStyle}
             containerStyle={styles.btnContainerStyle}
@@ -101,10 +102,13 @@ import SecondaryButton from '../common/buttons/SecondaryButton'
         alignSelf:'center'
     },
     imageStyle: {
+        borderColor: themeColor.vividRed,
+        borderWidth: 2,
         borderRadius: 50,
         height: 70,
         width: 70,
-        margin: 10
+        margin: 10,
+        resizeMode: 'contain',
     },
     textStyle: {
       fontFamily: themeFontFamily.raleway,

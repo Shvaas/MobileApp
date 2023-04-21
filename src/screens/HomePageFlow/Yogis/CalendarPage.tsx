@@ -7,6 +7,8 @@ import { Button } from 'react-native-elements';
 
 import CalendarModal from "../../../components/CalendarModal";
 import TimingList from "../../../components/TimingList";
+import PrimaryButton from "../../../common/buttons/PrimaryButton";
+import SecondaryButton from '../../../common/buttons/SecondaryButton';
 
 interface PropsType {
     route: any;
@@ -39,7 +41,7 @@ const CalendarPage: React.FC<PropsType> = ({route,navigation}) => {
     //     showsVerticalScrollIndicator={false}
     //     automaticallyAdjustContentInsets={false}
     //   >
-    <View style={{ flex:1, backgroundColor:'white', height:"100%"}}>
+    <View style={{backgroundColor:'white', height:"100%"}}>
         <CalendarModal
           onDateChange={setSelectedDate}
           // appointmentDates = {appointmentDates}
@@ -60,7 +62,8 @@ const CalendarPage: React.FC<PropsType> = ({route,navigation}) => {
         //   timingsReducer={timingsReducer}
         />
 
-        <Button title="Book Appointment" onPress={()=>{
+        <SecondaryButton title="Book Appointment" buttonStyle={styles.buttonStyle}
+            containerStyle={styles.btnContainerStyle} onPress={()=>{
              Alert.alert('Confirm the appointment', selectedDate.toString()+appointmentTimes[selectedTime], [
                 {
                   text: 'Cancel',
@@ -82,10 +85,11 @@ const CalendarPage: React.FC<PropsType> = ({route,navigation}) => {
                 },
               ]);
         }}>
-          </Button>
+          </SecondaryButton>
 
-        <Button title="Go Back" onPress={()=>{navigation.goBack()}}>
-          </Button>
+        <SecondaryButton title="Cancel" buttonStyle={styles.buttonStyle}
+            containerStyle={styles.btnContainerStyle} onPress={()=>{navigation.goBack()}}>
+          </SecondaryButton>
 
         {/* {
           employees &&
@@ -124,5 +128,12 @@ const CalendarPage: React.FC<PropsType> = ({route,navigation}) => {
 export default CalendarPage;
 
 const styles = StyleSheet.create({
+  buttonStyle: {
+    width: 167,
+  },
+  btnContainerStyle: {
+    alignSelf: 'center',
+    marginTop: 10
+  },
 
 });

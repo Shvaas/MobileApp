@@ -31,6 +31,7 @@ export default CalendarModal;
 
 const styles = StyleSheet.create({
   calendar: {
+    paddingTop: 20,
     margin:40,
     elevation:15,
     borderRadius:10,
