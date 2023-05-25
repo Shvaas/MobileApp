@@ -1,64 +1,67 @@
-import {
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    View,
-  } from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 
 import BackgroundImage from '../../../common/BackgroundImage';
-import {themeFontFamily, themefonts,themeColor} from '../../../constants/theme';
-import { Button } from 'react-native-elements';
+import {
+  themeFontFamily,
+  themefonts,
+  themeColor,
+} from '../../../constants/theme';
+import {Button} from 'react-native-elements';
 
 interface PropsType {
-    navigation: any,
-    route: any;
+  navigation: any;
+  route: any;
 }
 
 const MyCourseDetail: React.FC<PropsType> = ({route, navigation}) => {
-    const { courseDetail } = route.params;
+  const {courseDetail} = route.params;
 
-    console.log(courseDetail);
-    
-    return (
-        <SafeAreaView style={styles.container}>
-          <View style={styles.topContainer}>
-          <BackgroundImage>
-          <Button title="Go Back" onPress={()=>{navigation.goBack()}} style={styles.buttonStyle}>
-          </Button>
+  console.log(courseDetail);
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.topContainer}>
+        <BackgroundImage>
+          <Button
+            title="Go Back"
+            onPress={() => {
+              navigation.goBack();
+            }}
+            style={styles.buttonStyle}
+          />
           <Text>{courseDetail.description}</Text>
-          </BackgroundImage>
-          </View>
-        </SafeAreaView>
-      );
-    };
-    
+        </BackgroundImage>
+      </View>
+    </SafeAreaView>
+  );
+};
+
 export default MyCourseDetail;
-    
+
 const styles = StyleSheet.create({
-    container: {
+  container: {
     flex: 1,
     justifyContent: 'center',
     backgroundColor: themeColor.background,
-    },
-    heading: {
+  },
+  heading: {
     fontSize: themefonts.font32,
     textAlign: 'center',
     fontFamily: themeFontFamily.raleway,
     color: themeColor.white,
-    },
-    topContainer: {
+  },
+  topContainer: {
     flex: 1,
     justifyContent: 'center',
-    },
-    bottomContainer: {
+  },
+  bottomContainer: {
     flex: 1,
-    },
-    buttonStyle: {
+  },
+  buttonStyle: {
     width: 167,
-    
-    },
-    btnContainerStyle: {
+  },
+  btnContainerStyle: {
     alignSelf: 'center',
-    },
+  },
 });

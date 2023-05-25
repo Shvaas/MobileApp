@@ -19,6 +19,7 @@ import {themeFontFamily, themefonts,themeColor} from '../../../constants/theme';
 import ProfilePicture from '../../../components/ProfilePicture';
 import Post from '../../../components/Post';
 import {aryan,nabeel,shikha,utkarsh} from '../../../images/imageLinks';
+import RouteNames from '../../../constants/routeName';
 
 // import { DataStore } from 'aws-amplify';
 // import { SQLiteAdapter } from '@aws-amplify/datastore-storage-adapter/SQLiteAdapter';
@@ -202,8 +203,8 @@ const reinisiallizepost = () => {
     return (
         <SafeAreaView style={styles.container}>
           <View style={styles.topContainer}>
-          <Button title="Create Post" 
-                onPress={reinisiallizepost} color="green" />
+          <Button title="Create Post"
+                onPress={() => navigation.navigate(RouteNames.HomePageFlow.CreatePost)} color="green" />
           <FlatList
             data={post}
             renderItem={({item, index}) => <Post post={item} play={index===visibleItemIndex}/>}

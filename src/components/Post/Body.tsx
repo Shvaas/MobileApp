@@ -1,5 +1,11 @@
 import React from 'react';
-import { Image, ImageSourcePropType, StyleSheet, Dimensions, Text, View } from 'react-native';
+import {
+  Image,
+  ImageSourcePropType,
+  StyleSheet,
+  Dimensions,
+  Text,
+} from 'react-native';
 import {themeFontFamily, themefonts,themeColor} from '../../constants/theme';
 
 import Video from 'react-native-video';
@@ -39,15 +45,14 @@ const Body: React.FC<PropsType> = ({imageUri, play, bodytype, caption}) => {
 export default Body;
 
 const styles = StyleSheet.create({
-    image: {
-      width: Dimensions.get('window').width,
-      height: Dimensions.get('window').width,
-    }, 
-    text:{
-      width: Dimensions.get('window').width,
-      margin:10, 
-      fontFamily: themeFontFamily.raleway,
-      fontSize: themefonts.font24
-    }
-  })
-  
+  image: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').width,
+  },
+  text: {
+    width: Dimensions.get('window').width,
+    margin: 10,
+    fontFamily: themeFontFamily.raleway,
+    fontSize: themefonts.font24,
+  },
+});

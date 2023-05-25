@@ -6,12 +6,13 @@ export const APP_FLOWS = {
 const RouteNames = {
   [APP_FLOWS.OnboardingFlow]: {
     Welcome: 'Welcome',
-    Login: 'Login'
+    Login: 'Login',
   },
   [APP_FLOWS.HomePageFlow]: {
     AllYogis: 'Yogis',
     YogiProfile: 'Yogi Profile',
     Feed: 'Feed',
+    CreatePost: 'Create Post',
     MyCourse: 'My Courses',
     MyCourseDetail: "Course Detail",
     AllCourses: "All Courses",

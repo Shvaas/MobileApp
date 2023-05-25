@@ -405,6 +405,15 @@ PODS:
     - React-Core
   - RNGestureHandler (2.9.0):
     - React-Core
+  - RNImageCropPicker (0.39.0):
+    - React-Core
+    - React-RCTImage
+    - RNImageCropPicker/QBImagePickerController (= 0.39.0)
+    - TOCropViewController
+  - RNImageCropPicker/QBImagePickerController (0.39.0):
+    - React-Core
+    - React-RCTImage
+    - TOCropViewController
   - RNInAppBrowser (3.7.0):
     - React-Core
   - RNReanimated (3.0.2):
@@ -440,6 +449,7 @@ PODS:
   - RNVectorIcons (9.2.0):
     - React-Core
   - SocketRocket (0.6.0)
+  - TOCropViewController (2.6.1)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -511,6 +521,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNInAppBrowser (from `../node_modules/react-native-inappbrowser-reborn`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -536,6 +547,7 @@ SPEC REPOS:
     - libevent
     - OpenSSL-Universal
     - SocketRocket
+    - TOCropViewController
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -623,6 +635,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-fs"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNImageCropPicker:
+    :path: "../node_modules/react-native-image-crop-picker"
   RNInAppBrowser:
     :path: "../node_modules/react-native-inappbrowser-reborn"
   RNReanimated:
@@ -693,11 +707,13 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
+  RNImageCropPicker: 14fe1c29298fb4018f3186f455c475ab107da332
   RNInAppBrowser: e36d6935517101ccba0e875bac8ad7b0cb655364
   RNReanimated: 87782e7e1fd44b404cf3cc1bbab266bb9b84a35d
   RNScreens: ee31ecdf23fe81e93c74feaa086cf173d758ab58
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
+  TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   Yoga: ff994563b2fd98c982ca58e8cd9db2cdaf4dda74
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
