@@ -131,7 +131,11 @@ const MyCourses: React.FC<PropsType> = ({navigation}) => {
           data={DATA}
           renderItem = {({item}) => {
             return(
-              <TouchableOpacity onPress={()=>navigation.navigate(RouteNames.HomePageFlow.MyCourseDetail, {
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate(
+                      RouteNames.HomePageFlow.MyCourseDetail,
+                      {
                 courseDetail: item,
               })}>
             <ActiveCourseCardView course={item} />

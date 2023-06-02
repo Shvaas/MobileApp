@@ -14,7 +14,7 @@ import {
   themeColor,
 } from '../../../constants/theme';
 import ProfileCardView from './components/ProfileCardView';
-import {aryan, nabeel, shikha, utkarsh} from '../../../images/imageLinks';
+import {aryan, nabeel, shikha, utkarsh, yoga_instructor1, yoga_instructor2, yoga_instructor3} from '../../../images/imageLinks';
 import RouteNames from '../../../constants/routeName';
 
 interface PropsType {
@@ -24,15 +24,15 @@ interface PropsType {
 const DATA = [
   {
     key: 1,
-    name: 'Shikha Asrani',
-    image: shikha,
+    name: 'Anna',
+    image: yoga_instructor1,
     yearsOfExp: 2,
     rating: 4.5,
-    certificates: 'Masters in Yoga',
-    studentsTrained: 98,
+    certificates: 'Masters in Yoga, RYT-500',
+    studentsTrained: 450,
     description: 'Yoga lorem ipsium the random text',
     ActiveCourses: 2,
-    interest: ['lorem', 'ipsum', 'abc', 'ramdev'],
+    interest: ['meditation', 'Yoga', 'hatha Yoga'],
     reviews: [
       {
         image: utkarsh,
@@ -56,15 +56,15 @@ const DATA = [
   },
   {
     key: 2,
-    name: 'Utkarsh Nath',
-    image: utkarsh,
+    name: 'Emma',
+    image: yoga_instructor2,
     yearsOfExp: 4,
-    rating: 4,
-    certificates: 'xyz, 123',
-    studentsTrained: 106,
+    rating: 4.9,
+    certificates: 'RYT-200, RYT-500',
+    studentsTrained: 700,
     description: 'Meditation',
     ActiveCourses: 3,
-    interest: ['yoga', 'meditation', 'test', 'lorem', 'ipsum', 'abc', 'ramdev'],
+    interest: ['yoga', 'meditation', 'Yin Yoga', 'Anxiety'],
     reviews: [
       {
         image: shikha,
@@ -82,15 +82,15 @@ const DATA = [
   },
   {
     key: 3,
-    name: 'Aryan Mittal',
-    image: aryan,
+    name: 'Olivia',
+    image: yoga_instructor3,
     yearsOfExp: 1,
     rating: 3.5,
-    certificates: 'xyz, 123',
+    certificates: 'RYT-200',
     studentsTrained: 106,
     description: 'Yoga',
     ActiveCourses: 3,
-    interest: ['yoga', 'meditation'],
+    interest: ['yoga', 'Children\'s Yoga', 'Pranayama'],
     reviews: [
       {
         image: utkarsh,

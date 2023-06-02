@@ -10,7 +10,7 @@ const LoginButton: FC<ButtonProps> = (props): ReactElement => {
   return (
     <TouchableOpacity style={styles.container} onPress={props.onPress}>
         <Image source={props.icon} style={styles.buttonstyle}/>
-        <Text style={props.titleStyle}> Sign in with Facebook </Text>
+        <Text style={props.titleStyle}> {props.title} </Text>
     </TouchableOpacity>
   );
 };

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
     SafeAreaView,
     StyleSheet,
@@ -5,130 +6,156 @@ import {
     View,
     FlatList,
     ScrollView,
+    Button,
+    ActivityIndicator,
   } from 'react-native';
-import React, {  useRef, Component } from 'react';
-import axios from "axios";
-import { useState, useCallback } from "react";
+import React from 'react';
 
-import BackgroundImage from '../../../common/BackgroundImage';
+import { useState, useCallback, useMemo, useRef } from "react";
 import {themeFontFamily, themefonts,themeColor} from '../../../constants/theme';
 
-import ProfilePicture from '../../../components/ProfilePicture';
 import Post from '../../../components/Post';
-import {aryan,nabeel,shikha,utkarsh} from '../../../images/imageLinks';
+import RouteNames from '../../../constants/routeName';
 
-import { DataStore } from 'aws-amplify';
-import { SQLiteAdapter } from '@aws-amplify/datastore-storage-adapter/SQLiteAdapter';
-import { Post as Postdb } from '../../../models'
+// import BottomSheet from '@gorhom/bottom-sheet';
+// import {GestureHandlerRootView} from 'react-native-gesture-handler'
+
+// import { DataStore } from 'aws-amplify';
+// import { SQLiteAdapter } from '@aws-amplify/datastore-storage-adapter/SQLiteAdapter';
+// import { Post as Postdb } from '../../../models'
+
+import {useDispatch, useSelector} from 'react-redux';
+
+
+
+import { Amplify, Auth, Storage } from 'aws-amplify';
+
+Amplify.configure({
+  Auth: {
+    identityPoolId: 'us-west-2:47feb859-001b-45f3-bfac-5d5bd6f48313', //REQUIRED - Amazon Cognito Identity Pool ID
+    region: 'us-west-2', // REQUIRED - Amazon Cognito Region
+    userPoolId: 'us-west-2_HVpUfyqbJ', //OPTIONAL - Amazon Cognito User Pool ID
+    userPoolWebClientId: '4qvrcs0tkf7grletcl0bdfrpr', //OPTIONAL - Amazon Cognito Web Client ID
+  },
+  Storage: {
+    AWSS3: {
+      bucket: 'shvaas-user-feed', //REQUIRED -  Amazon S3 bucket name
+      region: 'us-west-2', //OPTIONAL -  Amazon service region
+    }
+  }
+});
+
+// import awsconfig from '../../../aws-exports';
+// Amplify.configure(awsconfig);
+
+import {useGetPostsQuery} from '../../../store/apiSlice';
 
 var RNFS = require('react-native-fs');
 
-// import VideoPlayer from 'react-native-video-player';
-import Video from 'react-native-video';
+import { postSlice } from '../../../store/postSlice';
 
-import myvideo from '../../../images/Shvaas_presentation.mp4'
-
-DataStore.configure({
-  storageAdapter: SQLiteAdapter
-});
+// DataStore.configure({
+//   storageAdapter: SQLiteAdapter
+// });
 
 interface PropsType {
     navigation: any;
 }
 
-const post = [{
-      user : {
-        name : 'Utkarsh',
-        image : utkarsh
-      },
-      bodyType: 3,
-      videourl: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-      image: utkarsh,
-      likes: 20,
-      caption: 'random text',
 
-      createdAt: '20/03/21'
-},
-{
-  user : {
-    name : 'Shikha',
-    image : shikha
-  },
-  bodyType: 2,
-  videourl: "https://storage.googleapis.com/gtv-videos-bucket/sample/images/Sintel.jpg",
-  image: utkarsh,
-  likes: 20,
-  caption: 'random text',
-  createdAt: '20/03/21'
-},
-{
-  user : {
-    name : 'Aryan',
-    image : aryan
-  },
-  bodyType: 1,
-  videourl: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
-  image: aryan,
-  likes: 20,
-  caption: 'random text, random textrandom textrandom textrandom text random textrandom text random text random text',
-  createdAt: '20/03/21'
-},
-{
-  user : {
-    name : 'Nabeel',
-    image : aryan
-  },
-  bodyType: 3,
-  videourl: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
-  image: aryan,
-  likes: 20,
-  caption: 'random text',
-  createdAt: '20/03/21'
-}
-
-]
 
 const Feed: React.FC<PropsType> = ({navigation}) => {
 
+  Storage.configure({ 
+    bucket: 'shvaas-user-feed',
+    level: 'public',
+    region: 'us-west-2',
+    identityPoolId: 'us-west-2:47feb859-001b-45f3-bfac-5d5bd6f48313',
+ });
+
+  //"https://shvaas-user-feed.s3.us-west-2.amazonaws.com/test2.jpeg"
   
+
+  async function download(key: string){
+    // const result = await Storage.put("test.txt", "Hello");
+    console.log('try signedURL');
+    try {
+      const result = await Storage.get(key, { download: true });
+    } catch (error) {
+      console.log('download s3 error', error);
+    }
+    // result.Body.text().then((string) => {
+    //   console.log('signedURL', signedURL);
+    // });
+  }
+
+  // download('test2.jpeg');
   
-  const [allPosts, updatePost] = useState([])
+
+
+  const [visibleItemIndex, setVisibleItemIndex] = useState(0);
+
+  const trackItem = (item) =>
+    console.log("### track " + item.user.name);
+
+
+
+const ViewableItemsChanged = useCallback(
+  (info: { changed: ViewToken[] }): void => {
+    const visibleItems = info.changed.filter((entry) => entry.isViewable);
+    if (visibleItems && visibleItems.length !== 0) {
+      setVisibleItemIndex(visibleItems[0].index);
+      console.log("index", visibleItems[0].index);
+    }
+    // visibleItems.forEach((visible) => {
+    //   trackItem(visible.item);
+    // });
+  },
+  []
+);
+
+  // let post = useSelector((state) => state.posts.posts);
+
+  const {data,error,isLoading} = useGetPostsQuery();
+
+  const dispatch = useDispatch();
+
   console.log(1, RNFS.DocumentDirectoryPath);
   
   React.useEffect(() => {
-    // const posts = getAllPost()
     // downloadVideo("https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")
   }, []);
 
-  async function createPost() {
-    try {
-      await DataStore.save(
-        new Postdb({
-          username: "My First Post", 
-          caption: "Hi, how are you, khana khaakr jana han"
-        })
-      );
-      console.log("Post saved successfully!");
-    } catch (error) {
-      console.log("Error saving post", error);
-    }
-}
-async function getAllPost() {
-  try {
-    const posts = await DataStore.query(Postdb);
-    updatePost(posts)
-    console.log("Posts retrieved successfully!", JSON.stringify(posts, null, 2));
-    return posts
-  } catch (error) {
-    console.log("Error retrieving posts", error);
+  const post = useSelector((state) => state.posts.posts);
+
+  if (isLoading) {
+    return <ActivityIndicator />;
   }
-}
+
+  if (error) {
+    return <Text>{error.error}</Text>;
+  }
+
+  console.log(data?.data);
+
+  if (post.length === 0){
+    dispatch(postSlice.actions.initialPost(data.data.slice(0, -1)));
+  }
+
+  // let post = null;
+  // if (data){
+  //   post = data.data.slice(0, -1);
+  //   // console.log(post)
+  // }
+
+
+
 
 async function downloadVideo(videoUrl: string){
   let filename = videoUrl.substring(videoUrl.lastIndexOf("/") + 1, videoUrl.length);
   let path_name = RNFS.DocumentDirectoryPath + filename;
   console.log(path_name);
-  
+
   RNFS.exists(path_name).then(exists => {
     if (exists) {
       console.log("Already downloaded");
@@ -183,77 +210,35 @@ async function downloadVideo(videoUrl: string){
 
 
 
-  const getRequest = () => {
-    axios.get("https://6sm5d5xzu8.execute-api.us-west-2.amazonaws.com/stage/course")
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-};
-let viewabilityConfig = {
-  waitForInteraction: true,
-  // At least one of the viewAreaCoveragePercentThreshold or itemVisiblePercentThreshold is required.
-  viewAreaCoveragePercentThreshold: 95,
-  
-}
-
-// let onViewableItemsChanged = ({viewableItems, changed}) => {
-//   console.log("Visible items are", viewableItems);
-//   console.log("Changed in this iteration", changed);
-// }; 
-
-//  let _onViewableItemsChanged = props => {
-//   const changed = props.changed;
-//   changed.forEach(item => {
-//     console.log(111, item);
-//     // const cell = this.cellRefs[item.key];
-    
-//     // if(cell){
-      
-      
-//     //   if(item.isViewable){
-
-//     //   }else{
-
-//     //   }
-//     // }
-    
-//   });
+//   const getRequest = () => {
+//     axios.get('https://6sm5d5xzu8.execute-api.us-west-2.amazonaws.com/stage/feed/313cbfd3-4fc1-4763-9d18-caedd0be4a63')
+//         .then((response) => {
+//           console.log(response.data);
+//         })
+//         .catch((error) => {
+//             console.log(error);
+//         });
 // };
 
-// const viewabilityConfigCallbackPairs = useRef([{ viewabilityConfig, onViewableItemsChanged }])
-const [visibleItemIndex, setVisibleItemIndex] = useState(0);
+const reinisiallizepost = () => {
+  dispatch(postSlice.actions.initialPost(data.data.slice(0, -1)));
+};
 
-const trackItem = (item) =>
-    console.log("### track " + item.user.name);
 
-const ViewableItemsChanged = useCallback(
-  (info: { changed: ViewToken[] }): void => {
-    const visibleItems = info.changed.filter((entry) => entry.isViewable);
-    if (visibleItems && visibleItems.length !== 0) {
-      setVisibleItemIndex(visibleItems[0].index);
-      console.log("index", visibleItems[0].index);
-      
-    }
-    // visibleItems.forEach((visible) => {
-    //   trackItem(visible.item);
-    // });
-  },
-  []
-);
+
+
+
 
     return (
         <SafeAreaView style={styles.container}>
           <View style={styles.topContainer}>
-          {/* <Video  source={myvideo}/> */}
-         
+          
+          <Button title="Create Post"
+                onPress={() => navigation.navigate(RouteNames.HomePageFlow.CreatePost)} color="green" />
           <FlatList
             data={post}
-            
             renderItem={({item, index}) => <Post post={item} play={index===visibleItemIndex}/>}
-            keyExtractor={(item) => item.user.name }
+            keyExtractor={(item) => item.postId}
             onViewableItemsChanged= {ViewableItemsChanged}
             viewabilityConfig={{
               itemVisiblePercentThreshold: 90,
@@ -261,18 +246,11 @@ const ViewableItemsChanged = useCallback(
             }}
           />
 
-          {/* <Video source={{uri: "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"}} 
-          style={styles.video}
-          controls={true}  
-         /> */}
-          
-
-
-          {/* <Button title="Get Advice" 
-                onPress={getRequest} color="green" /> */}
-          
           </View>
+          
         </SafeAreaView>
+        
+        
       );
     };
     
@@ -308,3 +286,5 @@ const styles = StyleSheet.create({
       height:'50%'
     },
 });
+
+

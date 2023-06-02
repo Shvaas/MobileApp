@@ -1,10 +1,12 @@
+/* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableWithoutFeedback, StyleSheet } from 'react-native';
+import { View, Text, TouchableWithoutFeedback, StyleSheet, TextInput } from 'react-native';
 import ADIcon from 'react-native-vector-icons/AntDesign';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import {themeFontFamily, themefonts,themeColor} from '../../constants/theme';
+
 
 interface PropsType {
     commentValue: string,
@@ -13,7 +15,7 @@ interface PropsType {
     submitCommentLine: () => void,
 }
 
-const CommentsBox: React.FC<PropsType> = ({commentValue, handleCommentValue, enterCommentLine, submitCommentLine}) => {
+const CommentsBox: React.FC<PropsType> = ({commentValue, handleCommentValue}) => {
 
     const enableCommentButton = () => {
         return (commentValue ? false : true);
@@ -25,14 +27,17 @@ const CommentsBox: React.FC<PropsType> = ({commentValue, handleCommentValue, ent
     }
 
     return (
-        <div className="comments-box">
-            <input onKeyPress={enterCommentLine} value={commentValue}
+        
+            <TextInput placeholder="Add a comment..." value={commentValue} onChangeText={handleCommentValue}/>
+
+            /* <input onKeyPress={enterCommentLine} value={commentValue}
             id="comments-input" onChange={handleCommentValue}
-            type="text" placeholder="Add a comment..." />
-            <button onClick={submitCommentLine} type="submit"     
+            type="text" placeholder="Add a comment..." /> */
+
+            /* <button onClick={submitCommentLine} type="submit"     
             className="comments-button"id={changeCommentButtonStyle()}
-            disabled={enableCommentButton()}>Post</button>
-        </div>
+            disabled={enableCommentButton()}>Post</button> */
+        
     )
 }
 
