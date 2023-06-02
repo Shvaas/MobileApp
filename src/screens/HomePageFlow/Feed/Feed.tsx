@@ -17,8 +17,8 @@ import {themeFontFamily, themefonts,themeColor} from '../../../constants/theme';
 import Post from '../../../components/Post';
 import RouteNames from '../../../constants/routeName';
 
-// import BottomSheet from '@gorhom/bottom-sheet';
-// import {GestureHandlerRootView} from 'react-native-gesture-handler'
+import BottomSheet, { BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import {GestureHandlerRootView} from 'react-native-gesture-handler'
 
 // import { DataStore } from 'aws-amplify';
 // import { SQLiteAdapter } from '@aws-amplify/datastore-storage-adapter/SQLiteAdapter';
@@ -75,6 +75,17 @@ const Feed: React.FC<PropsType> = ({navigation}) => {
 
   //"https://shvaas-user-feed.s3.us-west-2.amazonaws.com/test2.jpeg"
   
+  
+  // ref
+  const bottomSheetRef = useRef<BottomSheet>(null);
+
+  // variables
+  const snapPoints = useMemo(() => ['25%', '50%'], []);
+
+  // callbacks
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log('handleSheetChanges', index);
+  }, []);
 
   async function download(key: string){
     // const result = await Storage.put("test.txt", "Hello");
@@ -151,29 +162,29 @@ const ViewableItemsChanged = useCallback(
 
 
 
-async function downloadVideo(videoUrl: string){
-  let filename = videoUrl.substring(videoUrl.lastIndexOf("/") + 1, videoUrl.length);
-  let path_name = RNFS.DocumentDirectoryPath + filename;
-  console.log(path_name);
+// async function downloadVideo(videoUrl: string){
+//   let filename = videoUrl.substring(videoUrl.lastIndexOf("/") + 1, videoUrl.length);
+//   let path_name = RNFS.DocumentDirectoryPath + filename;
+//   console.log(path_name);
 
-  RNFS.exists(path_name).then(exists => {
-    if (exists) {
-      console.log("Already downloaded");
-    } else {
-      RNFS.downloadFile({
-        fromUrl: videoUrl,
-        toFile: path_name.replace(/%20/g, "_"),
-        background: true
-      })
-        .promise.then(res => {
-          console.log("File Downloaded", res);
-        })
-        .catch(err => {
-          console.log("err downloadFile", err);
-        });
-    }
-  });
-}
+//   RNFS.exists(path_name).then(exists => {
+//     if (exists) {
+//       console.log("Already downloaded");
+//     } else {
+//       RNFS.downloadFile({
+//         fromUrl: videoUrl,
+//         toFile: path_name.replace(/%20/g, "_"),
+//         background: true
+//       })
+//         .promise.then(res => {
+//           console.log("File Downloaded", res);
+//         })
+//         .catch(err => {
+//           console.log("err downloadFile", err);
+//         });
+//     }
+//   });
+// }
 
 // /Users/utkarshnath/Library/Developer/CoreSimulator/Devices/611BC7CB-329F-456B-9701-216C58A90541/data/Containers/Data/Application/47BA8D82-FA43-4D65-9E2B-DE82B9D1CDAB/DocumentsBigBuckBunny.mp4
 // async function getVideo(filename:string) {
@@ -225,17 +236,14 @@ const reinisiallizepost = () => {
 };
 
 
-
-
-
-
     return (
-        <SafeAreaView style={styles.container}>
-          <View style={styles.topContainer}>
-          
-          <Button title="Create Post"
+
+      <SafeAreaView style={styles.container}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+        <View style={styles.topContainer}>
+        <Button title="Create Post"
                 onPress={() => navigation.navigate(RouteNames.HomePageFlow.CreatePost)} color="green" />
-          <FlatList
+        <FlatList
             data={post}
             renderItem={({item, index}) => <Post post={item} play={index===visibleItemIndex}/>}
             keyExtractor={(item) => item.postId}
@@ -245,22 +253,45 @@ const reinisiallizepost = () => {
               minimumViewTime: 500,
             }}
           />
-
-          </View>
-          
-        </SafeAreaView>
-        
-        
+        </View>
+        <BottomSheet
+        ref={bottomSheetRef}
+        index={1}
+        snapPoints={snapPoints}
+        onChange={handleSheetChanges}
+      >
+        <View style={styles.contentContainer}>
+          <Text>Awesome 🎉</Text>
+        </View>
+      </BottomSheet>
+    </GestureHandlerRootView>
+    </SafeAreaView>
       );
     };
     
 export default Feed;
+
+const styles11 = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 24,
+    borderColor:'grey',
+    borderWidth:10,
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
+  },
+});
     
 const styles = StyleSheet.create({
     container: {
     flex: 1,
     justifyContent: 'center',
     backgroundColor: themeColor.background,
+    },
+    containerTop: {
+      backgroundColor: themeColor.black,
     },
     heading: {
     fontSize: themefonts.font32,
@@ -288,3 +319,58 @@ const styles = StyleSheet.create({
 });
 
 
+
+// import React, { useCallback, useMemo, useRef } from 'react';
+// import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
+// import BottomSheet from '@gorhom/bottom-sheet';
+// import {GestureHandlerRootView} from 'react-native-gesture-handler'
+// // import { SafeAreaView } from 'react-native-safe-area-context';
+
+// const Feed = () => {
+//   // ref
+//   const bottomSheetRef = useRef<BottomSheet>(null);
+
+//   // variables
+//   const snapPoints = useMemo(() => ['25%', '50%'], []);
+
+//   // callbacks
+//   const handleSheetChanges = useCallback((index: number) => {
+//     console.log('handleSheetChanges', index);
+//   }, []);
+
+//   // renders
+//   return (
+    
+//     <GestureHandlerRootView>
+//     <View style={styles.container}>
+      
+      
+      
+//         <BottomSheet
+//             ref={bottomSheetRef}
+//             snapPoints={["50%"]}
+//             index={0}
+//             enablePanDownToClose>
+//         <View style={styles.contentContainer}>
+//           <Text>Awesome 🎉</Text>
+//         </View>
+//       </BottomSheet>
+//     </View>
+//     </GestureHandlerRootView>
+    
+//   );
+// };
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     padding: 24,
+//     backgroundColor: 'grey',
+//   },
+//   contentContainer: {
+//     flex: 1,
+//     alignItems: 'center',
+//   },
+// });
+
+// export default Feed;
