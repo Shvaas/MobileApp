@@ -2,7 +2,7 @@ import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Carousel from 'react-native-reanimated-carousel';
-import 'react-native-gesture-handler';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import RouteNames from '../../../constants/routeName';
 
@@ -91,14 +91,16 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
         <View style={styles.textContainerStyle}>
           <Text style={styles.textStyle}>{description}</Text>
         </View>
-        <Carousel
-          data={reviews}
-          renderItem={getCarouselItem}
-          loop
-          style={styles.carouselContainer}
-          width={wp(88)}
-          height={220}
-        />
+        <GestureHandlerRootView>
+          <Carousel
+            data={reviews}
+            renderItem={getCarouselItem}
+            loop
+            style={styles.carouselContainer}
+            width={wp(88)}
+            height={220}
+          />
+        </GestureHandlerRootView>
       </BackgroundImage>
     </SafeAreaView>
   );

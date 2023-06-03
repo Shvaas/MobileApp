@@ -2,6 +2,7 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Feed from '../screens/HomePageFlow/Feed/Feed';
 import CreatePost from '../screens/HomePageFlow/Feed/CreatePost';
+import AllComments from '../screens/HomePageFlow/Feed/Comments';
 
 
 // Local
@@ -17,10 +18,8 @@ const FeedStack = () => {
         headerShown: false,
       }}>
       <Stack.Screen name={RouteNames.HomePageFlow.Feed} component={Feed} />
-      <Stack.Screen
-        name={RouteNames.HomePageFlow.CreatePost}
-        component={CreatePost}
-      />
+      <Stack.Screen name={RouteNames.HomePageFlow.CreatePost} component={CreatePost}/>
+      <Stack.Screen name={RouteNames.HomePageFlow.AllComments} component={AllComments}/>
     </Stack.Navigator>
   );
 };

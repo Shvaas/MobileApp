@@ -18,6 +18,7 @@ const RouteNames = {
     AllCourses: "Sessions",
     AllCourseDetail: "Course Detail",
     CalendarPage: "Calendar Page",
+    AllComments: 'All Comments',
   },
 };
 

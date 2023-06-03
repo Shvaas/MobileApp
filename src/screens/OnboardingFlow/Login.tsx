@@ -9,9 +9,9 @@ import {
  } from 'react-native';
 import React, { Component } from 'react';
 import { useEffect, useState } from 'react';
-import { Amplify, Auth, Hub } from "aws-amplify";
 
-import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
+
+
 
 
 import {themeFontFamily, themefonts,themeColor} from '../../constants/theme';
@@ -21,10 +21,15 @@ import {loginbackgroundImage, fb_icon, google_icon} from '../../images/imageLink
 
 import LoginButton from '../../common/buttons/LoginButton';
 
+import { Amplify, Auth, Hub } from "aws-amplify";
 import awsconfig from '../../aws-exports';
+import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 Amplify.configure(awsconfig);
 
+
 async function urlOpener(url, redirectUrl) {
+  console.log('url', url, redirectUrl);
+  
   await InAppBrowser.isAvailable();
   const { type, url: newUrl } = await InAppBrowser.openAuth(url, redirectUrl, {
     showTitle: false,
@@ -78,6 +83,16 @@ const Login = () => {
       .catch(() => console.log('Not signed in'));
   }
 
+  function fbSignIn(){
+    
+    try {
+      Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Facebook })
+    } catch(error){
+      console.log("fb error", error);
+    }
+    
+  }
+
 
   return (
         <ImageBackground source={loginbackgroundImage} style={styles.image}>
@@ -95,7 +110,7 @@ const Login = () => {
           <LoginButton title={'Sign in with Facebook'} 
           titleStyle={styles.fbtextstyle}
           icon={fb_icon}
-          onPress={() => Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Facebook })}/> 
+          onPress={() => fbSignIn()}/> 
 
         <LoginButton title={'Sign in with Google'} 
           titleStyle={styles.googletextstyle}

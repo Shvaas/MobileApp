@@ -9,9 +9,10 @@ import Footer from './Footer';
 interface PropsType {
   post: any;
   play: boolean;
+  navigation: any;
 }
 
-const Post: React.FC<PropsType> = ({post, play}) => {
+const Post: React.FC<PropsType> = ({post, play, navigation}) => {
   const likes = Object.keys(post.reactions).length;
 
 
@@ -32,6 +33,7 @@ const Post: React.FC<PropsType> = ({post, play}) => {
         postId={post.postId}
         isLiked={post.isLiked}
         topComment={post.topComment}
+        navigation={navigation}
       />
     </View>
   );
