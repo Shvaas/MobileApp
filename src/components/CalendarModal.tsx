@@ -7,11 +7,11 @@ interface PropsType {
   }
 
 const CalendarModal: React.FC<PropsType> = ({onDateChange}) => {
-  var appointmentDates = ['2023-04-15','2023-04-17','2023-04-25'];
+  var appointmentDates = ['2023-06-15','2023-06-20','2023-06-25'];
   
   let dates = {};
   appointmentDates.forEach((val) => {
-  dates[val] = {marked:true,selected:true,selectedColor:'transparent',selectedTextColor:"red",customTextStyle:{fontWeight:"bold"}};});
+  dates[val] = {selected:true,selectedColor:'lightblue',customTextStyle:{fontWeight:"bold"}};});
 
   return (
       <View>

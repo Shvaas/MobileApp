@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     backgroundColor: themeColor.white,
     borderRadius: 15,
     padding: 4,
-    top: 13,
+    top: 70,
     width: "100%",
   },
   optionContainer: {
@@ -63,20 +63,22 @@ const styles = StyleSheet.create({
     padding: 2,
   },
   activeFirstContainer: {
-    backgroundColor: themeColor.googleRed,
+    backgroundColor: "#bae2f1",
     // width: "60%",
   },
   activeSecondContainer: {
     // backgroundColor: themeColor.flyfinGreen,
-    backgroundColor: themeColor.googleRed,
+    backgroundColor: "#bae2f1",
     // width: "60%",
   },
   option: {
     borderRadius: 6,
-    paddingHorizontal: 13,
-    paddingVertical: 3,
+    // paddingHorizontal: 13,
+    // paddingVertical: 3,
     alignSelf:'center',
-    textAlignVertical:'center'
+    textAlignVertical:'center',
+    borderWidth:1,
+    borderColor:"red"
   },
   optionText: {
     textAlign: 'center',
@@ -86,10 +88,14 @@ const styles = StyleSheet.create({
   firstOption: {
     textAlign: 'center',
     color: themeColor.black,
+    borderWidth:1,
+    borderColor:"red"
   },
   secondOption: {
     textAlign: 'center',
     color: themeColor.black,
+    borderWidth:1,
+    borderColor:"red"
   },
   contentContainer: {
     paddingVertical: 5,
@@ -173,7 +179,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
           </View>
         </TouchableWithoutFeedback>
       </View>
-      <View style={{padding:10}}>
+      <View style={{padding:10, top: 70}}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
             <FlatList
             data={selectedOption === OPTION.FIRST

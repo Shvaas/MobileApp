@@ -9,8 +9,9 @@ interface PropsType {
     setSelectedTime: (index: number)=>void
   }
 
+  
 const TimeList: React.FC<PropsType> = ({timings,selectedTime, setSelectedTime}) => {
-
+  console.log(timings);
     // const [selectedTime,setSelectedTime] = useState({id:0});
     return (
         <View style={{alignItems:'center'}} >
