@@ -247,11 +247,6 @@ enum OPTION {
 
 
 const AllCourses: React.FC<PropsType> = ({navigation}) => {
-  // const selectedOption = activeOption ?? OPTION.FIRST;
-  // // const selectedOption = OPTION.FIRST;
-  // const handleOptionPress = (index) => {
-  //   onOptionPress(index);
-  // };
 
   const [index, setIndex] = useState(1); 
   const onOptionPress = (x: number) => {
@@ -261,69 +256,6 @@ const AllCourses: React.FC<PropsType> = ({navigation}) => {
   }  
   return (
     <ToggleButton disabled={false} firstOption="FIRST" secondOption="SECOND" activeOption={index} onOptionPress={onOptionPress} dataCurrent={DATA} dataPast={DATA1}/>
-      // <SafeAreaView style={styles.container}> 
-      //     <BackgroundImageDup> 
-      //     <ScrollView contentContainerStyle={styles.contentContainer}>
-      //     <FlatList
-      //     data={DATA}
-      //     renderItem = {({item}) => {
-      //       return(
-      //         <TouchableOpacity onPress={()=>navigation.navigate(RouteNames.HomePageFlow.AllCourseDetail, {
-      //           courseDetail: item,
-      //         })}>
-      //       <CourseCardView course={item} />
-      //       </TouchableOpacity>
-      //       )
-      //     }
-      //     }/>  
-
-      //   </ScrollView>
-      //   </BackgroundImageDup>
-      // </SafeAreaView>
-    //   <View style={styles.container}>
-    //   <TouchableWithoutFeedback
-    //     disabled={disabled}
-    //     onPress={() => handleOptionPress(OPTION.FIRST)}>
-    //     <View
-    //       style={[
-    //         selectedOption === OPTION.FIRST ? styles.activeFirstContainer : {},
-    //         styles.option,
-    //         styles.activeFirstContainer,
-    //       ]}>
-    //       <Text
-    //         style={[
-    //           selectedOption === OPTION.FIRST
-    //             ? styles.firstOption
-    //             : styles.optionText,
-    //           styles.firstOption,
-    //         ]}>
-    //         {firstOption}
-    //       </Text>
-    //     </View>
-    //   </TouchableWithoutFeedback>
-    //   <TouchableWithoutFeedback
-    //     disabled={disabled}
-    //     onPress={() => handleOptionPress(OPTION.SECOND)}>
-    //     <View
-    //       style={[
-    //         selectedOption === OPTION.SECOND
-    //           ? styles.activeSecondContainer
-    //           : {},
-    //         styles.option,
-    //         styles.activeSecondContainer,
-    //       ]}>
-    //       <Text
-    //         style={[
-    //           selectedOption === OPTION.SECOND
-    //             ? styles.secondOption
-    //             : styles.optionText,
-    //           styles.secondOption,
-    //         ]}>
-    //         {secondOption}
-    //       </Text>
-    //     </View>
-    //   </TouchableWithoutFeedback>
-    // </View>
       );
     };
     

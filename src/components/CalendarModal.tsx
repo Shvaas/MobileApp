@@ -17,11 +17,11 @@ const CalendarModal: React.FC<PropsType> = ({onDateChange}) => {
       <View>
           <Calendar style={styles.calendar}
           onDayPress={date => {
-            console.log('selected day', date);
+            console.log('selected day', new Date(date.dateString));
             onDateChange(new Date(date.dateString));
           }}
           markedDates={dates}
-          onPress={(date)=>{console.log(date)}}
+          onPress={(date)=>{console.log(new Date(date.dateString))}}
           />
       </View>
     )

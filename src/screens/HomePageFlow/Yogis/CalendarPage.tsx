@@ -19,19 +19,14 @@ const CalendarPage: React.FC<PropsType> = ({route,navigation}) => {
     console.log(route);
     const yogiProfile = route.params;
     const [selectedDate, setSelectedDate] = useState(new Date());
-    const appointmentDates = ['2023-04-15','2023-04-17','2023-04-25'];
-    // var appointmentTimes = ['6:00 am','7:00 am','11:30 am', '5:00 pm'];
 
     const appointmentTimes = new Map<string, string[]>();
     appointmentTimes.set('2023-6-5',['6:00 am','7:00 am']);
     appointmentTimes.set('2023-6-15',['6:00 am','7:00 am']);
     appointmentTimes.set('2023-6-20',['6:00 am','7:00 am','10:30 am','3:00 pm'])
     appointmentTimes.set('2023-6-25',['6:00 am','7:00 am','9:00 am','11:30 am','2:00 pm'])
-    // let appointmentTimes = {[key: string]: string };
-    // appointmentTimes['2023-04-15']= ['6:00 am','7:00 am'];
-    //   '2023-04-17':['6:00 am','7:00 am','10:30 am','3:00 pm'],
-    //   '2023-04-25':['6:00 am','7:00 am','9:00 am','11:30 am','2:00 pm'],
-    // };
+
+    
     const [selectedTime,setSelectedTime] = useState(0);
     const [appointmentBooked,setAppointmentBooked] = useState(false);
     console.log("selected date",[selectedDate.getFullYear(), selectedDate.getMonth()+1, selectedDate.getDate()+1].join('-'));
@@ -39,7 +34,6 @@ const CalendarPage: React.FC<PropsType> = ({route,navigation}) => {
     <View style={{backgroundColor:'white', height:"100%"}}>
         <CalendarModal
           onDateChange={setSelectedDate}
-          // appointmentDates = {appointmentDates}
         />
         <TimingList
           timings={appointmentTimes.has([selectedDate.getFullYear(), selectedDate.getMonth()+1, selectedDate.getDate()+1].join('-'))?
@@ -51,7 +45,7 @@ const CalendarPage: React.FC<PropsType> = ({route,navigation}) => {
 
         <SecondaryButton title="Book Appointment" buttonStyle={styles.buttonStyle}
             containerStyle={styles.btnContainerStyle} onPress={()=>{
-             Alert.alert('Confirm the appointment', selectedDate.toString()+appointmentTimes[selectedTime], [
+             Alert.alert('Confirm the appointment', [selectedDate.getFullYear(), selectedDate.getMonth()+1, selectedDate.getDate()+1].join('-') + " "+ appointmentTimes.get([selectedDate.getFullYear(), selectedDate.getMonth()+1, selectedDate.getDate()+1].join('-'))[selectedTime], [
                 {
                   text: 'Cancel',
                   onPress: () => console.log('Cancel Pressed'),
@@ -60,7 +54,7 @@ const CalendarPage: React.FC<PropsType> = ({route,navigation}) => {
                 {text: 'OK', onPress: () => {
                     console.log('OK Pressed');
                     Alert.alert(
-                        'Appointment Booked for '+selectedDate.toString()+appointmentTimes[selectedTime],'',
+                        'Appointment Booked for '+[selectedDate.getFullYear(), selectedDate.getMonth()+1, selectedDate.getDate()+1].join('-') + " "+ appointmentTimes.get([selectedDate.getFullYear(), selectedDate.getMonth()+1, selectedDate.getDate()+1].join('-'))[selectedTime],'',
                         [
                             {
                                 text: 'OK',

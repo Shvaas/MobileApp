@@ -39,7 +39,6 @@ export interface ToggleButtonProps {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    // backgroundColor: themeColor.black80,
     backgroundColor: themeColor.white,
     borderRadius: 15,
     padding: 4,
@@ -50,39 +49,32 @@ const styles = StyleSheet.create({
     minWidth: 0,
   },
   FirstContainer: {
-    // backgroundColor: themeColor.white,
     width: "50%",
     height: 30,
     padding: 2,
+    borderColor:"blue",
   },
   SecondContainer: {
-    // backgroundColor: themeColor.flyfinGreen,
-    // backgroundColor: themeColor.googleRed,
     width: "50%",
     height: 30,
     padding: 2,
+    borderColor:"green"
   },
   activeFirstContainer: {
     backgroundColor: "#bae2f1",
-    // width: "60%",
   },
   activeSecondContainer: {
-    // backgroundColor: themeColor.flyfinGreen,
     backgroundColor: "#bae2f1",
-    // width: "60%",
   },
   option: {
     borderRadius: 6,
-    // paddingHorizontal: 13,
-    // paddingVertical: 3,
     alignSelf:'center',
     textAlignVertical:'center',
     borderWidth:1,
-    borderColor:"red"
+    justifyContent: 'center'
   },
   optionText: {
     textAlign: 'center',
-    // color: themeColor.silver,
     color: themeColor.white,
   },
   firstOption: {
@@ -102,7 +94,6 @@ const styles = StyleSheet.create({
     contentOffset: {x:0, y:0},
   },
   containerView: {
-    // flex: 1,
     backgroundColor: themeColor.background,
   },
 });
@@ -187,9 +178,10 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
               : dataPast}
             renderItem = {({item}) => {
               return(
-                <TouchableOpacity onPress={()=>navigation.navigate(RouteNames.HomePageFlow.AllCourseDetail, {
+                <TouchableOpacity>
+                {/* onPress={()=>navigation.navigate(RouteNames.HomePageFlow.AllCourseDetail, {
                   courseDetail: item,
-                })}>
+                })}> */}
                   {selectedOption === OPTION.FIRST ?
                 <CourseCardView course={item} />
                 : <UpcomingCourseCardView course={item} />
