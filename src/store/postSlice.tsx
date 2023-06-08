@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createSlice, createSelector} from '@reduxjs/toolkit';
 
 import {aryan, shikha, utkarsh} from '../images/imageLinks';
 
@@ -105,8 +105,19 @@ export const postSlice = createSlice({
         tempPost.userProfilePic = serverPost[i].userProfilePic;
         tempPost.userType = serverPost[i].userType;
         tempPost.createdDate = serverPost[i].createdDate;
-        tempPost.comments = [];
-        tempPost.topComment = null;
+
+        if ('comments' in serverPost[i]){
+          tempPost.comments = serverPost[i].comments;
+        }else{
+          tempPost.comments = [];
+        }
+
+        if ('topComment' in serverPost[i]){
+          tempPost.topComment = serverPost[i].topComment;
+        }else{
+          tempPost.topComment = null;
+        }
+
         tempPost.isLiked = serverPost[i].userId in serverPost[i].reactions;
         let bodytype;
         if ('fileURL' in serverPost[i]) {
@@ -134,3 +145,15 @@ export const postSlice = createSlice({
     },
   },
 });
+
+const postSelector = (state) => state.posts.posts;
+
+export const getAllComments = createSelector(
+  [postSelector, (postSelector, postId: string) => postId],
+  (postSelector, postId) => {
+    const currentPost = postSelector.find(p => p.postId === postId);
+
+    return currentPost.comments;
+  },
+);
+

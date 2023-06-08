@@ -34,6 +34,7 @@ const Post: React.FC<PropsType> = ({post, play, navigation}) => {
         isLiked={post.isLiked}
         topComment={post.topComment}
         navigation={navigation}
+        comments={post.comments}
       />
     </View>
   );

@@ -22,6 +22,8 @@ import SecondaryButton from '../../../common/buttons/SecondaryButton';
 import PrimaryButton from '../../../common/buttons/PrimaryButton';
 import LoginButton from '../../../common/buttons/LoginButton';
 
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+
 import s3Storage from '../../../aws-exports';
 Amplify.configure(s3Storage);
 
@@ -63,6 +65,7 @@ const CreatePost: React.FC<PropsType> = ({navigation}) => {
 
   const uploadResource = async () => {
     console.log('uploadResource');
+    navigation.goBack()
     // if (isLoading) return;
     // setisLoading(true);
 
@@ -134,7 +137,9 @@ const CreatePost: React.FC<PropsType> = ({navigation}) => {
   };
 
   return (
+    
     <SafeAreaView style={styles.container}>
+      <GestureHandlerRootView>
       <ScrollView>
         {image.length > 0 && (
           <Image source={{uri: image}} style={styles.image} />
@@ -160,7 +165,9 @@ const CreatePost: React.FC<PropsType> = ({navigation}) => {
           />
         </View>
       </ScrollView>
+      </GestureHandlerRootView>
     </SafeAreaView>
+    
   );
 };
 

@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableWithoutFeedback, StyleSheet, TextInput, Button } from 'react-native';
+import { View, Text, TouchableWithoutFeedback, StyleSheet, TextInput } from 'react-native';
+import {Button} from 'react-native-elements';
 import ADIcon from 'react-native-vector-icons/AntDesign';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
@@ -16,7 +17,7 @@ interface PropsType {
     submitCommentLine: () => void,
 }
 
-const CommentsBox: React.FC<PropsType> = ({commentValue, handleCommentValue}) => {
+const CommentsBox: React.FC<PropsType> = ({commentValue, handleCommentValue, submitCommentLine}) => {
 
     const enableCommentButton = () => {
         return (commentValue ? false : true);
@@ -26,6 +27,19 @@ const CommentsBox: React.FC<PropsType> = ({commentValue, handleCommentValue}) =>
          return (commentValue ? "comments-button-enabled" : 
          "comments-button-disabled");
     }
+
+    function onCommentPost(){
+        // dispatch(
+        //   postSlice.actions.addComment({
+        //     comment: commentValue,
+        //     postId: postId,
+        //   }),
+        // );
+        console.log("onCommentPost");
+        
+        // const result = await updateReaction(like);
+        // console.log('put result', result.data);
+      };
 
     return (
             <View style={styles.container}>
@@ -37,19 +51,11 @@ const CommentsBox: React.FC<PropsType> = ({commentValue, handleCommentValue}) =>
                     multiline/>
                 </View>
                 <View style={styles.rightContainer}>
-                    <Button  type="submit"  title='Post'   
-                        className="comments-button"id={changeCommentButtonStyle()}
+                    <Button titleStyle={styles.button} onPress={submitCommentLine} type="submit" title='Post'   
+                        className="comments-button" id={changeCommentButtonStyle()}
                         disabled={enableCommentButton()}/>
                 </View>
             </View>
-            
-            
-
-            // <Button>
-            //     Post
-            // </Button>
-            
-        
     )
 }
 
@@ -59,18 +65,21 @@ const styles = StyleSheet.create({
     container: {
       flexDirection:"row",
       margin:5,
+      backgroundColor: '#ebe8e9',
+      borderRadius: 10,
     },
     leftContainer: {
-        flex:4,
-        borderColor:'red',
-        borderWidth:1,
+        flex:5,
+        paddingLeft: 5,
+        justifyContent: 'center',
       },
     rightContainer: {
         flex:1,
         flexDirection:"row",
         justifyContent:'flex-end',
         margin:5,
-        borderColor:'black',
-        borderWidth:1,
+      },
+      button: {
+        color: themeColor.vividRed,
       },
   });

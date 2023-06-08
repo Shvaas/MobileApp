@@ -20,7 +20,23 @@ const CommentItem: React.FC<PropsType> = ({comment}) => {
     }else{
       setIsLike(false);
     }
-  };
+  }
+
+    let d = Date(comment.createdDate);
+    console.log(comment.createdDate);
+    
+    let currDate = Date.now();
+    console.log(d);
+    //console.log(currDate);
+
+  function getPresentableDate(){
+    let d = Date(comment.createdDate);
+    let currDate = Date.now();
+    console.log(d.getMonth());
+    console.log(currDate);
+    
+    
+  }
 
   return (
     <View style={styles.container}>
@@ -30,9 +46,9 @@ const CommentItem: React.FC<PropsType> = ({comment}) => {
         </View>
         <View style={styles.right}>
           <View style={styles.top}>
-            <Text style={styles.name}>{comment.username}</Text>
+            <Text style={styles.name}>{comment.userName}</Text>
             <View>
-              <Text style={styles.date}>Date</Text>
+              <Text style={styles.date}>{comment.createdDate}</Text>
             </View>
           </View>
           <View style={{marginRight: 5, flex:1, alignItems: 'center', justifyContent: 'center'}}>
@@ -48,7 +64,7 @@ const CommentItem: React.FC<PropsType> = ({comment}) => {
               <ADIcon name="hearto" size={20} color={'#545454'} />
             )}
       </TouchableWithoutFeedback>
-      <Text style={styles.likes}>56 Likes</Text>
+      <Text style={styles.likes}>{comment.reactions.size} Likes</Text>
       </View>
     </View>
   );

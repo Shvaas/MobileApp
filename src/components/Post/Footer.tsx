@@ -25,6 +25,7 @@ interface PropsType {
   isLiked: boolean;
   topComment: any;
   navigation: any;
+  comments: any;
 }
 
 const Footer: React.FC<PropsType> = ({
@@ -36,6 +37,7 @@ const Footer: React.FC<PropsType> = ({
   isLiked,
   topComment,
   navigation,
+  comments,
 }) => {
   // const [isLiked, setIsLike] = useState(false);
   // const [likesCount, setLikesCount] = useState(0);
@@ -59,17 +61,8 @@ const Footer: React.FC<PropsType> = ({
     console.log('callind onCommentPressed');
     navigation.navigate(RouteNames.HomePageFlow.AllComments, {
       caption: caption,
-      comments: [{username: 'Utkarsh', text: 'My first comment'},
-      {username: 'Utkarsh', text: 'My first comment'},
-      {username: 'Utkarsh', text: 'My first comment'}],
+      postId: postId,
     });
-
-    dispatch(
-      postSlice.actions.addComment({
-        comment: 'Hey, how are you',
-        postId: postId,
-      }),
-    );
     //const result = await updateReaction(like);
     // console.log('put result', result.data);
   };
@@ -101,7 +94,7 @@ const Footer: React.FC<PropsType> = ({
 
       <Text style={styles.likes}>{likesCount} Likes</Text>
       {bodytype!=1 && <Text style={styles.caption}>{caption}</Text>}
-      {topComment!=null && <CommentItem comment={{username: 'Utkarsh', text: 'My first comment'}} />}
+      {/* {topComment!=null && <CommentItem comment={{username: 'Utkarsh', text: 'My first comment'}} />} */}
       {/* <CommentsBox commentValue={commentValue} handleCommentValue={setcommentValue}/> */}
       {/* <Comment comment={{name: 'Utkarsh', text: 'My first comment'}} /> */}
     </View>

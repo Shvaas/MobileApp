@@ -14,6 +14,8 @@ import React from 'react';
 import { useState, useCallback, useMemo, useRef } from "react";
 import {themeFontFamily, themefonts,themeColor} from '../../../constants/theme';
 
+import IoniconsIcon from 'react-native-vector-icons/Ionicons';
+
 import Post from '../../../components/Post';
 import RouteNames from '../../../constants/routeName';
 
@@ -91,7 +93,7 @@ const Feed: React.FC<PropsType> = ({navigation}) => {
     // });
   }
 
-  download("abc.jpeg");
+  // download("abc.jpeg");
   
 
 
@@ -138,10 +140,14 @@ const ViewableItemsChanged = useCallback(
     return <Text>{error.error}</Text>;
   }
 
-  console.log(data?.data);
+  if (data){
+    console.log("data", data.data);
+  }
+  const data1 = [{"caption": "First post everrr!", "createdDate": 1680772845, "dummy": [Array], "fileURL": "s3://shvaas-user-feed/test2.jpeg", "postId": "d4668569-4590-4787-9c11-4158fdaa9bd3", "reactions": [Object], "userId": "313cbfd3-4fc1-4763-9d18-caedd0be4a63", "userName": "Asif Hasnain", "userProfilePic": "test1.jpeg", "userType": "INSTRUCTOR"}, {"caption": "First post everrr!", "createdDate": 1681075969, "dummy": [Array], "fileURL": "test2.jpeg", "postId": "afb1bac4-321e-4966-8e11-a7c8a11e4698", "reactions": [Object], "userId": "313cbfd3-4fc1-4763-9d18-caedd0be4a63", "userName": "Asif Hasnain", "userProfilePic": "test1.jpeg", "userType": "INSTRUCTOR"}, {"caption": "First post everrr!", "createdDate": 1681072759, "dummy": [Array], "fileURL": "testing.jpg", "postId": "85eb38ee-ffb0-49ee-9f82-410c523f6b8c", "reactions": [Object], "userId": "313cbfd3-4fc1-4763-9d18-caedd0be4a63", "userName": "Asif Hasnain", "userProfilePic": "test1.jpeg", "userType": "INSTRUCTOR"}, {"caption": "First post everrr!", "createdDate": 1681072466, "dummy": [Array], "fileURL": "test2.jpeg", "postId": "696b4303-e2a3-4557-a4c8-8b2e678de3e8", "reactions": [Object], "userId": "313cbfd3-4fc1-4763-9d18-caedd0be4a63", "userName": "Asif Hasnain", "userProfilePic": "test1.jpeg", "userType": "INSTRUCTOR"}, {"caption": "test1", "comments": [Array], "createdDate": 1680414428, "dummy": [Array], "postId": "37f1687e-ce62-4076-b075-7c338bdf4034", "reactions": [Object], "userId": "313cbfd3-4fc1-4763-9d18-caedd0be4a63", "userName": "Asif Hasnain", "userProfilePic": "test1.jpeg", "userType": "INSTRUCTOR"}, {"caption": "test", "createdDate": 1677736028, "dummy": [Array], "fileURL": "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", "postId": "0cf4ad69-2c79-456e-a574-0b30ad52256b", "reactions": [Object], "userId": "313cbfd3-4fc1-4763-9d18-caedd0be4a63", "userName": "Asif Hasnain", "userProfilePic": "test1.jpeg", "userType": "INSTRUCTOR"}]
+  // 
 
   if (post.length === 0){
-    dispatch(postSlice.actions.initialPost(data.data.slice(0, -1)));
+    dispatch(postSlice.actions.initialPost(data?.data.slice(0, -1)));
   }
 
   // let post = null;
@@ -237,6 +243,8 @@ const reinisiallizepost = () => {
         <SafeAreaView style={styles.container}>
           <View style={styles.topContainer}>
           
+          <IoniconsIcon name="add-circle-outline" size={50} color={"#545454"} 
+          onPress={() => navigation.navigate(RouteNames.HomePageFlow.CreatePost)}/>
           <Button title="Create Post"
                 onPress={() => navigation.navigate(RouteNames.HomePageFlow.CreatePost)} color="green" />
           <FlatList

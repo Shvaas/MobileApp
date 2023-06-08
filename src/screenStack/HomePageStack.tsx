@@ -39,6 +39,7 @@ const HomePageStack = () => {
       initialRouteName= {RouteNames.HomePageFlow.Feed}
       screenOptions={{
         tabBarActiveTintColor: '#e91e63',
+        headerShown: false,
       }}>
       <Tab.Screen
         name={RouteNames.HomePageFlow.Feed}
