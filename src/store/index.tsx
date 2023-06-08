@@ -1,10 +1,14 @@
 import {configureStore} from '@reduxjs/toolkit';
 import {postSlice} from './postSlice';
+import {userSessionSlice} from './userSessionSlice';
+import {sessionSlice} from './sessionSlice';
 import {apiSlice} from './apiSlice';
 
 export const store = configureStore({
   reducer: {
     posts: postSlice.reducer,
+    userSessions: userSessionSlice.reducer,
+    sessions: sessionSlice.reducer,
     api: apiSlice.reducer,
   },
 

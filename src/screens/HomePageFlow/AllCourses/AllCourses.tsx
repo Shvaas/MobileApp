@@ -15,6 +15,8 @@ import {aryan,nabeel,shikha,utkarsh} from '../../../images/imageLinks';
 import RouteNames from '../../../constants/routeName';
 import ToggleButton from '../../../components/ToggleButton';
 
+import {useDispatch, useSelector} from 'react-redux';
+
 interface PropsType {
   navigation: any;
   // firstOption: string;
@@ -247,6 +249,10 @@ enum OPTION {
 
 
 const AllCourses: React.FC<PropsType> = ({navigation}) => {
+
+  const sessions = useSelector((state) => state.userSessions.currentSession);
+  console.log('redux sessions', sessions);
+
 
   const [index, setIndex] = useState(1); 
   const onOptionPress = (x: number) => {
