@@ -8,9 +8,13 @@ import {
     ScrollView,
     Button,
     ActivityIndicator,
+    TextInput,
+    Image
   } from 'react-native';
 import React from 'react';
-
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {utkarsh} from '../../../images/imageLinks';
 import { useState, useCallback, useMemo, useRef } from "react";
 import {themeFontFamily, themefonts,themeColor} from '../../../constants/theme';
 
@@ -98,6 +102,7 @@ const Feed: React.FC<PropsType> = ({navigation}) => {
 
 
   const [visibleItemIndex, setVisibleItemIndex] = useState(0);
+  const [searchText, setSearchText] = useState("");
 
   const trackItem = (item) =>
     console.log("### track " + item.user.name);
@@ -243,10 +248,36 @@ const reinisiallizepost = () => {
         <SafeAreaView style={styles.container}>
           <View style={styles.topContainer}>
           
-          <IoniconsIcon name="add-circle-outline" size={50} color={"#545454"} 
+          {/* <Button title="Create Post"
+                onPress={() => navigation.navigate(RouteNames.HomePageFlow.CreatePost)} color="green" /> */}
+          {/* <SearchBar
+            placeholder="Type Here..."
+            containerStyle={{ backgroundColor: "white"}}
+            inputContainerStyle={{ backgroundColor: "white" }}
+            value={searchText}
+          /> */}
+          <View style={{flexDirection:"row",justifyContent:"space-between",padding:10}}>
+          <Image source={utkarsh} style={styles.imageStyle} />
+          <Text style={{color:themeColor.vividRed,fontSize: themefonts.font18,fontFamily:themeFontFamily.ralewayBold,alignSelf:"center"}}>Shvaas</Text>
+          <View style={{flexDirection:"row"}}>
+          <MaterialCommunityIcons name="message" color={"#939393"} size={23} style={{alignSelf:"flex-start",padding:5}}/>
+          <IoniconsIcon name="notifications" color={"#939393"} size={23} style={{alignSelf:"flex-start",padding:5}}/>
+          </View>
+          </View>
+          <View style={{flexDirection:"row",justifyContent:"space-around",padding:10}}>
+          {/* <FontAwesome
+                name="search"
+                size={30}
+              /> */}
+          <View style={{alignSelf:"center", width:"80%"}}>
+          <TextInput 
+                    placeholder="Search here..." 
+                    value={searchText} 
+                    onChangeText={setSearchText}/>
+          </View>
+          <IoniconsIcon name="add-circle-outline" size={35} color={"#737373"} 
           onPress={() => navigation.navigate(RouteNames.HomePageFlow.CreatePost)}/>
-          <Button title="Create Post"
-                onPress={() => navigation.navigate(RouteNames.HomePageFlow.CreatePost)} color="green" />
+          </View>
           <FlatList
             data={post}
             renderItem={({item, index}) => <Post post={item} play={index===visibleItemIndex} navigation={navigation}/>}
@@ -296,6 +327,15 @@ const styles = StyleSheet.create({
     video:{
       width:'100%',
       height:'50%'
+    },
+    imageStyle: {
+      borderColor: themeColor.vividRed,
+      borderWidth: 2,
+      borderRadius: 50,
+      height: 70,
+      width: 70,
+      alignSelf: 'center',
+      resizeMode: 'cover',
     },
 });
 

@@ -4,8 +4,10 @@ import {
   FlatList,
   ScrollView,
   TouchableOpacity,
+  TextInput
 } from 'react-native';
 import React from 'react';
+import { useState} from "react";
 
 import BackgroundImageDup from '../../../common/BackgroundImageFullPage';
 import {
@@ -229,7 +231,10 @@ const DATA = [
   // },
 ];
 
+
+
 const Yogis: React.FC<PropsType> = ({navigation}) => {
+
   return (
     <SafeAreaView style={styles.container}>
       <BackgroundImageDup>
