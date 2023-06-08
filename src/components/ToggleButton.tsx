@@ -70,7 +70,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     alignSelf:'center',
     textAlignVertical:'center',
-    borderWidth:1,
     justifyContent: 'center'
   },
   optionText: {
@@ -80,14 +79,10 @@ const styles = StyleSheet.create({
   firstOption: {
     textAlign: 'center',
     color: themeColor.black,
-    borderWidth:1,
-    borderColor:"red"
   },
   secondOption: {
     textAlign: 'center',
     color: themeColor.black,
-    borderWidth:1,
-    borderColor:"red"
   },
   contentContainer: {
     paddingVertical: 5,
