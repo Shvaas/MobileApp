@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import {createSlice, createSelector} from '@reduxjs/toolkit';
+import {aryan, shikha, utkarsh} from '../images/imageLinks';
 
 const mysessions = [
     {
@@ -8,10 +9,37 @@ const mysessions = [
       instructorPhoto: utkarsh,
       title: 'Yoga with Shikha',
       description: 'random text',
-      zoomlink: ' ',
+      zoomlink: '-',
       date: 1680772845,
     },
+    {
+      sessionId: '2',
+      instructorId: 3,
+      instructorPhoto: utkarsh,
+      title: 'Yoga with Shikha',
+      description: 'random text',
+      zoomlink: '-',
+      date: 1686410728,
+    },
+    
   ];
+
+  
+  // {
+  //   key: 7,
+  //   title: "Yoga7",
+  //   description: "Yoga lorem ipsium the random text",
+  //   level: 3,
+  //   maxCap: 10,
+  //   numOfSessions: 5,
+  //   instructor: nabeel,
+  //   name: "Nabeel",
+  //   instructorRating: 3.5,
+  //   numOfStudentsEnrolled: 10,
+  //   cost: "250$",
+  //   date: "10/5/23",
+  //   time: "5:00 am"
+  // },
 
 const initialState = {
   userSessions: mysessions,
@@ -50,20 +78,14 @@ export const userSessionSlice = createSlice({
   });
 
 
-// const postSelector = (state) => state.posts.posts;
-
-// export const getAllComments = createSelector(
-//     [postSelector, (postSelector, postId: string) => postId],
-//     (postSelector, postId) => {
-//       const currentPost = postSelector.find(p => p.postId === postId);
-  
-//       return currentPost.comments;
-//     },
-//   );
-
 export const getSessions = (state) => {
     const sessions =  state.userSessions.userSessions;
-    const currDate = new Date();
+    const currDate =  Date.now()/1000;
+
+    let myDate = new Date(currDate*1000);
+    let dateStr = myDate.getFullYear() + "/" + (myDate.getMonth() + 1) + "/" + myDate.getDate() + " " + myDate.getHours() + ":" + myDate.getMinutes() + ":" + myDate.getSeconds()
+    console.log("dateStr", dateStr);
+
     let completedSessions = []
     let upcommingSessions = []
     for (let index = 0; index < sessions.length; index++) {

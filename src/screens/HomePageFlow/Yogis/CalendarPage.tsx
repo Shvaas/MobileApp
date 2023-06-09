@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {StyleSheet, ScrollView,SafeAreaView,View,Text, Alert} from 'react-native';
 import React,{ useState } from 'react';
 import 'react-native-gesture-handler';
@@ -10,6 +11,9 @@ import TimingList from "../../../components/TimingList";
 import PrimaryButton from "../../../common/buttons/PrimaryButton";
 import SecondaryButton from '../../../common/buttons/SecondaryButton';
 
+import {useDispatch, useSelector} from 'react-redux';
+
+import {userSessionSlice, getAllSessionsbyMonthYear} from '../../../store/sessionSlice';
 interface PropsType {
     route: any;
   navigation: any;
@@ -20,6 +24,36 @@ const CalendarPage: React.FC<PropsType> = ({route,navigation}) => {
     const yogiProfile = route.params;
     const [selectedDate, setSelectedDate] = useState(new Date());
 
+    // Get all sessions corresponding to a month (month starts from 0 i.e. Jan is 0) and year
+    const session = useSelector((state) => getAllSessionsbyMonthYear(state, [5, 2023]));
+    console.log("session", session);
+
+    let sessionMap = {};
+    for (let index = 0; index < session.length; index++) {
+      let myDate = new Date(session[index].start_date * 1000);
+      const key = myDate.getDate();
+      console.log("key", key, myDate, session[index].start_date);
+      
+      if (key in sessionMap){
+        sessionMap[key].push(session[index]);
+      }else{
+        sessionMap[key] = [session[index]];
+      }
+    }
+
+    console.log("sessionMap", sessionMap);
+    console.log("sessionMap keys", Object.keys(sessionMap));
+
+
+    // Add user sessions
+    // const dispatch = useDispatch();
+    // dispatch(
+    //   userSessionSlice.actions.addSession({
+    //     session: newSsession,
+    //   }),
+    // );
+    
+
     const appointmentTimes = new Map<string, string[]>();
     appointmentTimes.set('2023-6-5',['6:00 am','7:00 am']);
     appointmentTimes.set('2023-6-15',['6:00 am','7:00 am']);
@@ -27,8 +61,9 @@ const CalendarPage: React.FC<PropsType> = ({route,navigation}) => {
     appointmentTimes.set('2023-6-25',['6:00 am','7:00 am','9:00 am','11:30 am','2:00 pm'])
 
     
-    const [selectedTime,setSelectedTime] = useState(0);
-    const [appointmentBooked,setAppointmentBooked] = useState(false);
+    const [selectedTime, setSelectedTime] = useState(0);
+    const [appointmentBooked, setAppointmentBooked] = useState(false);
+
     console.log("selected date",[selectedDate.getFullYear(), selectedDate.getMonth()+1, selectedDate.getDate()+1].join('-'));
     return (
     <View style={{backgroundColor:'white', height:"100%"}}>

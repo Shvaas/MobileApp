@@ -1,8 +1,45 @@
 /* eslint-disable prettier/prettier */
 import {createSlice, createSelector} from '@reduxjs/toolkit';
 
+const mysessions = [
+  {
+    sessionId: '1',
+    instructorId: 3,
+    description: 'random text',
+    zoomlink: '-',
+    start_date: 1680772845,
+    durationMinutes: 45,
+    session_type: 1,
+    total_slots: 10,
+    available_slots: 4,
+  },
+  {
+    sessionId: '2',
+    instructorId: 3,
+    description: 'random text',
+    zoomlink: '-',
+    start_date: 1686331014,
+    durationMinutes: 45,
+    session_type: 1,
+    total_slots: 10,
+    available_slots: 4,
+  },
+  {
+    sessionId: '2',
+    instructorId: 3,
+    description: 'random text',
+    zoomlink: '-',
+    start_date: 1685633128,
+    durationMinutes: 45,
+    session_type: 1,
+    total_slots: 10,
+    available_slots: 4,
+  },
+];
+
+
 const initialState = {
-  sessions: [],
+  sessions: mysessions,
 };
 
 export const sessionSlice = createSlice({
@@ -24,7 +61,7 @@ export const sessionSlice = createSlice({
           let tempSession = {};
           tempSession.instructor_id = serverSessions[i].sessionId;
           tempSession.start_date = serverSessions[i].start_date;
-          tempSession.end_date = serverSessions[i].end_date;
+          tempSession.durationMinutes = serverSessions[i].durationMinutes;
           tempSession.total_slots = serverSessions[i].total_slots;
           tempSession.available_slots = serverSessions[i].available_slots;
           tempSession.description = serverSessions[i].description;
@@ -45,11 +82,25 @@ export const sessionSlice = createSlice({
 
   const sessionSelector = (state) => state.sessions.sessions;
 
+  function getMonth(currDate){
+    let myDate = new Date(currDate*1000);
+    let dateStr = myDate.getFullYear() + "/" + (myDate.getMonth() + 1) + "/" + myDate.getDate() + " " + myDate.getHours() + ":" + myDate.getMinutes() + ":" + myDate.getSeconds()
+    console.log(dateStr);
+    
+    return myDate.getMonth();
+  }
+
+  function getYear(currDate){
+    let myDate = new Date(currDate*1000);
+    return myDate.getFullYear();
+  }
+
   export const getAllSessionsbyMonthYear = createSelector(
     [sessionSelector, (sessionSelector, [month, year]) => [month, year]],
     (sessionSelector, [month, year]) => {
-      const currentSession = sessionSelector.find(p => p.start_date.getMonth() === month &&  p.start_date.getYear() === year);
-  
+
+      const currentSession = sessionSelector.filter(p => getMonth(p.start_date) === month &&  getYear(p.start_date) === year);
+
       return currentSession;
     },
   );

@@ -17,6 +17,8 @@ import ToggleButton from '../../../components/ToggleButton';
 
 import {useDispatch, useSelector} from 'react-redux';
 
+import {getSessions} from '../../../store/userSessionSlice';
+
 interface PropsType {
   navigation: any;
   // firstOption: string;
@@ -250,9 +252,9 @@ enum OPTION {
 
 const AllCourses: React.FC<PropsType> = ({navigation}) => {
 
-  const sessions = useSelector((state) => state.userSessions.currentSession);
-  console.log('redux sessions', sessions);
-
+  const sessions = useSelector(getSessions);
+  const upcommingSessions = sessions[0];
+  const completedSessions = sessions[1];
 
   const [index, setIndex] = useState(1); 
   const onOptionPress = (x: number) => {
