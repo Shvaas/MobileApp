@@ -7,6 +7,7 @@ const RouteNames = {
   [APP_FLOWS.OnboardingFlow]: {
     Welcome: 'Welcome',
     Login: 'Login',
+    FreeTrial: 'FreeTrial',
   },
   [APP_FLOWS.HomePageFlow]: {
     AllYogis: 'Yogis',

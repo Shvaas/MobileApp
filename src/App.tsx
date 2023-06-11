@@ -11,6 +11,8 @@ import {store} from './store';
 import OnboardingStack from './screenStack/OnboardingStack';
 import {APP_FLOWS} from './constants/routeName';
 import HomePageStack from './screenStack/HomePageStack';
+import { StripeProvider } from '@stripe/stripe-react-native';
+
 
 const App = () => {
   React.useEffect(() => {
@@ -19,9 +21,13 @@ const App = () => {
 
   const Stack = createNativeStackNavigator();
 
+  const STRIPE_KEY =
+  'pk_test_51NFknnLrbws9WSwO25PGiyKTzjZlfoDYvV9mBiwCHPL6PVUEknKfJeAcrVQ8LpCLoGfhg4797YTbPvKxfJWL58SB00gv2zdRnv';
+
   return (
     <Provider store={store}>
       <SafeAreaProvider>
+      
         <NavigationContainer>
           <Stack.Navigator
             screenOptions={{
@@ -34,6 +40,7 @@ const App = () => {
             />
           </Stack.Navigator>
         </NavigationContainer>
+
       </SafeAreaProvider>
     </Provider>
   );
