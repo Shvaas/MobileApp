@@ -8,6 +8,7 @@ import {
    ImageBackground,
    Image,
    Button,
+   Alert,
  } from 'react-native';
 import React, { Component } from 'react';
 import { useEffect, useState } from 'react';
@@ -23,6 +24,11 @@ import SubcriptionPlan from '../../components/SubcriptionPlan';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
+import { useStripe } from '@stripe/stripe-react-native';
+
+import { useCreatePaymentIntentMutation } from '../../store/apiSlice';
+
+
 import axios from "axios";
 
 interface PropsType {
@@ -31,26 +37,49 @@ interface PropsType {
 
 const FreeTrial = ({navigation}) => {
   const [user, setUser] = useState(null);
+  const [createPaymentIntent] = useCreatePaymentIntentMutation();
+  const { initPaymentSheet, presentPaymentSheet } = useStripe();
+
 
   React.useEffect(() => {
   }, []);
 
-  const onSubcriptionPressed = async () => {
-    console.log('callind onSubcriptionPressed');
 
-    axios.post('https://6sm5d5xzu8.execute-api.us-west-2.amazonaws.com/stage/payment/create-subscription', {
+  const onSubcriptionPressed = async () => {
+    const response = await createPaymentIntent({
       userId: '313cbfd3-4fc1-4763-9d18-caedd0be4a63',
-      subscriptionType: 'STANDARD'
-  })
-      .then(function (response) {
-          console.log(response);
-      })
-      .catch(function (error) {
-          console.log(error);
-      });
-    
-    //const result = await updateReaction(like);
-    // console.log('put result', result.data);
+      subscriptionType: 'STANDARD',
+		});
+
+
+    const clientSecret = response.data.data.clientSecret;
+    const subscriptionId = response.data.data.subscriptionId;
+    console.log(clientSecret, subscriptionId);
+
+		if (response.error) {
+      console.log('Something went wrong1', response.error);
+      return;
+		}
+
+    const { error: paymentSheetError } = await initPaymentSheet({
+      merchantDisplayName: 'Shvaas, Inc.',
+      paymentIntentClientSecret: clientSecret,
+      defaultBillingDetails: {
+        name: 'Utkarsh Nath',
+      },
+		});
+
+		if (paymentSheetError) {
+      console.log('Something went wrong2', paymentSheetError.message);
+      return;
+		}
+
+    const { error: paymentError } = await presentPaymentSheet();
+
+    if (paymentError) {
+      console.log('Error code: ${paymentError.code}', paymentError.message);
+      return;
+    }
   };
 
 

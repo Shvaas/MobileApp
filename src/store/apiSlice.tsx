@@ -23,8 +23,14 @@ export const apiSlice = createApi({
     }),
 
     // Payments
+    createPaymentIntent: builder.mutation({
+      query: (data) => ({
+        url: 'payment/create-subscription',
+        method: 'POST',
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const {useGetPostsQuery, useUpdateReactionMutation} = apiSlice;
-
+export const {useGetPostsQuery, useUpdateReactionMutation, useCreatePaymentIntentMutation} = apiSlice;

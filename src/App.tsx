@@ -21,13 +21,12 @@ const App = () => {
 
   const Stack = createNativeStackNavigator();
 
-  const STRIPE_KEY =
-  'pk_test_51NFknnLrbws9WSwO25PGiyKTzjZlfoDYvV9mBiwCHPL6PVUEknKfJeAcrVQ8LpCLoGfhg4797YTbPvKxfJWL58SB00gv2zdRnv';
+  const STRIPE_KEY = 'pk_test_51NFknnLrbws9WSwO25PGiyKTzjZlfoDYvV9mBiwCHPL6PVUEknKfJeAcrVQ8LpCLoGfhg4797YTbPvKxfJWL58SB00gv2zdRnv'
 
   return (
     <Provider store={store}>
       <SafeAreaProvider>
-      
+      <StripeProvider publishableKey={STRIPE_KEY}>
         <NavigationContainer>
           <Stack.Navigator
             screenOptions={{
@@ -40,7 +39,7 @@ const App = () => {
             />
           </Stack.Navigator>
         </NavigationContainer>
-
+        </StripeProvider>
       </SafeAreaProvider>
     </Provider>
   );
