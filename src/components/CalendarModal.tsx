@@ -4,13 +4,13 @@ import {Calendar, LocaleConfig} from 'react-native-calendars';
 
 interface PropsType {
     onDateChange: (date: Date) => void,
+    sessionDateStrings: any,
   }
 
-const CalendarModal: React.FC<PropsType> = ({onDateChange}) => {
-  var appointmentDates = ['2023-06-15','2023-06-20','2023-06-25'];
-  
+const CalendarModal: React.FC<PropsType> = ({onDateChange,sessionDateStrings}) => {
+  console.log("sessionDateStrings cal modal", sessionDateStrings);
   let dates = {};
-  appointmentDates.forEach((val) => {
+  sessionDateStrings.forEach((val) => {
   dates[val] = {selected:true,selectedColor:'lightblue',customTextStyle:{fontWeight:"bold"}};});
 
   return (

@@ -1,19 +1,18 @@
 /* eslint-disable prettier/prettier */
-import {StyleSheet, ScrollView,SafeAreaView,View,Text, Alert} from 'react-native';
+import {StyleSheet, View, Alert} from 'react-native';
 import React,{ useState } from 'react';
 import 'react-native-gesture-handler';
-import BackgroundImage from '../../../common/BackgroundImage';
-import {themeFontFamily, themefonts,themeColor} from '../../../constants/theme';
-import { Button } from 'react-native-elements';
 
 import CalendarModal from "../../../components/CalendarModal";
 import TimingList from "../../../components/TimingList";
-import PrimaryButton from "../../../common/buttons/PrimaryButton";
 import SecondaryButton from '../../../common/buttons/SecondaryButton';
+import {utkarsh} from '../../../images/imageLinks'
 
 import {useDispatch, useSelector} from 'react-redux';
 
-import {userSessionSlice, getAllSessionsbyMonthYear} from '../../../store/sessionSlice';
+import {getAllSessionsbyMonthYear} from '../../../store/sessionSlice';
+import {userSessionSlice} from '../../../store/userSessionSlice';
+
 interface PropsType {
     route: any;
   navigation: any;
@@ -23,64 +22,87 @@ const CalendarPage: React.FC<PropsType> = ({route,navigation}) => {
     console.log(route);
     const yogiProfile = route.params;
     const [selectedDate, setSelectedDate] = useState(new Date());
+    console.log("selectedDate",selectedDate, selectedDate.getUTCMonth()+1, selectedDate.getUTCFullYear())
+
+    const dispatch = useDispatch();
 
     // Get all sessions corresponding to a month (month starts from 0 i.e. Jan is 0) and year
-    const session = useSelector((state) => getAllSessionsbyMonthYear(state, [5, 2023]));
-    console.log("session", session);
-
+    const session = useSelector((state) => getAllSessionsbyMonthYear(state, [selectedDate.getUTCMonth(), selectedDate.getFullYear()]));
     let sessionMap = {};
+    // let sessionTimeMap = {};
+    let sessionDateStrings = [];
     for (let index = 0; index < session.length; index++) {
       let myDate = new Date(session[index].start_date * 1000);
       const key = myDate.getDate();
+      
       console.log("key", key, myDate, session[index].start_date);
       
       if (key in sessionMap){
+        // sessionTimeMap[key].push(myDate.toTimeString());
         sessionMap[key].push(session[index]);
       }else{
+        // sessionTimeMap[key] = [myDate.toTimeString()];
         sessionMap[key] = [session[index]];
       }
+      sessionDateStrings.push(myDate.toISOString().substring(0,myDate.toISOString().search('T')))
     }
 
     console.log("sessionMap", sessionMap);
+    // console.log("sessionTimeMap", sessionTimeMap);
     console.log("sessionMap keys", Object.keys(sessionMap));
-
-
-    // Add user sessions
-    // const dispatch = useDispatch();
-    // dispatch(
-    //   userSessionSlice.actions.addSession({
-    //     session: newSsession,
-    //   }),
-    // );
-    
-
-    const appointmentTimes = new Map<string, string[]>();
-    appointmentTimes.set('2023-6-5',['6:00 am','7:00 am']);
-    appointmentTimes.set('2023-6-15',['6:00 am','7:00 am']);
-    appointmentTimes.set('2023-6-20',['6:00 am','7:00 am','10:30 am','3:00 pm'])
-    appointmentTimes.set('2023-6-25',['6:00 am','7:00 am','9:00 am','11:30 am','2:00 pm'])
-
+    console.log("sessionDateStrings cal page",sessionDateStrings.reverse());
+    console.log("selectedDate map", String(selectedDate.getUTCDate()), String(selectedDate.getUTCDate()) in sessionMap);
     
     const [selectedTime, setSelectedTime] = useState(0);
-    const [appointmentBooked, setAppointmentBooked] = useState(false);
 
-    console.log("selected date",[selectedDate.getFullYear(), selectedDate.getMonth()+1, selectedDate.getDate()+1].join('-'));
+    const [sessionBooked, setSessionBooked] = useState(null);
+
+    const onAppointmentConfirm1 = async () => {
+      // Add user sessions
+      // console.log("onAppointmentConfirm");
+      console.log("kjhb", sessionBooked);
+      
+      if(sessionBooked == null){
+        console.log("Null session");
+        return;
+      }
+      //dispatch(userSessionSlice.actions.addSession("postId"));
+      console.log("onAppointmentConfirm1");
+      dispatch(
+        userSessionSlice.actions.addSession({
+              'sessionId': sessionBooked.sessionId,
+              'instructorId': sessionBooked.instructorId,
+              'instructorPhoto': utkarsh,
+              'title': 'Yoga with Utkarsh',
+              'description': sessionBooked.description,
+              'zoomlink': '-',
+              'date': sessionBooked.start_date,
+        }),
+      );
+  
+      console.log("onAppointmentConfirm2");
+      // navigation.goBack();
+    };
+
     return (
     <View style={{backgroundColor:'white', height:"100%"}}>
+
         <CalendarModal
           onDateChange={setSelectedDate}
+          sessionDateStrings = {sessionDateStrings}
         />
+
         <TimingList
-          timings={appointmentTimes.has([selectedDate.getFullYear(), selectedDate.getMonth()+1, selectedDate.getDate()+1].join('-'))?
-          appointmentTimes.get([selectedDate.getFullYear(), selectedDate.getMonth()+1, selectedDate.getDate()+1].join('-')):
-          ['No slots']}
-          selectedTime = {selectedTime}
-          setSelectedTime ={setSelectedTime}
+          timings={(String(selectedDate.getUTCDate()) in sessionMap)? 
+            sessionMap[String(selectedDate.getUTCDate())]:['No slots']}
+          selectedTime = {sessionBooked}
+          setSelectedTime ={setSessionBooked}
         />
 
         <SecondaryButton title="Book Appointment" buttonStyle={styles.buttonStyle}
             containerStyle={styles.btnContainerStyle} onPress={()=>{
-             Alert.alert('Confirm the appointment', [selectedDate.getFullYear(), selectedDate.getMonth()+1, selectedDate.getDate()+1].join('-') + " "+ appointmentTimes.get([selectedDate.getFullYear(), selectedDate.getMonth()+1, selectedDate.getDate()+1].join('-'))[selectedTime], [
+              let myDate = new Date(sessionBooked.start_date * 1000);
+             Alert.alert('Confirm the appointment', myDate.toUTCString(), [
                 {
                   text: 'Cancel',
                   onPress: () => console.log('Cancel Pressed'),
@@ -89,11 +111,14 @@ const CalendarPage: React.FC<PropsType> = ({route,navigation}) => {
                 {text: 'OK', onPress: () => {
                     console.log('OK Pressed');
                     Alert.alert(
-                        'Appointment Booked for '+[selectedDate.getFullYear(), selectedDate.getMonth()+1, selectedDate.getDate()+1].join('-') + " "+ appointmentTimes.get([selectedDate.getFullYear(), selectedDate.getMonth()+1, selectedDate.getDate()+1].join('-'))[selectedTime],'',
+                        'Appointment Booked for '+myDate.toUTCString(),'',
                         [
                             {
                                 text: 'OK',
-                                onPress: () => {navigation.goBack()},
+                                onPress: () => {
+                                  onAppointmentConfirm1()
+                                  // navigation.goBack()
+                                },
                             }
                         ]
                       )
@@ -105,39 +130,8 @@ const CalendarPage: React.FC<PropsType> = ({route,navigation}) => {
 
         <SecondaryButton title="Cancel" buttonStyle={styles.buttonStyle}
             containerStyle={styles.btnContainerStyle} onPress={()=>{navigation.goBack()}}>
-          </SecondaryButton>
-
-        {/* {
-          employees &&
-          <EmployeePicker
-            employees={employees}
-            onEmployeeSelect={this.onEmployeeSelect}
-            onClosed={this.onEmployeeListModalClosed}
-            showEmployeeListModal={this.state.showEmployeeListModal}
-          />
-        } */}
-        {/* <AppointmentConfirm
-          company={company}
-          service={service}
-          userReducer={userReducer}
-          selectedEmployee={this.state.selectedEmployee}
-          selectedTime={this.state.selectedTime}
-          selectedDate={this.state.selectedDate}
-          showAppointmentConfirmModal={this.state.showAppointmentConfirmModal}
-          onClosed={this.onAppointmentConfirmModalListClosed}
-          onAppointmentConfirm={this.handleConfirm}
-          inValidateAppointment={this.inValidateAppointment}
-        />
-
-        {!this.state.showAppointmentConfirmModal  &&
-        <FormButton
-          onPress={this.handleNext}
-          buttonText='Next'
-          containerStyle={{padding:5,margin:10,marginTop:0,marginBottom:0,backgroundColor:'tomato',opacity:0.7}}
-        />
-        } */}
+        </SecondaryButton>
       </View>
-      // </ScrollView>
     );
 };
 

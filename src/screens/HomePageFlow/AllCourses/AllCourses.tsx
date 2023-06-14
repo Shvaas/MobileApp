@@ -59,81 +59,6 @@ const DATA = [
     date: "10/5/23",
     time: "5:00 am"
   },
-  {
-    key: 3,
-    title: "Yoga3",
-    description: "Yoga lorem ipsium the random text",
-    level: 1,
-    maxCap: 20,
-    numOfSessions: 4,
-    instructor: nabeel,
-    name: "Nabeel",
-    instructorRating: 4.5,
-    numOfStudentsEnrolled: 13,
-    cost: "70$",
-    date: "10/5/23",
-    time: "5:00 am"
-  },
-  {
-    key: 4,
-    title: "Yoga4",
-    description: "Yoga lorem ipsium the random text",
-    level: 1,
-    maxCap: 20,
-    numOfSessions: 4,
-    instructor: utkarsh,
-    name: "Utkarsh",
-    instructorRating: 4.5,
-    numOfStudentsEnrolled: 13,
-    cost: "40$",
-    date: "10/5/23",
-    time: "5:00 am"
-  },
-  {
-    key: 5,
-    title: "Yoga5",
-    description: "Yoga lorem ipsium the random text",
-    level: 1,
-    maxCap: 20,
-    numOfSessions: 4,
-    instructor: aryan,
-    name: "Aryan",
-    instructorRating: 4.5,
-    numOfStudentsEnrolled: 13,
-    cost: "90$",
-    date: "10/5/23",
-    time: "5:00 am"
-  },
-  {
-    key: 6,
-    title: "Yoga6",
-    description: "Yoga lorem ipsium the random text",
-    level: 1,
-    maxCap: 20,
-    numOfSessions: 4,
-    instructor: utkarsh,
-    name: "Utkarsh",
-    instructorRating: 4.5,
-    numOfStudentsEnrolled: 13,
-    cost: "150$",
-    date: "10/5/23",
-    time: "5:00 am"
-  },
-  {
-    key: 7,
-    title: "Yoga7",
-    description: "Yoga lorem ipsium the random text",
-    level: 3,
-    maxCap: 10,
-    numOfSessions: 5,
-    instructor: nabeel,
-    name: "Nabeel",
-    instructorRating: 3.5,
-    numOfStudentsEnrolled: 10,
-    cost: "250$",
-    date: "10/5/23",
-    time: "5:00 am"
-  },
 ];
 
 const DATA1 = [
@@ -167,81 +92,6 @@ const DATA1 = [
     date: "10/5/23",
     time: "5:00 am"
   },
-  {
-    key: 3,
-    title: "Yoga3",
-    description: "Yoga lorem ipsium the random text",
-    level: 1,
-    maxCap: 20,
-    numOfSessions: 4,
-    instructor: shikha,
-    name: "Shikha",
-    instructorRating: 4.5,
-    numOfStudentsEnrolled: 13,
-    cost: "70$",
-    date: "10/5/23",
-    time: "5:00 am"
-  },
-  {
-    key: 4,
-    title: "Yoga4",
-    description: "Yoga lorem ipsium the random text",
-    level: 1,
-    maxCap: 20,
-    numOfSessions: 4,
-    instructor: nabeel,
-    name: "Nabeel",
-    instructorRating: 4.5,
-    numOfStudentsEnrolled: 13,
-    cost: "40$",
-    date: "10/5/23",
-    time: "5:00 am"
-  },
-  {
-    key: 5,
-    title: "Yoga5",
-    description: "Yoga lorem ipsium the random text",
-    level: 1,
-    maxCap: 20,
-    numOfSessions: 4,
-    instructor: aryan,
-    name: "Aryan",
-    instructorRating: 4.5,
-    numOfStudentsEnrolled: 13,
-    cost: "90$",
-    date: "10/5/23",
-    time: "5:00 am"
-  },
-  {
-    key: 6,
-    title: "Yoga6",
-    description: "Yoga lorem ipsium the random text",
-    level: 1,
-    maxCap: 20,
-    numOfSessions: 4,
-    instructor: utkarsh,
-    name: "Utkarsh",
-    instructorRating: 4.5,
-    numOfStudentsEnrolled: 13,
-    cost: "150$",
-    date: "10/5/23",
-    time: "5:00 am"
-  },
-  {
-    key: 7,
-    title: "Yoga7",
-    description: "Yoga lorem ipsium the random text",
-    level: 3,
-    maxCap: 10,
-    numOfSessions: 5,
-    instructor: nabeel,
-    name: "Nabeel",
-    instructorRating: 3.5,
-    numOfStudentsEnrolled: 10,
-    cost: "250$",
-    date: "10/5/23",
-    time: "5:00 am"
-  },
 ];
 
 enum OPTION {
@@ -256,6 +106,8 @@ const AllCourses: React.FC<PropsType> = ({navigation}) => {
   const upcommingSessions = sessions[0];
   const completedSessions = sessions[1];
 
+  console.log(upcommingSessions);
+  console.log(completedSessions);
   const [index, setIndex] = useState(1); 
   const onOptionPress = (x: number) => {
     if(x!=index){
@@ -263,7 +115,14 @@ const AllCourses: React.FC<PropsType> = ({navigation}) => {
     }
   }  
   return (
-    <ToggleButton disabled={false} firstOption="FIRST" secondOption="SECOND" activeOption={index} onOptionPress={onOptionPress} dataCurrent={DATA} dataPast={DATA1}/>
+    <ToggleButton
+      disabled={false} 
+      firstOption="FIRST" 
+      secondOption="SECOND" 
+      activeOption={index} 
+      onOptionPress={onOptionPress} 
+      dataCurrent={upcommingSessions} 
+      dataPast={completedSessions}/>
       );
     };
     

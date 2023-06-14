@@ -71,8 +71,8 @@ export const userSessionSlice = createSlice({
 
       addSession: (state, action) => {
         console.log('addSession', action.payload);
-        const {session} = action.payload;
-        state.userSessions.push(session);
+        console.log(1, state.userSessions);
+        state.userSessions.push(action.payload);
       },
     },
   });
@@ -80,11 +80,14 @@ export const userSessionSlice = createSlice({
 
 export const getSessions = (state) => {
     const sessions =  state.userSessions.userSessions;
+    console.log("getSessions", sessions);
+    
     const currDate =  Date.now()/1000;
 
     let myDate = new Date(currDate*1000);
     let dateStr = myDate.getFullYear() + "/" + (myDate.getMonth() + 1) + "/" + myDate.getDate() + " " + myDate.getHours() + ":" + myDate.getMinutes() + ":" + myDate.getSeconds()
     console.log("dateStr", dateStr);
+    // console.log("sessions", sessions);
 
     let completedSessions = []
     let upcommingSessions = []
@@ -95,5 +98,7 @@ export const getSessions = (state) => {
             upcommingSessions.push(sessions[index]);
         }
     }
+    console.log("upcommingSessions",upcommingSessions);
+    console.log("completedSessions",completedSessions);
     return [upcommingSessions, completedSessions];
 };

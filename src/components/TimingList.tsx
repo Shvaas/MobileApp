@@ -5,40 +5,30 @@ import { themeColor } from '../constants/theme';
 
 interface PropsType {
     timings: any,
-    selectedTime:number,
-    setSelectedTime: (index: number)=>void
+    selectedTime: object,
+    setSelectedTime: (index: object)=>void
   }
 
   
 const TimeList: React.FC<PropsType> = ({timings,selectedTime, setSelectedTime}) => {
-  console.log(timings);
+  console.log("timings",timings);
+  console.log("selected session",selectedTime);
     // const [selectedTime,setSelectedTime] = useState({id:0});
     return (
-        <View style={{alignItems:'center'}} >
-        {/* <View style={styles.separator}/>
-        <FlatList
-        data = {timings}
-        renderItem = {({item}) =>
-        {
-            return(
-                <View style={[styles.cellContainer, selectedTime.id == item.id ? styles.activeCell : {}]}>
-                    <TouchableHighlight onPress={()=>setSelectedTime(item)} underlayColor='transparent'>
-                        <Text style={styles.name}>
-                            {item.time_en}
-                        </Text>
-                    </TouchableHighlight>
-                </View>
-            )
-        }}
-        /> */}
+      <View style={{alignItems:'center'}} >
          <Picker
-        style = {{width: 150}}
-        onValueChange={(itemValue, itemIndex) => setSelectedTime(itemIndex)}
-      >
-        {/* <Picker.Item label="Java" value="java" />
-        <Picker.Item label="JavaScript" value="js" /> */}
-         {timings.map((time,index)=>{return <Picker.Item label={time} value={time} key={index}/>})}
-      </Picker>
+        style = {{width: 250}}
+        onValueChange={(itemValue, itemIndex) => setSelectedTime(itemValue)}
+        >
+          { timings[0]=='No slots' ? (<Picker.Item label={'No slots'} value={'No slots'} key={'No slots'}/> ):
+          (timings.map(item => {
+            let myDate = new Date(item.start_date * 1000);
+          return <Picker.Item 
+           label={myDate.toTimeString()} 
+           value={item} 
+           key={item}/>}
+          ))}
+        </Picker>
       </View>
     )
 };
