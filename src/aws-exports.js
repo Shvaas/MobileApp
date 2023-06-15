@@ -43,12 +43,5 @@ const awsmobile = {
     ]
 };
 
-const s3Storage = {
-    AWSS3: {
-        bucket: 'shvaas-user-feed', //REQUIRED -  Amazon S3 bucket name
-        region: 'us-west-2', //OPTIONAL -  Amazon service region
-    }
-};
 
-
-export default s3Storage;
+export default awsmobile;

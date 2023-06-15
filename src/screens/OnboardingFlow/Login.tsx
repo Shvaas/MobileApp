@@ -110,7 +110,7 @@ const Login = () => {
           <LoginButton title={'Sign in with Facebook'} 
           titleStyle={styles.fbtextstyle}
           icon={fb_icon}
-          onPress={() => fbSignIn()}/> 
+          onPress={() => Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Cognito })}/> 
 
         <LoginButton title={'Sign in with Google'} 
           titleStyle={styles.googletextstyle}

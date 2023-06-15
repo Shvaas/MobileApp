@@ -87,7 +87,7 @@ const Welcome: React.FC<PropsType> = ({navigation}) => {
       <View style={styles.bottomContainer}>
         <BottomComponent
           onButtonPress_Login={() => {
-            navigation.navigate(RouteNames.OnboardingFlow.FreeTrial);
+            navigation.navigate(RouteNames.OnboardingFlow.Login);
           }}
           onButtonPress_Home={() => {
             navigation.navigate('Home');
