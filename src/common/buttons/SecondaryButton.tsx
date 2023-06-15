@@ -6,6 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 // Local
 import {ButtonProps} from './types';
 import {themeColor, themeFontFamily, themefonts} from '../../constants/theme';
+import finalPropsSelectorFactory from 'react-redux/es/connect/selectorFactory';
 
 const SecondaryButton: FC<ButtonProps> = (props): ReactElement => {
   return (
@@ -24,6 +25,7 @@ const SecondaryButton: FC<ButtonProps> = (props): ReactElement => {
         title={props.title}
         onPress={props.onPress}
         TouchableComponent={TouchableOpacity}
+        disabled = {props.disabled}
       />
     </LinearGradient>
   );

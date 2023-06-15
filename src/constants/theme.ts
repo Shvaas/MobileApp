@@ -50,4 +50,5 @@ export const themeColor = {
   transparent: 'transparent',
   facebookBlue: '#2D88FF',
   googleRed: '#F76D6D',
+  lightBlue: "#bae2f1",
 };

@@ -1,97 +1,27 @@
 import React from 'react';
 import {
   StyleSheet,
-  TextStyle,
   TouchableWithoutFeedback,
   View,
-  ViewStyle,
   Text,
   TouchableOpacity,
-  SafeAreaView,
   ScrollView,
   FlatList
 } from 'react-native';
-// import Text from 'src/common/DesignSystem/Text/Text';
-// import {themeColor} from 'src/common/theme';
-import {themeFontFamily, themefonts,themeColor} from '../constants/theme';
+
+import {themeColor} from '../constants/theme';
 import BackgroundImageDup from '../common/BackgroundImageFullPage'
 import CourseCardView from '../components/CourseCardView';
-import RouteNames from '../constants/routeName';
-import { Header } from 'react-native-elements';
 import UpcomingCourseCardView from './UpcomingCourseCardView';
 
 export interface ToggleButtonProps {
   navigation: any;
-  firstOption: string;
-  secondOption: string;
-  containerStyle?: ViewStyle;
-  activeFirstContainerStyle?: ViewStyle;
-  activeSecondContainerStyle?: ViewStyle;
-  firstOptionStyle?: TextStyle;
-  secondOptionStyle?: TextStyle;
   activeOption?: number;
   onOptionPress?: (index: OPTION) => void;
   disabled?: boolean;
   dataCurrent : any;
   dataPast: any;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    backgroundColor: themeColor.white,
-    borderRadius: 15,
-    padding: 4,
-    top: 70,
-    width: "100%",
-  },
-  optionContainer: {
-    minWidth: 0,
-  },
-  FirstContainer: {
-    width: "50%",
-    height: 30,
-    padding: 2,
-    borderColor:"blue",
-  },
-  SecondContainer: {
-    width: "50%",
-    height: 30,
-    padding: 2,
-    borderColor:"green"
-  },
-  activeFirstContainer: {
-    backgroundColor: "#bae2f1",
-  },
-  activeSecondContainer: {
-    backgroundColor: "#bae2f1",
-  },
-  option: {
-    borderRadius: 6,
-    alignSelf:'center',
-    textAlignVertical:'center',
-    justifyContent: 'center'
-  },
-  optionText: {
-    textAlign: 'center',
-    color: themeColor.white,
-  },
-  firstOption: {
-    textAlign: 'center',
-    color: themeColor.black,
-  },
-  secondOption: {
-    textAlign: 'center',
-    color: themeColor.black,
-  },
-  contentContainer: {
-    paddingVertical: 5,
-    contentOffset: {x:0, y:0},
-  },
-  containerView: {
-    backgroundColor: themeColor.background,
-  },
-});
 
 enum OPTION {
   FIRST,
@@ -100,13 +30,6 @@ enum OPTION {
 
 const ToggleButton: React.FC<ToggleButtonProps> = ({
   navigation,
-  firstOption,
-  secondOption,
-  containerStyle,
-  activeFirstContainerStyle,
-  activeSecondContainerStyle,
-  firstOptionStyle,
-  secondOptionStyle,
   activeOption,
   onOptionPress = () => {},
   disabled = false,
@@ -119,8 +42,8 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
   };
   return (
     <View>
-      <BackgroundImageDup>
       <View>
+      
       <View style={styles.container}>
         <TouchableWithoutFeedback
           disabled={disabled}
@@ -132,12 +55,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
               selectedOption === OPTION.FIRST ? styles.activeFirstContainer : {},
             ]}>
             <Text
-              style={[
-                selectedOption === OPTION.FIRST
-                  ? styles.firstOption
-                  : styles.optionText,
-                styles.firstOption,
-              ]}>
+              style={styles.firstOption}>
               {"Upcoming sessions"}
             </Text>
           </View>
@@ -149,49 +67,84 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
             style={[
               styles.option,
               styles.SecondContainer,
-              selectedOption === OPTION.SECOND
-                ? styles.activeSecondContainer
-                : {},
+              selectedOption === OPTION.SECOND ? styles.activeSecondContainer : {},
             ]}>
             <Text
-              style={[
-                selectedOption === OPTION.SECOND
-                  ? styles.secondOption
-                  : styles.optionText,
-                styles.secondOption,
-              ]}>
+              style={styles.secondOption}>
               {"Completed sessions"}
             </Text>
           </View>
         </TouchableWithoutFeedback>
       </View>
-      <View style={{padding:10, top: 70}}>
-        <ScrollView contentContainerStyle={styles.contentContainer}>
+
+      <View style={styles.scrollContainerStyle}>
+        <ScrollView contentContainerStyle={styles.scrollViewStyle}>
             <FlatList
-            data={selectedOption === OPTION.FIRST
-              ? dataCurrent
-              : dataPast}
+            data={selectedOption === OPTION.FIRST? dataCurrent: dataPast}
             renderItem = {({item}) => {
               return(
                 <TouchableOpacity>
-                {/* onPress={()=>navigation.navigate(RouteNames.HomePageFlow.AllCourseDetail, {
-                  courseDetail: item,
-                })}> */}
+                  {/* onPress={()=>navigation.navigate(RouteNames.HomePageFlow.AllCourseDetail, {
+                    courseDetail: item,
+                  })}> */}
                   {selectedOption === OPTION.FIRST ?
-                <CourseCardView course={item} />
-                : <UpcomingCourseCardView course={item} />
-                  }
+                   <UpcomingCourseCardView course={item} /> : <CourseCardView course={item} />}
                 </TouchableOpacity>
               )
-            
-            }}
-            />  
+            }}/>  
         </ScrollView>
       </View>
       </View>
-      </BackgroundImageDup>
     </View>
   );
 };
 
 export default ToggleButton;
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    backgroundColor: themeColor.white,
+    borderRadius: 15,
+    padding: 4,
+    top: 70,
+    width: "100%",
+  },
+  
+  option: {
+    borderRadius: 6,
+    justifyContent: 'center',
+    width: "50%",
+    height: 30,
+    padding: 2,
+  },
+  FirstContainer: {
+  },
+  SecondContainer: {
+  },
+  activeFirstContainer: {
+    backgroundColor: themeColor.lightBlue,
+  },
+  activeSecondContainer: {
+    backgroundColor: themeColor.lightBlue,
+  },
+
+  firstOption: {
+    textAlign: 'center',
+    color: themeColor.black,
+  },
+  secondOption: {
+    textAlign: 'center',
+    color: themeColor.black,
+  },
+
+  scrollContainerStyle: {
+    padding:10,
+    top: 70
+  },
+  scrollViewStyle: {
+    paddingVertical: 5,
+    contentOffset: {x:0, y:0},
+  }
+
+}); 

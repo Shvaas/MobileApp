@@ -10,4 +10,5 @@ export interface ButtonProps {
   containerStyle?: StyleProp<ViewStyle>;
   buttonStyle?: StyleProp<ViewStyle>;
   titleStyle?: StyleProp<TextStyle>;
+  disabled?: boolean;
 }

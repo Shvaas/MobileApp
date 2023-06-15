@@ -6,68 +6,41 @@ import {
   } from 'react-native';
   import React from 'react';
 
-  // local
-  import {themeFontFamily, themefonts, themeColor} from '../constants/theme';
-import { Button } from 'react-native-elements/dist/buttons/Button';
-import SecondaryButton from '../common/buttons/SecondaryButton'
+import {themeFontFamily, themefonts, themeColor} from '../constants/theme';
 import PrimaryButton from '../common/buttons/PrimaryButton';
   
-  interface PropsType {
-    course : object
-  }
+interface PropsType {
+  course : object
+}
   
-  const UpcomingCourseCardView: React.FC<PropsType> = ({course}) => {
-    return (
-        <View style={styles.container}>
-            {/* <View style={styles.textContainerStyle}>
-              <Text style={styles.textStyleBold}>{course.title}</Text>
-              <Text style={styles.textStyle}>{course.description}</Text>
-              <Text style={styles.textStyle}>Level: {course.level}</Text>
-              <Text style={styles.textStyle}>Max Capacity: {course.maxCap}</Text>
-              <Text style={styles.textStyle}>{course.numOfSessions} sessions</Text>
-            </View>
-            <View>
-              <View>
-                <Image source={course.instructor} style={styles.imageStyle}></Image>
-                <Text style={styles.ratingStyle}>{course.instructorRating}</Text>
-              </View>
-              <View>
-                <Text style={styles.textStyle}>{course.numOfStudentsEnrolled}{"/"}{course.maxCap}</Text>
-                <Text style={styles.textStyle}>{course.cost}</Text>
-              </View>
-            </View> */}
-            <View style={styles.internalContainer}>
-              <View style={{flexDirection:'row',width:'100%',justifyContent:'space-evenly'}}> 
-                <Image source={course.instructor} style={styles.imageStyle}></Image>
-                <View style={{flexDirection:'column',alignSelf:'center'}}>
-                  <Text style={styles.textStyleName}>{"Yoga with "}{course.name}</Text>
-                  <Text style={styles.textStyleName}>{course.description}</Text>
-                  <Text style={styles.textStyleTime}>{course.date}{", "}{course.time}</Text>
-                </View>
-              </View>
-                {/* <Text style={styles.textStyleTime}>{course.date}{", "}{course.time}</Text> */}
-            </View>
-            <View style={styles.internalContainer2}>
-            <PrimaryButton
-            title={'Start'}
-            buttonStyle={styles.buttonStyle}
-            containerStyle={styles.btnContainerStyle}
-            onPress={()=>{}}
-          />
-           <PrimaryButton
-            title={'Cancel'}
-            buttonStyle={styles.buttonStyle}
-            containerStyle={styles.btnContainerStyle}
-            onPress={()=>{}}
-          />
-            {/* <Button title="Start" style={{backgroundColor:themeColor.googleRed,height:35,width:80}} onPress={()=>{}}>
-          </Button>
-          <Button title="Cancel" style={{backgroundColor:themeColor.googleRed,height:35,width:80}} onPress={()=>{}}>
-          </Button> */}
-            </View>
+const UpcomingCourseCardView: React.FC<PropsType> = ({course}) => {
+  return (
+    <View style={styles.container}>
+      <View style={styles.internalContainer}>
+        <View style={{flexDirection:'row',width:'100%',justifyContent:'space-evenly'}}> 
+          <Image source={course.instructor} style={styles.imageStyle}></Image>
+          <View style={{flexDirection:'column',alignSelf:'center'}}>
+            <Text style={styles.textStyleName}>{"Yoga with "}{course.name}</Text>
+            <Text style={styles.textStyleName}>{course.description}</Text>
+            <Text style={styles.textStyleTime}>{course.date}{", "}{course.time}</Text>
+          </View>
         </View>
-      );
-  };
+      </View>
+      <View style={styles.internalContainer2}>
+        <PrimaryButton
+        title={'Start'}
+        buttonStyle={styles.buttonStyle}
+        containerStyle={styles.btnContainerStyle}
+        onPress={()=>{}}/>
+        <PrimaryButton
+        title={'Cancel'}
+        buttonStyle={styles.buttonStyle}
+        containerStyle={styles.btnContainerStyle}
+        onPress={()=>{}}/>
+      </View>
+    </View>
+  );
+};
 
   export default UpcomingCourseCardView;
 
