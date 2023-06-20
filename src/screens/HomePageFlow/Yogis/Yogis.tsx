@@ -108,127 +108,6 @@ const DATA = [
       },
     ],
   },
-  // {
-  //   key: 4,
-  //   name: 'Shikha Asrani',
-  //   image: shikha,
-  //   yearsOfExp: 2,
-  //   rating: 4.5,
-  //   certificates: 'xyz, abc, 123',
-  //   studentsTrained: 98,
-  //   description: 'Yoga',
-  //   ActiveCourses: 2,
-  // },
-  // {
-  //   key: 5,
-  //   name: 'Nabeel Bhattacharya',
-  //   image: nabeel,
-  //   yearsOfExp: 1,
-  //   rating: 4.5,
-  //   certificates: 'Masters in Yoga',
-  //   studentsTrained: 106,
-  //   description: 'Meditation',
-  //   ActiveCourses: 3,
-  // },
-  // {
-  //   key: 6,
-  //   name: 'Aryan Mittal',
-  //   image: aryan,
-  //   yearsOfExp: 1,
-  //   rating: 4.5,
-  //   certificates: 'xyz, 123',
-  //   studentsTrained: 106,
-  //   description: 'Yoga',
-  //   ActiveCourses: 3,
-  // },
-  // {
-  //   key: 7,
-  //   name: "Utkarsh Nath",
-  //   image: utkarsh,
-  //   yearsOfExp: 4,
-  //   rating: 4.5,
-  //   certificates: "xyz, 123",
-  //   studentsTrained: 106,
-  //   description: "Meditation",
-  //   ActiveCourses: 3
-  // },
-  // {
-  //   key: 8,
-  //   name: "Nabeel Bhattacharya",
-  //   image: nabeel,
-  //   yearsOfExp: 1,
-  //   rating: 4.5,
-  //   certificates: "xyz, 123",
-  //   studentsTrained: 106,
-  //   description: "Meditation",
-  //   ActiveCourses: 3
-  // },
-  // {
-  //   key: 9,
-  //   name: "Utkarsh Nath",
-  //   image: utkarsh,
-  //   yearsOfExp: 4,
-  //   rating: 4.5,
-  //   certificates: "xyz, 123",
-  //   studentsTrained: 106,
-  //   description: "Meditation",
-  //   ActiveCourses: 3
-  // },
-  // {
-  //   key: 10,
-  //   name: "Aryan Mittal",
-  //   image: aryan,
-  //   yearsOfExp: 1,
-  //   rating: 4.5,
-  //   certificates: "xyz, 123",
-  //   studentsTrained: 106,
-  //   description: "Yoga",
-  //   ActiveCourses: 3
-  // },
-  // {
-  //   key: 11,
-  //   name: "Utkarsh Nath",
-  //   image: utkarsh,
-  //   yearsOfExp: 4,
-  //   rating: 4.5,
-  //   certificates: "xyz, 123",
-  //   studentsTrained: 106,
-  //   description: "Meditation",
-  //   ActiveCourses: 3
-  // },
-  // {
-  //   key: 12,
-  //   name: "Aryan Mittal",
-  //   image: aryan,
-  //   yearsOfExp: 1,
-  //   rating: 4.5,
-  //   certificates: "xyz, 123",
-  //   studentsTrained: 106,
-  //   description: "Yoga",
-  //   ActiveCourses: 3
-  // },
-  // {
-  //   key: 13,
-  //   name: "Utkarsh Nath",
-  //   image: utkarsh,
-  //   yearsOfExp: 4,
-  //   rating: 4.5,
-  //   certificates: "xyz, 123",
-  //   studentsTrained: 106,
-  //   description: "Meditation",
-  //   ActiveCourses: 3
-  // },
-  // {
-  //   key: 14,
-  //   name: "Nabeel Bhattacharya",
-  //   image: nabeel,
-  //   yearsOfExp: 1,
-  //   rating: 4.5,
-  //   certificates: "xyz, 123",
-  //   studentsTrained: 106,
-  //   description: "Meditation",
-  //   ActiveCourses: 3
-  // },
 ];
 
 
@@ -249,7 +128,9 @@ const Yogis: React.FC<PropsType> = ({navigation}) => {
                       yogiProfile: item,
                     })
                   }>
-                  <ProfileCardView profile={item} />
+                  <ProfileCardView profile={item} onButtonPress={() =>
+                    navigation.navigate(RouteNames.HomePageFlow.CalendarPage,item)
+                  } />
                 </TouchableOpacity>
               );
             }}

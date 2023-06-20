@@ -6,13 +6,15 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  FlatList
+  FlatList,
+  Dimensions
 } from 'react-native';
 
-import {themeColor} from '../constants/theme';
+import {themeColor, themefonts} from '../constants/theme';
 import BackgroundImageDup from '../common/BackgroundImageFullPage'
 import CourseCardView from '../components/CourseCardView';
 import UpcomingCourseCardView from './UpcomingCourseCardView';
+import RouteNames from '../constants/routeName';
 
 export interface ToggleButtonProps {
   navigation: any;
@@ -76,24 +78,45 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
           </View>
         </TouchableWithoutFeedback>
       </View>
-
+      {selectedOption === OPTION.FIRST?
+      dataCurrent.length==0?
+      <Text style={styles.noSessionText}>No sessions</Text>:
       <View style={styles.scrollContainerStyle}>
         <ScrollView contentContainerStyle={styles.scrollViewStyle}>
             <FlatList
-            data={selectedOption === OPTION.FIRST? dataCurrent: dataPast}
+            data={dataCurrent}
             renderItem = {({item}) => {
               return(
                 <TouchableOpacity>
-                  {/* onPress={()=>navigation.navigate(RouteNames.HomePageFlow.AllCourseDetail, {
-                    courseDetail: item,
-                  })}> */}
-                  {selectedOption === OPTION.FIRST ?
-                   <UpcomingCourseCardView course={item} /> : <CourseCardView course={item} />}
+                   <UpcomingCourseCardView course={item}/>
                 </TouchableOpacity>
               )
             }}/>  
         </ScrollView>
       </View>
+      :
+      dataPast.length==0?
+      <Text style={styles.noSessionText}>No sessions</Text>:
+      <View style={styles.scrollContainerStyle}>
+        <ScrollView contentContainerStyle={styles.scrollViewStyle}>
+            <FlatList
+            data={dataPast}
+            renderItem = {({item}) => {
+              return(
+                <TouchableOpacity onPress={() =>
+                  navigation.navigate(
+                    RouteNames.HomePageFlow.AllCourseDetail,
+                    {
+                      courseDetail: item,
+                    })}>
+                  <CourseCardView course={item} />
+                </TouchableOpacity>
+              )
+            }}/>  
+        </ScrollView>
+      </View>
+      }
+
       </View>
     </View>
   );
@@ -145,6 +168,13 @@ const styles = StyleSheet.create({
   scrollViewStyle: {
     paddingVertical: 5,
     contentOffset: {x:0, y:0},
+  },
+  noSessionText:{
+    color:'grey',
+    fontSize:themefonts.font18,
+    alignSelf:'center',
+    justifyContent: 'center',
+    marginTop: (Dimensions.get('window').height/2)-30,
   }
 
 }); 

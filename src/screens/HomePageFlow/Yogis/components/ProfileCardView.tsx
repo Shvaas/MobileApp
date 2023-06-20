@@ -9,12 +9,15 @@ import {
   themefonts,
 } from '../../../../constants/theme';
 import PrimaryButton from '../../../../common/buttons/PrimaryButton';
+import RouteNames from '../../../../constants/routeName';
 
 interface PropsType {
+  navigation: any;
   profile: object;
+  onButtonPress: any;
 }
 
-const ProfileCardView: React.FC<PropsType> = ({profile}) => {
+const ProfileCardView: React.FC<PropsType> = ({profile, onButtonPress, navigation}) => {
   const {
     image,
     name,
@@ -56,7 +59,7 @@ const ProfileCardView: React.FC<PropsType> = ({profile}) => {
           );
         })}
       </View>
-      <PrimaryButton title="Book Now" onPress={() => {}} containerStyle={{}} />
+      <PrimaryButton title="Book Now" onPress={() => {onButtonPress()}} containerStyle={{}} />
     </View>
   );
 };

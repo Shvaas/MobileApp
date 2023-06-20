@@ -1,10 +1,11 @@
-import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {Image, SafeAreaView, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Carousel from 'react-native-reanimated-carousel';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import RouteNames from '../../../constants/routeName';
+import { backButton } from '../../../images/imageLinks';
 
 import BackgroundImage from '../../../common/BackgroundImage';
 import {
@@ -15,6 +16,7 @@ import {
 import PrimaryButton from '../../../common/buttons/PrimaryButton';
 import {Rating} from 'react-native-elements';
 import SecondaryButton from '../../../common/buttons/SecondaryButton';
+import SimpleButton from '../../../common/buttons/SimpleButton';
 
 interface PropsType {
   navigation: any;
@@ -41,20 +43,25 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <BackgroundImage>
+        <GestureHandlerRootView>
+          <TouchableOpacity onPress={()=>navigation.goBack()}>
+            <Image source={backButton} style={styles.backbutton}/>
+          </TouchableOpacity>
+        </GestureHandlerRootView>    
         <Image source={image} style={styles.imageStyle} />
         <View style={{flexDirection:'row',justifyContent:'space-around'}}>
-        <PrimaryButton
-          title="Book appointment"
+        <SimpleButton
+          title="Book session"
           onPress={() => {navigation.navigate(RouteNames.HomePageFlow.CalendarPage,yogiProfile)}}
             containerStyle={styles.primaryButton}
         />
-        <SecondaryButton
+        {/* <SecondaryButton
           title="Cancel"
           onPress={() => {
             navigation.goBack();
           }}
           containerStyle={styles.primaryButton}
-        />
+        /> */}
         </View>
         <View style={styles.textContainerStyle}>
           <View style={styles.headingContainer}>
@@ -227,5 +234,32 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     backgroundColor: 'transparent'
 
+  },
+  topContainer: {
+    flexDirection: 'row',
+    flex: 0.1,
+  }, 
+
+  // headingContainer: {
+  //   flex: 1,
+  //   justifyContent:'center',
+  //   alignItems: 'center',
+  // },
+
+  backbutton: {
+    margin: 10,
+  },
+
+  buttonContainer: {
+    flex: 0.8,
+  },
+  heading: {
+    fontSize: themefonts.font32,
+    fontFamily: themeFontFamily.ralewaySemiBold,
+    color: themeColor.lightBlue,
+  },
+  safeArea: {
+    flex: 1,
+    // backgroundColor: themeColor.white,
   },
 });

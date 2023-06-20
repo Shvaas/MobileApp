@@ -47,8 +47,7 @@ const HomePageStack = () => {
         options={({route}) => ({
           tabBarLabel: RouteNames.HomePageFlow.Feed,
           tabBarIcon: ({color, size}) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
-          ),
+            <MaterialCommunityIcons name="home" color={color} size={size} />),
           tabBarStyle: {display: getTabStyle(route)},
         })}
       />
@@ -64,22 +63,6 @@ const HomePageStack = () => {
           tabBarStyle: {display: getTabStyle(route)},
         })}
       />
-
-      {/* <Tab.Screen
-        name={RouteNames.HomePageFlow.MyCourse}
-        component={MyCoursesStack}
-        options={({route}) => ({
-          tabBarLabel: RouteNames.HomePageFlow.MyCourse,
-          tabBarIcon: ({color, size}) => (
-            <MaterialCommunityIcons
-              name="meditation"
-              color={color}
-              size={size}
-            />
-          ),
-          tabBarStyle: {display: getTabStyle(route)},
-        })}
-      /> */}
       <Tab.Screen
         name={RouteNames.HomePageFlow.AllCourses}
         component={AllCoursesStack}

@@ -35,6 +35,17 @@ const mysessions = [
     total_slots: 10,
     available_slots: 4,
   },
+  {
+    sessionId: '1',
+    instructorId: 3,
+    description: 'random text',
+    zoomlink: '-',
+    start_date: 1686290400,
+    durationMinutes: 45,
+    session_type: 1,
+    total_slots: 10,
+    available_slots: 4,
+  },
 ];
 
 
