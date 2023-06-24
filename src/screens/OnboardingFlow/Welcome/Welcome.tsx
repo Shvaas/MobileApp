@@ -1,42 +1,3 @@
-// import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
-// import React from 'react';
-
-// // local
-// import {
-//   themeColor,
-//   themeFontFamily,
-//   themefonts,
-// } from '../../../constants/theme';
-// import BackgroundImage from '../../../common/BackgroundImage';
-
-// const Welcome = () => {
-//   return (
-//     <SafeAreaView style={styles.container}>
-//       <BackgroundImage>
-//       <View style={styles.headingContainer}>
-//         <Text style={styles.heading}>Welcome</Text>
-//       </View>
-//       </BackgroundImage>
-//     </SafeAreaView>
-//   );
-// };
-
-// export default Welcome;
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//   },
-//   heading: {
-//     fontSize: themefonts.font32,
-//     textAlign: 'center',
-//     fontFamily: themeFontFamily.raleway,
-//     color: themeColor.white,
-//   },
-//   headingContainer: {},
-// });
-
 import {
   Animated,
   Dimensions,
@@ -87,7 +48,7 @@ const Welcome: React.FC<PropsType> = ({navigation}) => {
       <View style={styles.bottomContainer}>
         <BottomComponent
           onButtonPress_Login={() => {
-            navigation.navigate(RouteNames.OnboardingFlow.Login);
+            navigation.navigate(RouteNames.OnboardingFlow.ProfileQuestions);
           }}
           onButtonPress_Home={() => {
             navigation.navigate('Home');

@@ -9,6 +9,8 @@ import HomePageStack from './HomePageStack';
 import Yogi from '../screens/HomePageFlow/Yogis/YogiProfile';
 import CalendarPage from '../screens/HomePageFlow/Yogis/CalendarPage';
 import FreeTrail from '../screens/OnboardingFlow/FreeTriall';
+import ProfileQuestion from '../screens/OnboardingFlow/ProfileQuestions/ProfileQuestions';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +32,11 @@ const OnboardingStack = () => {
       <Stack.Screen
       name={RouteNames.OnboardingFlow.Login}
       component={Login} />
+
+      <Stack.Screen
+      name={RouteNames.OnboardingFlow.ProfileQuestions}
+      component={ProfileQuestion} />
+
       <Stack.Screen
       name="Home"
       component={HomeNav} />

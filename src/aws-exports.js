@@ -3,12 +3,12 @@
 
 const awsmobile = {
     "aws_project_region": "us-west-2",
-    "aws_cognito_identity_pool_id": "us-west-2:47feb859-001b-45f3-bfac-5d5bd6f48313",
+    "aws_cognito_identity_pool_id": "us-west-2:ad664d0b-b657-4089-92fa-9cc17f092c37",
     "aws_cognito_region": "us-west-2",
-    "aws_user_pools_id": "us-west-2_HVpUfyqbJ",
-    "aws_user_pools_web_client_id": "4qvrcs0tkf7grletcl0bdfrprj",
+    "aws_user_pools_id": "us-west-2_v51TZA46x",
+    "aws_user_pools_web_client_id": "6jvod2i0ia586ajnl8j1e0in8o",
     "oauth": {
-        "domain": "shvaasfe1f2ffcd6e-f2ffcd6e-dev.auth.us-west-2.amazoncognito.com",
+        "domain": "test3043ec940-043ec940-dev.auth.us-west-2.amazoncognito.com",
         "scope": [
             "phone",
             "email",
@@ -16,14 +16,12 @@ const awsmobile = {
             "profile",
             "aws.cognito.signin.user.admin"
         ],
-        "redirectSignIn": "myapp://",
+        "redirectSignIn": "https://www.google.com/",
         "redirectSignOut": "https://www.facebook.com/",
         "responseType": "code"
     },
     "federationTarget": "COGNITO_USER_POOLS",
-    "aws_cognito_username_attributes": [
-        "EMAIL"
-    ],
+    "aws_cognito_username_attributes": [],
     "aws_cognito_social_providers": [
         "FACEBOOK"
     ],

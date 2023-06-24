@@ -8,6 +8,7 @@ const RouteNames = {
     Welcome: 'Welcome',
     Login: 'Login',
     FreeTrial: 'FreeTrial',
+    ProfileQuestions: 'ProfileQuestions',
   },
   [APP_FLOWS.HomePageFlow]: {
     AllYogis: 'Yogis',

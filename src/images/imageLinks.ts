@@ -1,5 +1,6 @@
 export const backgroundImage = require('./background_image.png');
 export const backgroundImageLight = require('./background_image_light.png');
+export const backgroundImageMedium = require('./background_image_medium.png');
 export const backButton = require('./back_button.png');
 export const tick = require('./tick.png');
 export const line = require('./line.png');
