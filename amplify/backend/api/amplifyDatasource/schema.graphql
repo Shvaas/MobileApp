@@ -2,7 +2,7 @@ type Post @model {
   id: ID!
   username: String!
   caption: String
-  likes: Number!
+  likes: Int!
 }
 
 enum PostStatus {

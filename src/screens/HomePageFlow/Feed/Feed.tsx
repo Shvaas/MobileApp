@@ -34,22 +34,22 @@ import {useDispatch, useSelector} from 'react-redux';
 
 
 
-import { Amplify, Auth, Storage } from 'aws-amplify';
+// import { Amplify, Auth, Storage } from 'aws-amplify';
 
-Amplify.configure({
-  Auth: {
-    identityPoolId: 'us-west-2:47feb859-001b-45f3-bfac-5d5bd6f48313', //REQUIRED - Amazon Cognito Identity Pool ID
-    region: 'us-west-2', // REQUIRED - Amazon Cognito Region
-    userPoolId: 'us-west-2_HVpUfyqbJ', //OPTIONAL - Amazon Cognito User Pool ID
-    userPoolWebClientId: '4qvrcs0tkf7grletcl0bdfrpr', //OPTIONAL - Amazon Cognito Web Client ID
-  },
-  Storage: {
-    AWSS3: {
-      bucket: 'shvaas-user-feed', //REQUIRED -  Amazon S3 bucket name
-      region: 'us-west-2', //OPTIONAL -  Amazon service region
-    }
-  }
-});
+// Amplify.configure({
+//   Auth: {
+//     identityPoolId: 'us-west-2:47feb859-001b-45f3-bfac-5d5bd6f48313', //REQUIRED - Amazon Cognito Identity Pool ID
+//     region: 'us-west-2', // REQUIRED - Amazon Cognito Region
+//     userPoolId: 'us-west-2_HVpUfyqbJ', //OPTIONAL - Amazon Cognito User Pool ID
+//     userPoolWebClientId: '4qvrcs0tkf7grletcl0bdfrpr', //OPTIONAL - Amazon Cognito Web Client ID
+//   },
+//   Storage: {
+//     AWSS3: {
+//       bucket: 'shvaas-user-feed', //REQUIRED -  Amazon S3 bucket name
+//       region: 'us-west-2', //OPTIONAL -  Amazon service region
+//     }
+//   }
+// });
 
 
 import {useGetPostsQuery} from '../../../store/apiSlice';
