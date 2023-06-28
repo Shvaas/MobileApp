@@ -5,7 +5,7 @@ import {
     Text,
     View,
     FlatList,
-    ScrollView,
+    TouchableOpacity,
     Button,
     ActivityIndicator,
     TextInput,
@@ -257,7 +257,9 @@ const reinisiallizepost = () => {
             value={searchText}
           /> */}
           <View style={{flexDirection:"row",justifyContent:"space-between",padding:10}}>
-          <Image source={utkarsh} style={styles.imageStyle} />
+          <TouchableOpacity onPress={() => navigation.navigate(RouteNames.HomePageFlow.UserProfile)}> 
+            <Image source={utkarsh} style={styles.imageStyle} />
+          </TouchableOpacity>
           <Text style={{color:themeColor.vividRed,fontSize: themefonts.font18,fontFamily:themeFontFamily.ralewayBold,alignSelf:"center"}}>Shvaas</Text>
           <View style={{flexDirection:"row"}}>
           <MaterialCommunityIcons name="message" color={"#939393"} size={23} style={{alignSelf:"flex-start",padding:5}}/>

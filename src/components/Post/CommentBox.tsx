@@ -28,19 +28,6 @@ const CommentsBox: React.FC<PropsType> = ({commentValue, handleCommentValue, sub
          "comments-button-disabled");
     }
 
-    function onCommentPost(){
-        // dispatch(
-        //   postSlice.actions.addComment({
-        //     comment: commentValue,
-        //     postId: postId,
-        //   }),
-        // );
-        console.log("onCommentPost");
-        
-        // const result = await updateReaction(like);
-        // console.log('put result', result.data);
-      };
-
     return (
             <View style={styles.container}>
                 <View style={styles.leftContainer}>

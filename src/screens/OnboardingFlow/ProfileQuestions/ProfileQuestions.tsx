@@ -135,7 +135,7 @@ const [selectedWeight, setSelectedWeight] = useState(" ");
                   <TouchableOpacity onPress={scrollBack}>
                     <Image source={backButton} style={styles.backbutton}/>
                   </TouchableOpacity>
-            </GestureHandlerRootView>      
+            </GestureHandlerRootView>
           </View>
 
           <View style={styles.greetingContainer}>

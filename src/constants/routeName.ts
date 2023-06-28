@@ -14,6 +14,7 @@ const RouteNames = {
     AllYogis: 'Yogis',
     YogiProfile: 'Yogi Profile',
     Feed: 'Feed',
+    UserProfile: 'User Profile',
     CreatePost: 'Create Post',
     MyCourse: 'My Courses',
     MyCourseDetail: "Course Detail",

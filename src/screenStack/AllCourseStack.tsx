@@ -1,7 +1,7 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AllCourses from '../screens/HomePageFlow/AllCourses/AllCourses';
-import CourseDetail from '../screens/HomePageFlow/AllCourses/CourseDetails';
+import SessionFeedback from '../screens/HomePageFlow/AllCourses/SessionFeedback';
 
 // Local
 import RouteNames from '../constants/routeName';
@@ -21,7 +21,7 @@ const AllCoursesStack = () => {
       />
       <Stack.Screen
         name={RouteNames.HomePageFlow.AllCourseDetail}
-        component={CourseDetail} 
+        component={SessionFeedback} 
       />
     </Stack.Navigator>
   );
