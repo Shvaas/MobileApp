@@ -17,7 +17,7 @@ import {backgroundImageLight, backgroundImageMedium, backButton, utkarsh} from '
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import PrimaryButton from '../../../common/buttons/PrimaryButton';
-
+import RouteNames from '../../../constants/routeName';
 
 interface PropsType {
     navigation: any,
@@ -81,6 +81,7 @@ const SessionFeedback: React.FC<PropsType> = ({route, navigation}) => {
                 title={"Submit Feedback"}
                 buttonStyle={styles.buttonStyle}
                 titleStyle={{color: themeColor.vividRed}}
+                
               />
 
       </ImageBackground>

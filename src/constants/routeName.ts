@@ -12,6 +12,7 @@ const RouteNames = {
   },
   [APP_FLOWS.HomePageFlow]: {
     AllYogis: 'Yogis',
+    TeacherSessions: 'Teacher Session',
     YogiProfile: 'Yogi Profile',
     Feed: 'Feed',
     UserProfile: 'User Profile',

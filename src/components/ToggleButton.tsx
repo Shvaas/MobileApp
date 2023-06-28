@@ -105,7 +105,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
               return(
                 <TouchableOpacity onPress={() =>
                   navigation.navigate(
-                    RouteNames.HomePageFlow.AllCourseDetail,
+                    RouteNames.HomePageFlow.TeacherSessions,
                     {
                       courseDetail: item,
                     })}>
