@@ -28,20 +28,7 @@ import {
  import SubcriptionPlan from '../../components/SubcriptionPlan';
  import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
  import {GestureHandlerRootView} from 'react-native-gesture-handler';
- 
- import { useStripe } from '@stripe/stripe-react-native';
- 
- import { useCreatePaymentIntentMutation } from '../../store/apiSlice';
- 
- import QuestionItem from './QuestionItem'
- import Paginator from './Paginator';
-
-
- import axios from "axios";
-
- import {Picker} from '@react-native-picker/picker';
-import { useRef } from 'react';
-import { color } from 'react-native-elements/dist/helpers';
+ import SettingItem from './SettingItem';
  
  interface PropsType {
    navigation: any;
@@ -49,10 +36,27 @@ import { color } from 'react-native-elements/dist/helpers';
  
  const Profile = ({navigation}) => {
 
+  const settings = [{title:'Profile Questions', description: 'Your health profile'},
+                    {title:'Invite Friends', description: 'Invite your friends to a zenful session'},
+                    {title:'Help', description: 'Understand Shvaas better'},
+                    {title:'Logout', description: 'Understand Shvaas better'},]
 
  
   const [currentIndex, setCurrentIndex] = useState(0);
   const {width} = useWindowDimensions();
+
+  const FlatListItemSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: "100%",
+          backgroundColor: "#666666",
+          opacity: 0.1,
+        }}
+      />
+    );
+  }
 
   const onShare = async () => {
     try {
@@ -73,6 +77,8 @@ import { color } from 'react-native-elements/dist/helpers';
       Alert.alert(error.message);
     }
   };
+
+  
   
    return (
      <SafeAreaView style={styles.safeArea}>
@@ -84,7 +90,7 @@ import { color } from 'react-native-elements/dist/helpers';
                         <Image source={backButton} style={styles.backbutton}/>
                   </TouchableOpacity>
                   <TouchableOpacity >
-                        <Image source={settingsButton} style={styles.backbutton}/>
+                        <Image source={settingsButton} style={[styles.backbutton, {opacity:0}]}/>
                   </TouchableOpacity>
             </GestureHandlerRootView>
           </View>
@@ -107,9 +113,19 @@ import { color } from 'react-native-elements/dist/helpers';
                 <Text style={[styles.standardText]}>Next Level: Intermidiate</Text>
             </View>
           </View>
-          
-          <View style={{flex:0.5, justifyContent:'flex-end',}}>
-          <GestureHandlerRootView style={styles.shareContainer}>
+
+          <GestureHandlerRootView style={{marginTop:10, marginHorizontal:20}}>
+          <FlatList
+            data={settings}
+            ItemSeparatorComponent={FlatListItemSeparator}
+            renderItem={({item}) => <SettingItem item={item}/>}
+            keyExtractor={(item) => item.title}
+          /> 
+          </GestureHandlerRootView>
+
+          <View style={{flex:0.5, justifyContent:'flex-end'}}>
+
+          {/* <GestureHandlerRootView style={styles.shareContainer}>
             <TouchableOpacity style={{flexDirection: 'row', height:'100%'}} onPress={onShare}>
                 <View style={{ flex:0.2, justifyContent:'center', alignItems: 'center',}}>
                 <Image source={inviteIcon} style={styles.backbutton}/>
@@ -119,7 +135,7 @@ import { color } from 'react-native-elements/dist/helpers';
                     <Text style={styles.inviteText}>Invite your friends to a zenful session</Text>
                 </View>
             </TouchableOpacity>
-          </GestureHandlerRootView>
+          </GestureHandlerRootView> */}
 
           <GestureHandlerRootView style={styles.premiumContainer}>
             <TouchableOpacity>
@@ -204,7 +220,7 @@ import { color } from 'react-native-elements/dist/helpers';
   },
 
   shareContainer:{
-      flex: 0.25,
+      height: 70,
       borderRadius: 6,
       marginHorizontal:20,
       marginVertical:10,
@@ -226,7 +242,7 @@ import { color } from 'react-native-elements/dist/helpers';
   },
 
   premiumContainer:{
-    flex: 0.25,
+    height: 60,
     borderRadius: 6,
     marginHorizontal:20,
     marginVertical:10,
