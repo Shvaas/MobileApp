@@ -134,7 +134,7 @@ import { ImageBackground } from 'react-native';
 import {themeFontFamily, themefonts, themeColor} from '../../../constants/theme';
 
 import AgendaItem from '../../../components/AgendaItem';
-import {tick, backgroundImageLight, backButton} from '../../../images/imageLinks'
+import {next, prev, backgroundImageLight, backButton} from '../../../images/imageLinks'
 
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -158,15 +158,15 @@ function getTheme() {
 
   return {
     // arrows
-    arrowColor: 'black',
+    arrowColor: themeColor.vividRed,
     arrowStyle: {padding: 0},
     // knob
     expandableKnobColor: '#22C6F3',
 
     // month
-    monthTextColor: '#000000',
-    textMonthFontSize: themefonts.font18,
-    textMonthFontFamily: themeFontFamily.ralewayBold,
+    monthTextColor: themeColor.vividRed,
+    textMonthFontSize: themefonts.font16,
+    textMonthFontFamily: themeFontFamily.ralewaySemiBold,
     textMonthFontWeight: 'bold' as const,
 
     // day names
@@ -185,7 +185,7 @@ function getTheme() {
 
     // selected date
     selectedDayBackgroundColor: '#22C6F3',
-    selectedDayTextColor: 'white',
+    selectedDayTextColor: themeColor.white,
 
     // disabled date
     textDisabledColor: disabledColor,
@@ -194,7 +194,7 @@ function getTheme() {
     dotColor: tColor,
     selectedDotColor: 'white',
     disabledDotColor: disabledColor,
-    dotStyle: {marginTop: -3}
+    dotStyle: {marginTop: 1},
   };
 }
 
@@ -229,12 +229,12 @@ const dispatch = useDispatch();
   const weekView = false;
   const theme = useRef(getTheme());
   const todayBtnTheme = useRef({
-    todayButtonTextColor: 'blue'
+    todayButtonTextColor: themeColor.vividRed, 
   });
 
   // Get all sessions corresponding to a month (month starts from 0 i.e. Jan is 0) and year
   let todayDate = new Date();
-  const session = useSelector((state) => getAllSessionsbyMonthYear(state, [todayDate.getUTCMonth(), todayDate.getFullYear()]));
+  const session = useSelector((state) => getAllSessionsbyMonthYear(state, [5, todayDate.getFullYear()]));
 
   let sessionMap = {};
   let sessionDateStrings = [];
@@ -286,9 +286,9 @@ const dispatch = useDispatch();
 
   return (
     <SafeAreaView style={styles.safeArea}>
-    
+    <ImageBackground source={backgroundImageLight} style={styles.image}>
       <View style={styles.topContainer}>
-        <GestureHandlerRootView>
+        <GestureHandlerRootView style={{backgroundColor: themeColor.white}}>
           <TouchableOpacity onPress={()=>navigation.goBack()}>
             <Image source={backButton} style={styles.backbutton}/>
           </TouchableOpacity>
@@ -305,7 +305,7 @@ const dispatch = useDispatch();
       // onDateChanged={onDateChanged}
       // onMonthChange={onMonthChange}
       showTodayButton
-      // disabledOpacity={0.6}
+      disabledOpacity={0.6}
       theme={todayBtnTheme.current}
       // todayBottomMargin={16}
     >
@@ -326,9 +326,9 @@ const dispatch = useDispatch();
           // disableAllTouchEventsForDisabledDays
           firstDay={1}
           markedDates={marked}
-          leftArrowImageSource={tick}
-          rightArrowImageSource={tick}
-          // animateScroll
+          leftArrowImageSource={prev}
+          rightArrowImageSource={next}
+          animateScroll
           // closeOnDayPress={false}
         />
       )}
@@ -336,10 +336,11 @@ const dispatch = useDispatch();
         sections={itemsCopy}
         renderItem={renderItem}
         // scrollToNextEvent
-        sectionStyle={styles.section}
+        sectionStyle={[styles.section]}
         // dayFormat={'yyyy-MM-d'}
       />
     </CalendarProvider>
+    </ImageBackground>
     </SafeAreaView>
   );
 };
@@ -352,13 +353,18 @@ const styles = StyleSheet.create({
     paddingRight: 20
   },
   header: {
-    backgroundColor: 'lightgrey'
+    backgroundColor: 'green'
   },
+
   section: {
-    backgroundColor: 'white',
-    color: 'grey',
-    textTransform: 'capitalize'
+    color: '#333333',
+    textTransform: 'capitalize',
+    fontFamily: themeFontFamily.raleway,
+    fontWeight: '600',
+    fontSize: themefonts.font14,
+    backgroundColor: 'transparent',
   },
+
   image: {
     height: "100%",
     width:"100%",
@@ -367,13 +373,14 @@ const styles = StyleSheet.create({
   topContainer: {
     flexDirection: 'row',
     flex: 0.1,
-  }, 
+    backgroundColor: themeColor.white,
+  },
 
   headingContainer: {
     flex: 1,
     justifyContent:'center',
     alignItems: 'center',
-    borderWidth:1, 
+    backgroundColor: themeColor.white,
   },
 
   backbutton: {
@@ -384,9 +391,9 @@ const styles = StyleSheet.create({
     flex: 0.8,
   },
   heading: {
-    fontSize: themefonts.font32,
-    fontFamily: themeFontFamily.ralewaySemiBold,
-    color: themeColor.lightBlue,
+    fontSize: themefonts.font18,
+    fontFamily: themeFontFamily.ralewayBold,
+    color: themeColor.black,
   },
   safeArea: {
     flex: 1,

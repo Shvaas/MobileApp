@@ -152,7 +152,7 @@ const ViewableItemsChanged = useCallback(
   // 
 
   if (post.length === 0){
-    dispatch(postSlice.actions.initialPost(data?.data.slice(0, -1)));
+    dispatch(postSlice.actions.initialPost(data?.data.slice(0,-1)));
   }
 
   // let post = null;

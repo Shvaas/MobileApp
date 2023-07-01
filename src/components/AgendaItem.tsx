@@ -81,13 +81,13 @@ const dispatch = useDispatch();
   }
 // Title, Descripion, duration
   return (
-    <TouchableOpacity onPress={itemPressed} style={styles.item} testID={'item'}>
+    <TouchableOpacity onPress={itemPressed} style={styles.container} testID={'item'}>
       <View style={{flex:0.7, flexDirection:'column'}}>
-        <Text style={styles.itemTitleText}>Title</Text>
-        <Text style={styles.textStyle}>One line description or tags </Text>
+        <Text style={[styles.itemTitleText,{marginBottom:5}]}>Title</Text>
+        <Text style={[styles.textStyle,{marginTop:5}]}>One line description or tags </Text>
       </View>
-      <View style={{flexDirection:'column', flex:0.3, justifyContent:'center', alignItems:'flex-end'}}>
-        <Text style={styles.textStyle}> 10 - 11 AM </Text>
+      <View style={{flexDirection:'column', flex:0.3, justifyContent:'flex-end', alignItems:'flex-end'}}>
+        <Text style={[styles.textStyle,{fontFamily: themeFontFamily.ralewaySemiBold}]}> 10 - 11 AM </Text>
         {/* <Text style={styles.textStyle}> 4 Slots left </Text> */}
       </View>
     </TouchableOpacity>
@@ -99,13 +99,32 @@ export default AgendaItem;
 
 
 const styles = StyleSheet.create({
-  item: {
+  container: {
     margin:10,
+    padding:20,
+    shadowColor:"black",
+    shadowOpacity: 0.25,
+    shadowRadius:4,
+    shadowOffset: {
+    width: -4,
+    height: 4,
+    },
+    backgroundColor: 'white',
+    opacity: 0.78,
+    borderRadius:10,
+    flexDirection:"row",
+    justifyContent:'space-between'
+    
+  },
+
+  item: {
+    marginVertical:10,
+    marginHorizontal:20,
     padding: 10,
     backgroundColor: 'white',
     borderBottomWidth:0.2,
     borderBottomColor:'#666666',
-    flexDirection: 'row', 
+    flexDirection: 'row',
     opacity:.78
   },
   itemHourText: {
@@ -126,8 +145,8 @@ const styles = StyleSheet.create({
 
   textStyle: {
     fontFamily: themeFontFamily.raleway,
-    fontSize: themefonts.font16,
-    color: '#313131'
+    fontSize: themefonts.font14,
+    color: themeColor.black
   },
   
 });
