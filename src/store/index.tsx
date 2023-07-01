@@ -1,17 +1,30 @@
 import {configureStore} from '@reduxjs/toolkit';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {persistReducer} from 'redux-persist';
+import {combineReducers} from "redux";
+
 import {postSlice} from './postSlice';
 import {userSessionSlice} from './userSessionSlice';
 import {sessionSlice} from './sessionSlice';
 import {apiSlice} from './apiSlice';
 
-export const store = configureStore({
-  reducer: {
-    posts: postSlice.reducer,
-    userSessions: userSessionSlice.reducer,
-    sessions: sessionSlice.reducer,
-    api: apiSlice.reducer,
-  },
+const reducers = combineReducers({
+  posts: postSlice.reducer,
+  userSessions: userSessionSlice.reducer,
+  sessions: sessionSlice.reducer,
+  api: apiSlice.reducer,
+});
 
+const persistConfig = {
+  key: 'root',
+  storage: AsyncStorage,
+  whitelist: ['posts'],
+};
+
+const persistedReducer = persistReducer(persistConfig, reducers);
+
+export const store = configureStore({
+  reducer: persistedReducer,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(apiSlice.middleware),
 });

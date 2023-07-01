@@ -51,8 +51,6 @@ Amplify.configure({
   }
 });
 
-// import awsconfig from '../../../aws-exports';
-// Amplify.configure(awsconfig);
 
 import {useGetPostsQuery} from '../../../store/apiSlice';
 
@@ -71,34 +69,6 @@ interface PropsType {
 
 
 const Feed: React.FC<PropsType> = ({navigation}) => {
-
-//   Storage.configure({ 
-//     bucket: 'shvaas-user-feed',
-//     level: 'public',
-//     region: 'us-west-2',
-//  });
-
-  //"https://shvaas-user-feed.s3.us-west-2.amazonaws.com/test2.jpeg"
-  
-
-  // async function download(key: string){
-  //   // const result = await Storage.put("test.txt", "Hello");
-  //   console.log('try signedURL');
-  //   try {
-  //     //const result = await Storage.put("test.txt", "Hello");
-  //     const result = await Storage.get(key, { download: true });
-  //     console.log(result);
-  //   } catch (error) {
-  //     console.log('get url', Storage.getModuleName());
-  //     console.log('download s3 error', error);
-  //   }
-  //   // result.Body.text().then((string) => {
-  //   //   console.log('signedURL', signedURL);
-  //   // });
-  // }
-
-  // download("abc.jpeg");
-  
 
 
   const [visibleItemIndex, setVisibleItemIndex] = useState(0);
@@ -136,6 +106,8 @@ const ViewableItemsChanged = useCallback(
   }, []);
 
   const post = useSelector((state) => state.posts.posts);
+  console.log("before loading post", post.length);
+
 
   if (isLoading) {
     return <ActivityIndicator />;

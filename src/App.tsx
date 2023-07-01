@@ -4,6 +4,8 @@ import SplashScreen from 'react-native-splash-screen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
+import {PersistGate} from "redux-persist/integration/react";
+import {persistStore} from "redux-persist";
 import {Provider} from 'react-redux';
 import {store} from './store';
 
@@ -13,6 +15,7 @@ import {APP_FLOWS} from './constants/routeName';
 import HomePageStack from './screenStack/HomePageStack';
 import { StripeProvider } from '@stripe/stripe-react-native';
 
+let persistor = persistStore(store);
 
 const App = () => {
   React.useEffect(() => {
@@ -25,6 +28,7 @@ const App = () => {
 
   return (
     <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
       <SafeAreaProvider>
       <StripeProvider publishableKey={STRIPE_KEY}>
         <NavigationContainer>
@@ -41,6 +45,7 @@ const App = () => {
         </NavigationContainer>
         </StripeProvider>
       </SafeAreaProvider>
+      </PersistGate>
     </Provider>
   );
 };
