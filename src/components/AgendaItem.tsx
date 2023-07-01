@@ -1,17 +1,22 @@
+/* eslint-disable prettier/prettier */
 // import isEmpty from 'lodash/isEmpty';
 import React, {useCallback, useState} from 'react';
 import {StyleSheet, Alert, View, Text, TouchableOpacity, Button} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {userSessionSlice} from '../store/userSessionSlice';
 import {utkarsh} from '../images/imageLinks'
-
+import {
+  themeFontFamily,
+  themefonts,
+  themeColor,
+} from '../constants/theme';
 interface PropsType {
     item: any
 }
 
 const AgendaItem: React.FC<PropsType> = ({item}) => {
 const dispatch = useDispatch();
-  console.log("item",item);
+  console.log("AgendaItem",item);
   let myDate = new Date(item.start_date * 1000);
 
   const onAppointmentConfirm = async () => {
@@ -68,25 +73,25 @@ const dispatch = useDispatch();
 
 
   if (Object.keys(item).length === 0) {
-      console.log("here")
     return (
-      <View style={styles.emptyItem}>
-        <Text style={styles.emptyItemText}>No Events Planned Today</Text>
+      <View style={{justifyContent:'center', alignItems:'center'}}>
+        <Text style={styles.textStyle}>No Events Planned Today</Text>
       </View>
     );
   }
-
+// Title, Descripion, duration
   return (
     <TouchableOpacity onPress={itemPressed} style={styles.item} testID={'item'}>
-      <View>
-        <Text style={styles.itemHourText}>{item.hour}</Text>
-        <Text style={styles.itemDurationText}>{item.durationMinutes}</Text>
+      <View style={{flex:0.7, flexDirection:'column'}}>
+        <Text style={styles.itemTitleText}>Title</Text>
+        <Text style={styles.textStyle}>One line description or tags </Text>
       </View>
-      <Text style={styles.itemTitleText}>{item.description}</Text>
-      <View style={styles.itemButtonContainer}>
-        <Button color={'grey'} title={'Info'} onPress={buttonPressed}/>
+      <View style={{flexDirection:'column', flex:0.3, justifyContent:'center', alignItems:'flex-end'}}>
+        <Text style={styles.textStyle}> 10 - 11 AM </Text>
+        {/* <Text style={styles.textStyle}> 4 Slots left </Text> */}
       </View>
     </TouchableOpacity>
+
   );
 };
 
@@ -95,11 +100,13 @@ export default AgendaItem;
 
 const styles = StyleSheet.create({
   item: {
-    padding: 20,
+    margin:10,
+    padding: 10,
     backgroundColor: 'white',
-    borderBottomWidth: 1,
-    borderBottomColor: 'lightgrey',
-    flexDirection: 'row'
+    borderBottomWidth:0.2,
+    borderBottomColor:'#666666',
+    flexDirection: 'row', 
+    opacity:.78
   },
   itemHourText: {
     color: 'black'
@@ -110,25 +117,17 @@ const styles = StyleSheet.create({
     marginTop: 4,
     marginLeft: 4
   },
+
   itemTitleText: {
-    color: 'black',
-    marginLeft: 16,
-    fontWeight: 'bold',
-    fontSize: 16
+    fontSize: themefonts.font16,
+    fontFamily: themeFontFamily.ralewaySemiBold,
+    color: '#FD7C23',
   },
-  itemButtonContainer: {
-    flex: 1,
-    alignItems: 'flex-end'
+
+  textStyle: {
+    fontFamily: themeFontFamily.raleway,
+    fontSize: themefonts.font16,
+    color: '#313131'
   },
-  emptyItem: {
-    paddingLeft: 20,
-    height: 52,
-    justifyContent: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: 'lightgrey'
-  },
-  emptyItemText: {
-    color: 'lightgrey',
-    fontSize: 14
-  }
+  
 });

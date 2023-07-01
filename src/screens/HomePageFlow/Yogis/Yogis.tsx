@@ -72,7 +72,7 @@ const DATA = [
         image: shikha,
         name: 'Shikha Asrani',
         review:
-          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vitae cumque, sed, dolor culpa cum praesentium possimus animi quia, omnis quod distinctio magnam qui? Ab dignissimos vero aliquam velit!',
+          "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vitae cumque, sed, dolor culpa cum praesentium possimus animi quia, omnis quod distinctio magnam qui? Ab dignissimos vero aliquam velit!",
       },
       {
         image: aryan,

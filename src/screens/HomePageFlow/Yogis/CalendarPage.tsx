@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 // /* eslint-disable prettier/prettier */
 // import {StyleSheet, View, Alert} from 'react-native';
 // import React,{ useState } from 'react';
@@ -130,7 +131,7 @@ import {ExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar} from 're
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import { ImageBackground } from 'react-native';
-import {themeFontFamily, themefonts,themeColor} from '../../../constants/theme';
+import {themeFontFamily, themefonts, themeColor} from '../../../constants/theme';
 
 import AgendaItem from '../../../components/AgendaItem';
 import {tick, backgroundImageLight, backButton} from '../../../images/imageLinks'
@@ -147,9 +148,9 @@ interface PropsType {
   navigation: any;
 }
 
-const CalendarPage: React.FC<PropsType> = ({route,navigation}) => {
+const CalendarPage: React.FC<PropsType> = ({route, navigation}) => {
 
-const themeColor = '#00AAAF';
+const tColor = '#00AAAF';
 const lightThemeColor = '#f2f7f7';
 
 function getTheme() {
@@ -160,34 +161,40 @@ function getTheme() {
     arrowColor: 'black',
     arrowStyle: {padding: 0},
     // knob
-    expandableKnobColor: themeColor,
+    expandableKnobColor: '#22C6F3',
+
     // month
-    monthTextColor: 'black',
-    textMonthFontSize: 16,
-    textMonthFontFamily: 'HelveticaNeue',
+    monthTextColor: '#000000',
+    textMonthFontSize: themefonts.font18,
+    textMonthFontFamily: themeFontFamily.ralewayBold,
     textMonthFontWeight: 'bold' as const,
+
     // day names
-    textSectionTitleColor: 'black',
-    textDayHeaderFontSize: 12,
-    textDayHeaderFontFamily: 'HelveticaNeue',
+    textSectionTitleColor: '#39393A',
+    textDayHeaderFontSize: themefonts.font14,
+    textDayHeaderFontFamily: themeFontFamily.raleway,
     textDayHeaderFontWeight: 'normal' as const,
+
     // dates
-    dayTextColor: themeColor,
-    todayTextColor: '#af0078',
-    textDayFontSize: 18,
-    textDayFontFamily: 'HelveticaNeue',
+    dayTextColor: '#39393A',
+    todayTextColor: '#22C6F3',
+    textDayFontSize: themefonts.font16,
+    textDayFontFamily: themeFontFamily.raleway,
     textDayFontWeight: '500' as const,
     textDayStyle: {marginTop: Platform.OS === 'android' ? 2 : 4},
+
     // selected date
-    selectedDayBackgroundColor: themeColor,
+    selectedDayBackgroundColor: '#22C6F3',
     selectedDayTextColor: 'white',
+
     // disabled date
     textDisabledColor: disabledColor,
+
     // dot (marked date)
-    dotColor: themeColor,
+    dotColor: tColor,
     selectedDotColor: 'white',
     disabledDotColor: disabledColor,
-    dotStyle: {marginTop: -2}
+    dotStyle: {marginTop: -3}
   };
 }
 
@@ -264,15 +271,13 @@ const dispatch = useDispatch();
     console.log("itemscopy", itemsCopy);
       itemsCopy.forEach((val) => {
         if (val.data && val.data.length>0){
-                    marked[val.title] = {marked: true};
-                  }
-                  else{
-                    marked[val.title] = {disabled: true};
-                  }}
-                  );
+            marked[val.title] = {marked: true};
+          }
+          else{
+            marked[val.title] = {disabled: true};
+          }}
+          );
 
-  console.log(marked);
-      
 
   console.log("sessionMap",sessionMap);
   const renderItem = useCallback(({item}: any) => {
@@ -281,7 +286,7 @@ const dispatch = useDispatch();
 
   return (
     <SafeAreaView style={styles.safeArea}>
-    <ImageBackground source={backgroundImageLight} style={styles.image}>
+    
       <View style={styles.topContainer}>
         <GestureHandlerRootView>
           <TouchableOpacity onPress={()=>navigation.goBack()}>
@@ -291,8 +296,10 @@ const dispatch = useDispatch();
         <View style={styles.headingContainer}>
             <Text style={styles.heading}>Book Session</Text>
         </View>
-        <Image source={backButton} style={[styles.backbutton,{'opacity':0}]}/>              
+        <Image source={backButton} style={[styles.backbutton,{'opacity':0}]}/>
       </View>
+
+
     <CalendarProvider
       date= {todayDate.toISOString().substring(0,todayDate.toISOString().search('T'))}
       // onDateChanged={onDateChanged}
@@ -303,7 +310,7 @@ const dispatch = useDispatch();
       // todayBottomMargin={16}
     >
       {weekView ? (
-        <WeekCalendar testID={'weekCalendar'} firstDay={1} markedDates={marked}/>
+        <WeekCalendar testID={'weekCalendar'} firstDay={1} markedDates={marked} />
       ) : (
         <ExpandableCalendar
           testID={'expandableCalendar'}
@@ -333,7 +340,6 @@ const dispatch = useDispatch();
         // dayFormat={'yyyy-MM-d'}
       />
     </CalendarProvider>
-    </ImageBackground>
     </SafeAreaView>
   );
 };
@@ -367,6 +373,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent:'center',
     alignItems: 'center',
+    borderWidth:1, 
   },
 
   backbutton: {
@@ -383,7 +390,7 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     flex: 1,
-    // backgroundColor: themeColor.white,
+    backgroundColor: themeColor.white,
   },
 
 });

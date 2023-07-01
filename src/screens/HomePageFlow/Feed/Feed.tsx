@@ -81,21 +81,21 @@ const Feed: React.FC<PropsType> = ({navigation}) => {
   //"https://shvaas-user-feed.s3.us-west-2.amazonaws.com/test2.jpeg"
   
 
-  async function download(key: string){
-    // const result = await Storage.put("test.txt", "Hello");
-    console.log('try signedURL');
-    try {
-      //const result = await Storage.put("test.txt", "Hello");
-      const result = await Storage.get(key, { download: true });
-      console.log(result);
-    } catch (error) {
-      console.log('get url', Storage.getModuleName());
-      console.log('download s3 error', error);
-    }
-    // result.Body.text().then((string) => {
-    //   console.log('signedURL', signedURL);
-    // });
-  }
+  // async function download(key: string){
+  //   // const result = await Storage.put("test.txt", "Hello");
+  //   console.log('try signedURL');
+  //   try {
+  //     //const result = await Storage.put("test.txt", "Hello");
+  //     const result = await Storage.get(key, { download: true });
+  //     console.log(result);
+  //   } catch (error) {
+  //     console.log('get url', Storage.getModuleName());
+  //     console.log('download s3 error', error);
+  //   }
+  //   // result.Body.text().then((string) => {
+  //   //   console.log('signedURL', signedURL);
+  //   // });
+  // }
 
   // download("abc.jpeg");
   

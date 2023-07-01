@@ -1,11 +1,13 @@
-import {Image, SafeAreaView, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+/* eslint-disable prettier/prettier */
+import {Image, SafeAreaView, StyleSheet, 
+  Text, View, TouchableOpacity, ImageBackground} from 'react-native';
 import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Carousel from 'react-native-reanimated-carousel';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import RouteNames from '../../../constants/routeName';
-import { backButton } from '../../../images/imageLinks';
+import { backButton, backgroundImageMedium, backgroundImageLight } from '../../../images/imageLinks';
 
 import BackgroundImage from '../../../common/BackgroundImage';
 import {
@@ -14,7 +16,8 @@ import {
   themeColor,
 } from '../../../constants/theme';
 import PrimaryButton from '../../../common/buttons/PrimaryButton';
-import {Rating} from 'react-native-elements';
+
+import { Rating } from 'react-native-ratings';
 import SecondaryButton from '../../../common/buttons/SecondaryButton';
 import SimpleButton from '../../../common/buttons/SimpleButton';
 
@@ -30,7 +33,7 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
 
   const getCarouselItem = ({item}) => {
     return (
-      <View style={styles.itemContainer}>
+      <View style={styles.textContainerStyle}>
         <View style={styles.itemTopContainer}>
           <Image source={item.image} style={styles.carousalImage} />
           <Text style={styles.itemName}>{item.name}</Text>
@@ -42,63 +45,65 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <BackgroundImage>
-        <GestureHandlerRootView>
+      <ImageBackground source={backgroundImageLight} style={styles.image}>
+        <GestureHandlerRootView style={{marginTop:0}}>
           <TouchableOpacity onPress={()=>navigation.goBack()}>
             <Image source={backButton} style={styles.backbutton}/>
           </TouchableOpacity>
-        </GestureHandlerRootView>    
+        </GestureHandlerRootView>
+
         <Image source={image} style={styles.imageStyle} />
-        <View style={{flexDirection:'row',justifyContent:'space-around'}}>
-        <SimpleButton
-          title="Book session"
-          onPress={() => {navigation.navigate(RouteNames.HomePageFlow.CalendarPage,yogiProfile)}}
-            containerStyle={styles.primaryButton}
-        />
-        {/* <SecondaryButton
-          title="Cancel"
-          onPress={() => {
-            navigation.goBack();
-          }}
-          containerStyle={styles.primaryButton}
-        /> */}
+        <View style={{flexDirection:'row', alignItems:'center' , justifyContent:'center'}}>
+            <Text style={styles.usernameText}>{name}</Text>
         </View>
-        <View style={styles.textContainerStyle}>
-          <View style={styles.headingContainer}>
-            <Text style={styles.textStyleBold}>{name}</Text>
-            <View style={styles.iconContainer}>
-              <FontAwesome
-                name="facebook-square"
-                size={29}
-                style={styles.fbIcon}
-              />
-              <FontAwesome
-                name="instagram"
-                size={30}
-                color={themeColor.vividRed}
-              />
-            </View>
-          </View>
+        
+        <View style={{flexDirection:'row', alignItems:'center' , justifyContent:'center'}}>
           <Rating
-           type='custom'
-            readonly
-            // type="custom"
-            // ratingColor={themeColor.vividRed}
-            // tintColor={themeColor.white}
-            imageSize={18}
-            startingValue={rating}
-            style={styles.ratings}
-          />
-          <Text style={styles.textStyle}>Experience: {yearsOfExp} years</Text>
-          <Text style={styles.textStyle}>{certificates}</Text>
+            type='custom'
+              readonly
+              // type="custom"
+              ratingColor={'#FD7C23'}
+              tintColor='none'
+              imageSize={18}
+              startingValue={rating}
+              style={styles.ratings}
+            />
+            <Text style={{fontFamily:themeFontFamily.raleway, fontSize:themefonts.font12}}> (12 ratings)</Text>
+          
+        </View>
+
+
+          <View style={{flexDirection:'row'}}>
+          <View style={{marginHorizontal:10, marginTop:20}}>
+              <Text style={styles.textStyle}>Experience: {yearsOfExp} years</Text>
+              <Text style={styles.textStyle}>{certificates}</Text>
+              <Text style={styles.textStyle}>Students trained: {studentsTrained}</Text>
+          </View>
+          <View style={{ marginTop:0}}>
+            <SimpleButton
+            title="Book session"
+            onPress={() => {navigation.navigate(RouteNames.HomePageFlow.CalendarPage, yogiProfile)}}
+              containerStyle={styles.primaryButton}
+            />
+          </View>
+          </View>
+
+        <View style={{marginHorizontal:10}}>
+          <View style={{flexDirection:'row', marginBottom:5}}>
+            <Text style={styles.textStyle}>Connect on: </Text>
+            <FontAwesome name="facebook-square" size={20} style={styles.fbIcon} />
+            <FontAwesome name="instagram" size={20} color={themeColor.vividRed} />
+        </View>
           <Text style={styles.textStyle}>
-            Students trained: {studentsTrained}
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vita 
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vita
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vita
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur 
           </Text>
         </View>
-        <View style={styles.textContainerStyle}>
-          <Text style={styles.textStyle}>{description}</Text>
-        </View>
-        <GestureHandlerRootView>
+
+
+        <GestureHandlerRootView style={{justifyContent: 'flex-end', flex:1 , alignItems:'center'}}>
           <Carousel
             data={reviews}
             renderItem={getCarouselItem}
@@ -108,7 +113,8 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
             height={220}
           />
         </GestureHandlerRootView>
-      </BackgroundImage>
+
+      </ImageBackground>
     </SafeAreaView>
   );
 };
@@ -119,10 +125,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: themeColor.background,
+    backgroundColor: themeColor.white,
   },
   textContainerStyle: {
-    margin: '2.5%',
+    margin: 10,
     shadowColor: 'black',
     shadowOpacity: 0.25,
     shadowRadius: 4,
@@ -133,10 +139,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     padding: 10,
+    opacity: 0.78
   },
-  buttonStyle: {
-    width: 167,
+
+  usernameText: {
+    alignSelf: 'center',
+    fontSize: themefonts.font22,
+    fontFamily: themeFontFamily.ralewayBold,
+    color: '#313131',
   },
+
+  
   imageStyle: {
     borderColor: themeColor.vividRed,
     borderWidth: 2,
@@ -148,69 +161,34 @@ const styles = StyleSheet.create({
   },
   secondaryButton: {marginVertical: 20, alignSelf: 'center'},
   primaryButton: {marginHorizontal: 16,width: 150,alignSelf:'center',marginVertical: 20},
-  // textContainerStyle: {
-  //   marginBottom: 20,
-  //   alignSelf: 'center',
-  //   marginHorizontal: 26,
-  //   padding: 15,
-  //   // borderColor: themeColor.vividRed,
-  //   // borderWidth: 1,
-  //   borderRadius: 12,
-  //   width: '70%',
-  //   backgroundColor: themeColor.background,
-  // },
-  descriptionContainerStyle: {
-    marginBottom: 20,
-    alignSelf: 'center',
-    marginHorizontal: 26,
-    padding: 15,
-    // borderColor: themeColor.vividRed,
-    // borderWidth: 1,
-    borderRadius: 12,
-    width: '90%',
-    backgroundColor: themeColor.background,
-  },
+
+ 
+
   textStyle: {
     fontFamily: themeFontFamily.raleway,
     fontSize: themefonts.font16,
+    textAlign: 'justify',
     margin: 1,
   },
-  textStyleBold: {
-    fontFamily: themeFontFamily.ralewayBold,
-    fontSize: themefonts.font22,
-    marginBottom: 1,
-  },
-  headingContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  iconContainer: {
-    flexDirection: 'row',
-  },
+
+
   fbIcon: {
     color: '#4267B2',
-    marginRight: 5,
+    marginHorizontal: 10,
   },
+
   carouselContainer: {
     marginVertical: 20,
     width: '100%',
   },
-  itemContainer: {
-    padding: 20,
-    borderRadius: 8,
-    borderColor: themeColor.vividRed,
-    borderWidth: 1,
-    backgroundColor: themeColor.background,
-    flex: 1,
-    marginRight: 10,
-    marginLeft: 5,
-  },
+
+  
   itemTopContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
   },
+
   carousalImage: {
     borderColor: themeColor.vividRed,
     borderWidth: 2,
@@ -219,47 +197,39 @@ const styles = StyleSheet.create({
     width: 60,
     resizeMode: 'cover',
   },
+
   itemName: {
     fontFamily: themeFontFamily.ralewayBold,
     fontSize: themefonts.font16,
     marginLeft: 10,
   },
+
   itemReview: {
     fontFamily: themeFontFamily.raleway,
     fontSize: themefonts.font14,
     marginLeft: 10,
   },
-    ratings: {
+
+  ratings: {
     alignSelf: 'flex-start',
     marginBottom: 4,
-    backgroundColor: 'transparent'
-
+    backgroundColor: 'black'
   },
+
   topContainer: {
     flexDirection: 'row',
     flex: 0.1,
-  }, 
-
-  // headingContainer: {
-  //   flex: 1,
-  //   justifyContent:'center',
-  //   alignItems: 'center',
-  // },
+  },
 
   backbutton: {
-    margin: 10,
+    margin: 0,
+    marginLeft: 10,
   },
 
-  buttonContainer: {
-    flex: 0.8,
-  },
-  heading: {
-    fontSize: themefonts.font32,
-    fontFamily: themeFontFamily.ralewaySemiBold,
-    color: themeColor.lightBlue,
-  },
-  safeArea: {
+  image: {
+    height: "100%",
+    width:"100%",
     flex: 1,
-    // backgroundColor: themeColor.white,
   },
+
 });
