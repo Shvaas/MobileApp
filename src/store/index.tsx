@@ -7,18 +7,20 @@ import {postSlice} from './postSlice';
 import {userSessionSlice} from './userSessionSlice';
 import {sessionSlice} from './sessionSlice';
 import {apiSlice} from './apiSlice';
+import {userSlice} from './userSlice';
 
 const reducers = combineReducers({
   posts: postSlice.reducer,
   userSessions: userSessionSlice.reducer,
   sessions: sessionSlice.reducer,
+  user: userSlice.reducer,
   api: apiSlice.reducer,
 });
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['posts'],
+  whitelist: ['user'],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);

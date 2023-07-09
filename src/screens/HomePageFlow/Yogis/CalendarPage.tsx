@@ -1,129 +1,4 @@
 /* eslint-disable prettier/prettier */
-// /* eslint-disable prettier/prettier */
-// import {StyleSheet, View, Alert} from 'react-native';
-// import React,{ useState } from 'react';
-// import 'react-native-gesture-handler';
-
-// import CalendarModal from "../../../components/CalendarModal";
-// import TimingList from "../../../components/TimingList";
-// import SecondaryButton from '../../../common/buttons/SecondaryButton';
-// import {utkarsh} from '../../../images/imageLinks'
-
-
-// const CalendarPage: React.FC<PropsType> = ({route,navigation}) => {
-//   const dispatch = useDispatch();
-//   const [selectedDate, setSelectedDate] = useState(new Date());
-//   const [sessionBooked, setSessionBooked] = useState(null);
-//   const onAppointmentConfirm = async () => {
-//     // Add user sessions
-//     if(sessionBooked == null){
-//       console.log("Null session");
-//       return;
-//     }
-
-//     console.log("onAppointmentConfirm1");
-//     dispatch(
-//       userSessionSlice.actions.addSession({
-//         'sessionId': sessionBooked.sessionId,
-//         'instructorId': sessionBooked.instructorId,
-//         'instructorPhoto': utkarsh,
-//         'title': 'Yoga with Utkarsh',
-//         'description': sessionBooked.description,
-//         'zoomlink': '-',
-//         'date': sessionBooked.start_date,
-//       }),
-//     );
-
-//     navigation.goBack();
-//   };
-
-//   // Get all sessions corresponding to a month (month starts from 0 i.e. Jan is 0) and year
-//   const session = useSelector((state) => getAllSessionsbyMonthYear(state, [selectedDate.getUTCMonth(), selectedDate.getFullYear()]));
-//   let sessionMap = {};
-//   let sessionDateStrings = [];
-
-//   for (let index = 0; index < session.length; index++) {
-//     let myDate = new Date(session[index].start_date * 1000);
-//     const key = myDate.getDate();
-    
-//     if (key in sessionMap){
-//       sessionMap[key].push(session[index]);
-//     }else{
-//       sessionMap[key] = [session[index]];
-//     }
-
-//     sessionDateStrings.push(myDate.toISOString().substring(0,myDate.toISOString().search('T')))
-//   }
-
-//   return (
-//     <View style={{backgroundColor:'white', height:"100%"}}>
-
-//       <CalendarModal
-//         onDateChange={setSelectedDate}
-//         sessionDateStrings = {sessionDateStrings}
-//       />
-
-//       <TimingList
-//         timings={(String(selectedDate.getUTCDate()) in sessionMap)? 
-//           sessionMap[String(selectedDate.getUTCDate())]:['No slots']}
-//         setSessionBooked ={setSessionBooked}
-//       />
-
-//       <SecondaryButton 
-//         title="Book Appointment" 
-//         buttonStyle={styles.buttonStyle}
-//         containerStyle={styles.btnContainerStyle}
-//         disabled={sessionBooked==null}
-//         onPress={()=>{
-//           let myDate = new Date(sessionBooked.start_date * 1000);
-//           Alert.alert('Confirm the appointment', myDate.toUTCString(), [
-//             {
-//               text: 'Cancel',
-//               onPress: () => console.log('Cancel Pressed'),
-//               style: 'cancel',
-//             },
-//             {text: 'OK', onPress: () => {
-//                 console.log('OK Pressed');
-//                 Alert.alert(
-//                     'Appointment Booked for '+myDate.toUTCString(),'',
-//                     [
-//                         {
-//                             text: 'OK',
-//                             onPress: () => {
-//                               onAppointmentConfirm()
-//                             },
-//                         }
-//                     ]
-//                   )
-//                 }
-//             },
-//           ]);
-//         }}>
-//       </SecondaryButton>
-
-//       <SecondaryButton 
-//         title="Cancel" 
-//         buttonStyle={styles.buttonStyle}
-//         containerStyle={styles.btnContainerStyle} 
-//         onPress={()=>{navigation.goBack()}}>
-//       </SecondaryButton>
-//     </View>
-//   );
-// };
-
-// export default CalendarPage;
-
-// const styles = StyleSheet.create({
-//   buttonStyle: {
-//     width: 167,
-//   },
-//   btnContainerStyle: {
-//     alignSelf: 'center',
-//     marginTop: 10
-//   },
-
-// });
-
 import React, {useRef, useCallback,useState} from 'react';
 import {StyleSheet,View, Image, Text, SafeAreaView} from 'react-native';
 import {Platform} from 'react-native';
@@ -134,11 +9,13 @@ import { ImageBackground } from 'react-native';
 import {themeFontFamily, themefonts, themeColor} from '../../../constants/theme';
 
 import AgendaItem from '../../../components/AgendaItem';
-import {next, prev, backgroundImageLight, backButton} from '../../../images/imageLinks'
+import {next, prev, plus, backgroundImageLight, backButton} from '../../../images/imageLinks'
 
 import {useDispatch, useSelector} from 'react-redux';
 
-import {getAllSessionsbyMonthYear} from '../../../store/sessionSlice';
+import {getAllSessionsbyMonthYear, sessionSelector} from '../../../store/sessionSlice';
+import IoniconsIcon from 'react-native-vector-icons/Ionicons';
+import RouteNames from '../../../constants/routeName';
 import {userSessionSlice} from '../../../store/userSessionSlice';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
@@ -148,7 +25,15 @@ interface PropsType {
   navigation: any;
 }
 
+// function onMonthChange (day){
+//   console.log("onDateChanged");
+//   let m = useSelector(sessionSelector);
+//   console.log("onMonthChange",m);
+// };
+
 const CalendarPage: React.FC<PropsType> = ({route, navigation}) => {
+
+  const userType = useSelector((state) => state.user.userType);
 
 const tColor = '#00AAAF';
 const lightThemeColor = '#f2f7f7';
@@ -222,7 +107,8 @@ function getPastDate(numberOfDays: number) {
   return new Date(Date.now() - 864e5 * numberOfDays).toISOString().split('T')[0];
 }
 
-const dispatch = useDispatch();
+
+  const dispatch = useDispatch();
 
 
   // const {weekView} = props;
@@ -234,7 +120,15 @@ const dispatch = useDispatch();
 
   // Get all sessions corresponding to a month (month starts from 0 i.e. Jan is 0) and year
   let todayDate = new Date();
-  const session = useSelector((state) => getAllSessionsbyMonthYear(state, [5, todayDate.getFullYear()]));
+  //let session = useSelector((state) => getAllSessionsbyMonthYear(state, [todayDate.getMonth()-1, todayDate.getFullYear()]));
+
+  let session = useSelector(sessionSelector);
+  console.log("all sessions", session);
+  
+ 
+
+  
+
 
   let sessionMap = {};
   let sessionDateStrings = [];
@@ -254,7 +148,6 @@ const dispatch = useDispatch();
 
   
   for (var key in sessionMap) {
-    // console.log('sessionmapitem',sessionMap[{key}["key"]]);
     let myDate = new Date(sessionMap[{key}["key"]][0].start_date * 1000);
     var sessionItem = {
       title: myDate.toISOString().substring(0,myDate.toISOString().search('T')),
@@ -263,12 +156,10 @@ const dispatch = useDispatch();
     itemsCopy.push(sessionItem)
   };
 
-  console.log("itemscopy", itemsCopy);
 
 
   
     const marked = {};
-    console.log("itemscopy", itemsCopy);
       itemsCopy.forEach((val) => {
         if (val.data && val.data.length>0){
             marked[val.title] = {marked: true};
@@ -279,9 +170,9 @@ const dispatch = useDispatch();
           );
 
 
-  console.log("sessionMap",sessionMap);
+  // console.log("sessionMap",sessionMap);
   const renderItem = useCallback(({item}: any) => {
-    return <AgendaItem item={item}/>;
+    return <AgendaItem item={item} navigation={navigation}/>;
   }, []);
 
   return (
@@ -296,7 +187,11 @@ const dispatch = useDispatch();
         <View style={styles.headingContainer}>
             <Text style={styles.heading}>Book Session</Text>
         </View>
-        <Image source={backButton} style={[styles.backbutton,{'opacity':0}]}/>
+        <GestureHandlerRootView style={{backgroundColor: themeColor.white}}>
+        <TouchableOpacity onPress={()=>navigation.navigate(RouteNames.HomePageFlow.CreateSessions)}>
+            <Image source={plus} style={[styles.backbutton, userType=='Teacher' ? {opacity:1}:{opacity:0}]}/>
+        </TouchableOpacity>
+        </GestureHandlerRootView> 
       </View>
 
 

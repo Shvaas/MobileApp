@@ -6,6 +6,7 @@ import {
     View,
     Image,
     FlatList,
+    Alert,
   } from 'react-native';
   import React, {useState} from 'react';
 
@@ -20,22 +21,59 @@ import PrimaryButton from '../../../common/buttons/PrimaryButton';
 import ProfilePicture from '../../../components/ProfilePicture';
 import TeacherAttendanceCardView from '../../../components/TeacherAttendanceCardView';
 import TeacherFeedbackCardView from '../../../components/TeacherFeedbackCardView';
-
+import {useDispatch, useSelector} from 'react-redux';
+import {sessionSlice} from '../../../store/sessionSlice';
 interface PropsType {
     navigation: any,
     route: any;
 }
 
 const Sessions: React.FC<PropsType> = ({route, navigation}) => {
-    const { courseDetail } = route.params;
+    const { session } = route.params;
     const [commentValue, setcommentValue] = useState('');
-    const [markCompleted, setMarkCompleted] = useState(false);
+    const [markCompleted, setMarkCompleted] = useState(session.markCompleted);
 
-    const students = [{name:'utkarsh', photo:utkarsh, marked:true, studentFeedback: false},
-                {name:'shikha', photo:utkarsh, marked:false , studentFeedback: true},
-                {name:'aryan', photo:utkarsh, marked:false , studentFeedback: true},]
+    // const students = [{name:'utkarsh', photo:utkarsh, marked:true, studentFeedback: false},
+    //             {name:'shikha', photo:utkarsh, marked:false , studentFeedback: true},
+    //             {name:'aryan', photo:utkarsh, marked:false , studentFeedback: true},]
 
-    console.log(courseDetail);
+    const dispatch = useDispatch();
+
+    const month = ['Jan', 'Feb', 'Mar', 'April', 'May',
+                'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+    let myDate = new Date(session.start_date * 1000);
+    const displayDate = myDate.getDate() + " " + month[myDate.getMonth()] + ", " + myDate.getHours() + " : " + myDate.getMinutes();
+
+
+    const onAttendanceCompleted = async () => {
+      setMarkCompleted(true);
+      dispatch(
+        sessionSlice.actions.markSessionCompleted({
+          sessionId: session.sessionId,
+        }),
+      );
+
+      // const result = await updateReaction(like);
+      // console.log('put result', result.data);
+    };
+
+    const onCancelSession = async () => {
+      dispatch(
+        sessionSlice.actions.cancelSession({
+          sessionId: session.sessionId,
+        }),
+      );
+
+      Alert.alert('Success', 'Session Canceled');
+      navigation.goBack();
+
+      // const result = await updateReaction(like);
+      // console.log('put result', result.data);
+    };
+
+    const students = session.studentList;
+    console.log("students", students);
+
     
     return (
       <SafeAreaView style={styles.safeArea}>
@@ -50,37 +88,38 @@ const Sessions: React.FC<PropsType> = ({route, navigation}) => {
             </View>
             <View style={styles.topContainerRight}>
                 <ProfilePicture uri={utkarsh} size={70} borderWidth={2}/>
-                <Text style={styles.usernameText}> Yoga with Utkarsh </Text>
+                <Text style={styles.usernameText}> {session.title} </Text>
             </View>
             <View style={{flex:0.2}}></View>
         </View>
         <View style={styles.secondContainer}>
-            <Text style={styles.standardText}> Date </Text>
-            <Text style={styles.standardText}> Number of students enrolled</Text>
-            <Text style={styles.standardText}> Description </Text>
-            <Text style={styles.standardText}> Zoom Link </Text>
+            <Text style={styles.standardText}> {displayDate} </Text>
+            <Text style={styles.standardText}> Number of students enrolled: {session.available_slots}/{session.total_slots}</Text>
+            <Text style={styles.standardText}> {session.description} </Text>
+            <Text style={styles.standardText}> {session.zoomlink} </Text>
         </View>
         {markCompleted ? <FlatList
             data={students}
-            renderItem={({item, index}) => <TeacherFeedbackCardView student={item}/>}
-            keyExtractor={(item) => item.name}
+            renderItem={({item, index}) => <TeacherFeedbackCardView student={item} sessionId={session.sessionId}/>}
+            keyExtractor={(item) => item.studentId}
           /> 
           : 
           <View>
           <FlatList
           data={students}
-          renderItem={({item, index}) => <TeacherAttendanceCardView student={item}/>}
-          keyExtractor={(item) => item.name}/>
+          renderItem={({item, index}) => <TeacherAttendanceCardView student={item} sessionId={session.sessionId}/>}
+          keyExtractor={(item) => item.studentId}/>
           <PrimaryButton
                 title={"Mark Completed"}
                 buttonStyle={styles.buttonStyle}
                 titleStyle={{color: themeColor.vividRed}}
-                onPress={setMarkCompleted}
+                onPress={onAttendanceCompleted}
               />
           <PrimaryButton
                 title={"Cancel Session"}
                 buttonStyle={styles.buttonStyle}
                 titleStyle={{color: themeColor.vividRed}}
+                onPress={onCancelSession}
               />
           </View>
           }
@@ -89,9 +128,7 @@ const Sessions: React.FC<PropsType> = ({route, navigation}) => {
             renderItem={({item, index}) => <TeacherFeedbackCardView student={item}/>}
             keyExtractor={(item) => item.name}
           /> */}
-        
 
-          
 
       </ScrollView>
       </GestureHandlerRootView>
@@ -142,7 +179,7 @@ const styles = StyleSheet.create({
 
 
 
-  
+
 
   imageStyle: {
     borderColor: themeColor.vividRed,

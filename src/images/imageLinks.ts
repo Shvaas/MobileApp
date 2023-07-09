@@ -4,6 +4,7 @@ export const backgroundImageMedium = require('./background_image_medium.png');
 export const backButton = require('./back_button.png');
 export const next = require('./next.png');
 export const prev = require('./prev.png');
+export const plus = require('./plus.png');
 export const inviteIcon = require('./inviteIcon.png');
 export const settingsButton = require('./settingsButton.png');
 export const tick = require('./tick.png');

@@ -10,14 +10,23 @@ import {
   themefonts,
   themeColor,
 } from '../constants/theme';
+import RouteNames from '../constants/routeName';
 interface PropsType {
-    item: any
+    item: any,
+    navigation: any,
 }
 
-const AgendaItem: React.FC<PropsType> = ({item}) => {
-const dispatch = useDispatch();
-  console.log("AgendaItem",item);
+const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
+  const dispatch = useDispatch();
+
+  const userType = useSelector((state) => state.user.userType);
+  const month = ['Jan', 'Feb', 'Mar', 'April', 'May',
+                'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+
   let myDate = new Date(item.start_date * 1000);
+  
+  const displayDate = myDate.getDate() + " " + month[myDate.getMonth()] + ", " + myDate.getHours() + " : " + myDate.getMinutes();
+
 
   const onAppointmentConfirm = async () => {
     // Add user sessions
@@ -27,7 +36,7 @@ const dispatch = useDispatch();
     }
     console.log("session being booked",item);
 
-    console.log("onAppointmentConfirm1");
+
     dispatch(
       userSessionSlice.actions.addSession({
         'sessionId': item.sessionId,
@@ -47,9 +56,20 @@ const dispatch = useDispatch();
     Alert.alert('Show me more');
   }, []);
 
-  const itemPressed = async () => {
+  const getSession = async () => {
+    navigation.navigate(RouteNames.HomePageFlow.TeacherSessions,
+      {
+        session: item,
+      })
+  }
+
+
+
+
+  const bookAppointment = async () => {
     // let myDate = new Date(sessionBooked.start_date * 1000);
-    Alert.alert('Confirm the appointment at', myDate.toISOString().substring(0,myDate.toISOString().search('T')) + ' for '+item.description,
+    Alert.alert('Confirm the appointment at',
+    myDate.toISOString().substring(0,myDate.toISOString().search('T')) + ' for ' + item.title,
     [
     {
         text: 'Cancel',
@@ -59,7 +79,8 @@ const dispatch = useDispatch();
     {text: 'OK', onPress: () => {
         console.log('OK Pressed');
         Alert.alert(
-            'Appointment Booked at '+ myDate.toISOString().substring(0,myDate.toISOString().search('T'))+' for '+item.description,'',
+            'Appointment Booked at ' + myDate.toISOString().substring(0,myDate.toISOString().search('T'))
+            + ' for ' + item.title,'',
             [
                 {
                     text: 'OK',
@@ -81,13 +102,13 @@ const dispatch = useDispatch();
   }
 // Title, Descripion, duration
   return (
-    <TouchableOpacity onPress={itemPressed} style={styles.container} testID={'item'}>
+    <TouchableOpacity onPress={userType=='Teacher' ? getSession : bookAppointment} style={styles.container} testID={'item'}>
       <View style={{flex:0.7, flexDirection:'column'}}>
-        <Text style={[styles.itemTitleText,{marginBottom:5}]}>Title</Text>
-        <Text style={[styles.textStyle,{marginTop:5}]}>One line description or tags </Text>
+        <Text style={[styles.itemTitleText,{marginBottom:5}]}>{item.title}</Text>
+        <Text style={[styles.textStyle,{marginTop:5}]}>{item.description}</Text>
       </View>
       <View style={{flexDirection:'column', flex:0.3, justifyContent:'flex-end', alignItems:'flex-end'}}>
-        <Text style={[styles.textStyle,{fontFamily: themeFontFamily.ralewaySemiBold}]}> 10 - 11 AM </Text>
+        <Text style={[styles.textStyle,{fontFamily: themeFontFamily.ralewaySemiBold}]}> {displayDate} </Text>
         {/* <Text style={styles.textStyle}> 4 Slots left </Text> */}
       </View>
     </TouchableOpacity>

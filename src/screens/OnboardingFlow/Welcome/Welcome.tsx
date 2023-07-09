@@ -5,8 +5,11 @@ import {
   StyleSheet,
   Text,
   View,
+
 } from 'react-native';
 import React from 'react';
+
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // local
 import {
@@ -17,12 +20,21 @@ import {
 import BottomComponent from './components/BottomComponent';
 import RouteNames from '../../../constants/routeName';
 import BackgroundImage from '../../../common/BackgroundImage';
+import PrimaryButton from '../../../common/buttons/PrimaryButton';
+import {useDispatch, useSelector} from 'react-redux';
+import { Button } from 'react-native-elements';
 
+import {useState} from 'react';
+import {userSlice} from '../../../store/userSlice';
 interface PropsType {
   navigation: any;
 }
 
 const Welcome: React.FC<PropsType> = ({navigation}) => {
+  const [userType, setUserType] = useState('Student');
+
+  const dispatch = useDispatch();
+
   const translateTopContainer = React.useRef(
     new Animated.Value(Dimensions.get('screen').height / 4 - 20),
   ).current;
@@ -35,6 +47,20 @@ const Welcome: React.FC<PropsType> = ({navigation}) => {
     }).start();
   }, [translateTopContainer]);
 
+  const setType = () => {
+    if (userType=='Teacher'){
+      setUserType('Student')
+      dispatch(userSlice.actions.setUserType('Student'));
+    }else{
+      setUserType('Teacher')
+      dispatch(userSlice.actions.setUserType('Teacher'));
+    }
+    
+}
+
+ 
+
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topContainer}>
@@ -45,6 +71,7 @@ const Welcome: React.FC<PropsType> = ({navigation}) => {
           </BackgroundImage>
         </Animated.View>
       </View>
+      {/* <Text> {usertype.userType} </Text> */}
       <View style={styles.bottomContainer}>
         <BottomComponent
           onButtonPress_Login={() => {
@@ -54,6 +81,12 @@ const Welcome: React.FC<PropsType> = ({navigation}) => {
             navigation.navigate('Home');
           }}
         />
+        <PrimaryButton
+                title={userType=='Teacher'? "Set to Student":"Set to Teacher"}
+                buttonStyle={styles.buttonStyle}
+                titleStyle={{color: themeColor.vividRed}}
+                onPress={setType}
+          />
       </View>
     </SafeAreaView>
   );
@@ -79,5 +112,12 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     flex: 1,
+  },
+  buttonStyle: {
+    width: 150,
+    marginHorizontal: 10,
+    backgroundColor: themeColor.white,
+    borderColor: themeColor.vividRed,
+    borderWidth: 1,
   },
 });

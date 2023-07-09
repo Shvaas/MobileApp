@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import {
   StyleSheet,
@@ -12,8 +13,8 @@ import {
 
 import {themeColor, themefonts} from '../constants/theme';
 import BackgroundImageDup from '../common/BackgroundImageFullPage'
-import CourseCardView from '../components/CourseCardView';
-import UpcomingCourseCardView from './UpcomingCourseCardView';
+import SessionCardView from '../components/SessionCardView';
+import UpcomingSessionCardView from './UpcomingSessionCardView';
 import RouteNames from '../constants/routeName';
 
 export interface ToggleButtonProps {
@@ -45,7 +46,6 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
   return (
     <View>
       <View>
-      
       <View style={styles.container}>
         <TouchableWithoutFeedback
           disabled={disabled}
@@ -88,7 +88,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
             renderItem = {({item}) => {
               return(
                 <TouchableOpacity>
-                   <UpcomingCourseCardView course={item}/>
+                   <UpcomingSessionCardView item={item}/>
                 </TouchableOpacity>
               )
             }}/>  
@@ -103,14 +103,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
             data={dataPast}
             renderItem = {({item}) => {
               return(
-                <TouchableOpacity onPress={() =>
-                  navigation.navigate(
-                    RouteNames.HomePageFlow.CreateSessions,
-                    {
-                      courseDetail: item,
-                    })}>
-                  <CourseCardView course={item} />
-                </TouchableOpacity>
+                  <SessionCardView item={item} navigation={navigation}/>
               )
             }}/>  
         </ScrollView>
@@ -130,8 +123,7 @@ const styles = StyleSheet.create({
     backgroundColor: themeColor.white,
     borderRadius: 15,
     padding: 4,
-    top: 70,
-    width: "100%",
+    marginHorizontal: 5,
   },
   
   option: {
@@ -163,7 +155,6 @@ const styles = StyleSheet.create({
 
   scrollContainerStyle: {
     padding:10,
-    top: 70
   },
   scrollViewStyle: {
     paddingVertical: 5,

@@ -15,17 +15,26 @@ import {
   import {GestureHandlerRootView} from 'react-native-gesture-handler';
   import { Button, Rating } from 'react-native-elements';
   import ProfilePicture from './ProfilePicture';
+  import {utkarsh} from '../images/imageLinks';
+
+  import {sessionSlice} from '../store/sessionSlice';
+  import {useDispatch, useSelector} from 'react-redux';
 
   interface PropsType {
-    course : object
+    student : any,
+    sessionId: any
   }
   
-  const TeacherFeedbackCardView: React.FC<PropsType> = ({student}) => {
+  const TeacherFeedbackCardView: React.FC<PropsType> = ({student, sessionId}) => {
     const [marked, setMarked] = useState(student.marked);
-    const [commentValue, setcommentValue] = useState('');
-    const [commentPosted, setcommentPosted] = useState(false);
-    const [buttonTitle, setbuttonTitle] = useState('Post');
-    
+    const [commentValue, setcommentValue] = useState(student.feedbackForStudent);
+    // const [commentPosted, setcommentPosted] = useState(false);
+    // const [buttonTitle, setbuttonTitle] = useState('Post');
+
+    const [commentPosted, setcommentPosted] = useState(student.feedbackForStudent.length > 0);
+    const [buttonTitle, setbuttonTitle] = useState(student.feedbackForStudent.length > 0 ? 'Edit' : 'Post');
+
+    const dispatch = useDispatch();
 
     const enableCommentButton = () => {
         return (commentValue ? false : true);
@@ -36,15 +45,36 @@ import {
          "comments-button-disabled");
     }
 
-    const onPostButton = () => {
-        if (!commentPosted){
-            setbuttonTitle('Edit');
-        }else{
-            setbuttonTitle('Post');
-        }
-        setcommentPosted(!commentPosted);
-        return (commentValue ? false : true);
-    }
+    // const onPostButton = () => {
+    //     if (!commentPosted){
+    //         setbuttonTitle('Edit');
+    //     }else{
+    //         setbuttonTitle('Post');
+    //     }
+    //     setcommentPosted(!commentPosted);
+    //     return (commentValue ? false : true);
+    // }
+
+
+
+    const onPostButton = async () => {
+      if (!commentPosted){
+          setbuttonTitle('Edit');
+      }else{
+          setbuttonTitle('Post');
+      }
+      setcommentPosted(!commentPosted);
+      dispatch(
+        sessionSlice.actions.addFeedbackForStudent({
+          sessionId: sessionId,
+          studentId: student.studentId,
+          feedback: commentValue,
+        }),
+      );
+
+      // const result = await updateReaction(like);
+      // console.log('put result', result.data);
+    };
 
 
     return (
@@ -53,23 +83,21 @@ import {
             <View style={styles.internalContainer}>
                 <View style={{flexDirection:'row',width:'100%', justifyContent:'space-between'}}>
                     <View style={{flexDirection:'row', resizeMode: 'cover', marginHorizontal:10}}>
-                        <ProfilePicture uri={student.photo} size={50} borderWidth={2}/>
-                        <Text style={styles.standardText}>{student.name}</Text>
+                        <ProfilePicture uri={utkarsh} size={50} borderWidth={2}/>
+                        <Text style={styles.standardText}>{student.studentName}</Text>
                     </View>
 
-                    {student.studentFeedback && <View style={{alignItems:'center', justifyContent:'center',  borderWidth:1, marginHorizontal:10}}>
+                    {student.feedbackForTeacher.length > 0 && <View style={{alignItems:'center', justifyContent:'center',  borderWidth:1, marginHorizontal:10}}>
                         <Rating
                         type='custom'
                         readonly
                         ratingColor={'#FD7C23'}
                         imageSize={18}
-                        startingValue={4}
+                        startingValue={student.ratingForTeacher}
                         />
                     </View>}
               </View>
-              {student.studentFeedback && <Text style={styles.descriptionText}>Session Description Session Description Session Description Session 
-            Description Session DescriptionSession Description Session Description Session Description 
-            Session Description Session Description Session Description Sessi</Text>}
+              {student.feedbackForTeacher.length > 0 && <Text style={styles.descriptionText}>{student.feedbackForTeacher}</Text>}
             <View style={styles.feedbackContainer}>
                 <View style={styles.leftContainer}>
                     {commentPosted? <Text style={styles.descriptionText}> {commentValue} </Text> :

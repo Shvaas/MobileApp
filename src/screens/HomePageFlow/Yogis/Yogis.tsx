@@ -1,10 +1,13 @@
+/* eslint-disable prettier/prettier */
 import {
   SafeAreaView,
   StyleSheet,
   FlatList,
   ScrollView,
   TouchableOpacity,
-  TextInput
+  View,
+  Image,
+  Text,
 } from 'react-native';
 import React from 'react';
 import { useState} from "react";
@@ -18,6 +21,8 @@ import {
 import ProfileCardView from './components/ProfileCardView';
 import {aryan, nabeel, shikha, utkarsh, yoga_instructor1, yoga_instructor2, yoga_instructor3} from '../../../images/imageLinks';
 import RouteNames from '../../../constants/routeName';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 
 interface PropsType {
   navigation: any;
@@ -114,10 +119,22 @@ const DATA = [
 
 const Yogis: React.FC<PropsType> = ({navigation}) => {
 
+
   return (
     <SafeAreaView style={styles.container}>
       <BackgroundImageDup>
         <ScrollView contentContainerStyle={styles.contentContainer}>
+        <View style={[styles.header, {flexDirection:"row",justifyContent:"space-between",padding:10, backgroundColor: themeColor.white}]}>
+          <TouchableOpacity onPress={() => navigation.navigate(RouteNames.HomePageFlow.UserProfile)}> 
+            <Image source={utkarsh} style={styles.imageStyle} />
+          </TouchableOpacity>
+          <Text style={{color:themeColor.vividRed,fontSize: themefonts.font22,
+            fontFamily:themeFontFamily.ralewayBold, alignSelf:"center"}}>
+            Shvaas</Text>
+          <View style={{flexDirection:"row"}}>
+          <IoniconsIcon name="notifications" color={"#939393"} size={32} style={{alignSelf:"flex-start",padding:5}}/>
+          </View>
+          </View>
           <FlatList
             data={DATA}
             renderItem={({item}) => {
@@ -129,7 +146,7 @@ const Yogis: React.FC<PropsType> = ({navigation}) => {
                     })
                   }>
                   <ProfileCardView profile={item} onButtonPress={() =>
-                    navigation.navigate(RouteNames.HomePageFlow.CalendarPage,item)
+                    navigation.navigate(RouteNames.HomePageFlow.CalendarPage, item)
                   } />
                 </TouchableOpacity>
               );
@@ -147,6 +164,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: themeColor.background,
+  },
+  header:{
+    shadowColor: 'black',
+    shadowOpacity: 0.25,
+    shadowRadius: 2,
+    shadowOffset: {
+      width: -2,
+      height: 2,
+    },
   },
   heading: {
     fontSize: themefonts.font32,
@@ -174,5 +200,14 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingVertical: 5,
     contentOffset: {x: 0, y: 0},
+  },
+  imageStyle: {
+    borderColor: themeColor.vividRed,
+    borderWidth: 1,
+    borderRadius: 50,
+    height: 50,
+    width: 50,
+    alignSelf: 'center',
+    resizeMode: 'cover',
   },
 });

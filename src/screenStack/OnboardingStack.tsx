@@ -8,10 +8,11 @@ import Login from '../screens/OnboardingFlow/Login';
 import HomePageStack from './HomePageStack';
 import Yogi from '../screens/HomePageFlow/Yogis/YogiProfile';
 import CalendarPage from '../screens/HomePageFlow/Yogis/CalendarPage';
+import CreateSessions from '../screens/HomePageFlow/TeacherSessions/CreateSessions';
 import FreeTrail from '../screens/OnboardingFlow/FreeTriall';
 import ProfileQuestion from '../screens/OnboardingFlow/ProfileQuestions/ProfileQuestions';
-
-
+import Sessions from '../screens/HomePageFlow/TeacherSessions/Sessions';
+import SessionFeedback from '../screens/HomePageFlow/AllCourses/SessionFeedback';
 const Stack = createNativeStackNavigator();
 
 function HomeNav() {
@@ -45,12 +46,24 @@ const OnboardingStack = () => {
         component={Yogi}
       />
       <Stack.Screen
+        name={RouteNames.HomePageFlow.CreateSessions}
+        component={CreateSessions}
+      />
+      <Stack.Screen
         name={RouteNames.HomePageFlow.CalendarPage}
         component={CalendarPage}/>
 
       <Stack.Screen
         name={RouteNames.OnboardingFlow.FreeTrial}
         component={FreeTrail}
+      />
+      <Stack.Screen
+        name={RouteNames.HomePageFlow.TeacherSessions}
+        component={Sessions}
+      />
+      <Stack.Screen
+        name={RouteNames.HomePageFlow.AllCourseDetail}
+        component={SessionFeedback}
       />
     </Stack.Navigator>
   );

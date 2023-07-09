@@ -1,6 +1,6 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import AllCourses from '../screens/HomePageFlow/AllCourses/AllCourses';
+import MySessions from '../screens/HomePageFlow/AllCourses/MySessions';
 import SessionFeedback from '../screens/HomePageFlow/AllCourses/SessionFeedback';
 import Sessions from '../screens/HomePageFlow/TeacherSessions/Sessions';
 import CreateSessions from '../screens/HomePageFlow/TeacherSessions/CreateSessions';
@@ -19,11 +19,7 @@ const AllCoursesStack = () => {
       }}>
       <Stack.Screen
         name={RouteNames.HomePageFlow.AllCourses}
-        component={AllCourses}
-      />
-      <Stack.Screen
-        name={RouteNames.HomePageFlow.AllCourseDetail}
-        component={SessionFeedback}
+        component={MySessions}
       />
       <Stack.Screen
         name={RouteNames.HomePageFlow.TeacherSessions}

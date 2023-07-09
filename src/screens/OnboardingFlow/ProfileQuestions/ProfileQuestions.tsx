@@ -34,11 +34,14 @@ import {
  import QuestionItem from './QuestionItem'
  import Paginator from './Paginator';
 
+ import {userSlice} from '../../../store/userSlice';
+
 
  import axios from "axios";
 
  import {Picker} from '@react-native-picker/picker';
 import { useRef } from 'react';
+import {useDispatch, useSelector} from 'react-redux';
  
  interface PropsType {
    navigation: any;
@@ -124,7 +127,9 @@ const [selectedWeight, setSelectedWeight] = useState(" ");
     }else{
         navigation.goBack()
     }
-}
+  }
+
+
   
    return (
      <SafeAreaView style={styles.safeArea}>

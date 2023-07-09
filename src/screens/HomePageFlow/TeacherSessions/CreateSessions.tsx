@@ -8,6 +8,7 @@ import {
   Image,
   TouchableOpacity,
   ImageBackground,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import CheckBox from "react-native-bouncy-checkbox";
@@ -20,12 +21,15 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import SimpleButton from '../../../common/buttons/SimpleButton';
 
+import {sessionSlice} from '../../../store/sessionSlice';
+import {useDispatch, useSelector} from 'react-redux';
 interface PropsType {
   navigation: any,
   route: any;
 }
 
   const CreateSessions: React.FC<PropsType> = ({route, navigation}) => {
+  const dispatch = useDispatch();
   const [sessionTitle, setSessionTitle] = useState('');
   const [sessionDescription, setSessionDescription] = useState('');
   const [nSeat, setnSeat] = useState(0);
@@ -46,6 +50,53 @@ interface PropsType {
     {label: 'Every Week', value: 2},
     {label: 'Every 2 Week', value: 3}
   ]);
+
+  const addSession = async () => {
+    console.log('addSession', sessionTitle);
+    
+    if (sessionTitle.trim() === '') {
+      Alert.alert('Error', 'Please enter a valid Title');
+    }
+    else if(sessionDescription.trim() === '') {
+      Alert.alert('Error', 'Please enter a valid Description');
+    }
+    else if(nSeat <= 0) {
+      Alert.alert('Error', 'Please enter a valid number of seats');
+    }
+    else if(date.getTime() <= (new Date()).getTime()) {      
+      Alert.alert('Error', 'Please enter a valid future date');
+    }
+    else if(value>0 && enddate.getTime() <= (new Date()).getTime()) {
+      Alert.alert('Error', 'Please enter a valid end date');
+    }
+    else{
+        const session = {
+          title: sessionTitle,
+          description: sessionDescription,
+          keys2: false,
+          total_slots: nSeat,
+          start_date: date.getTime()/1000,
+          instructorId: 5,
+          markCompleted: false,
+          available_slots: nSeat,
+          zoomlink: '',
+          studentList: [],
+          durationMinutes: 45,
+          session_type: 1,
+          };
+
+        console.log("Create Session --> Note: Do this after succesfull session creation at server");
+        
+        dispatch(
+            sessionSlice.actions.addSession({
+              'session' : session,
+            }),
+          );
+        
+          Alert.alert('Success', 'New Session Created');
+          navigation.goBack();
+    }
+  }
 
 
   return (
@@ -178,7 +229,7 @@ interface PropsType {
                     currentdate.getMinutes();
 
                   setOpen(false);
-                  setDate(date);
+                  setDate(currentdate);
                   setdateValue(datetime.toString());
                 }}
                 minimumDate={new Date()}
@@ -187,29 +238,29 @@ interface PropsType {
                 }}
               />
 
-              
+
 
               <DatePicker
                 modal
                 open={endDateOpen}
                 date={enddate}
                 minuteInterval={15}
-                onConfirm={date => {
-                  var currentdate = new Date(date);
-                  var datetime =
-                    +currentdate.getDate() +
+                onConfirm={enddate => {
+                  var currentenddate = new Date(enddate);
+                  var enddatetime =
+                    +currentenddate.getDate() +
                     '/' +
-                    (currentdate.getMonth() + 1) +
+                    (currentenddate.getMonth() + 1) +
                     '/' +
-                    currentdate.getFullYear() +
+                    currentenddate.getFullYear() +
                     ' - ' +
-                    currentdate.getHours() +
+                    currentenddate.getHours() +
                     ':' +
-                    currentdate.getMinutes();
+                    currentenddate.getMinutes();
 
                   setEndDateOpen(false);
-                  setEndDate(date);
-                  setEndDateValue(datetime.toString());
+                  setEndDate(currentenddate);
+                  setEndDateValue(enddatetime.toString());
                 }}
                 minimumDate={new Date()}
                 onCancel={() => {
@@ -222,6 +273,7 @@ interface PropsType {
             <SimpleButton
             title="Create Session"
             buttonStyle={{width:150,}}
+            onPress={addSession}
             />
           </View>
 

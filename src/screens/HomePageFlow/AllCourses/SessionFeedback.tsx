@@ -6,6 +6,7 @@ import {
     View,
     Image,
     TextInput,
+    Alert,
   } from 'react-native';
   import React, {useState} from 'react';
 
@@ -18,18 +19,41 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import PrimaryButton from '../../../common/buttons/PrimaryButton';
 import RouteNames from '../../../constants/routeName';
-
+import {userSessionSlice} from '../../../store/userSessionSlice';
+import {useDispatch, useSelector} from 'react-redux';
 interface PropsType {
     navigation: any,
     route: any;
 }
 
 const SessionFeedback: React.FC<PropsType> = ({route, navigation}) => {
-    const { courseDetail } = route.params;
-    const [commentValue, setcommentValue] = useState('');
+    const dispatch = useDispatch();
+    const {session} = route.params;
 
-    console.log(courseDetail);
-    
+    const [commentValue, setcommentValue] = useState(session.feedbackForTeacher);
+    const [rating, setRating] = useState(session.ratingForTeacher);
+    console.log("SessionFeedback: ", session, session.title);
+
+    const month = ['Jan', 'Feb', 'Mar', 'April', 'May',
+                  'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+    let myDate = new Date(session.start_date * 1000);
+
+    const displayDate = myDate.getDate() + " " + month[myDate.getMonth()] + ", " + myDate.getHours() + " : " + myDate.getMinutes();
+
+    const submitFeedback = async () => {
+      if (commentValue.trim() === '' || rating==0) {
+        Alert.alert('Error', 'Please enter a valid feedback or rating');
+      }
+      dispatch(
+        userSessionSlice.actions.submitFeedback({
+          'sessionId' : session.sessionId,
+          'feedback' : commentValue,
+          'rating' : rating,
+        }),
+      );
+      Alert.alert('Success', 'Succesfully submitted the feedback');
+    }
+
     return (
       <SafeAreaView style={styles.safeArea}>
       <ImageBackground source={backgroundImageMedium} style={styles.image}>
@@ -43,18 +67,14 @@ const SessionFeedback: React.FC<PropsType> = ({route, navigation}) => {
         <View style={styles.secondContainer}>
                 <Image source={utkarsh} style={styles.imageStyle}/>
           </View>
-        <Text style={styles.usernameText}> Yoga with Utkarsh </Text>
+        <Text style={styles.usernameText}> {session.title} </Text>
         <View style={{margin:20}}>
-            <Text style={styles.standardText}>Session Time</Text>
-            <Text style={styles.standardText}>Session Description Session Description Session Description Session 
-            Description Session DescriptionSession Description Session Description Session Description 
-            Session Description Session Description Session Description Session Description</Text>
+            <Text style={styles.standardText}>{displayDate}</Text>
+            <Text style={styles.standardText}>{session.description}</Text>
         </View>
         <View style={styles.descriptionContainer}>
             <Text style={[styles.standardText,{fontFamily: themeFontFamily.ralewaySemiBold, marginBottom:10}]}>Teacher's feedback for student</Text>
-            <Text style={styles.standardText}>Session Description Session Description Session Description Session 
-            Description Session DescriptionSession Description Session Description Session Description 
-            Session Description Session Description Session Description Session Description</Text>
+            <Text style={styles.standardText}>{session.feedbackForStudent}</Text>
         </View>
         <View style={styles.descriptionContainer}>
             <Text style={[styles.standardText,{fontFamily: themeFontFamily.ralewaySemiBold}]}>
@@ -66,14 +86,15 @@ const SessionFeedback: React.FC<PropsType> = ({route, navigation}) => {
                 // type="custom"
                 ratingColor={'#FD7C23'}
                 // tintColor={themeColor.white}
+                onFinishRating={setRating}
                 imageSize={18}
-                startingValue={0}
+                startingValue={rating}
                 style={styles.ratings}
               />
             </View>
           <TextInput 
-            placeholder=" Add a comment..."
-            value={commentValue} 
+            placeholder="Add a comment..."
+            value={commentValue}
             onChangeText={setcommentValue}
             multiline/>
         </View>
@@ -81,7 +102,7 @@ const SessionFeedback: React.FC<PropsType> = ({route, navigation}) => {
                 title={"Submit Feedback"}
                 buttonStyle={styles.buttonStyle}
                 titleStyle={{color: themeColor.vividRed}}
-                
+                onPress={submitFeedback}
               />
 
       </ImageBackground>

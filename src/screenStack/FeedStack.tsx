@@ -20,7 +20,6 @@ const FeedStack = () => {
       <Stack.Screen name={RouteNames.HomePageFlow.Feed} component={Feed} />
       <Stack.Screen name={RouteNames.HomePageFlow.CreatePost} component={CreatePost}/>
       <Stack.Screen name={RouteNames.HomePageFlow.AllComments} component={AllComments}/>
-      <Stack.Screen name={RouteNames.HomePageFlow.UserProfile} component={Profile}/>
     </Stack.Navigator>
   );
 };
