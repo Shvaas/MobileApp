@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import {Image, SafeAreaView, StyleSheet, 
-  Text, View, TouchableOpacity, ImageBackground} from 'react-native';
+  Text, View, TouchableOpacity, ImageBackground, ActivityIndicator} from 'react-native';
 import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Carousel from 'react-native-reanimated-carousel';
@@ -21,6 +21,9 @@ import { Rating } from 'react-native-ratings';
 import SecondaryButton from '../../../common/buttons/SecondaryButton';
 import SimpleButton from '../../../common/buttons/SimpleButton';
 
+import { useGetTeacherDetailQuery} from '../../../store/apiSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {yogiSlice, YogiSelector} from '../../../store/yogiSlice';
 interface PropsType {
   navigation: any;
   route: any;
@@ -28,9 +31,24 @@ interface PropsType {
 
 const Yogi: React.FC<PropsType> = ({route, navigation}) => {
   const {yogiProfile} = route.params;
-  const {image, name, certificates, yearsOfExp, studentsTrained, reviews, rating, description} =
+  const {image, name, certificates, yearsOfExp, studentsTrained, reviews, rating, description, userId} =
     yogiProfile;
 
+    console.log("userId", userId);
+    
+  const {data, error,isLoading} = useGetTeacherDetailQuery(userId);
+  const dispatch = useDispatch();
+
+  if (isLoading && name==null) {
+    return <ActivityIndicator />;
+  }
+
+  React.useEffect(() => {
+    if (data){
+      dispatch(yogiSlice.actions.addYogiDetail(data?.data));
+    }
+  }, [data, dispatch]);
+  
   const getCarouselItem = ({item}) => {
     return (
       <View style={styles.textContainerStyle}>
@@ -79,10 +97,10 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
               <Text style={styles.textStyle}>{certificates}</Text>
               <Text style={styles.textStyle}>Students trained: {studentsTrained}</Text>
           </View>
-          <View style={{ marginTop:0}}>
+          <View style={{ marginTop:0, flex:1}}>
             <SimpleButton
             title="Book session"
-            onPress={() => {navigation.navigate(RouteNames.HomePageFlow.CalendarPage, yogiProfile)}}
+            onPress={() => {navigation.navigate(RouteNames.HomePageFlow.CalendarPage, {userId: userId})}}
               containerStyle={styles.primaryButton}
             />
           </View>
@@ -160,7 +178,7 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   secondaryButton: {marginVertical: 20, alignSelf: 'center'},
-  primaryButton: {marginHorizontal: 16,width: 150,alignSelf:'center',marginVertical: 20},
+  primaryButton: {marginHorizontal: 10, width: 150, alignSelf:'flex-end',marginVertical: 20},
 
  
 

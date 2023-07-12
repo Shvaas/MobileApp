@@ -3,7 +3,7 @@
 import React, {useCallback, useState} from 'react';
 import {StyleSheet, Alert, View, Text, TouchableOpacity, Button} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {userSessionSlice} from '../store/userSessionSlice';
+import {userSessionSlice, userSessionSelector} from '../store/userSessionSlice';
 import {utkarsh} from '../images/imageLinks'
 import {
   themeFontFamily,
@@ -11,15 +11,26 @@ import {
   themeColor,
 } from '../constants/theme';
 import RouteNames from '../constants/routeName';
+
+import {useBookSessionMutation} from '../store/apiSlice';
 interface PropsType {
     item: any,
     navigation: any,
 }
 
 const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
+  const [bookSession, { data, error, isLoading }] = useBookSessionMutation();
   const dispatch = useDispatch();
 
   const userType = useSelector((state) => state.user.userType);
+  const userId = useSelector((state) => state.user.userId);
+
+  // const userSessions = useSelector((state) => state.userSessions.userSessions);
+  // console.log("userSessions", userSessions);
+  
+
+  console.log(userType, userId);
+  
   const month = ['Jan', 'Feb', 'Mar', 'April', 'May',
                 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
@@ -36,20 +47,49 @@ const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
     }
     console.log("session being booked",item);
 
+    let session = {userId: userId,
+                courseId: item.sessionId};
 
-    dispatch(
-      userSessionSlice.actions.addSession({
-        'sessionId': item.sessionId,
-        'instructorId': item.instructorId,
-        'instructorPhoto': utkarsh,
-        'title': 'Yoga with Utkarsh',
-        'description': item.description,
-        'zoomlink': '-',
-        'date': item.start_date,
-      }),
-    );
+    console.log("onAppointmentConfirm", userId, item.sessionId);
 
-    // navigation.goBack();
+
+
+  const result = await bookSession(session);
+    if(result?.data?.status === 200){
+      dispatch(
+        userSessionSlice.actions.addSession({
+          'sessionId': item.sessionId,
+          'instructorId': item.instructorId,
+          'instructorPhoto': utkarsh,
+          'title': 'Yoga with Utkarsh',
+          'description': item.description,
+          'zoomlink': '-',
+          'start_date': item.start_date,
+          'markCompleted':  false,
+        }),
+      );
+      Alert.alert(
+        'Session Booked at ' + myDate.toISOString().substring(0,myDate.toISOString().search('T'))
+        + ' for ' + item.title,'',
+        [
+            {
+                text: 'OK',
+                onPress: () => {},
+            }
+        ]
+        )
+    }else{
+      Alert.alert(
+        'Error','Please try again later',
+        [
+            {
+                text: 'OK',
+                onPress: () => {},
+            }
+        ]
+        )
+    }
+
   };
 
   const buttonPressed = useCallback(() => {
@@ -76,19 +116,7 @@ const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
     },
-    {text: 'OK', onPress: () => {
-        console.log('OK Pressed');
-        Alert.alert(
-            'Appointment Booked at ' + myDate.toISOString().substring(0,myDate.toISOString().search('T'))
-            + ' for ' + item.title,'',
-            [
-                {
-                    text: 'OK',
-                    onPress: () => {onAppointmentConfirm()},
-                }
-            ]
-            )
-        }
+    {text: 'OK', onPress: () => {onAppointmentConfirm()}
     }]);
     }
 

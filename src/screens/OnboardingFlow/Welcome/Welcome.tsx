@@ -50,10 +50,10 @@ const Welcome: React.FC<PropsType> = ({navigation}) => {
   const setType = () => {
     if (userType=='Teacher'){
       setUserType('Student')
-      dispatch(userSlice.actions.setUserType('Student'));
+      dispatch(userSlice.actions.setUser({type: 'Student', userId: '313cbfd3-4fc1-4763-9d18-abcdef'}));
     }else{
       setUserType('Teacher')
-      dispatch(userSlice.actions.setUserType('Teacher'));
+      dispatch(userSlice.actions.setUser({type: 'Teacher', userId: '313cbfd3-4fc1-4763-9d18-caedd0be4a63'}));
     }
     
 }

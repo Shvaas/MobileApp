@@ -13,8 +13,10 @@ import YogisStack from './YogisStack';
 import AllCoursesStack from './AllCourseStack';
 import MyCoursesStack from './MycourseStack';
 import TeacherSessionStack from './TeacherSessionStack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 function getTabStyle(route){
   const routeName = getFocusedRouteNameFromRoute(route);
@@ -38,10 +40,24 @@ function getTabStyle(route){
 const HomePageStack = () => {
   const userType = useSelector((state) => state.user.userType);
   console.log(userType);
-  
+
+  if(userType === 'Teacher'){
+    return (
+      <Stack.Navigator
+        screenOptions={{
+          gestureEnabled: false,
+          headerShown: false,
+        }}>
+        <Stack.Screen
+          name={RouteNames.HomePageFlow.CalendarPage}
+          component={TeacherSessionStack}
+        />
+      </Stack.Navigator>
+    );
+  } else {
   return (
     <Tab.Navigator
-      initialRouteName= {RouteNames.HomePageFlow.Feed}
+      initialRouteName= {RouteNames.HomePageFlow.AllYogis}
       screenOptions={{
         tabBarActiveTintColor: '#e91e63',
         headerShown: false,
@@ -57,17 +73,6 @@ const HomePageStack = () => {
         })}
       /> */}
 
-      { userType =='Teacher' ? <Tab.Screen
-        name={RouteNames.HomePageFlow.CalendarPage}
-        component={TeacherSessionStack}
-        options={({route}) => ({
-          tabBarLabel: RouteNames.HomePageFlow.CalendarPage,
-          tabBarIcon: ({color, size}) => (
-            <MaterialCommunityIcons name="yoga" size={size} color={color} />
-          ),
-          tabBarStyle: {display: getTabStyle(route)},
-        })}
-      /> :
       <Tab.Screen
         name={RouteNames.HomePageFlow.AllYogis}
         component={YogisStack}
@@ -78,7 +83,8 @@ const HomePageStack = () => {
           ),
           tabBarStyle: {display: getTabStyle(route)},
         })}
-      />}
+      />
+
       <Tab.Screen
         name={RouteNames.HomePageFlow.AllCourses}
         component={AllCoursesStack}
@@ -90,8 +96,10 @@ const HomePageStack = () => {
           tabBarStyle: {display: getTabStyle(route)},
         })}
       />
+
     </Tab.Navigator>
-  );
+  )};
 };
+
 
 export default HomePageStack;

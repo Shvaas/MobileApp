@@ -60,26 +60,56 @@ export const userSessionSlice = createSlice({
     reducers: {
 
       initiateSessions: (state, action) => {
-        console.log('UserSessionSlice: Note: Userid is dummy, used only for testing - postSlice');
-        const serverSession = action.payload;
+        console.log('UserSessionSlice: Note: Userid is dummy, used only for testing');
+        const sessions = action.payload;
 
-        for (let i = 0; i < serverSession.length; i++) {
-          let tempSessions = {};
-          tempSessions.sessionId = serverSession[i].sessionId;
-          tempSessions.instructorId = serverSession[i].instructorId;
-          tempSessions.instructorPhoto = serverSession[i].instructorPhoto;
-          tempSessions.title = serverSession[i].title;
-          tempSessions.description = serverSession[i].description;
-          tempSessions.zoomlink = serverSession[i].zoomlink;
-          tempSessions.date = serverSession[i].date;
+        for (let i = 0; i < sessions.length; i++) {
+          let sessionId = sessions[i].courseId;
+          state.currentSession = state.userSessions.find(p => p.sessionId === sessionId);
+          console.log("state.currentSession ", state.currentSession);
 
-          state.userSessions.push(tempSessions);
+          if (state.currentSession === undefined){
+             // add session
+             state.currentSession = {}
+             state.currentSession.sessionId = sessions[i].courseId
+             state.currentSession.instructorId = sessions[i].instructorId;
+             state.currentSession.name = sessions[i].instructorName;
+             state.currentSession.instructorPhoto = utkarsh;
+             state.currentSession.title = sessions[i].courseName;
+             state.currentSession.description = 'One line description or tag';
+             state.currentSession.start_date = 1698199909;
+             state.currentSession.zoomlink = '';
+             state.currentSession.feedbackForStudent = sessions[i].instructorFeedback;
+             state.currentSession.feedbackForTeacher = sessions[i].studentFeedback;
+             state.currentSession.ratingForTeacher = 5;
+             state.userSessions.push(state.currentSession);
+
+          }else{
+            // update session
+             state.currentSession.feedbackForStudent = sessions[i].instructorFeedback;
+             state.currentSession.feedbackForTeacher = sessions[i].studentFeedback;
+             state.currentSession.zoomlink = '';
+             state.currentSession.name = sessions[i].instructorName;
+             state.currentSession.instructorPhoto = utkarsh;
+             state.currentSession.title = sessions[i].courseName;
+             state.currentSession.start_date = 1698199909;
+             state.currentSession.description = 'One line description or tag';
+          }
+
         }
+        console.log(state.userSessions);
+        
       },
 
       addSession: (state, action) => {
         console.log('UserSessionSlice: addSession', action.payload);
+        let sessions =  state.userSessions;
+        console.log("UserSessionSlice: addSession", sessions);
+        console.log();
+        console.log();
         state.userSessions.push(action.payload);
+        sessions =  state.userSessions;
+        console.log("UserSessionSlice: addSession", sessions);
       },
 
       cancelSession: (state, action) => {
@@ -100,6 +130,8 @@ export const userSessionSlice = createSlice({
     },
   });
 
+export const userSessionSelector = (state) =>  state.userSessions.userSessions;
+
 
 export const getSessions = (state) => {
     const sessions =  state.userSessions.userSessions;
@@ -115,7 +147,5 @@ export const getSessions = (state) => {
             upcommingSessions.push(sessions[index]);
         }
     }
-    console.log("UserSessionSlice: upcommingSessions",upcommingSessions);
-    console.log("UserSessionSlice: completedSessions",completedSessions);
     return [upcommingSessions, completedSessions];
 };

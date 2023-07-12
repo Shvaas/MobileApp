@@ -8,12 +8,14 @@ import {userSessionSlice} from './userSessionSlice';
 import {sessionSlice} from './sessionSlice';
 import {apiSlice} from './apiSlice';
 import {userSlice} from './userSlice';
+import {yogiSlice} from './yogiSlice';
 
 const reducers = combineReducers({
   posts: postSlice.reducer,
   userSessions: userSessionSlice.reducer,
   sessions: sessionSlice.reducer,
   user: userSlice.reducer,
+  yogi: yogiSlice.reducer,
   api: apiSlice.reducer,
 });
 
