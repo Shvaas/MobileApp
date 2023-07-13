@@ -33,9 +33,15 @@ interface PropsType {
 // };
 
 const CalendarPage: React.FC<PropsType> = ({route, navigation}) => {
+  const userType = useSelector((state) => state.user.userType);
+  const header = userType === 'Teacher' ? 'Sessions': 'Book Sessions';
+  let userId = null;
 
-const {userId} = route.params;
-console.log("userId", userId);
+if (userType=='Teacher'){
+   userId = useSelector((state) => state.user.userId);
+}else{
+   userId = route.params.userId;
+}
 
 const {data, error,isLoading} = useGetTeacherSessionsQuery(userId);
 
@@ -58,8 +64,7 @@ React.useEffect(() => {
   }
 }, [data, dispatch]);
 
-const userType = useSelector((state) => state.user.userType);
-const header = userType === 'Teacher' ? 'Sessions': 'Book Sessions';
+
 
 
 
