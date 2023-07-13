@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, {useRef, useCallback,useState} from 'react';
-import {StyleSheet,View, Image, Text, SafeAreaView} from 'react-native';
+import {StyleSheet,View, Image, Text, SafeAreaView, ActivityIndicator} from 'react-native';
 import {Platform} from 'react-native';
 import {ExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -9,15 +9,16 @@ import { ImageBackground } from 'react-native';
 import {themeFontFamily, themefonts, themeColor} from '../../../constants/theme';
 
 import AgendaItem from '../../../components/AgendaItem';
-import {next, prev, plus, backgroundImageLight, backButton} from '../../../images/imageLinks'
+import {next, prev, plus, backgroundImageLight, backButton, utkarsh} from '../../../images/imageLinks'
 
 import {useDispatch, useSelector} from 'react-redux';
 
-import {getAllSessionsbyMonthYear, sessionSelector} from '../../../store/sessionSlice';
+import {getAllSessionsbyMonthYear, sessionSelector, 
+  getAllSessionsbyId, sessionSlice} from '../../../store/sessionSlice';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import RouteNames from '../../../constants/routeName';
-import {userSessionSlice} from '../../../store/userSessionSlice';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
+import {useGetTeacherSessionsQuery} from '../../../store/apiSlice';
 
 
 interface PropsType {
@@ -33,7 +34,34 @@ interface PropsType {
 
 const CalendarPage: React.FC<PropsType> = ({route, navigation}) => {
 
-  const userType = useSelector((state) => state.user.userType);
+const {userId} = route.params;
+console.log("userId", userId);
+
+const {data, error,isLoading} = useGetTeacherSessionsQuery(userId);
+
+const dispatch = useDispatch();
+// let session = useSelector(sessionSelector);
+let session = useSelector((state) => getAllSessionsbyId(state, [userId]));
+console.log("all sessions", session);
+
+if (isLoading && session==null) {
+  return <ActivityIndicator />;
+}
+
+React.useEffect(() => {
+  if (data){
+    console.log("data", data);
+    dispatch(sessionSlice.actions.initiateSessions({
+      sessions: data?.data?.courses,
+      instructor_id: userId,
+    }));
+  }
+}, [data, dispatch]);
+
+const userType = useSelector((state) => state.user.userType);
+const header = userType === 'Teacher' ? 'Sessions': 'Book Sessions';
+
+
 
 const tColor = '#00AAAF';
 const lightThemeColor = '#f2f7f7';
@@ -108,8 +136,6 @@ function getPastDate(numberOfDays: number) {
 }
 
 
-  const dispatch = useDispatch();
-
 
   // const {weekView} = props;
   const weekView = false;
@@ -122,8 +148,7 @@ function getPastDate(numberOfDays: number) {
   let todayDate = new Date();
   //let session = useSelector((state) => getAllSessionsbyMonthYear(state, [todayDate.getMonth()-1, todayDate.getFullYear()]));
 
-  let session = useSelector(sessionSelector);
-  console.log("all sessions", session);
+  
   
  
 
@@ -180,12 +205,16 @@ function getPastDate(numberOfDays: number) {
     <ImageBackground source={backgroundImageLight} style={styles.image}>
       <View style={styles.topContainer}>
         <GestureHandlerRootView style={{backgroundColor: themeColor.white}}>
-          <TouchableOpacity onPress={()=>navigation.goBack()}>
-            <Image source={backButton} style={styles.backbutton}/>
+          <TouchableOpacity onPress={()=>navigation.navigate(RouteNames.HomePageFlow.UserProfile)}>
+            {userType=='Student' ? <Image source={backButton} style={[styles.backbutton]} /> :
+            <View style={{height:'100%', alignItems:'center', justifyContent:'center'}}>
+              <Image source={utkarsh} style={styles.imageStyle} />
+            </View>
+            }
           </TouchableOpacity>
         </GestureHandlerRootView> 
         <View style={styles.headingContainer}>
-            <Text style={styles.heading}>Book Session</Text>
+            <Text style={styles.heading}>{header}</Text>
         </View>
         <GestureHandlerRootView style={{backgroundColor: themeColor.white}}>
         <TouchableOpacity onPress={()=>navigation.navigate(RouteNames.HomePageFlow.CreateSessions)}>
@@ -293,6 +322,17 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: themeColor.white,
+  },
+
+  imageStyle: {
+    borderColor: themeColor.vividRed,
+    borderWidth: 1,
+    borderRadius: 50,
+    height: 50,
+    width: 50,
+    alignSelf: 'center',
+    resizeMode: 'cover',
+    margin: 10,
   },
 
 });

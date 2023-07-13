@@ -164,8 +164,9 @@ export const sessionSlice = createSlice({
     reducers: {
 
       initiateSessions: (state, action) => {
-        console.log('Note: Userid is dummy, used only for testing - postSlice');
-        const serverSessions = action.payload;
+        const {sessions, instructor_id} = action.payload;
+        console.log("Session Slice: initiateSessions", sessions);
+        
         // instructor_id
         // start_date, end_date
         // total slots
@@ -174,19 +175,31 @@ export const sessionSlice = createSlice({
         // zoom link
         // session_type - group, private
         // student list - {student id, attendance, feedback for student, feedback for teacher, rating for teacher}
-        for (let i = 0; i < serverSessions.length; i++) {
-          let tempSession = {};
-          tempSession.instructor_id = serverSessions[i].sessionId;
-          tempSession.title = serverSessions[i].title;
-          tempSession.start_date = serverSessions[i].start_date;
-          tempSession.durationMinutes = serverSessions[i].durationMinutes;
-          tempSession.total_slots = serverSessions[i].total_slots;
-          tempSession.available_slots = serverSessions[i].available_slots;
-          tempSession.description = serverSessions[i].description;
-          tempSession.zoomlink = serverSessions[i].zoomlink;
-          tempSession.session_type = serverSessions[i].session_type;
 
-          state.sessions.push(tempSession);
+        //[{"capacity": 30, "courseId": "0f94e351-fd3a-4a71-84c4-123399f50bb4", 
+        // "courseName": "Yoga101", "difficultyLevel": "BEGINNER", "price": 10, "sessionDate": "2023-01-01"}]
+        for (let i = 0; i < sessions.length; i++) {
+          let sessionId = sessions[i].courseId;
+          state.currentSession = state.sessions.find(p => p.sessionId === sessionId);
+          if (state.currentSession === undefined){
+             // add session
+             state.currentSession = {}
+             state.currentSession.instructorId = instructor_id;
+             state.currentSession.title = sessions[i].courseName;
+             state.currentSession.sessionId = sessions[i].courseId;
+             state.currentSession.total_slots = sessions[i].capacity;
+             state.currentSession.description = 'One line description or tag';
+             state.currentSession.start_date = 1686290400;
+             state.currentSession.markCompleted = false;
+             state.currentSession.studentList = [];
+              state.sessions.push(state.currentSession);
+
+          }else{
+            // update session
+            state.currentSession.title = sessions[i].courseName;
+            state.currentSession.total_slots = sessions[i].capacity;
+          }
+
         }
       },
 
@@ -194,7 +207,7 @@ export const sessionSlice = createSlice({
         console.log('Session Slice: addSession', action.payload);
         const {session} = action.payload;
         state.sessions.push(session);
-        console.log(state.sessions);
+        console.log('Session Slice: addSession', state.sessions);
       },
 
       cancelSession: (state, action) => {
@@ -204,12 +217,12 @@ export const sessionSlice = createSlice({
         state.sessions = newSession;
       },
 
+
       markSessionCompleted: (state, action) => {
         console.log('Session Slice: markSessionCompleted', action.payload);
         const {sessionId} = action.payload;
         state.currentSession = state.sessions.find(p => p.sessionId === sessionId);
         state.currentSession.markCompleted = true;
-        console.log(state.currentSession);
 
       },
 
@@ -223,7 +236,6 @@ export const sessionSlice = createSlice({
             state.currentSession.studentList[index].attendance = attendance;
           }
         }
-        console.log(state.currentSession.studentList);
       },
 
       addFeedbackForStudent: (state, action) => {
@@ -237,8 +249,6 @@ export const sessionSlice = createSlice({
             break;
           }
         }
-        console.log(state.currentSession.studentList);
-        
       },
 
       addFeedbackForTeacher: (state, action) => {
@@ -263,11 +273,7 @@ export const sessionSlice = createSlice({
 
   function getMonth(currDate){
     let myDate = new Date(currDate*1000);
-    let dateStr = myDate.getFullYear() + "/" + (myDate.getMonth() + 1) + "/" + myDate.getDate() + " " + myDate.getHours() + ":" + myDate.getMinutes() + ":" + myDate.getSeconds()
-    console.log(dateStr);
-    console.log();
-    console.log('getMonth', myDate.getMonth());
-    console.log();
+    // let dateStr = myDate.getFullYear() + "/" + (myDate.getMonth() + 1) + "/" + myDate.getDate() + " " + myDate.getHours() + ":" + myDate.getMinutes() + ":" + myDate.getSeconds()
     return myDate.getMonth();
   }
 
@@ -279,11 +285,19 @@ export const sessionSlice = createSlice({
   export const getAllSessionsbyMonthYear = createSelector(
     [sessionSelector, (sessionSelector, [month, year]) => [month, year]],
     (sessionSelector, [month, year]) => {
-      console.log("getAllSessionsbyMonthYear");
+      console.log(" Session Slice: getAllSessionsbyMonthYear");
       
 
       const currentSession = sessionSelector.filter(p => getMonth(p.start_date) === month &&  getYear(p.start_date) === year);
 
       return currentSession;
+    },
+  );
+
+  export const getAllSessionsbyId = createSelector(
+    [sessionSelector, (sessionSelector, [userid]) => [userid]],
+    (sessionSelector, [userid]) => {
+      const instructorSessions = sessionSelector.filter(p => p.instructorId === userid);
+      return instructorSessions;
     },
   );

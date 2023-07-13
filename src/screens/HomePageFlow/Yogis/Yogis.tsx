@@ -5,9 +5,11 @@ import {
   FlatList,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator,
   View,
   Image,
   Text,
+  ImageBackground,
 } from 'react-native';
 import React from 'react';
 import { useState} from "react";
@@ -19,110 +21,63 @@ import {
   themeColor,
 } from '../../../constants/theme';
 import ProfileCardView from './components/ProfileCardView';
-import {aryan, nabeel, shikha, utkarsh, yoga_instructor1, yoga_instructor2, yoga_instructor3} from '../../../images/imageLinks';
+import {aryan, nabeel, shikha, utkarsh, yoga_instructor1, yoga_instructor2, backgroundImageLight} from '../../../images/imageLinks';
 import RouteNames from '../../../constants/routeName';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
+import {useGetTeachersQuery} from '../../../store/apiSlice';
 
+import {useDispatch, useSelector} from 'react-redux';
+import {yogiSlice, YogiSelector} from '../../../store/yogiSlice';
 interface PropsType {
   navigation: any;
 }
 
-const DATA = [
-  {
-    key: 1,
-    name: 'Anna',
-    image: yoga_instructor1,
-    yearsOfExp: 2,
-    rating: 4.5,
-    certificates: 'Masters in Yoga, RYT-500',
-    studentsTrained: 450,
-    description: 'Yoga lorem ipsium the random text',
-    ActiveCourses: 2,
-    interest: ['meditation', 'Yoga', 'hatha Yoga'],
-    reviews: [
-      {
-        image: utkarsh,
-        name: 'Utkarsh Nath',
-        review:
-          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vitae cumque, sed, dolor culpa cum praesentium possimus animi quia, omnis quod distinctio magnam qui? Ab dignissimos vero aliquam velit!',
-      },
-      {
-        image: aryan,
-        name: 'Aryan Mittal',
-        review:
-          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vitae cumque, sed, dolor culpa cum praesentium possimus animi quia, omnis quod distinctio magnam qui? Ab dignissimos vero aliquam velit!',
-      },
-      {
-        image: utkarsh,
-        name: 'Utkarsh Nath 2.0',
-        review:
-          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vitae cumque, sed, dolor culpa cum praesentium possimus animi quia, omnis quod distinctio magnam qui? Ab dignissimos vero aliquam velit!',
-      },
-    ],
-  },
-  {
-    key: 2,
-    name: 'Emma',
-    image: yoga_instructor2,
-    yearsOfExp: 4,
-    rating: 4.9,
-    certificates: 'RYT-200, RYT-500',
-    studentsTrained: 700,
-    description: 'Meditation',
-    ActiveCourses: 3,
-    interest: ['yoga', 'meditation', 'Yin Yoga', 'Anxiety'],
-    reviews: [
-      {
-        image: shikha,
-        name: 'Shikha Asrani',
-        review:
-          "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vitae cumque, sed, dolor culpa cum praesentium possimus animi quia, omnis quod distinctio magnam qui? Ab dignissimos vero aliquam velit!",
-      },
-      {
-        image: aryan,
-        name: 'Aryan Mittal',
-        review:
-          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vitae cumque, sed, dolor culpa cum praesentium possimus animi quia, omnis quod distinctio magnam qui? Ab dignissimos vero aliquam velit!',
-      },
-    ],
-  },
-  {
-    key: 3,
-    name: 'Olivia',
-    image: yoga_instructor3,
-    yearsOfExp: 1,
-    rating: 3.5,
-    certificates: 'RYT-200',
-    studentsTrained: 106,
-    description: 'Yoga',
-    ActiveCourses: 3,
-    interest: ['yoga', 'Children\'s Yoga', 'Pranayama'],
-    reviews: [
-      {
-        image: utkarsh,
-        name: 'Utkarsh Nath',
-        review:
-          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vitae cumque, sed, dolor culpa cum praesentium possimus animi quia, omnis quod distinctio magnam qui? Ab dignissimos vero aliquam velit!',
-      },
-      {
-        image: shikha,
-        name: 'Shikha Asrani',
-        review:
-          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vitae cumque, sed, dolor culpa cum praesentium possimus animi quia, omnis quod distinctio magnam qui? Ab dignissimos vero aliquam velit!',
-      },
-    ],
-  },
-];
+
 
 
 
 const Yogis: React.FC<PropsType> = ({navigation}) => {
 
+  const {data, error,isLoading} = useGetTeachersQuery();
+  // const [bookSession, { data, error, isLoading }] = useBookSessionMutation();
+  const dispatch = useDispatch();
+
+
+  let yogi = useSelector(YogiSelector);
+  console.log("yogi", yogi);
+
+
+  React.useEffect(() => {
+    if (data){
+      dispatch(yogiSlice.actions.initialYogi(data?.data?.userList));
+    }
+  }, [data, dispatch]);
+
+  if (isLoading && yogi.length==0) {
+    return <ActivityIndicator />;
+  }
+
+
+  // dispatch(yogiSlice.actions.initialYogi(data?.data));
+
+  // const onBookSession = async () => {
+  //   let session = {userId: '313cbfd3-4fc1-4763-9d18-caedd0be4a63',
+  //               courseId: '0f94e351-fd3a-4a71-84c4-123399f50bb4'};
+
+  // const result = await bookSession(session);
+  // console.log('put result', result.data);
+  // };
+
+  // onBookSession()
+
+  // console.log(data.data);
+  // console.log(data.data.userList[0].slots);
+  
 
   return (
     <SafeAreaView style={styles.container}>
-      <BackgroundImageDup>
+      <ImageBackground source={backgroundImageLight} style={styles.image}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={[styles.header, {flexDirection:"row",justifyContent:"space-between",padding:10, backgroundColor: themeColor.white}]}>
           <TouchableOpacity onPress={() => navigation.navigate(RouteNames.HomePageFlow.UserProfile)}> 
@@ -132,11 +87,11 @@ const Yogis: React.FC<PropsType> = ({navigation}) => {
             fontFamily:themeFontFamily.ralewayBold, alignSelf:"center"}}>
             Shvaas</Text>
           <View style={{flexDirection:"row"}}>
-          <IoniconsIcon name="notifications" color={"#939393"} size={32} style={{alignSelf:"flex-start",padding:5}}/>
+            <IoniconsIcon name="notifications" color={"#939393"} size={32} style={{alignSelf:"flex-start",padding:5}}/>
           </View>
           </View>
           <FlatList
-            data={DATA}
+            data={yogi}
             renderItem={({item}) => {
               return (
                 <TouchableOpacity
@@ -153,7 +108,7 @@ const Yogis: React.FC<PropsType> = ({navigation}) => {
             }}
           />
         </ScrollView>
-      </BackgroundImageDup>
+        </ImageBackground>
     </SafeAreaView>
   );
 };
@@ -209,5 +164,10 @@ const styles = StyleSheet.create({
     width: 50,
     alignSelf: 'center',
     resizeMode: 'cover',
+  },
+  image: {
+    height: "100%",
+    width:"100%",
+    flex: 1,
   },
 });

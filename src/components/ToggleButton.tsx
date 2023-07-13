@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
-  Dimensions
+  Dimensions,
+  ActivityIndicator
 } from 'react-native';
 
 import {themeColor, themefonts} from '../constants/theme';
@@ -17,6 +18,9 @@ import SessionCardView from '../components/SessionCardView';
 import UpcomingSessionCardView from './UpcomingSessionCardView';
 import RouteNames from '../constants/routeName';
 
+import {useDispatch, useSelector} from 'react-redux';
+import {useGetStudentSessionsQuery} from '../store/apiSlice';
+import {userSessionSlice, getSessions} from '../store/userSessionSlice';
 export interface ToggleButtonProps {
   navigation: any;
   activeOption?: number;
@@ -39,6 +43,23 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
   dataCurrent,
   dataPast,
 }) => {
+  const userId = useSelector((state) => state.user.userId);
+  const {data, error, isLoading} = useGetStudentSessionsQuery(userId);
+
+  const dispatch = useDispatch();
+
+  // if (isLoading) {
+  //   return <ActivityIndicator />;
+  // }
+
+  React.useEffect(() => {
+    if (data){
+      // console.log("dispatch(userSessionSlice", data?.data);
+      dispatch(userSessionSlice.actions.initiateSessions(data?.data?.courses));
+    }
+  }, [data, dispatch]);
+
+
   const selectedOption = activeOption ?? OPTION.FIRST;
   const handleOptionPress = (index) => {
     onOptionPress(index);
