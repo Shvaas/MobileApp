@@ -21,12 +21,16 @@ import PrimaryButton from '../../../common/buttons/PrimaryButton';
 import RouteNames from '../../../constants/routeName';
 import {userSessionSlice} from '../../../store/userSessionSlice';
 import {useDispatch, useSelector} from 'react-redux';
+import {useSendFeedbackToTeacherMutation} from '../../../store/apiSlice';
+
 interface PropsType {
     navigation: any,
     route: any;
 }
 
 const SessionFeedback: React.FC<PropsType> = ({route, navigation}) => {
+  const [sendFeedback, { data, error, isLoading }] = useSendFeedbackToTeacherMutation();
+  const userId = useSelector((state) => state.user.userId);
     const dispatch = useDispatch();
     const {session} = route.params;
 
@@ -44,13 +48,20 @@ const SessionFeedback: React.FC<PropsType> = ({route, navigation}) => {
       if (commentValue.trim() === '' || rating==0) {
         Alert.alert('Error', 'Please enter a valid feedback or rating');
       }
-      dispatch(
-        userSessionSlice.actions.submitFeedback({
-          'sessionId' : session.sessionId,
-          'feedback' : commentValue,
-          'rating' : rating,
-        }),
-      );
+      const result = await sendFeedback([session.sessionId,
+        {userId: userId,
+          instructorFeedback: commentValue,
+          courseRating: rating,
+        }]);
+      console.log("result", result);
+      
+      // dispatch(
+      //   userSessionSlice.actions.submitFeedback({
+      //     'sessionId' : session.sessionId,
+      //     'feedback' : commentValue,
+      //     'rating' : rating,
+      //   }),
+      // );
       Alert.alert('Success', 'Succesfully submitted the feedback');
     }
 

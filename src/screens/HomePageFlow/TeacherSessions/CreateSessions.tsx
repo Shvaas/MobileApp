@@ -23,12 +23,16 @@ import SimpleButton from '../../../common/buttons/SimpleButton';
 
 import {sessionSlice} from '../../../store/sessionSlice';
 import {useDispatch, useSelector} from 'react-redux';
+
+import {useCreateSessionMutation} from '../../../store/apiSlice';
 interface PropsType {
   navigation: any,
   route: any;
 }
 
   const CreateSessions: React.FC<PropsType> = ({route, navigation}) => {
+  const [createSession, { data, error, isLoading }] = useCreateSessionMutation();
+  const userId = useSelector((state) => state.user.userId);
   const dispatch = useDispatch();
   const [sessionTitle, setSessionTitle] = useState('');
   const [sessionDescription, setSessionDescription] = useState('');
@@ -84,6 +88,23 @@ interface PropsType {
           durationMinutes: 45,
           session_type: 1,
           };
+
+        const serverSession = {
+          userId: userId,
+          courseName: sessionTitle,
+          sessionDate: 1689383758,
+          description: sessionDescription,
+          capacity: nSeat,
+          recommendedEquipments: '',
+          difficultyLevel: '',
+          reactionType: '',
+          sessionStartTime: 1689383758,
+          sessionEndTime: 1689383758,
+        }
+
+        const result = await createSession(serverSession);
+        console.log(" result ",result);
+        
 
         console.log("Create Session --> Note: Do this after succesfull session creation at server");
         

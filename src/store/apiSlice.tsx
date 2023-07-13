@@ -32,10 +32,17 @@ export const apiSlice = createApi({
       query: (userid) => `course/student/${userid}`,
     }),
     sendFeedbackToTeacher: builder.mutation({
-      query: (courseid, feedback) => ({
-        url: `course/${courseid}/instructor-feedback`,
+      query: (data) => ({
+        url: `course/${data[0]}/instructor-feedback`,
         method: 'POST',
-        body: feedback,
+        body: data[1],
+      }),
+    }),
+    createSession: builder.mutation({
+      query: (session) => ({
+        url: `course/create`,
+        method: 'POST',
+        body: session,
       }),
     }),
     updateReaction: builder.mutation({
@@ -64,5 +71,6 @@ export const {useGetPostsQuery,
   useBookSessionMutation,
   useGetStudentSessionsQuery,
   useSendFeedbackToTeacherMutation,
+  useCreateSessionMutation,
   useUpdateReactionMutation,
   useCreatePaymentIntentMutation} = apiSlice;
