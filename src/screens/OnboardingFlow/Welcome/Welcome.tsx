@@ -23,6 +23,7 @@ import BackgroundImage from '../../../common/BackgroundImage';
 import PrimaryButton from '../../../common/buttons/PrimaryButton';
 import {useDispatch, useSelector} from 'react-redux';
 import { Button } from 'react-native-elements';
+import {Auth} from "aws-amplify";
 
 import {useState} from 'react';
 import {userSlice} from '../../../store/userSlice';
@@ -58,9 +59,6 @@ const Welcome: React.FC<PropsType> = ({navigation}) => {
     
 }
 
- 
-
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topContainer}>
@@ -75,7 +73,7 @@ const Welcome: React.FC<PropsType> = ({navigation}) => {
       <View style={styles.bottomContainer}>
         <BottomComponent
           onButtonPress_Login={() => {
-            navigation.navigate(RouteNames.OnboardingFlow.Login);
+            navigation.navigate(RouteNames.OnboardingFlow.ProfileQuestions);
           }}
           onButtonPress_Home={() => {
             navigation.navigate('Home');

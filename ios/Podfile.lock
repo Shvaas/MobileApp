@@ -428,7 +428,7 @@ PODS:
     - React-RCTImage
   - RNVectorIcons (9.2.0):
     - React-Core
-  - SocketRocket (0.6.0)
+  - SocketRocket (0.6.1)
   - Stripe (22.8.4):
     - Stripe/Stripe3DS2 (= 22.8.4)
     - StripeApplePay (= 22.8.4)
@@ -725,7 +725,7 @@ SPEC CHECKSUMS:
   RNReanimated: b283b94ea5eeb9e2ec40795b6e518008ac17e944
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
-  SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
+  SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Stripe: 59f6659e8ea413def19c97c57e23f5ec6ea48cf8
   stripe-react-native: 0e50141806454839806143db5ce514a0cddd4d12
   StripeApplePay: 6e9aebd3d248464836e9fbdaef6e5fb1817d56a6
@@ -736,6 +736,6 @@ SPEC CHECKSUMS:
   Yoga: ff994563b2fd98c982ca58e8cd9db2cdaf4dda74
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: de20cb695799e5b55491c8080497b125927a9c1d
+PODFILE CHECKSUM: 509a42c8ae62ee1221cf66a995d85052d4cfbc67
 
 COCOAPODS: 1.11.3

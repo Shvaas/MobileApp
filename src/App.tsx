@@ -8,6 +8,8 @@ import {PersistGate} from "redux-persist/integration/react";
 import {persistStore} from "redux-persist";
 import {Provider} from 'react-redux';
 import {store} from './store';
+import { useEffect, useState } from 'react';
+import {Auth} from "aws-amplify";
 
 // Local
 import OnboardingStack from './screenStack/OnboardingStack';
@@ -15,11 +17,28 @@ import {APP_FLOWS} from './constants/routeName';
 import HomePageStack from './screenStack/HomePageStack';
 import { StripeProvider } from '@stripe/stripe-react-native';
 
+function HomeNav() {
+  return <HomePageStack />;
+}
+
 let persistor = persistStore(store);
 
 const App = () => {
+  const [user,setUser] = useState(null);
+
   React.useEffect(() => {
+    console.log("user", user?.attributes?.email);
+    
     SplashScreen.hide();
+    const updateUser = async () => {
+      // Get current authenticated user
+      const userInfo = await Auth.currentAuthenticatedUser({ bypassCache: true });
+
+      if(userInfo) {
+        setUser(userInfo);
+      }
+    }
+    updateUser();
   }, []);
 
   const Stack = createNativeStackNavigator();
@@ -37,10 +56,17 @@ const App = () => {
               gestureEnabled: false,
               headerShown: false,
             }}>
+              {
+                user?
+             <Stack.Screen
+                name="Home"
+                component={HomePageStack}
+            /> :
             <Stack.Screen
-              name={APP_FLOWS.OnboardingFlow}
-              component={OnboardingStack}
-            />
+            name={APP_FLOWS.OnboardingFlow}
+            component={OnboardingStack}
+          />
+          }
           </Stack.Navigator>
         </NavigationContainer>
         </StripeProvider>

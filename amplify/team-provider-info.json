@@ -17,6 +17,9 @@
       },
       "api": {
         "amplifyDatasource": {}
+      },
+      "storage": {
+        "s3d8d8ecef": {}
       }
     }
   }

@@ -14,7 +14,10 @@ import ProfileQuestion from '../screens/OnboardingFlow/ProfileQuestions/ProfileQ
 import Sessions from '../screens/HomePageFlow/TeacherSessions/Sessions';
 import SessionFeedback from '../screens/HomePageFlow/AllCourses/SessionFeedback';
 import Profile from '../screens/HomePageFlow/UserProfile/Profile';
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 const Stack = createNativeStackNavigator();
 
 function HomeNav() {

@@ -39,7 +39,7 @@ import {
   const settings = [{title:'Profile Questions', description: 'Your health profile'},
                     {title:'Invite Friends', description: 'Invite your friends to a zenful session'},
                     {title:'Help', description: 'Understand Shvaas better'},
-                    {title:'Logout', description: 'Understand Shvaas better'},]
+                    {title:'Logout', description: 'Sign out'},]
 
  
   const [currentIndex, setCurrentIndex] = useState(0);

@@ -21,11 +21,27 @@ import {loginbackgroundImage, fb_icon, google_icon} from '../../images/imageLink
 
 import LoginButton from '../../common/buttons/LoginButton';
 
-import { Amplify, Auth, Hub } from "aws-amplify";
+import { Amplify, Auth, Hub ,Storage} from "aws-amplify";
 import awsconfig from '../../aws-exports';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
-Amplify.configure(awsconfig);
+import { NavigationContainer } from '@react-navigation/native';
+// Amplify.configure(awsconfig);
+import {withAuthenticator, AmplifyTheme} from 'aws-amplify-react-native'
 
+const MyTheme = {
+  ...AmplifyTheme,
+  buttonText: [ AmplifyTheme.buttonText, { lineHeight: 16, color: themeColor.vividRed, fontFamily: themeFontFamily.raleway }],
+  button: [AmplifyTheme.button, { justifyContent:'center', alignSelf: 'center',width: 150, margin:1,padding:10, backgroundColor: 'white', borderColor: themeColor.vividRed, borderWidth: 1, borderRadius: 6, height: 42, top: 40}],
+  buttonDisabled:[AmplifyTheme.buttonDisabled, {justifyContent:'center', backgroundColor: 'white',borderColor: themeColor.vividRed, borderWidth: 1, alignSelf: 'center',width: 150, margin:1,padding:10,borderRadius: 6, height: 42,top:40}],
+  signInButtonIcon: { display: "none" },
+  section: [AmplifyTheme.section],
+  sectionHeaderText: [AmplifyTheme.sectionHeaderText, {color:'#222222', fontFamily: themeFontFamily.raleway}],
+  input: [AmplifyTheme.input, {borderRadius: 5,}],
+  sectionFooterLinkDisabled: [AmplifyTheme.sectionFooterLinkDisabled],
+  sectionFooter: [AmplifyTheme.sectionFooter, {top: 40}],
+  sectionFooterLink: [AmplifyTheme.sectionFooterLink, {color:themeColor.vividRed, fontFamily: themeFontFamily.raleway}],
+  signedOutMessage: [AmplifyTheme.signedOutMessage, {opacity:0}]
+};
 
 async function urlOpener(url, redirectUrl) {
   console.log('url', url, redirectUrl);
@@ -51,30 +67,34 @@ async function urlOpener(url, redirectUrl) {
 //   },
 // });
 
-const isLocalhost = Boolean(__DEV__);
+// const isLocalhost = Boolean(__DEV__);
 
-// Assuming you have two redirect URIs, and the first is for localhost and second is for production
-const [
-  localRedirectSignIn,
-  productionRedirectSignIn,
-] = awsconfig.oauth.redirectSignIn.split(",");
+// // Assuming you have two redirect URIs, and the first is for localhost and second is for production
+// const [
+//   localRedirectSignIn,
+//   productionRedirectSignIn,
+// ] = awsconfig.oauth.redirectSignIn.split(",");
 
-const [
-  localRedirectSignOut,
-  productionRedirectSignOut,
-] = awsconfig.oauth.redirectSignOut.split(",");
+// const [
+//   localRedirectSignOut,
+//   productionRedirectSignOut,
+// ] = awsconfig.oauth.redirectSignOut.split(",");
 
-const updatedAwsConfig = {
-  ...awsconfig,
-  oauth: {
-    ...awsconfig.oauth,
-    redirectSignIn: isLocalhost ? localRedirectSignIn : productionRedirectSignIn,
-    redirectSignOut: isLocalhost ? localRedirectSignOut : productionRedirectSignOut,
-  }
+// const updatedAwsConfig = {
+//   ...awsconfig,
+//   oauth: {
+//     ...awsconfig.oauth,
+//     redirectSignIn: isLocalhost ? localRedirectSignIn : productionRedirectSignIn,
+//     redirectSignOut: isLocalhost ? localRedirectSignOut : productionRedirectSignOut,
+//   }
+// }
+// Amplify.configure(updatedAwsConfig);
+
+interface PropsType {
+  navigation: any;
 }
-Amplify.configure(updatedAwsConfig);
 
-const Login = () => {
+const Login: React.FC<PropsType> = ({navigation}) => {
   const [user, setUser] = useState(null);
 
   React.useEffect(() => {
@@ -115,6 +135,28 @@ const Login = () => {
     
   }
 
+  const uploadFile = async () => {
+    return Storage.put('text3.txt',"Hello world", {
+      level:'public',
+      progressCallback(uploadProgress){
+        console.log('PROGRESS--', uploadProgress.loaded + '/' + uploadProgress.total);
+      }
+    })
+    .then((res) => {
+      Storage.get(res.key)
+      .then((result) => {
+        console.log('RESULT --- ', result);
+        let awsImageUri = result.substring(0,result.indexOf('?'))
+        console.log('RESULT AFTER REMOVED URI --', awsImageUri)
+      })
+      .catch(e => {
+        console.log(e);
+      })
+    }).catch(e => {
+      console.log(e);
+    })
+  }
+
 
   return (
         <ImageBackground source={loginbackgroundImage} style={styles.image}>
@@ -129,7 +171,7 @@ const Login = () => {
           </View>
 
           <View style={styles.buttonContainer}>
-          <LoginButton title={'Sign in with Facebook'} 
+          {/* <LoginButton title={'Sign in with Facebook'} 
           titleStyle={styles.fbtextstyle}
           icon={fb_icon}
           onPress={() => Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Cognito })}/> 
@@ -137,9 +179,11 @@ const Login = () => {
         <LoginButton title={'Sign in with Google'} 
           titleStyle={styles.googletextstyle}
           icon={google_icon}
-          onPress={() => Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Google })}/> 
+          onPress={() => Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Google })}/>  */}
+          <Button title="Upload File" onPress={() => uploadFile()} />
+          <Button title="Go Back" onPress={() => navigation.goBack()} />
           </View>
-
+          
           
 
           
@@ -179,7 +223,47 @@ const Login = () => {
   );
 };
 
-export default Login;
+const signUpConfig = {
+  header: 'My Customized Sign Up',
+  hideAllDefaults: true,
+  defaultCountryCode: '1',
+  signUpFields: 
+  [
+    {
+      label: 'Name',
+      key: 'name',
+      required: true,
+      displayOrder: 1,
+      type: 'string'
+    },
+    {
+      label: 'Email',
+      key: 'email',
+      required: true,
+      displayOrder: 2,
+      type: 'string'
+    },
+    {
+      label: 'Password',
+      key: 'password',
+      required: true,
+      displayOrder: 3,
+      type: 'password'
+    },
+    {
+      label: 'PhoneNumber',
+      key: 'phone_number',
+      required: true,
+      displayOrder: 4,
+      type: 'string'
+    },
+    // and other custom attributes
+  ]
+};
+
+export default withAuthenticator(Login, { usernameAttributes: 'email', signUpConfig, includeGreetings: true }, [], null, MyTheme);
+
+// export default withAuthenticator(Login,false, [], null, MyTheme);
 
 const styles = StyleSheet.create({
   container: {

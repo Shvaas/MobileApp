@@ -23,6 +23,7 @@ import TeacherAttendanceCardView from '../../../components/TeacherAttendanceCard
 import TeacherFeedbackCardView from '../../../components/TeacherFeedbackCardView';
 import {useDispatch, useSelector} from 'react-redux';
 import {sessionSlice} from '../../../store/sessionSlice';
+import {Auth} from "aws-amplify";
 interface PropsType {
     navigation: any,
     route: any;
@@ -74,6 +75,8 @@ const Sessions: React.FC<PropsType> = ({route, navigation}) => {
     const students = session.studentList;
     console.log("students", students);
 
+    // const userInfo = Auth.currentAuthenticatedUser({ bypassCache: true });
+    // console.log(userInfo.attributes.name);
     
     return (
       <SafeAreaView style={styles.safeArea}>

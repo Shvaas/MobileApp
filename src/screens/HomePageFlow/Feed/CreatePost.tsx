@@ -25,7 +25,7 @@ import LoginButton from '../../../common/buttons/LoginButton';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import s3Storage from '../../../aws-exports';
-Amplify.configure(s3Storage);
+// Amplify.configure(s3Storage);
 
 interface PropsType {
   navigation: any;

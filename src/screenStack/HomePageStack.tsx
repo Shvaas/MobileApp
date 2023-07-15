@@ -14,6 +14,7 @@ import AllCoursesStack from './AllCourseStack';
 import MyCoursesStack from './MycourseStack';
 import TeacherSessionStack from './TeacherSessionStack';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import Profile from '../screens/HomePageFlow/UserProfile/Profile';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -84,7 +85,6 @@ const HomePageStack = () => {
           tabBarStyle: {display: getTabStyle(route)},
         })}
       />
-
       <Tab.Screen
         name={RouteNames.HomePageFlow.AllCourses}
         component={AllCoursesStack}
@@ -96,7 +96,6 @@ const HomePageStack = () => {
           tabBarStyle: {display: getTabStyle(route)},
         })}
       />
-
     </Tab.Navigator>
   )};
 };

@@ -24,8 +24,11 @@ const YogisStack = () => {
       <Stack.Screen
       name={RouteNames.HomePageFlow.AllYogis}
       component={Yogis} />
-
       <Stack.Screen name={RouteNames.HomePageFlow.UserProfile} component={Profile}/>
+      <Stack.Screen
+          name={RouteNames.HomePageFlow.CalendarPage}
+          component={CalendarPage}
+        />
     </Stack.Navigator>
   );
 };

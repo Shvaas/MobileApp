@@ -40,6 +40,9 @@ end
 
 def __apply_Xcode_14_3_RC_post_install_workaround(installer)
   installer.pods_project.targets.each do |target|
+    if target.name == "React-Core-AccessibilityResources"
+      target.remove_from_project
+    end
     target.build_configurations.each do |config|
       current_target = config.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
       minimum_target = $min_ios_version_supported
@@ -49,3 +52,5 @@ def __apply_Xcode_14_3_RC_post_install_workaround(installer)
     end
   end
 end
+
+

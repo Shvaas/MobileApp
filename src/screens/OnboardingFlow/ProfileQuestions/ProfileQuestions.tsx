@@ -42,7 +42,24 @@ import {
  import {Picker} from '@react-native-picker/picker';
 import { useRef } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import {Auth} from "aws-amplify";
+import {withAuthenticator, AmplifyTheme} from 'aws-amplify-react-native'
  
+const MyTheme = {
+  ...AmplifyTheme,
+  buttonText: [ AmplifyTheme.buttonText, { lineHeight: 16, color: themeColor.vividRed, fontFamily: themeFontFamily.raleway }],
+  button: [AmplifyTheme.button, { justifyContent:'center', alignSelf: 'center',width: 150, margin:1,padding:10, backgroundColor: 'white', borderColor: themeColor.vividRed, borderWidth: 1, borderRadius: 6, height: 42, top: 40}],
+  buttonDisabled:[AmplifyTheme.buttonDisabled, {justifyContent:'center', backgroundColor: 'white',borderColor: themeColor.vividRed, borderWidth: 1, alignSelf: 'center',width: 150, margin:1,padding:10,borderRadius: 6, height: 42,top:40}],
+  signInButtonIcon: { display: "none" },
+  section: [AmplifyTheme.section],
+  sectionHeaderText: [AmplifyTheme.sectionHeaderText, {color:'#222222', fontFamily: themeFontFamily.raleway}],
+  input: [AmplifyTheme.input, {borderRadius: 5,}],
+  sectionFooterLinkDisabled: [AmplifyTheme.sectionFooterLinkDisabled],
+  sectionFooter: [AmplifyTheme.sectionFooter, {top: 40}],
+  sectionFooterLink: [AmplifyTheme.sectionFooterLink, {color:themeColor.vividRed, fontFamily: themeFontFamily.raleway}],
+  signedOutMessage: [AmplifyTheme.signedOutMessage, {opacity:0}]
+};
+
  interface PropsType {
    navigation: any;
  }
@@ -93,6 +110,7 @@ const [selectedWeight, setSelectedWeight] = useState(" ");
 
  
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [user,setUser] = useState(null);
   const slidesRef = useRef(null);
 
   const scrollX = useRef(new Animated.Value(0)).current;
@@ -118,6 +136,7 @@ const [selectedWeight, setSelectedWeight] = useState(" ");
           console.log(questionTwoState);
           console.log(selectedHeight);
           console.log(selectedWeight);
+          navigation.navigate('Home');
       }
   }
 
@@ -129,7 +148,17 @@ const [selectedWeight, setSelectedWeight] = useState(" ");
     }
   }
 
+  useEffect(() => {
+    const updateUser = async () => {
+      // Get current authenticated user
+      const userInfo = await Auth.currentAuthenticatedUser({ bypassCache: true });
 
+      if(userInfo) {
+        setUser(userInfo);
+      }
+    }
+    updateUser();
+  }, [])
   
    return (
      <SafeAreaView style={styles.safeArea}>
@@ -144,7 +173,11 @@ const [selectedWeight, setSelectedWeight] = useState(" ");
           </View>
 
           <View style={styles.greetingContainer}>
-                <Text style={styles.greetingText}>Hello Utkarsh!</Text>
+            {
+            user? 
+            <Text style={styles.greetingText}>Hello {user.attributes.name}!</Text> : 
+            <Text style={styles.greetingText}>Hello Anonymous!</Text>
+            }
                 <Text style={styles.greetingText}>Please let us know more about you</Text>
           </View>
           <View style={styles.middleContainer}>
@@ -192,11 +225,48 @@ const [selectedWeight, setSelectedWeight] = useState(" ");
 
          </ImageBackground>
          </SafeAreaView>
-      
    );
  };
+
+ const signUpConfig = {
+  header: 'My Customized Sign Up',
+  hideAllDefaults: true,
+  defaultCountryCode: '1',
+  signUpFields: 
+  [
+    {
+      label: 'Name',
+      key: 'name',
+      required: true,
+      displayOrder: 1,
+      type: 'string'
+    },
+    {
+      label: 'Email',
+      key: 'email',
+      required: true,
+      displayOrder: 2,
+      type: 'string'
+    },
+    {
+      label: 'Password',
+      key: 'password',
+      required: true,
+      displayOrder: 3,
+      type: 'password'
+    },
+    {
+      label: 'PhoneNumber',
+      key: 'phone_number',
+      required: true,
+      displayOrder: 4,
+      type: 'string'
+    },
+    // and other custom attributes
+  ]
+};
  
- export default ProfileQuestion;
+ export default withAuthenticator(ProfileQuestion, { usernameAttributes: 'email', signUpConfig, includeGreetings: true }, [], null, MyTheme);
  
  const styles = StyleSheet.create({
    safeArea: {

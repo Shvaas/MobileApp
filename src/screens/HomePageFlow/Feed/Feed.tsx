@@ -22,6 +22,7 @@ import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 
 import Post from '../../../components/Post';
 import RouteNames from '../../../constants/routeName';
+import {Storage,Auth} from "aws-amplify";
 
 // import BottomSheet from '@gorhom/bottom-sheet';
 // import {GestureHandlerRootView} from 'react-native-gesture-handler'
@@ -209,6 +210,31 @@ const reinisiallizepost = () => {
   dispatch(postSlice.actions.initialPost(data.data.slice(0, -1)));
 };
 
+const uploadFile = async () => {
+  Auth.currentAuthenticatedUser().then((user) => {
+    console.log('user email = ' + user.attributes.email);
+    console.log('user name = '+ user.attributes.name)
+  });
+  return Storage.put('text3.txt',"Hello world", {
+    level:'public',
+    progressCallback(uploadProgress){
+      console.log('PROGRESS--', uploadProgress.loaded + '/' + uploadProgress.total);
+    }
+  })
+  .then((res) => {
+    Storage.get(res.key)
+    .then((result) => {
+      console.log('RESULT --- ', result);
+      let awsImageUri = result.substring(0,result.indexOf('?'))
+      console.log('RESULT AFTER REMOVED URI --', awsImageUri)
+    })
+    .catch(e => {
+      console.log(e);
+    })
+  }).catch(e => {
+    console.log(e);
+  })
+}
 
 
 
@@ -249,8 +275,10 @@ const reinisiallizepost = () => {
                     value={searchText} 
                     onChangeText={setSearchText}/>
           </View>
-          <IoniconsIcon name="add-circle-outline" size={35} color={"#737373"} 
-          onPress={() => navigation.navigate(RouteNames.HomePageFlow.CreatePost)}/>
+          {/* <IoniconsIcon name="add-circle-outline" size={35} color={"#737373"} 
+          onPress={() => navigation.navigate(RouteNames.HomePageFlow.CreatePost)}/> */}
+           <IoniconsIcon name="add-circle-outline" size={35} color={"#737373"} 
+          onPress={() => uploadFile()}/>
           </View>
           <FlatList
             data={post}
