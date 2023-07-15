@@ -43,6 +43,7 @@ if (userType=='Teacher'){
    userId = route.params.userId;
 }
 
+
 const {data, error,isLoading} = useGetTeacherSessionsQuery(userId);
 
 const dispatch = useDispatch();
@@ -63,6 +64,14 @@ React.useEffect(() => {
     }));
   }
 }, [data, dispatch]);
+
+function goBack() {
+  if (userType=='Teacher'){
+    navigation.navigate(RouteNames.HomePageFlow.UserProfile);
+ }else{
+  navigation.goBack();
+ }
+}
 
 
 
@@ -210,7 +219,7 @@ function getPastDate(numberOfDays: number) {
     <ImageBackground source={backgroundImageLight} style={styles.image}>
       <View style={styles.topContainer}>
         <GestureHandlerRootView style={{backgroundColor: themeColor.white}}>
-          <TouchableOpacity onPress={()=>navigation.navigate(RouteNames.HomePageFlow.UserProfile)}>
+          <TouchableOpacity onPress={goBack}>
             {userType=='Student' ? <Image source={backButton} style={[styles.backbutton]} /> :
             <View style={{height:'100%', alignItems:'center', justifyContent:'center'}}>
               <Image source={utkarsh} style={styles.imageStyle} />
