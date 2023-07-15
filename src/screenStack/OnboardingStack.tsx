@@ -13,6 +13,8 @@ import FreeTrail from '../screens/OnboardingFlow/FreeTriall';
 import ProfileQuestion from '../screens/OnboardingFlow/ProfileQuestions/ProfileQuestions';
 import Sessions from '../screens/HomePageFlow/TeacherSessions/Sessions';
 import SessionFeedback from '../screens/HomePageFlow/AllCourses/SessionFeedback';
+import Profile from '../screens/HomePageFlow/UserProfile/Profile';
+
 const Stack = createNativeStackNavigator();
 
 function HomeNav() {
@@ -65,6 +67,7 @@ const OnboardingStack = () => {
         name={RouteNames.HomePageFlow.AllCourseDetail}
         component={SessionFeedback}
       />
+
     </Stack.Navigator>
   );
 };

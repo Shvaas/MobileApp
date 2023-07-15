@@ -78,19 +78,20 @@ const Yogis: React.FC<PropsType> = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={backgroundImageLight} style={styles.image}>
-        <ScrollView contentContainerStyle={styles.contentContainer}>
+        <View contentContainerStyle={styles.contentContainer}>
         <View style={[styles.header, {flexDirection:"row",justifyContent:"space-between",padding:10, backgroundColor: themeColor.white}]}>
-          <TouchableOpacity onPress={() => navigation.navigate(RouteNames.HomePageFlow.UserProfile)}> 
+          <TouchableOpacity onPress={() => navigation.navigate(RouteNames.HomePageFlow.UserProfile)}>
             <Image source={utkarsh} style={styles.imageStyle} />
           </TouchableOpacity>
           <Text style={{color:themeColor.vividRed,fontSize: themefonts.font22,
             fontFamily:themeFontFamily.ralewayBold, alignSelf:"center"}}>
             Shvaas</Text>
           <View style={{flexDirection:"row"}}>
-            <IoniconsIcon name="notifications" color={"#939393"} size={32} style={{alignSelf:"flex-start",padding:5}}/>
+            <IoniconsIcon name="notifications" color={"#939393"} size={30} style={{alignSelf:"center", marginRight:5}}/>
           </View>
           </View>
           <FlatList
+            style={{height:'100%'}}
             data={yogi}
             renderItem={({item}) => {
               return (
@@ -107,7 +108,7 @@ const Yogis: React.FC<PropsType> = ({navigation}) => {
               );
             }}
           />
-        </ScrollView>
+        </View>
         </ImageBackground>
     </SafeAreaView>
   );
