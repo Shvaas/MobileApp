@@ -49,13 +49,15 @@ const Yogis: React.FC<PropsType> = ({navigation}) => {
 
 
   React.useEffect(() => {
-    if (data){
+    console.log("error", error);
+    
+    if (data && !error){
       dispatch(yogiSlice.actions.initialYogi(data?.data?.userList));
     }
   }, [data, dispatch]);
 
   if (isLoading && yogi.length==0) {
-    return <ActivityIndicator />;
+    return <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
   }
 
 
@@ -91,7 +93,7 @@ const Yogis: React.FC<PropsType> = ({navigation}) => {
           </View>
           </View>
           <FlatList
-            style={{height:'100%'}}
+            style={{height:'90%'}}
             data={yogi}
             renderItem={({item}) => {
               return (

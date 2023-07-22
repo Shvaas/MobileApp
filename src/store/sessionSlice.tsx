@@ -4,7 +4,7 @@ import {createSlice, createSelector} from '@reduxjs/toolkit';
 const mysessions = [
   {
     sessionId: '1',
-    instructorId: 3,
+    instructorId: '313cbfd3-4fc1-4763-9d18-caedd0be4a63',
     title: 'Title',
     description: 'One line description or tag',
     zoomlink: '-',
@@ -41,7 +41,7 @@ const mysessions = [
   },
   {
     sessionId: '2',
-    instructorId: 3,
+    instructorId: '313cbfd3-4fc1-4763-9d18-caedd0be4a63',
     title: 'Title',
     description: 'One line description or tag',
     zoomlink: '-',
@@ -78,7 +78,7 @@ const mysessions = [
   },
   {
     sessionId: '3',
-    instructorId: 3,
+    instructorId: '313cbfd3-4fc1-4763-9d18-caedd0be4a63',
     title: 'Title',
     description: 'One line description or tag',
     zoomlink: '-',
@@ -115,7 +115,7 @@ const mysessions = [
   },
   {
     sessionId: '4',
-    instructorId: 3,
+    instructorId: '313cbfd3-4fc1-4763-9d18-caedd0be4a63',
     title: 'Title',
     description: 'One line description or tag',
     zoomlink: '-',
@@ -166,7 +166,9 @@ export const sessionSlice = createSlice({
       initiateSessions: (state, action) => {
         const {sessions, instructor_id} = action.payload;
         console.log("Session Slice: initiateSessions", sessions);
-        
+        if(sessions === undefined){
+          return
+        }
         // instructor_id
         // start_date, end_date
         // total slots
@@ -175,7 +177,8 @@ export const sessionSlice = createSlice({
         // zoom link
         // session_type - group, private
         // student list - {student id, attendance, feedback for student, feedback for teacher, rating for teacher}
-
+        console.log(typeof(sessions));
+        
         //[{"capacity": 30, "courseId": "0f94e351-fd3a-4a71-84c4-123399f50bb4", 
         // "courseName": "Yoga101", "difficultyLevel": "BEGINNER", "price": 10, "sessionDate": "2023-01-01"}]
         for (let i = 0; i < sessions.length; i++) {

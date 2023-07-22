@@ -90,7 +90,7 @@ const YOGI = [
   ];
 
 const initialState = {
-  yogi: [],
+  yogi: YOGI,
   currentYogi: null,
 };
 
@@ -103,23 +103,39 @@ export const yogiSlice = createSlice({
             const serverYogi = action.payload;
             // [{"name": "Asif Hasnain", "rating": 5, "shavaasStudentsCount": 1, "slotCount": 0, "slots": [],
             //  "userId": "313cbfd3-4fc1-4763-9d18-caedd0be4a63", "userProfilePic": "test1.jpeg"}]
-            let myyogi = [];
-            for (let i = 0; i < serverYogi.length; i++) {
-              let tempYogi = {};
-              tempYogi.userId = serverYogi[i]?.userId;
-              tempYogi.name = serverYogi[i]?.name;
-              tempYogi.rating = serverYogi[i]?.rating;
-              tempYogi.studentsTrained = serverYogi[i]?.shavaasStudentsCount;
-              tempYogi.sessionCount = serverYogi[i]?.slotCount;
-              tempYogi.sessions = serverYogi[i]?.slots;
-              tempYogi.certificates = 'RYT-200';
-              tempYogi.interest = ['yoga', 'Children\'s Yoga', 'Pranayama'];
-              tempYogi.yearsOfExp = 3;
-              tempYogi.image = yoga_instructor3;
-              myyogi.push(tempYogi);
-              // state.yogi.push(tempYogi);
+            if(serverYogi === undefined){
+              return
             }
-            state.yogi = myyogi;
+            for (let i = 0; i < serverYogi.length; i++) {
+
+              let yogiId = serverYogi[i]?.userId;
+              state.currentYogi = state.yogi.find(p => p.userId === yogiId);
+              if (state.currentYogi === undefined){
+             // add session
+             state.currentYogi = {}
+             state.currentYogi.userId = serverYogi[i]?.userId;
+             state.currentYogi.name = serverYogi[i]?.name;
+             state.currentYogi.rating = serverYogi[i]?.rating;
+             state.currentYogi.studentsTrained = serverYogi[i]?.shavaasStudentsCount;
+             state.currentYogi.sessionCount = serverYogi[i]?.slotCount;
+             state.currentYogi.sessions = serverYogi[i]?.slots;
+             state.currentYogi.certificates = 'RYT-200';
+             state.currentYogi.interest = ['yoga', 'Children\'s Yoga', 'Pranayama'];
+             state.currentYogi.yearsOfExp = 3
+             state.currentYogi.image = yoga_instructor3;
+             state.yogi.push(state.currentYogi);
+
+              }else{
+                // update session
+                state.currentYogi.studentsTrained = serverYogi[i]?.shavaasStudentsCount;
+                state.currentYogi.sessionCount = serverYogi[i]?.slotCount;
+                state.currentYogi.sessions = serverYogi[i]?.slots;
+                state.currentYogi.certificates = 'RYT-200';
+                state.currentYogi.interest = ['yoga', 'Children\'s Yoga', 'Pranayama'];
+                state.currentYogi.yearsOfExp = 3
+                state.currentYogi.image = yoga_instructor3;
+              }
+            }
           },
           addYogiDetail: (state, action) => {
             console.log('Yogi Slice: ', action.payload);

@@ -52,11 +52,11 @@ let session = useSelector((state) => getAllSessionsbyId(state, [userId]));
 console.log("all sessions", session);
 
 if (isLoading && session==null) {
-  return <ActivityIndicator />;
+  return <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
 }
 
 React.useEffect(() => {
-  if (data){
+  if (data && !error){
     console.log("data", data);
     dispatch(sessionSlice.actions.initiateSessions({
       sessions: data?.data?.courses,

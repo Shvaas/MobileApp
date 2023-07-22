@@ -9,7 +9,8 @@
         "test": "jest",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
         "amplify-modelgen": "node amplify/scripts/amplify-modelgen.js",
-        "amplify-push": "node amplify/scripts/amplify-push.js"
+        "amplify-push": "node amplify/scripts/amplify-push.js",
+        "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'"
     },
     "dependencies": {
         "@aws-amplify/datastore-storage-adapter": "^2.0.16",

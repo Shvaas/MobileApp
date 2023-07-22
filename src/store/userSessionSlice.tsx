@@ -62,7 +62,9 @@ export const userSessionSlice = createSlice({
       initiateSessions: (state, action) => {
         console.log('UserSessionSlice: Note: Userid is dummy, used only for testing');
         const sessions = action.payload;
-
+        if(sessions === undefined){
+          return
+        }
         for (let i = 0; i < sessions.length; i++) {
           let sessionId = sessions[i].courseId;
           state.currentSession = state.userSessions.find(p => p.sessionId === sessionId);

@@ -34,13 +34,16 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
   const {image, name, certificates, yearsOfExp, studentsTrained, reviews, rating, description, userId} =
     yogiProfile;
 
-    console.log("userId", userId);
+  console.log("userId", userId);
+
+  const userId_deubg = '313cbfd3-4fc1-4763-9d18-caedd0be4a63';
+
     
-  const {data, error,isLoading} = useGetTeacherDetailQuery(userId);
+  const {data, error,isLoading} = useGetTeacherDetailQuery(userId_deubg);
   const dispatch = useDispatch();
 
   if (isLoading && name==null) {
-    return <ActivityIndicator />;
+    return <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
   }
 
   React.useEffect(() => {
@@ -100,7 +103,7 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
           <View style={{ marginTop:0, flex:1}}>
             <SimpleButton
             title="Book session"
-            onPress={() => {navigation.navigate(RouteNames.HomePageFlow.CalendarPage, {userId: userId})}}
+            onPress={() => {navigation.navigate(RouteNames.HomePageFlow.CalendarPage, {userId: userId_deubg})}}
               containerStyle={styles.primaryButton}
             />
           </View>
