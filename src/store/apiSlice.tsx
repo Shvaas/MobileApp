@@ -73,4 +73,5 @@ export const {useGetPostsQuery,
   useSendFeedbackToTeacherMutation,
   useCreateSessionMutation,
   useUpdateReactionMutation,
-  useCreatePaymentIntentMutation} = apiSlice;
+  useCreatePaymentIntentMutation,
+} = apiSlice;

@@ -44,7 +44,7 @@ import { useRef } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Auth} from "aws-amplify";
 import {withAuthenticator, AmplifyTheme} from 'aws-amplify-react-native'
- 
+
 const MyTheme = {
   ...AmplifyTheme,
   buttonText: [ AmplifyTheme.buttonText, { lineHeight: 16, color: themeColor.vividRed, fontFamily: themeFontFamily.raleway }],
@@ -108,13 +108,13 @@ const [selectedWeight, setSelectedWeight] = useState(" ");
     weight.push(index + " lb")
   }
 
- 
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [user,setUser] = useState(null);
   const slidesRef = useRef(null);
 
   const scrollX = useRef(new Animated.Value(0)).current;
-
+  const dispatch = useDispatch();
 
 
   const ViewableItemsChanged = useCallback(
@@ -132,11 +132,18 @@ const [selectedWeight, setSelectedWeight] = useState(" ");
       if (currentIndex < 2){
         slidesRef.current.scrollToIndex({index: currentIndex+1});
       }else{
-          console.log(questionOneState);
-          console.log(questionTwoState);
-          console.log(selectedHeight);
-          console.log(selectedWeight);
-          navigation.navigate('Home');
+        console.log(questionOneState);
+        console.log(questionTwoState);
+        console.log(selectedHeight);
+        console.log(selectedWeight);
+        dispatch(userSlice.actions.setUserProfileQuestion({
+          height: selectedHeight,
+          weight: selectedWeight,
+          questionOneState: questionOneState,
+          questionTwoState: questionTwoState,
+      }));
+        
+      navigation.navigate('Home');
       }
   }
 

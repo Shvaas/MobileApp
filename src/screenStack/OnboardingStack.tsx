@@ -73,3 +73,4 @@ const OnboardingStack = () => {
 };
 
 export default OnboardingStack;
+// export default withAuthenticator( OnboardingStack, { usernameAttributes: 'email', signUpConfig, includeGreetings: true }, [], null, MyTheme);

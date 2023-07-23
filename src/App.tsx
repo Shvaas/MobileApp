@@ -34,9 +34,9 @@ const App = () => {
       // Get current authenticated user
       const userInfo = await Auth.currentAuthenticatedUser({ bypassCache: true });
 
-      if(userInfo) {
-        setUser(userInfo);
-      }
+      // if(userInfo) {
+      //   setUser(userInfo);
+      // }
     }
     updateUser();
   }, []);

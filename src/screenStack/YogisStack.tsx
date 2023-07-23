@@ -10,6 +10,7 @@ import RouteNames from '../constants/routeName';
 import CalendarPage from '../screens/HomePageFlow/Yogis/CalendarPage';
 import Yogi from '../screens/HomePageFlow/Yogis/YogiProfile';
 import Profile from '../screens/HomePageFlow/UserProfile/Profile';
+import UserDetails from '../screens/HomePageFlow/UserProfile/UserDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,12 +20,12 @@ const YogisStack = () => {
       screenOptions={{
         gestureEnabled: false,
         headerShown: false,
-        
       }}>
       <Stack.Screen
       name={RouteNames.HomePageFlow.AllYogis}
       component={Yogis} />
       <Stack.Screen name={RouteNames.HomePageFlow.UserProfile} component={Profile}/>
+      <Stack.Screen name={RouteNames.HomePageFlow.UserDetails} component={UserDetails}/>
       <Stack.Screen
           name={RouteNames.HomePageFlow.CalendarPage}
           component={CalendarPage}

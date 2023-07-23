@@ -13,15 +13,22 @@ import {
   import IoniconsIcon from 'react-native-vector-icons/Ionicons';
   import { TouchableOpacity } from 'react-native-gesture-handler';
   import {GestureHandlerRootView} from 'react-native-gesture-handler';
+  import RouteNames from '../../../constants/routeName';
 
   interface PropsType {
-    course : object
+    item : any,
+    navigation : any,
   }
   
-  const SettingItem: React.FC<PropsType> = ({item}) => {
+  const SettingItem: React.FC<PropsType> = ({item, navigation}) => {
+
+    function onPressed(){
+      navigation.navigate(RouteNames.HomePageFlow.UserDetails);
+    };
 
     return (
-        <TouchableOpacity style={{flexDirection:'row', alignItems:'center', marginVertical:10, height:40}}>
+        <TouchableOpacity onPress={onPressed}
+        style={{flexDirection:'row', alignItems:'center', marginVertical:10, height:40}}>
             <View style={{flex:0.8}}>
                 <Text style={styles.standardText}>{item.title}</Text>
                 <Text style={styles.descriptionText}>{item.description}</Text>

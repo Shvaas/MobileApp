@@ -78,8 +78,7 @@ import {
     }
   };
 
-  
-  
+
    return (
      <SafeAreaView style={styles.safeArea}>
          <ImageBackground source={backgroundImageMedium} style={styles.image}>
@@ -118,7 +117,7 @@ import {
           <FlatList
             data={settings}
             ItemSeparatorComponent={FlatListItemSeparator}
-            renderItem={({item}) => <SettingItem item={item}/>}
+            renderItem={({item}) => <SettingItem item={item} navigation={navigation}/>}
             keyExtractor={(item) => item.title}
           /> 
           </GestureHandlerRootView>

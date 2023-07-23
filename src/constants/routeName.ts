@@ -24,6 +24,7 @@ const RouteNames = {
     AllCourseDetail: "Course Detail",
     CalendarPage: "Calendar Page",
     AllComments: 'All Comments',
+    UserDetails: 'User Details',
   },
 };
 
