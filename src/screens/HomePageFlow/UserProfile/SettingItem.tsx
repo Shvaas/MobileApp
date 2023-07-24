@@ -4,6 +4,7 @@ import {
     StyleSheet,
     Text,
     View,
+    Share,
   } from 'react-native';
   import React, {useState} from 'react';
 
@@ -18,12 +19,39 @@ import {
   interface PropsType {
     item : any,
     navigation : any,
+    index: any,
   }
   
-  const SettingItem: React.FC<PropsType> = ({item, navigation}) => {
+  const SettingItem: React.FC<PropsType> = ({item, index, navigation}) => {
 
-    function onPressed(){
-      navigation.navigate(RouteNames.HomePageFlow.UserDetails);
+    const onShare = async () => {
+      try {
+        const result = await Share.share({
+          message:
+            'React Native | A framework for building native apps using React',
+        });
+        if (result.action === Share.sharedAction) {
+          if (result.activityType) {
+            // shared with activity type of result.activityType
+          } else {
+            // shared
+          }
+        } else if (result.action === Share.dismissedAction) {
+          // dismissed
+        }
+      } catch (error: any) {
+        Alert.alert(error.message);
+      }
+    };
+
+    function onPressed(){      
+      if(index==0){
+        navigation.navigate(RouteNames.HomePageFlow.UserDetails);
+      }
+      if(index==1){
+        onShare();
+      }
+      
     };
 
     return (

@@ -58,25 +58,7 @@ import {
     );
   }
 
-  const onShare = async () => {
-    try {
-      const result = await Share.share({
-        message:
-          'React Native | A framework for building native apps using React',
-      });
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          // shared with activity type of result.activityType
-        } else {
-          // shared
-        }
-      } else if (result.action === Share.dismissedAction) {
-        // dismissed
-      }
-    } catch (error: any) {
-      Alert.alert(error.message);
-    }
-  };
+  
 
 
    return (
@@ -117,7 +99,7 @@ import {
           <FlatList
             data={settings}
             ItemSeparatorComponent={FlatListItemSeparator}
-            renderItem={({item}) => <SettingItem item={item} navigation={navigation}/>}
+            renderItem={({item, index}) => <SettingItem item={item} index={index} navigation={navigation}/>}
             keyExtractor={(item) => item.title}
           /> 
           </GestureHandlerRootView>
