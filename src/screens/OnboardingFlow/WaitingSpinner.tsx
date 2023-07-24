@@ -82,17 +82,24 @@ const signUpConfig = {
     signUpFields: 
     [
       {
-        label: 'Name',
-        key: 'name',
+        label: "First Name",
+        key: "name",
+        placeholder: "First Name",
         required: true,
-        displayOrder: 1,
-        type: 'string'
+        displayOrder: 1
+      },
+      {
+        label: "Last Name",
+        key: "family_name",
+        placeholder: "Last Name",
+        required: true,
+        displayOrder: 2
       },
       {
         label: 'Email',
         key: 'email',
         required: true,
-        displayOrder: 2,
+        displayOrder: 3,
         type: 'string'
       },
       {
@@ -106,7 +113,7 @@ const signUpConfig = {
         label: 'PhoneNumber',
         key: 'phone_number',
         required: true,
-        displayOrder: 4,
+        displayOrder: 5,
         type: 'string'
       },
       // and other custom attributes
