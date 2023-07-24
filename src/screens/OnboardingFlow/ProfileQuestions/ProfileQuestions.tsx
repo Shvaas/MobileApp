@@ -273,7 +273,8 @@ const [selectedWeight, setSelectedWeight] = useState(" ");
   ]
 };
  
- export default withAuthenticator(ProfileQuestion, { usernameAttributes: 'email', signUpConfig, includeGreetings: true }, [], null, MyTheme);
+// export default withAuthenticator(ProfileQuestion, { usernameAttributes: 'email', signUpConfig, includeGreetings: true }, [], null, MyTheme);
+export default ProfileQuestion;
  
  const styles = StyleSheet.create({
    safeArea: {

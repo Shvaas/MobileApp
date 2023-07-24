@@ -67,6 +67,10 @@ const App = () => {
             component={OnboardingStack}
           />
           }
+          {/* <Stack.Screen
+            name={APP_FLOWS.OnboardingFlow}
+            component={OnboardingStack}
+          /> */}
           </Stack.Navigator>
         </NavigationContainer>
         </StripeProvider>

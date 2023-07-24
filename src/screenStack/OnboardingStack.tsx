@@ -14,6 +14,7 @@ import ProfileQuestion from '../screens/OnboardingFlow/ProfileQuestions/ProfileQ
 import Sessions from '../screens/HomePageFlow/TeacherSessions/Sessions';
 import SessionFeedback from '../screens/HomePageFlow/AllCourses/SessionFeedback';
 import Profile from '../screens/HomePageFlow/UserProfile/Profile';
+import WaitingSpinner from '../screens/OnboardingFlow/WaitingSpinner';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +29,9 @@ const OnboardingStack = () => {
         gestureEnabled: false,
         headerShown: false,
       }}>
+        <Stack.Screen 
+        name={'spinner'} 
+        component={WaitingSpinner}/>
       <Stack.Screen
         name={RouteNames.OnboardingFlow.Welcome}
         component={Welcome}
