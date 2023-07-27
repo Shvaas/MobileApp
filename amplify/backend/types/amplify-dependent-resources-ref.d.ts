@@ -1,28 +1,14 @@
 export type AmplifyDependentResourcesAttributes = {
-  "api": {
-    "amplifyDatasource": {
-      "GraphQLAPIEndpointOutput": "string",
-      "GraphQLAPIIdOutput": "string",
-      "GraphQLAPIKeyOutput": "string"
-    }
-  },
   "auth": {
-    "mobileapp81901710": {
+    "mobileapp4ed5638f": {
       "AppClientID": "string",
       "AppClientIDWeb": "string",
-      "HostedUIDomain": "string",
+      "CreatedSNSRole": "string",
       "IdentityPoolId": "string",
       "IdentityPoolName": "string",
-      "OAuthMetadata": "string",
       "UserPoolArn": "string",
       "UserPoolId": "string",
       "UserPoolName": "string"
-    }
-  },
-  "storage": {
-    "s3d8d8ecef": {
-      "BucketName": "string",
-      "Region": "string"
     }
   }
 }

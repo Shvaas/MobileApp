@@ -1,24 +1,6 @@
 {
-  "api": {
-    "amplifyDatasource": {
-      "output": {
-        "authConfig": {
-          "additionalAuthenticationProviders": [],
-          "defaultAuthentication": {
-            "apiKeyConfig": {
-              "apiKeyExpirationDays": 7,
-              "description": ""
-            },
-            "authenticationType": "API_KEY"
-          }
-        }
-      },
-      "providerPlugin": "awscloudformation",
-      "service": "AppSync"
-    }
-  },
   "auth": {
-    "mobileapp81901710": {
+    "mobileapp4ed5638f": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -31,26 +13,21 @@
           "passwordPolicyMinLength": 8
         },
         "signupAttributes": [
+          "EMAIL",
+          "FAMILY_NAME",
+          "GIVEN_NAME",
+          "PHONE_NUMBER"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [
           "EMAIL"
         ],
-        "socialProviders": [
-          "FACEBOOK"
-        ],
-        "usernameAttributes": [],
         "verificationMechanisms": [
           "EMAIL"
         ]
       },
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
-    }
-  },
-  "function": {},
-  "storage": {
-    "s3d8d8ecef": {
-      "dependsOn": [],
-      "providerPlugin": "awscloudformation",
-      "service": "S3"
     }
   }
 }

@@ -83,7 +83,7 @@ const signUpConfig = {
     [
       {
         label: "First Name",
-        key: "name",
+        key: "given_name",
         placeholder: "First Name",
         required: true,
         displayOrder: 1
@@ -106,7 +106,7 @@ const signUpConfig = {
         label: 'Password',
         key: 'password',
         required: true,
-        displayOrder: 3,
+        displayOrder: 4,
         type: 'password'
       },
       {
