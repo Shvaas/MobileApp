@@ -30,6 +30,7 @@ import {
  import { useStripe } from '@stripe/stripe-react-native';
  
  import { useCreatePaymentIntentMutation } from '../../store/apiSlice';
+ import {userNameSelector} from '../../../store/userSlice';
  
  import QuestionItem from './QuestionItem'
  import Paginator from './Paginator';
@@ -65,6 +66,8 @@ const MyTheme = {
  }
  
  const ProfileQuestion = ({navigation}) => {
+
+
 
 const QuestionTwoInitialState = {
     keys0: false,
@@ -110,8 +113,9 @@ const [selectedWeight, setSelectedWeight] = useState(" ");
 
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [user,setUser] = useState(null);
+  const [user, setUser] = useState(null);
   const slidesRef = useRef(null);
+
 
   const scrollX = useRef(new Animated.Value(0)).current;
   const dispatch = useDispatch();
@@ -155,16 +159,9 @@ const [selectedWeight, setSelectedWeight] = useState(" ");
     }
   }
 
+  const username = useSelector(userNameSelector);
   useEffect(() => {
-    const updateUser = async () => {
-      // Get current authenticated user
-      const userInfo = await Auth.currentAuthenticatedUser({ bypassCache: true });
-
-      if(userInfo) {
-        setUser(userInfo);
-      }
-    }
-    updateUser();
+    setUser(username);
   }, [])
   
    return (
@@ -182,7 +179,7 @@ const [selectedWeight, setSelectedWeight] = useState(" ");
           <View style={styles.greetingContainer}>
             {
             user? 
-            <Text style={styles.greetingText}>Hello {user.attributes.name}!</Text> : 
+            <Text style={styles.greetingText}>Hello {user}!</Text> : 
             <Text style={styles.greetingText}>Hello Anonymous!</Text>
             }
                 <Text style={styles.greetingText}>Please let us know more about you</Text>

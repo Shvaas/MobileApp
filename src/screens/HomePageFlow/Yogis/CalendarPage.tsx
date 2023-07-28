@@ -43,6 +43,9 @@ if (userType=='Teacher'){
    userId = route.params.userId;
 }
 
+console.log("userId ********", userId);
+console.log();
+
 
 const {data, error,isLoading} = useGetTeacherSessionsQuery(userId);
 
@@ -56,6 +59,9 @@ if (isLoading && session==null) {
 }
 
 React.useEffect(() => {
+  console.log("data *******", data);
+  console.log();
+  
   if (data && !error){
     console.log("data", data);
     dispatch(sessionSlice.actions.initiateSessions({
@@ -162,42 +168,38 @@ function getPastDate(numberOfDays: number) {
   let todayDate = new Date();
   //let session = useSelector((state) => getAllSessionsbyMonthYear(state, [todayDate.getMonth()-1, todayDate.getFullYear()]));
 
-  
-  
- 
-
-  
-
 
   let sessionMap = {};
   let sessionDateStrings = [];
   let itemsCopy = [];
 
   for (let index = 0; index < session.length; index++) {
-    let myDate = new Date(session[index].start_date * 1000);
-    const key = myDate.getDate();
+    let myDate = session[index].start_date;
+    let dateObj = new Date(myDate);
+    const key = myDate.substring(0,myDate.search('T'));
     
     if (key in sessionMap){
       sessionMap[key].push(session[index]);
     }else{
       sessionMap[key] = [session[index]];
     }
-    sessionDateStrings.push(myDate.toISOString().substring(0,myDate.toISOString().search('T')))
+    sessionDateStrings.push(myDate.substring(0,myDate.search('T')))
   }
 
-  
+
+
   for (var key in sessionMap) {
-    let myDate = new Date(sessionMap[{key}["key"]][0].start_date * 1000);
+    let myDate = new Date(sessionMap[{key}["key"]][0].start_date);
     var sessionItem = {
-      title: myDate.toISOString().substring(0,myDate.toISOString().search('T')),
-      data: sessionMap[{key}["key"]]
+      title: key,
+      data: sessionMap[key]
     }
     itemsCopy.push(sessionItem)
   };
 
 
 
-  
+
     const marked = {};
       itemsCopy.forEach((val) => {
         if (val.data && val.data.length>0){
@@ -206,7 +208,9 @@ function getPastDate(numberOfDays: number) {
           else{
             marked[val.title] = {disabled: true};
           }}
-          );
+      );
+
+  
 
 
   // console.log("sessionMap",sessionMap);

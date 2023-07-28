@@ -1,10 +1,13 @@
+/* eslint-disable prettier/prettier */
 import {ActivityIndicator} from 'react-native';
 import React from 'react';
 import { useEffect, useState, useCallback } from 'react';
 
+import RouteNames from '../../constants/routeName';
+
 import {Auth} from "aws-amplify";
 import {withAuthenticator, AmplifyTheme} from 'aws-amplify-react-native'
-import { useGetTeacherDetailQuery } from '../../store/apiSlice';
+import { useGetUserDetailQuery } from '../../store/apiSlice';
 import { themeColor, themeFontFamily } from '../../constants/theme';
 import { useDispatch } from 'react-redux';
 import { userSlice } from '../../store/userSlice';
@@ -34,7 +37,7 @@ const WaitingSpinner = ({navigation}) => {
 
     const [userId, setUserId] = useState(null);
 
-    const {data, error,isLoading} = useGetTeacherDetailQuery(userId);
+    const {data, error,isLoading} = useGetUserDetailQuery(userId);
 
     if(error){
         console.log("error", error);
@@ -46,13 +49,15 @@ const WaitingSpinner = ({navigation}) => {
 
     if(data){
         console.log("data", data);
+        const username = data?.data?.name
         if(data?.data?.type == "INSTRUCTOR"){
-            dispatch(userSlice.actions.setUser({type: 'Teacher', userId: userId}));
+            dispatch(userSlice.actions.setUser({type: 'Teacher', userId: userId, name: username}));
         }
         else{
-            dispatch(userSlice.actions.setUser({type: 'Student', userId: userId}));
+            dispatch(userSlice.actions.setUser({type: 'Student', userId: userId, name: username}));
         }
-        navigation.navigate('Home')
+        // navigation.navigate(RouteNames.OnboardingFlow.ProfileQuestions);
+        navigation.navigate('Home');
     }
 
 

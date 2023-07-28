@@ -34,9 +34,29 @@ const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
   const month = ['Jan', 'Feb', 'Mar', 'April', 'May',
                 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
-  let myDate = new Date(item.start_date * 1000);
+  let myDate = new Date(item.start_date);
+  console.log("myDate", myDate);
   
-  const displayDate = myDate.getDate() + " " + month[myDate.getMonth()] + ", " + myDate.getHours() + " : " + myDate.getMinutes();
+  let minutes = '';
+  if(myDate.getMinutes() < 10){
+    minutes = "0" + myDate.getMinutes();
+  }else{
+    minutes = myDate.getMinutes().toString();
+  }
+  let am = " am";
+  if(myDate.getHours()> 12){
+    am = " pm";
+  }
+  
+  const displayDate = myDate.getDate()
+                      + " " 
+                      + month[myDate.getMonth()]
+                      + ", " 
+                      + myDate.getHours()
+                      + " : " 
+                      + minutes
+                      + am;
+                      
 
 
   const onAppointmentConfirm = async () => {
@@ -61,7 +81,7 @@ const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
           'sessionId': item.sessionId,
           'instructorId': item.instructorId,
           'instructorPhoto': utkarsh,
-          'title': 'Yoga with Utkarsh',
+          'title': item.title,
           'description': item.description,
           'zoomlink': '-',
           'start_date': item.start_date,
@@ -69,7 +89,7 @@ const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
         }),
       );
       Alert.alert(
-        'Session Booked at ' + myDate.toISOString().substring(0,myDate.toISOString().search('T'))
+        'Session Booked at ' + item.start_date.substring(0,item.start_date.search('T'))
         + ' for ' + item.title,'',
         [
             {
@@ -131,11 +151,11 @@ const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
 // Title, Descripion, duration
   return (
     <TouchableOpacity onPress={userType=='Teacher' ? getSession : bookAppointment} style={styles.container} testID={'item'}>
-      <View style={{flex:0.7, flexDirection:'column'}}>
+      <View style={{flex:0.6, flexDirection:'column'}}>
         <Text style={[styles.itemTitleText,{marginBottom:5}]}>{item.title}</Text>
         <Text style={[styles.textStyle,{marginTop:5}]}>{item.description}</Text>
       </View>
-      <View style={{flexDirection:'column', flex:0.3, justifyContent:'flex-end', alignItems:'flex-end'}}>
+      <View style={{flexDirection:'column', flex:0.4, justifyContent:'flex-end', alignItems:'flex-end'}}>
         <Text style={[styles.textStyle,{fontFamily: themeFontFamily.ralewaySemiBold}]}> {displayDate} </Text>
         {/* <Text style={styles.textStyle}> 4 Slots left </Text> */}
       </View>

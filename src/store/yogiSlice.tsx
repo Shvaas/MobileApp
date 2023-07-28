@@ -90,7 +90,7 @@ const YOGI = [
   ];
 
 const initialState = {
-  yogi: YOGI,
+  yogi: [],
   currentYogi: null,
 };
 
@@ -106,35 +106,45 @@ export const yogiSlice = createSlice({
             if(serverYogi === undefined){
               return
             }
+            console.log('Yogi Slice: initialYogi', serverYogi);
+
             for (let i = 0; i < serverYogi.length; i++) {
 
               let yogiId = serverYogi[i]?.userId;
               state.currentYogi = state.yogi.find(p => p.userId === yogiId);
+              let newSession = false;
               if (state.currentYogi === undefined){
-             // add session
-             state.currentYogi = {}
+                  state.currentYogi = {};
+                  newSession = true;
+              }
+              // add session
              state.currentYogi.userId = serverYogi[i]?.userId;
              state.currentYogi.name = serverYogi[i]?.name;
-             state.currentYogi.rating = serverYogi[i]?.rating;
+             state.currentYogi.rating = serverYogi[i]?.rating ? serverYogi[i]?.rating : 0;
              state.currentYogi.studentsTrained = serverYogi[i]?.shavaasStudentsCount;
              state.currentYogi.sessionCount = serverYogi[i]?.slotCount;
              state.currentYogi.sessions = serverYogi[i]?.slots;
-             state.currentYogi.certificates = 'RYT-200';
-             state.currentYogi.interest = ['yoga', 'Children\'s Yoga', 'Pranayama'];
-             state.currentYogi.yearsOfExp = 3
+             state.currentYogi.certificates = serverYogi[i]?.certificates? serverYogi[i]?.certificates[0] : 'RYT-500';
+             state.currentYogi.interest = serverYogi[i]?.interests ? serverYogi[i]?.interests : ['Yoga', 'Pranayama'];
+             state.currentYogi.yearsOfExp = serverYogi[i]?.yearsOfExperience? serverYogi[i]?.yearsOfExperience: 2;
              state.currentYogi.image = yoga_instructor3;
-             state.yogi.push(state.currentYogi);
+             state.currentYogi.description = serverYogi[i]?.introduction? serverYogi[i]?.introduction: 'No Intro';
+             
+             if(newSession){
+              state.yogi.push(state.currentYogi);
+             }
+             
 
-              }else{
-                // update session
-                state.currentYogi.studentsTrained = serverYogi[i]?.shavaasStudentsCount;
-                state.currentYogi.sessionCount = serverYogi[i]?.slotCount;
-                state.currentYogi.sessions = serverYogi[i]?.slots;
-                state.currentYogi.certificates = 'RYT-200';
-                state.currentYogi.interest = ['yoga', 'Children\'s Yoga', 'Pranayama'];
-                state.currentYogi.yearsOfExp = 3
-                state.currentYogi.image = yoga_instructor3;
-              }
+              // }else{
+              //   // update session
+              //   state.currentYogi.studentsTrained = serverYogi[i]?.shavaasStudentsCount;
+              //   state.currentYogi.sessionCount = serverYogi[i]?.slotCount;
+              //   state.currentYogi.sessions = serverYogi[i]?.slots;
+              //   state.currentYogi.certificates = serverYogi[i]?.certificates;
+              //   state.currentYogi.interest = serverYogi[i]?.interest ? serverYogi[i]?.interest : ['Yoga', 'Children\'s Yoga'];
+              //   state.currentYogi.yearsOfExp = serverYogi[i]?.yearsOfExp;
+              //   state.currentYogi.image = yoga_instructor3;
+              // }
             }
           },
           addYogiDetail: (state, action) => {

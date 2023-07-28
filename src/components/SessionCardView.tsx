@@ -22,10 +22,29 @@ import {
     const month = ['Jan', 'Feb', 'Mar', 'April', 'May',
                   'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
-    let myDate = new Date(item.start_date * 1000);
 
-    const displayDate = myDate.getDate() + " " + month[myDate.getMonth()] + ", " + myDate.getHours() + " : " + myDate.getMinutes();
+    let myDate = new Date(item.start_date);
+    console.log("myDate", myDate);
 
+    let minutes = '';
+    if(myDate.getMinutes() < 10){
+      minutes = "0" + myDate.getMinutes();
+    }else{
+      minutes = myDate.getMinutes().toString();
+    }
+    let am = " am";
+    if(myDate.getHours()> 12){
+      am = " pm";
+    }
+    
+  const displayDate = myDate.getDate()
+                      + " " 
+                      + month[myDate.getMonth()]
+                      + ", " 
+                      + myDate.getHours()
+                      + " : " 
+                      + minutes
+                      + am;
 
     return (
         <TouchableOpacity style={styles.container} testID={'item'} onPress={() =>

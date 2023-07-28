@@ -21,7 +21,7 @@ import { Rating } from 'react-native-ratings';
 import SecondaryButton from '../../../common/buttons/SecondaryButton';
 import SimpleButton from '../../../common/buttons/SimpleButton';
 
-import { useGetTeacherDetailQuery} from '../../../store/apiSlice';
+import { useGetUserDetailQuery} from '../../../store/apiSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {yogiSlice, YogiSelector} from '../../../store/yogiSlice';
 interface PropsType {
@@ -36,21 +36,21 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
 
   console.log("userId", userId);
 
-  const userId_deubg = '313cbfd3-4fc1-4763-9d18-caedd0be4a63';
+  
 
     
-  const {data, error,isLoading} = useGetTeacherDetailQuery(userId_deubg);
-  const dispatch = useDispatch();
+  // const {data, error,isLoading} = useGetUserDetailQuery(userId_deubg);
+  // const dispatch = useDispatch();
 
-  if (isLoading && name==null) {
-    return <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
-  }
+  // if (isLoading && name==null) {
+  //   return <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
+  // }
 
-  React.useEffect(() => {
-    if (data){
-      dispatch(yogiSlice.actions.addYogiDetail(data?.data));
-    }
-  }, [data, dispatch]);
+  // React.useEffect(() => {
+  //   if (data){
+  //     dispatch(yogiSlice.actions.addYogiDetail(data?.data));
+  //   }
+  // }, [data, dispatch]);
   
   const getCarouselItem = ({item}) => {
     return (
@@ -103,7 +103,7 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
           <View style={{ marginTop:0, flex:1}}>
             <SimpleButton
             title="Book session"
-            onPress={() => {navigation.navigate(RouteNames.HomePageFlow.CalendarPage, {userId: userId_deubg})}}
+            onPress={() => {navigation.navigate(RouteNames.HomePageFlow.CalendarPage, {userId: userId})}}
               containerStyle={styles.primaryButton}
             />
           </View>
@@ -116,10 +116,7 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
             <FontAwesome name="instagram" size={20} color={themeColor.vividRed} />
         </View>
           <Text style={styles.textStyle}>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vita 
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vita
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur vita
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit consequuntur 
+          {description}
           </Text>
         </View>
 

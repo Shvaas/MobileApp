@@ -40,10 +40,28 @@ const SessionFeedback: React.FC<PropsType> = ({route, navigation}) => {
 
     const month = ['Jan', 'Feb', 'Mar', 'April', 'May',
                   'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-    let myDate = new Date(session.start_date * 1000);
+    
+    let myDate = new Date(session.start_date);
 
-    const displayDate = myDate.getDate() + " " + month[myDate.getMonth()] + ", " + myDate.getHours() + " : " + myDate.getMinutes();
+    let minutes = '';
+    if(myDate.getMinutes() < 10){
+      minutes = "0" + myDate.getMinutes();
+    }else{
+      minutes = myDate.getMinutes().toString();
+    }
+    let am = " am";
+    if(myDate.getHours()> 12){
+      am = " pm";
+    }
 
+  const displayDate = myDate.getDate()
+                      + " " 
+                      + month[myDate.getMonth()]
+                      + ", " 
+                      + myDate.getHours()
+                      + " : " 
+                      + minutes
+                      + am;
     const submitFeedback = async () => {
       if (commentValue.trim() === '' || rating==0) {
         Alert.alert('Error', 'Please enter a valid feedback or rating');

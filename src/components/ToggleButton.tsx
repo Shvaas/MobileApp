@@ -53,6 +53,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
   // }
 
   React.useEffect(() => {
+    //data?.data?.status
     if (data){
       // console.log("dispatch(userSessionSlice", data?.data);
       dispatch(userSessionSlice.actions.initiateSessions(data?.data?.courses));

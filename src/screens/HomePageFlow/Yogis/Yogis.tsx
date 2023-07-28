@@ -49,7 +49,7 @@ const Yogis: React.FC<PropsType> = ({navigation}) => {
 
 
   React.useEffect(() => {
-    console.log("error", error);
+    console.log("error", error, data);
     
     if (data && !error){
       dispatch(yogiSlice.actions.initialYogi(data?.data?.userList));

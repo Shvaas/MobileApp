@@ -43,7 +43,7 @@ const ProfileCardView: React.FC<PropsType> = ({profile, onButtonPress, navigatio
             startingValue={rating}
             style={styles.ratings}
           />
-          <Text style={styles.textStyle}>Experience: {yearsOfExp} years</Text>
+          <Text style={styles.textStyle}>Experience: {yearsOfExp}</Text>
           <Text style={styles.textStyle}>{certificates}</Text>
           <Text style={styles.textStyle}>
             Students trained: {studentsTrained}

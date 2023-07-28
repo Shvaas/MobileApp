@@ -34,6 +34,7 @@ interface PropsType {
   const [createSession, { data, error, isLoading }] = useCreateSessionMutation();
   const userId = useSelector((state) => state.user.userId);
   const dispatch = useDispatch();
+
   const [sessionTitle, setSessionTitle] = useState('');
   const [sessionDescription, setSessionDescription] = useState('');
   const [nSeat, setnSeat] = useState(0);
@@ -55,9 +56,11 @@ interface PropsType {
     {label: 'Every 2 Week', value: 3}
   ]);
 
+  const slotDuration = 45;
+
   const addSession = async () => {
     console.log('addSession', sessionTitle);
-    
+
     if (sessionTitle.trim() === '') {
       Alert.alert('Error', 'Please enter a valid Title');
     }
@@ -77,29 +80,26 @@ interface PropsType {
         const session = {
           title: sessionTitle,
           description: sessionDescription,
-          keys2: false,
           total_slots: nSeat,
-          start_date: date.getTime()/1000,
-          instructorId: 5,
+          start_date: date.toISOString(),
+          end_date: (new Date(date.getTime() + slotDuration * 60000)).toISOString(),
+          instructorId: userId,
           markCompleted: false,
           available_slots: nSeat,
           zoomlink: '',
           studentList: [],
-          durationMinutes: 45,
-          session_type: 1,
           };
 
         const serverSession = {
           userId: userId,
           courseName: sessionTitle,
-          sessionDate: 1689383758,
           description: sessionDescription,
           capacity: nSeat,
           recommendedEquipments: '',
           difficultyLevel: '',
           reactionType: '',
-          sessionStartTime: 1689383758,
-          sessionEndTime: 1689383758,
+          sessionStartTime: date.toISOString(),
+          sessionEndTime: (new Date(date.getTime() + slotDuration * 60000)).toISOString(),
         }
 
         const result = await createSession(serverSession);
@@ -107,15 +107,17 @@ interface PropsType {
         
 
         console.log("Create Session --> Note: Do this after succesfull session creation at server");
-        
-        dispatch(
+        if (result.data.status === 200){
+          dispatch(
             sessionSlice.actions.addSession({
               'session' : session,
             }),
           );
-        
           Alert.alert('Success', 'New Session Created');
           navigation.goBack();
+        }else{
+          Alert.alert('Failure', 'Cannot create a session, Please try after sometime');
+        }
     }
   }
 

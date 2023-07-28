@@ -42,9 +42,28 @@ const Sessions: React.FC<PropsType> = ({route, navigation}) => {
 
     const month = ['Jan', 'Feb', 'Mar', 'April', 'May',
                 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-    let myDate = new Date(session.start_date * 1000);
-    const displayDate = myDate.getDate() + " " + month[myDate.getMonth()] + ", " + myDate.getHours() + " : " + myDate.getMinutes();
-
+    
+    let myDate = new Date(session.start_date);
+    
+    let minutes = '';
+    if(myDate.getMinutes() < 10){
+      minutes = "0" + myDate.getMinutes();
+    }else{
+      minutes = myDate.getMinutes().toString();
+    }
+    let am = " am";
+    if(myDate.getHours()> 12){
+      am = " pm";
+    }
+  
+  const displayDate = myDate.getDate()
+                      + " " 
+                      + month[myDate.getMonth()]
+                      + ", " 
+                      + myDate.getHours()
+                      + " : " 
+                      + minutes
+                      + am;
 
     const onAttendanceCompleted = async () => {
       setMarkCompleted(true);
@@ -97,7 +116,7 @@ const Sessions: React.FC<PropsType> = ({route, navigation}) => {
         </View>
         <View style={styles.secondContainer}>
             <Text style={styles.standardText}> {displayDate} </Text>
-            <Text style={styles.standardText}> Number of students enrolled: {session.available_slots}/{session.total_slots}</Text>
+            <Text style={styles.standardText}> Number of students enrolled: {session.total_slots - session.available_slots}/{session.total_slots}</Text>
             <Text style={styles.standardText}> {session.description} </Text>
             <Text style={styles.standardText}> {session.zoomlink} </Text>
         </View>

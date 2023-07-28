@@ -15,7 +15,7 @@ export const apiSlice = createApi({
     getTeachers: builder.query({
       query: () => 'user/instructor',
     }),
-    getTeacherDetail: builder.query({
+    getUserDetail: builder.query({
       query: (userid) => `user/${userid}`,
     }),
     getTeacherSessions: builder.query({
@@ -66,7 +66,7 @@ export const apiSlice = createApi({
 
 export const {useGetPostsQuery,
   useGetTeachersQuery,
-  useGetTeacherDetailQuery,
+  useGetUserDetailQuery,
   useGetTeacherSessionsQuery,
   useBookSessionMutation,
   useGetStudentSessionsQuery,

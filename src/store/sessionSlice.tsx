@@ -4,11 +4,11 @@ import {createSlice, createSelector} from '@reduxjs/toolkit';
 const mysessions = [
   {
     sessionId: '1',
-    instructorId: '313cbfd3-4fc1-4763-9d18-caedd0be4a63',
+    instructorId: '5a7fd716-a765-4441-9ef8-eda068138b9e',
     title: 'Title',
     description: 'One line description or tag',
     zoomlink: '-',
-    start_date: 1680772845,
+    start_date: '2023-02-01T10:00:00Z',
     durationMinutes: 45,
     session_type: 1,
     total_slots: 10,
@@ -41,11 +41,11 @@ const mysessions = [
   },
   {
     sessionId: '2',
-    instructorId: '313cbfd3-4fc1-4763-9d18-caedd0be4a63',
+    instructorId: '5a7fd716-a765-4441-9ef8-eda068138b9e',
     title: 'Title',
     description: 'One line description or tag',
     zoomlink: '-',
-    start_date: 1686331014,
+    start_date: '2023-03-01T10:00:00Z',
     durationMinutes: 45,
     session_type: 1,
     total_slots: 10,
@@ -78,11 +78,11 @@ const mysessions = [
   },
   {
     sessionId: '3',
-    instructorId: '313cbfd3-4fc1-4763-9d18-caedd0be4a63',
+    instructorId: '5a7fd716-a765-4441-9ef8-eda068138b9e',
     title: 'Title',
     description: 'One line description or tag',
     zoomlink: '-',
-    start_date: 1685633128,
+    start_date: '2023-04-01T10:00:00Z',
     durationMinutes: 45,
     session_type: 1,
     total_slots: 10,
@@ -119,7 +119,7 @@ const mysessions = [
     title: 'Title',
     description: 'One line description or tag',
     zoomlink: '-',
-    start_date: 1686290400,
+    start_date: '2023-05-01T10:00:00Z',
     durationMinutes: 45,
     session_type: 1,
     total_slots: 10,
@@ -154,7 +154,7 @@ const mysessions = [
 
 
 const initialState = {
-  sessions: mysessions,
+  sessions: [],
   currentSession: null,
 };
 
@@ -177,37 +177,35 @@ export const sessionSlice = createSlice({
         // zoom link
         // session_type - group, private
         // student list - {student id, attendance, feedback for student, feedback for teacher, rating for teacher}
-        console.log(typeof(sessions));
-        
+
         //[{"capacity": 30, "courseId": "0f94e351-fd3a-4a71-84c4-123399f50bb4", 
         // "courseName": "Yoga101", "difficultyLevel": "BEGINNER", "price": 10, "sessionDate": "2023-01-01"}]
         for (let i = 0; i < sessions.length; i++) {
           let sessionId = sessions[i].courseId;
           state.currentSession = state.sessions.find(p => p.sessionId === sessionId);
+          let newSession = false;
           if (state.currentSession === undefined){
-             // add session
-             state.currentSession = {}
-             state.currentSession.instructorId = instructor_id;
-             state.currentSession.title = sessions[i].courseName;
-             state.currentSession.sessionId = sessions[i].courseId;
-             state.currentSession.total_slots = sessions[i].capacity;
-             state.currentSession.description = 'One line description or tag';
-             state.currentSession.start_date = 1686290400;
-             state.currentSession.markCompleted = false;
-             state.currentSession.studentList = [];
-              state.sessions.push(state.currentSession);
-
-          }else{
-            // update session
-            state.currentSession.title = sessions[i].courseName;
-            state.currentSession.total_slots = sessions[i].capacity;
+             state.currentSession = {};
+             newSession = true;
           }
+            // add session
+            state.currentSession.instructorId = instructor_id;
+            state.currentSession.title = sessions[i]?.courseName;
+            state.currentSession.sessionId = sessions[i]?.courseId;
+            state.currentSession.total_slots = sessions[i]?.capacity;
+            state.currentSession.description = sessions[i]?.description;
+            state.currentSession.start_date = sessions[i]?.sessionStartTime;
+            state.currentSession.end_date = sessions[i]?.sessionEndTime;
+            state.currentSession.markCompleted = false;
+            state.currentSession.studentList = [];
 
+            if(newSession){
+              state.sessions.push(state.currentSession);
+            }
         }
       },
 
       addSession: (state, action) => {
-        console.log('Session Slice: addSession', action.payload);
         const {session} = action.payload;
         state.sessions.push(session);
         console.log('Session Slice: addSession', state.sessions);
@@ -285,11 +283,22 @@ export const sessionSlice = createSlice({
     return myDate.getFullYear();
   }
 
+  function compareSessions(a, b) {
+    const aDate = new Date(a.start_date);
+    const bDate = new Date(b.start_date);
+    if (aDate < bDate){
+      return -1;
+    }
+    if (aDate > bDate){
+      return 1;
+    }
+    return 0;
+  }
+
   export const getAllSessionsbyMonthYear = createSelector(
     [sessionSelector, (sessionSelector, [month, year]) => [month, year]],
     (sessionSelector, [month, year]) => {
       console.log(" Session Slice: getAllSessionsbyMonthYear");
-      
 
       const currentSession = sessionSelector.filter(p => getMonth(p.start_date) === month &&  getYear(p.start_date) === year);
 
@@ -300,7 +309,10 @@ export const sessionSlice = createSlice({
   export const getAllSessionsbyId = createSelector(
     [sessionSelector, (sessionSelector, [userid]) => [userid]],
     (sessionSelector, [userid]) => {
-      const instructorSessions = sessionSelector.filter(p => p.instructorId === userid);
+      console.log("getAllSessionsbyId", userid);
+      console.log(sessionSelector);
+      
+      const instructorSessions = sessionSelector.filter(p => p.instructorId === userid).sort(compareSessions);
       return instructorSessions;
     },
   );

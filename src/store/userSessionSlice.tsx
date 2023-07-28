@@ -50,7 +50,7 @@ const mysessions = [
 
 
 const initialState = {
-  userSessions: mysessions,
+  userSessions: [],
   currentSession: null,
 };
 
@@ -62,56 +62,47 @@ export const userSessionSlice = createSlice({
       initiateSessions: (state, action) => {
         console.log('UserSessionSlice: Note: Userid is dummy, used only for testing');
         const sessions = action.payload;
+        
+        
         if(sessions === undefined){
           return
         }
+        console.log("initiateSessions", sessions);
         for (let i = 0; i < sessions.length; i++) {
           let sessionId = sessions[i].courseId;
           state.currentSession = state.userSessions.find(p => p.sessionId === sessionId);
-          console.log("state.currentSession ", state.currentSession);
 
+          let newSession = false;
           if (state.currentSession === undefined){
+            state.currentSession = {}
+            newSession = true;
+          }
              // add session
-             state.currentSession = {}
-             state.currentSession.sessionId = sessions[i].courseId
+             state.currentSession.sessionId = sessions[i].courseId;
              state.currentSession.instructorId = sessions[i].instructorId;
              state.currentSession.name = sessions[i].instructorName;
              state.currentSession.instructorPhoto = utkarsh;
              state.currentSession.title = sessions[i].courseName;
-             state.currentSession.description = 'One line description or tag';
-             state.currentSession.start_date = 1698199909;
-             state.currentSession.zoomlink = '';
-             state.currentSession.feedbackForStudent = sessions[i].instructorFeedback;
-             state.currentSession.feedbackForTeacher = sessions[i].studentFeedback;
-             state.currentSession.ratingForTeacher = 5;
-             state.userSessions.push(state.currentSession);
+             state.currentSession.description = sessions[i].description;
+             state.currentSession.start_date = sessions[i]?.sessionStartTime;
+             state.currentSession.end_date = sessions[i]?.sessionEndTime;
+             state.currentSession.zoomlink = sessions[i]?.zoom ? sessions[i]?.zoom : '';
+             state.currentSession.feedbackForStudent = sessions[i]?.instructorFeedback ? sessions[i]?.instructorFeedback : '';
+             state.currentSession.feedbackForTeacher = sessions[i]?.studentFeedback ? sessions[i]?.studentFeedback : '';
+             state.currentSession.ratingForTeacher = sessions[i]?.rating ? sessions[i]?.rating : 5;
 
-          }else{
-            // update session
-             state.currentSession.feedbackForStudent = sessions[i].instructorFeedback;
-             state.currentSession.feedbackForTeacher = sessions[i].studentFeedback;
-             state.currentSession.zoomlink = '';
-             state.currentSession.name = sessions[i].instructorName;
-             state.currentSession.instructorPhoto = utkarsh;
-             state.currentSession.title = sessions[i].courseName;
-             state.currentSession.start_date = 1698199909;
-             state.currentSession.description = 'One line description or tag';
-          }
+             if(newSession){
+              state.userSessions.push(state.currentSession);
+             }
 
         }
-        console.log(state.userSessions);
-        
       },
 
       addSession: (state, action) => {
         console.log('UserSessionSlice: addSession', action.payload);
         let sessions =  state.userSessions;
-        console.log("UserSessionSlice: addSession", sessions);
-        console.log();
-        console.log();
         state.userSessions.push(action.payload);
         sessions =  state.userSessions;
-        console.log("UserSessionSlice: addSession", sessions);
       },
 
       cancelSession: (state, action) => {
@@ -134,6 +125,19 @@ export const userSessionSlice = createSlice({
 
 export const userSessionSelector = (state) =>  state.userSessions.userSessions;
 
+function compareSessions(a, b) {
+  // descending
+  const aDate = new Date(a.start_date);
+  const bDate = new Date(b.start_date);
+  if (aDate > bDate){
+    return -1;
+  }
+  if (aDate < bDate){
+    return 1;
+  }
+  return 0;
+}
+
 
 export const getSessions = (state) => {
     const sessions =  state.userSessions.userSessions;
@@ -143,11 +147,12 @@ export const getSessions = (state) => {
     let completedSessions = []
     let upcommingSessions = []
     for (let index = 0; index < sessions.length; index++) {
-        if ((new Date()).getTime() > sessions[index].start_date * 1000) {
+        let currDate = new Date(sessions[index].start_date);
+        if ((new Date()).getTime() > currDate.getTime()) {
             completedSessions.push(sessions[index]);
         }else{
             upcommingSessions.push(sessions[index]);
         }
     }
-    return [upcommingSessions, completedSessions];
+    return [upcommingSessions.sort(compareSessions), completedSessions.sort(compareSessions)];
 };

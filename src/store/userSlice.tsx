@@ -6,6 +6,7 @@ const initialState = {
   userType: 'Student',
   userId: '313cbfd3-4fc1-4763-9d18-abcdef', // student id
   // teacherId: '313cbfd3-4fc1-4763-9d18-caedd0be4a63', // student id
+  name: '',
   height: '',
   weight: '',
   questionOne: {
@@ -37,10 +38,11 @@ export const userSlice = createSlice({
     reducers: {
 
       setUser: (state, action) => {
-        const {type, userId} = action.payload;
+        const {type, userId, name} = action.payload;
         console.log('User Slice: setUser', action.payload);
         state.userType = type;
         state.userId = userId;
+        state.name = name;
       },
 
       setUserType: (state, action) => {
@@ -65,6 +67,7 @@ export const userSlice = createSlice({
     },
   });
 
+  export const userNameSelector = (state) => state.user.name;
   export const userSelector = (state) => state.user.userType;
   export const userHeightSelector = (state) => state.user.height;
   export const userWeightSelector = (state) => state.user.weight;
