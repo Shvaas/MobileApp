@@ -100,6 +100,7 @@ interface PropsType {
           reactionType: '',
           sessionStartTime: date.toISOString(),
           sessionEndTime: (new Date(date.getTime() + slotDuration * 60000)).toISOString(),
+          courseType: 'GROUP_SESSION',
         }
 
         const result = await createSession(serverSession);

@@ -116,7 +116,7 @@ const Sessions: React.FC<PropsType> = ({route, navigation}) => {
         </View>
         <View style={styles.secondContainer}>
             <Text style={styles.standardText}> {displayDate} </Text>
-            <Text style={styles.standardText}> Number of students enrolled: {session.total_slots - session.available_slots}/{session.total_slots}</Text>
+            <Text style={styles.standardText}> Number of students enrolled: {session.studentList.length}/{session.total_slots}</Text>
             <Text style={styles.standardText}> {session.description} </Text>
             <Text style={styles.standardText}> {session.zoomlink} </Text>
         </View>
@@ -137,12 +137,12 @@ const Sessions: React.FC<PropsType> = ({route, navigation}) => {
                 titleStyle={{color: themeColor.vividRed}}
                 onPress={onAttendanceCompleted}
               />
-          <PrimaryButton
+          {/* <PrimaryButton
                 title={"Cancel Session"}
                 buttonStyle={styles.buttonStyle}
                 titleStyle={{color: themeColor.vividRed}}
                 onPress={onCancelSession}
-              />
+              /> */}
           </View>
           }
         {/* <FlatList
