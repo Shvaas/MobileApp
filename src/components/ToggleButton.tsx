@@ -54,7 +54,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
 
   React.useEffect(() => {
     //data?.data?.status
-    if (data){
+    if (data && data?.status==200){
       // console.log("dispatch(userSessionSlice", data?.data);
       dispatch(userSessionSlice.actions.initiateSessions(data?.data?.courses));
     }

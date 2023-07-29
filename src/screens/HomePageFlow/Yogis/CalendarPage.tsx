@@ -62,7 +62,7 @@ React.useEffect(() => {
   console.log("data *******", data);
   console.log();
   
-  if (data && !error){
+  if (data && !error && data?.status==200){
     console.log("data", data);
     dispatch(sessionSlice.actions.initiateSessions({
       sessions: data?.data?.courses,
