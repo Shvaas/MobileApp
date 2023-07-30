@@ -68,9 +68,6 @@ import {
     );
   }
 
-  
-
-
    return (
      <SafeAreaView style={styles.safeArea}>
          <ImageBackground source={backgroundImageMedium} style={styles.image}>

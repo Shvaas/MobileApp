@@ -54,11 +54,13 @@ const WaitingSpinner = ({navigation}) => {
         const username = data?.data?.name
         if(data?.data?.type == "INSTRUCTOR"){
             dispatch(userSlice.actions.setUser({type: 'Teacher', userId: userId, firsName: firstName, lastName}));
+            navigation.navigate('Home');
         }
         else{
             dispatch(userSlice.actions.setUser({type: 'Student', userId: userId, firsName: firstName, lastName}));
+            navigation.navigate(RouteNames.OnboardingFlow.ProfileQuestions);
         }
-        navigation.navigate(RouteNames.OnboardingFlow.ProfileQuestions);
+       // navigation.navigate(RouteNames.OnboardingFlow.ProfileQuestions);
         // navigation.navigate('Home');
     }
 

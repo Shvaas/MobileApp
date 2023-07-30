@@ -5,6 +5,7 @@ import {
     Text,
     View,
     Share,
+    Alert,
   } from 'react-native';
   import React, {useState} from 'react';
 
@@ -15,6 +16,7 @@ import {
   import { TouchableOpacity } from 'react-native-gesture-handler';
   import {GestureHandlerRootView} from 'react-native-gesture-handler';
   import RouteNames from '../../../constants/routeName';
+import { Auth } from 'aws-amplify';
 
   interface PropsType {
     item : any,
@@ -44,12 +46,23 @@ import {
       }
     };
 
+    const onSignOut = async () => {
+      Auth.signOut()
+      .then(() => {
+         navigation.navigate('spinner');
+      })
+      .catch(err => console.log(err));
+    };
+
     function onPressed(){      
       if(index==0){
         navigation.navigate(RouteNames.HomePageFlow.UserDetails);
       }
       if(index==1){
         onShare();
+      }
+      if(index==3){
+        onSignOut();
       }
       
     };
