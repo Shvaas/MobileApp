@@ -82,6 +82,7 @@ export const userSessionSlice = createSlice({
              state.currentSession.instructorId = sessions[i].instructorId;
              state.currentSession.name = sessions[i].instructorName;
              state.currentSession.instructorPhoto = utkarsh;
+             state.currentSession.instructorPhotoLink = 'https://i.imgur.com/CzXTtJV.jpg';
              state.currentSession.title = sessions[i].courseName;
              state.currentSession.description = sessions[i].description;
              state.currentSession.start_date = sessions[i]?.sessionStartTime;

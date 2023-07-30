@@ -274,6 +274,14 @@ function getPastDate(numberOfDays: number) {
           // closeOnDayPress={false}
         />
       )}
+      {/* {!isLoading && session==null && <View>
+        <Text style={{alignSelf:'center', marginTop:100, justifyContent:'center'}}> No sessions available </Text>
+        <Text style={{alignSelf:'center', marginTop:5, justifyContent:'center'}}> Please try again after sometime </Text>
+      </View>}
+      {isLoading &&
+      <View>
+        <Text style={{alignSelf:'center', marginTop:100, justifyContent:'center'}}> Loading Sessions... </Text>
+      </View>} */}
       <AgendaList
         sections={itemsCopy}
         renderItem={renderItem}

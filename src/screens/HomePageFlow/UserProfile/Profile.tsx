@@ -24,11 +24,15 @@ import {
  
  import LoginButton from '../../common/buttons/LoginButton';
  import PrimaryButton from '../../../common/buttons/PrimaryButton';
+ import {useDispatch, useSelector} from 'react-redux';
 
  import SubcriptionPlan from '../../components/SubcriptionPlan';
  import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
  import {GestureHandlerRootView} from 'react-native-gesture-handler';
  import SettingItem from './SettingItem';
+ import {userFirstNameSelector, userLastNameSelector} from '../../../store/userSlice';
+ import {userSessionSelector} from '../../../store/userSessionSlice';
+ import UserAvatar from 'react-native-user-avatar';
  
  interface PropsType {
    navigation: any;
@@ -44,6 +48,12 @@ import {
  
   const [currentIndex, setCurrentIndex] = useState(0);
   const {width} = useWindowDimensions();
+
+  const username = useSelector(userFirstNameSelector) + " " + useSelector(userLastNameSelector);
+  const sessions = useSelector(userSessionSelector);
+
+  console.log("sessions.length", sessions.length);
+  
 
   const FlatListItemSeparator = () => {
     return (
@@ -77,20 +87,21 @@ import {
           </View>
 
           <View style={styles.secondContainer}>
-                <Image source={utkarsh} style={styles.imageStyle}/>
+                {/* <Image source={utkarsh} style={styles.imageStyle}/> */}
+                <UserAvatar size={100} name={username}  style={styles.imageStyle}/>
           </View>
-          <Text style={styles.usernameText}> Utkarsh Nath </Text>
+          <Text style={styles.usernameText}> {username} </Text>
           <View style={styles.thirdContainer}>
                 <Text style={styles.standardText}> Level : </Text>
                 <Text style={[styles.standardText, {color: themeColor.vividRed}]}> Beginner </Text>
           </View>
           <View style={styles.progressContainer}>
-            <ProgressBar progress={0.3} width={width-40} height={10}
+            <ProgressBar progress={sessions.length/100} width={width-40} height={10}
             borderRadius={6}
             color={themeColor.vividRed}
             unfilledColor={themeColor.white} />
             <View style={{flexDirection:'row', justifyContent:'space-between', marginTop:5}}>
-                <Text style={[styles.standardText]}>10/100 sessions</Text>
+                <Text style={[styles.standardText]}>{sessions.length}/100 sessions</Text>
                 <Text style={[styles.standardText]}>Next Level: Intermidiate</Text>
             </View>
           </View>
@@ -165,8 +176,6 @@ import {
   },
 
   imageStyle: {
-    borderColor: themeColor.vividRed,
-    borderWidth: 2,
     borderRadius: 150,
     height: '100%',
     aspectRatio: 1,

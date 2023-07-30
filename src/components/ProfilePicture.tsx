@@ -14,7 +14,7 @@ import { Image, ImageSourcePropType, View, StyleSheet } from 'react-native';
   const ProfilePicture: React.FC<PropsType> = ({uri, size=70, borderWidth=3, borderColor=themeColor.vividRed}) => {
     return (
         <View style={[styles.container, { borderColor: borderColor, width: size + 2*borderWidth, height: size + 2*borderWidth , borderWidth: borderWidth}]}>
-            <Image source={ uri } style={[styles.image, { width: size, height: size }]}/>
+            <Image source={{uri: uri}} style={[styles.image, { width: size, height: size }]}/>
         </View>
       );
   };

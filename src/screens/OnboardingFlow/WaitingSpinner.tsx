@@ -36,6 +36,8 @@ const WaitingSpinner = ({navigation}) => {
     const dispatch = useDispatch();
 
     const [userId, setUserId] = useState(null);
+    const [firstName, setFirstName] = useState(null);
+    const [lastName, setLastName] = useState(null);
 
     const {data, error,isLoading} = useGetUserDetailQuery(userId);
 
@@ -51,10 +53,10 @@ const WaitingSpinner = ({navigation}) => {
         console.log("data", data);
         const username = data?.data?.name
         if(data?.data?.type == "INSTRUCTOR"){
-            dispatch(userSlice.actions.setUser({type: 'Teacher', userId: userId, name: username}));
+            dispatch(userSlice.actions.setUser({type: 'Teacher', userId: userId, firsName: firstName, lastName}));
         }
         else{
-            dispatch(userSlice.actions.setUser({type: 'Student', userId: userId, name: username}));
+            dispatch(userSlice.actions.setUser({type: 'Student', userId: userId, firsName: firstName, lastName}));
         }
         // navigation.navigate(RouteNames.OnboardingFlow.ProfileQuestions);
         navigation.navigate('Home');
@@ -69,9 +71,11 @@ const WaitingSpinner = ({navigation}) => {
         console.log("userInfo", userInfo);
         if(userInfo) {
             setUserId(userInfo?.attributes?.sub);
+            setFirstName(userInfo?.attributes?.given_name);
+            setLastName(userInfo?.attributes?.family_name);
         }
       }
-    
+
     React.useEffect(() => {
         updateUser()
     }, [userId]);

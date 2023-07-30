@@ -29,6 +29,8 @@ import {useGetTeachersQuery} from '../../../store/apiSlice';
 
 import {useDispatch, useSelector} from 'react-redux';
 import {yogiSlice, YogiSelector} from '../../../store/yogiSlice';
+import {userFirstNameSelector, userLastNameSelector} from '../../../store/userSlice';
+import UserAvatar from 'react-native-user-avatar';
 interface PropsType {
   navigation: any;
 }
@@ -47,10 +49,12 @@ const Yogis: React.FC<PropsType> = ({navigation}) => {
   let yogi = useSelector(YogiSelector);
   console.log("yogi", yogi);
 
+  const username = useSelector(userFirstNameSelector) + " " + useSelector(userLastNameSelector);
+
 
   React.useEffect(() => {
     console.log("error", error, data);
-    
+
     if (data && !error){
       dispatch(yogiSlice.actions.initialYogi(data?.data?.userList));
     }
@@ -83,11 +87,12 @@ const Yogis: React.FC<PropsType> = ({navigation}) => {
         <View contentContainerStyle={styles.contentContainer}>
         <View style={[styles.header, {flexDirection:"row",justifyContent:"space-between",padding:10, backgroundColor: themeColor.white}]}>
           <TouchableOpacity onPress={() => navigation.navigate(RouteNames.HomePageFlow.UserProfile)}>
-            <Image source={utkarsh} style={styles.imageStyle} />
+            {/* <Image source={utkarsh} style={styles.imageStyle} /> */}
+            <UserAvatar size={45} name={username}  style={{alignSelf: 'center', resizeMode: 'cover'}}/>
           </TouchableOpacity>
           <Text style={{color:themeColor.vividRed,fontSize: themefonts.font22,
             fontFamily:themeFontFamily.ralewayBold, alignSelf:"center"}}>
-            Shvaas</Text>
+            YOGIT</Text>
           <View style={{flexDirection:"row"}}>
             <IoniconsIcon name="notifications" color={"#939393"} size={30} style={{alignSelf:"center", marginRight:5}}/>
           </View>

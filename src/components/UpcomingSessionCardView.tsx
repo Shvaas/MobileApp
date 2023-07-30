@@ -63,7 +63,7 @@ const UpcomingSessionCardView: React.FC<PropsType> = ({item}) => {
     <View style={styles.container}>
       <View style={{flexDirection:'row'}}>
         <View style={{flex:0.27, flexDirection:'column', alignItems:'center', justifyContent:'center'}}>
-            <ProfilePicture uri={utkarsh} size={70} borderWidth={2}/>
+            <ProfilePicture uri={item.instructorPhotoLink} size={70} borderWidth={2}/>
         </View>
         <View style={{flex:0.73, flexDirection:'column', marginLeft:10}}>
           <Text style={[styles.itemTitleText,{marginBottom:5}]}>{item.title}</Text>
