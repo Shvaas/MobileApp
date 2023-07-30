@@ -58,8 +58,8 @@ const WaitingSpinner = ({navigation}) => {
         else{
             dispatch(userSlice.actions.setUser({type: 'Student', userId: userId, firsName: firstName, lastName}));
         }
-        // navigation.navigate(RouteNames.OnboardingFlow.ProfileQuestions);
-        navigation.navigate('Home');
+        navigation.navigate(RouteNames.OnboardingFlow.ProfileQuestions);
+        // navigation.navigate('Home');
     }
 
 

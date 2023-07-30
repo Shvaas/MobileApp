@@ -23,6 +23,7 @@ import TeacherAttendanceCardView from '../../../components/TeacherAttendanceCard
 import TeacherFeedbackCardView from '../../../components/TeacherFeedbackCardView';
 import {useDispatch, useSelector} from 'react-redux';
 import {sessionSlice} from '../../../store/sessionSlice';
+import {instructorPhotoLinkSelector} from '../../../store/userSlice';
 import {Auth} from "aws-amplify";
 interface PropsType {
     navigation: any,
@@ -39,6 +40,8 @@ const Sessions: React.FC<PropsType> = ({route, navigation}) => {
     //             {name:'aryan', photo:utkarsh, marked:false , studentFeedback: true},]
 
     const dispatch = useDispatch();
+
+    const instructorPhoto = useSelector(instructorPhotoLinkSelector);
 
     const month = ['Jan', 'Feb', 'Mar', 'April', 'May',
                 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
@@ -109,7 +112,7 @@ const Sessions: React.FC<PropsType> = ({route, navigation}) => {
                   </TouchableOpacity>
             </View>
             <View style={styles.topContainerRight}>
-                <ProfilePicture uri={utkarsh} size={70} borderWidth={2}/>
+                <ProfilePicture uri={instructorPhoto} size={70} borderWidth={2}/>
                 <Text style={styles.usernameText}> {session.title} </Text>
             </View>
             <View style={{flex:0.2}}></View>

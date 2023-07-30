@@ -30,7 +30,7 @@ import {
  import { useStripe } from '@stripe/stripe-react-native';
  
  import { useCreatePaymentIntentMutation } from '../../store/apiSlice';
- import {userNameSelector} from '../../../store/userSlice';
+ import {userFirstNameSelector} from '../../../store/userSlice';
  
  import QuestionItem from './QuestionItem'
  import Paginator from './Paginator';
@@ -159,7 +159,7 @@ const [selectedWeight, setSelectedWeight] = useState(" ");
     }
   }
 
-  const username = useSelector(userNameSelector);
+  const username = useSelector(userFirstNameSelector);
   useEffect(() => {
     setUser(username);
   }, [])

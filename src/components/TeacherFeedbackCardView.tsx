@@ -16,6 +16,7 @@ import {
   import { Button, Rating } from 'react-native-elements';
   import ProfilePicture from './ProfilePicture';
   import {utkarsh} from '../images/imageLinks';
+  import UserAvatar from 'react-native-user-avatar';
 
   import {sessionSlice} from '../store/sessionSlice';
   import {useDispatch, useSelector} from 'react-redux';
@@ -26,13 +27,17 @@ import {
   }
   
   const TeacherFeedbackCardView: React.FC<PropsType> = ({student, sessionId}) => {
+
+    const feedbackForTeacher = 'Great Session!';
+    const ratingForTeacher = 5;
+
     const [marked, setMarked] = useState(student.marked);
     const [commentValue, setcommentValue] = useState(student.feedbackForStudent);
     // const [commentPosted, setcommentPosted] = useState(false);
     // const [buttonTitle, setbuttonTitle] = useState('Post');
 
-    const [commentPosted, setcommentPosted] = useState(student.feedbackForStudent.length > 0);
-    const [buttonTitle, setbuttonTitle] = useState(student.feedbackForStudent.length > 0 ? 'Edit' : 'Post');
+    const [commentPosted, setcommentPosted] = useState(student.feedbackForStudent?.length > 0);
+    const [buttonTitle, setbuttonTitle] = useState(student.feedbackForStudent?.length > 0 ? 'Edit' : 'Post');
 
     const dispatch = useDispatch();
 
@@ -76,6 +81,9 @@ import {
       // console.log('put result', result.data);
     };
 
+    student.abs = 5;
+    console.log("student.feedbackForTeacher", student);
+    
 
     return (
         <GestureHandlerRootView>
@@ -83,21 +91,23 @@ import {
             <View style={styles.internalContainer}>
                 <View style={{flexDirection:'row',width:'100%', justifyContent:'space-between'}}>
                     <View style={{flexDirection:'row', resizeMode: 'cover', marginHorizontal:10}}>
-                        <ProfilePicture uri={utkarsh} size={50} borderWidth={2}/>
+                        {/* <ProfilePicture uri={utkarsh} size={50} borderWidth={2}/> */}
+                        <UserAvatar size={45} name={student.studentName}  
+                        style={{alignSelf: 'center', resizeMode: 'cover', margin: 7}}/>
                         <Text style={styles.standardText}>{student.studentName}</Text>
                     </View>
 
-                    {student.feedbackForTeacher.length > 0 && <View style={{alignItems:'center', justifyContent:'center',  borderWidth:1, marginHorizontal:10}}>
+                    {feedbackForTeacher?.length > 0 && <View style={{alignItems:'center', justifyContent:'center', marginHorizontal:10}}>
                         <Rating
                         type='custom'
                         readonly
                         ratingColor={'#FD7C23'}
                         imageSize={18}
-                        startingValue={student.ratingForTeacher}
+                        startingValue={ratingForTeacher}
                         />
                     </View>}
               </View>
-              {student.feedbackForTeacher.length > 0 && <Text style={styles.descriptionText}>{student.feedbackForTeacher}</Text>}
+              {feedbackForTeacher?.length > 0 && <Text style={styles.descriptionText}>{feedbackForTeacher}</Text>}
             <View style={styles.feedbackContainer}>
                 <View style={styles.leftContainer}>
                     {commentPosted? <Text style={styles.descriptionText}> {commentValue} </Text> :

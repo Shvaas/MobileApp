@@ -49,7 +49,7 @@ import {
     return (
         <TouchableOpacity style={styles.container} testID={'item'} onPress={() =>
           navigation.navigate(RouteNames.HomePageFlow.AllCourseDetail,{session: item})}>
-          <View style={{flex:0.7, flexDirection:'column'}}>
+          <View style={{flex:0.6, flexDirection:'column'}}>
             <Text style={[styles.itemTitleText,{marginBottom:5}]}>{item.title}</Text>
             <Text style={[styles.textStyle,{marginTop:5}]}>{item.description}</Text>
           </View>

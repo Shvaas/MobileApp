@@ -51,9 +51,9 @@ interface PropsType {
   const [value, setValue] = useState(0);
   const [items, setItems] = useState([
     {label: 'Never', value: 0},
-    {label: 'Every Day', value: 1},
-    {label: 'Every Week', value: 2},
-    {label: 'Every 2 Week', value: 3}
+    // {label: 'Every Day', value: 1},
+    // {label: 'Every Week', value: 2},
+    // {label: 'Every 2 Week', value: 3}
   ]);
 
   const slotDuration = 45;

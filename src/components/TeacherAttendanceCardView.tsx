@@ -16,6 +16,7 @@ import {
 
   import {sessionSlice} from '../store/sessionSlice';
   import {useDispatch, useSelector} from 'react-redux';
+  import UserAvatar from 'react-native-user-avatar';
   interface PropsType {
     student : any,
     sessionId: any,
@@ -24,8 +25,8 @@ import {
   const TeacherAttendanceCardView: React.FC<PropsType> = ({student, sessionId}) => {
     console.log("TeacherAttendanceCardView", student);
 
-
-    const [marked, setMarked] = useState(student.attendance!=null);
+    student.attendance = null;
+    const [marked, setMarked] = useState(false);
     const [attendance, setAttendance] = useState(student.attendance);
 
     const dispatch = useDispatch();
@@ -50,7 +51,9 @@ import {
         <View style={styles.container}>
             <View style={styles.internalContainer}>
                 <View style={{flexDirection:'row',width:'60%'}}>
-                    <Image source={utkarsh} style={styles.imageStyle}></Image>
+                    {/* <Image source={utkarsh} style={styles.imageStyle}></Image> */}
+                    <UserAvatar size={50} name={student.studentName}
+                        style={{alignSelf: 'center', resizeMode: 'contain', margin: 10}}/>
                     <Text style={styles.standardText}>{student.studentName}</Text>
               </View>
               {marked ? <View style={{flexDirection:'row',alignItems:'center', justifyContent:'center', width:'40%'}}>

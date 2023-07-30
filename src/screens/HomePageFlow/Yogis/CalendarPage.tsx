@@ -19,6 +19,7 @@ import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import RouteNames from '../../../constants/routeName';
 
 import {useGetTeacherSessionsQuery} from '../../../store/apiSlice';
+import {instructorPhotoLinkSelector} from '../../../store/userSlice';
 
 
 interface PropsType {
@@ -36,6 +37,8 @@ const CalendarPage: React.FC<PropsType> = ({route, navigation}) => {
   const userType = useSelector((state) => state.user.userType);
   const header = userType === 'Teacher' ? 'Sessions': 'Book Sessions';
   let userId = null;
+
+  const instructorPhoto = useSelector(instructorPhotoLinkSelector);
 
 if (userType=='Teacher'){
    userId = useSelector((state) => state.user.userId);
@@ -226,7 +229,7 @@ function getPastDate(numberOfDays: number) {
           <TouchableOpacity onPress={goBack}>
             {userType=='Student' ? <Image source={backButton} style={[styles.backbutton]} /> :
             <View style={{height:'100%', alignItems:'center', justifyContent:'center'}}>
-              <Image source={utkarsh} style={styles.imageStyle} />
+              <Image source={{uri: instructorPhoto}} style={styles.imageStyle} />
             </View>
             }
           </TouchableOpacity>
