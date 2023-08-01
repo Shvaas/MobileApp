@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableWithoutFeedback, StyleSheet, TextInput } from 'react-native';
+import { View, Text, TouchableWithoutFeedback, StyleSheet, TextInput, Keyboard } from 'react-native';
 import {Button} from 'react-native-elements';
 import ADIcon from 'react-native-vector-icons/AntDesign';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
@@ -17,6 +17,12 @@ interface PropsType {
     submitCommentLine: () => void,
 }
 
+const HideKeyboard = ({ children }) => (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      {children}
+    </TouchableWithoutFeedback>
+  );
+
 const CommentsBox: React.FC<PropsType> = ({commentValue, handleCommentValue, submitCommentLine}) => {
 
     const enableCommentButton = () => {
@@ -30,6 +36,7 @@ const CommentsBox: React.FC<PropsType> = ({commentValue, handleCommentValue, sub
 
     return (
             <View style={styles.container}>
+                <HideKeyboard>
                 <View style={styles.leftContainer}>
                     <TextInput 
                     placeholder=" Add a comment..." 
@@ -42,6 +49,7 @@ const CommentsBox: React.FC<PropsType> = ({commentValue, handleCommentValue, sub
                         className="comments-button" id={changeCommentButtonStyle()}
                         disabled={enableCommentButton()}/>
                 </View>
+                </HideKeyboard>
             </View>
     )
 }

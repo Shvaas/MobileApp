@@ -5,6 +5,9 @@ import {
     Text,
     View,
     TextInput,
+    KeyboardAvoidingView,
+    TouchableWithoutFeedback,
+    Keyboard,
   } from 'react-native';
   import React, {useState} from 'react';
 
@@ -25,6 +28,12 @@ import {
     student : any,
     sessionId: any
   }
+
+  const HideKeyboard = ({ children }) => (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      {children}
+    </TouchableWithoutFeedback>
+  );
   
   const TeacherFeedbackCardView: React.FC<PropsType> = ({student, sessionId}) => {
 
@@ -87,7 +96,8 @@ import {
 
     return (
         <GestureHandlerRootView>
-        <View style={styles.container}>
+        <HideKeyboard>
+        <KeyboardAvoidingView style={styles.container} behavior="padding">
             <View style={styles.internalContainer}>
                 <View style={{flexDirection:'row',width:'100%', justifyContent:'space-between'}}>
                     <View style={{flexDirection:'row', resizeMode: 'cover', marginHorizontal:10}}>
@@ -124,7 +134,8 @@ import {
                 </View>
             </View>
             </View>
-        </View>
+        </KeyboardAvoidingView>
+        </HideKeyboard>
         </GestureHandlerRootView>
       );
   };

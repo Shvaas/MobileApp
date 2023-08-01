@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
   ImageBackground,
   Alert,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 import React, {useState} from 'react';
 import CheckBox from "react-native-bouncy-checkbox";
@@ -31,6 +33,12 @@ interface PropsType {
   navigation: any,
   route: any;
 }
+
+const HideKeyboard = ({ children }) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
+);
 
   const CreateSessions: React.FC<PropsType> = ({route, navigation}) => {
   const [createSession, { data, error, isLoading }] = useCreateSessionMutation();
@@ -133,6 +141,7 @@ interface PropsType {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <HideKeyboard>
       <ImageBackground source={backgroundImageMedium} style={styles.image}>
       <View style={styles.topContainer}>
         <GestureHandlerRootView>
@@ -308,11 +317,8 @@ interface PropsType {
             onPress={addSession}
             />
           </View>
-
-
-
-
         </ImageBackground>
+        </HideKeyboard>
     </SafeAreaView>
   );
 };

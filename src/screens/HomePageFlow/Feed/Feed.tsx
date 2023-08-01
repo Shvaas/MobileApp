@@ -9,7 +9,9 @@ import {
     Button,
     ActivityIndicator,
     TextInput,
-    Image
+    Image,
+    TouchableWithoutFeedback,
+    Keyboard
   } from 'react-native';
 import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -67,7 +69,11 @@ interface PropsType {
     navigation: any;
 }
 
-
+const HideKeyboard = ({ children }) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
+);
 
 const Feed: React.FC<PropsType> = ({navigation}) => {
 
@@ -244,6 +250,7 @@ const uploadFile = async () => {
 
       
         <SafeAreaView style={styles.container}>
+          <HideKeyboard>
           <View style={styles.topContainer}>
           
           {/* <Button title="Create Post"
@@ -292,7 +299,7 @@ const uploadFile = async () => {
           />
 
           </View>
-          
+          </HideKeyboard>
         </SafeAreaView>
         
         

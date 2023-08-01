@@ -4,6 +4,8 @@ import {
   TextInput,
   View,
   Dimensions,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 import React, {useState} from 'react';
 import {Amplify, Storage} from 'aws-amplify';
@@ -31,6 +33,12 @@ interface PropsType {
   navigation: any;
   route: any;
 }
+
+const HideKeyboard = ({ children }) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
+);
 
 const CreatePost: React.FC<PropsType> = ({navigation}) => {
   const [caption, onCaptionChange] = useState('');
@@ -140,6 +148,7 @@ const CreatePost: React.FC<PropsType> = ({navigation}) => {
     
     <SafeAreaView style={styles.container}>
       <GestureHandlerRootView>
+      <HideKeyboard>
       <ScrollView>
         {image.length > 0 && (
           <Image source={{uri: image}} style={styles.image} />
@@ -165,6 +174,7 @@ const CreatePost: React.FC<PropsType> = ({navigation}) => {
           />
         </View>
       </ScrollView>
+      </HideKeyboard>
       </GestureHandlerRootView>
     </SafeAreaView>
     

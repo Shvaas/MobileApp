@@ -7,6 +7,8 @@ import {
     Image,
     TextInput,
     Alert,
+    TouchableWithoutFeedback,
+    Keyboard,
   } from 'react-native';
   import React, {useState} from 'react';
 
@@ -30,6 +32,12 @@ interface PropsType {
     navigation: any,
     route: any;
 }
+
+const HideKeyboard = ({ children }) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
+);
 
 const SessionFeedback: React.FC<PropsType> = ({route, navigation}) => {
   const userId = useSelector((state) => state.user.userId);
@@ -116,6 +124,7 @@ const SessionFeedback: React.FC<PropsType> = ({route, navigation}) => {
 
     return (
       <SafeAreaView style={styles.safeArea}>
+      <HideKeyboard>
       <ImageBackground source={backgroundImageMedium} style={styles.image}>
         <View style={styles.topContainer}>
             <GestureHandlerRootView>    
@@ -166,6 +175,7 @@ const SessionFeedback: React.FC<PropsType> = ({route, navigation}) => {
               />
 
       </ImageBackground>
+      </HideKeyboard>
       </SafeAreaView>
       );
     };
