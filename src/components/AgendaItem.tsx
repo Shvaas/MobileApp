@@ -13,24 +13,23 @@ import {
 import RouteNames from '../constants/routeName';
 
 import {useBookSessionMutation} from '../store/apiSlice';
+import axios from "axios";
+import {baseUrl} from '../constants/urls';
+
 interface PropsType {
     item: any,
     navigation: any,
 }
 
 const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
-  const [bookSession, { data, error, isLoading }] = useBookSessionMutation();
+  const [isLoading, setIsLoading] = useState(false);
+
   const dispatch = useDispatch();
 
   const userType = useSelector((state) => state.user.userType);
   const userId = useSelector((state) => state.user.userId);
 
-  // const userSessions = useSelector((state) => state.userSessions.userSessions);
-  // console.log("userSessions", userSessions);
-  
 
-  console.log(userType, userId);
-  
   const month = ['Jan', 'Feb', 'Mar', 'April', 'May',
                 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
@@ -56,7 +55,7 @@ const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
                       + " : " 
                       + minutes
                       + am;
-                      
+
 
 
   const onAppointmentConfirm = async () => {
@@ -65,7 +64,7 @@ const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
       console.log("Null session");
       return;
     }
-    console.log("session being booked",item);
+    console.log("session being booked", item);
 
     let session = {userId: userId,
                 courseId: item.sessionId};
@@ -73,42 +72,44 @@ const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
     console.log("onAppointmentConfirm", userId, item.sessionId);
 
 
+    try {
+      const response = await axios.post(`${baseUrl}/course/enroll`, session);
+      console.log(response);
 
-  const result = await bookSession(session);
-    if(result?.data?.status === 200){
-      dispatch(
-        userSessionSlice.actions.addSession({
-          'sessionId': item.sessionId,
-          'instructorId': item.instructorId,
-          'instructorPhoto': utkarsh,
-          'title': item.title,
-          'description': item.description,
-          'zoomlink': '-',
-          'start_date': item.start_date,
-          'markCompleted':  false,
-        }),
-      );
-      Alert.alert(
-        'Session Booked at ' + item.start_date.substring(0,item.start_date.search('T'))
-        + ' for ' + item.title,'',
-        [
-            {
-                text: 'OK',
-                onPress: () => {},
-            }
-        ]
-        )
-    }else{
-      Alert.alert(
-        'Error','Please try again later',
-        [
-            {
-                text: 'OK',
-                onPress: () => {},
-            }
-        ]
-        )
+      if (response.status === 200) {
+        dispatch(
+          userSessionSlice.actions.addSession({
+            'sessionId': item.sessionId,
+            'instructorId': item.instructorId,
+            'instructorPhoto': utkarsh,
+            'title': item.title,
+            'description': item.description,
+            'zoomlink': '-',
+            'start_date': item.start_date,
+            'markCompleted':  false,
+          }));
+          Alert.alert(
+            'Session Booked at ' + item.start_date.substring(0,item.start_date.search('T'))
+            + ' for ' + item.title,'',
+            [
+                {
+                    text: 'OK',
+                    onPress: () => {},
+                }
+            ]
+            )
+        setIsLoading(false);
+
+      } else {
+        Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
+        throw new Error("An error has occurred");
+      }
+    } catch (error) {
+      Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
+      alert("An error has occurred");
+      setIsLoading(false);
     }
+
 
   };
 

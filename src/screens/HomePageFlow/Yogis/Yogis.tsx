@@ -23,6 +23,7 @@ import {
 import ProfileCardView from './components/ProfileCardView';
 import {aryan, nabeel, shikha, utkarsh, yoga_instructor1, yoga_instructor2, backgroundImageLight} from '../../../images/imageLinks';
 import RouteNames from '../../../constants/routeName';
+import {baseUrl} from '../../../constants/urls';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import {useGetTeachersQuery} from '../../../store/apiSlice';
@@ -31,54 +32,82 @@ import {useDispatch, useSelector} from 'react-redux';
 import {yogiSlice, YogiSelector} from '../../../store/yogiSlice';
 import {userFirstNameSelector, userLastNameSelector} from '../../../store/userSlice';
 import UserAvatar from 'react-native-user-avatar';
+import axios from "axios";
 interface PropsType {
   navigation: any;
 }
 
 
-
-
-
 const Yogis: React.FC<PropsType> = ({navigation}) => {
 
-  const {data, error,isLoading} = useGetTeachersQuery();
-  // const [bookSession, { data, error, isLoading }] = useBookSessionMutation();
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setErrorFlag] = useState(false);
+
   const dispatch = useDispatch();
 
 
   let yogi = useSelector(YogiSelector);
-  console.log("yogi", yogi);
+  // console.log("yogi", yogi);
 
   const username = useSelector(userFirstNameSelector) + " " + useSelector(userLastNameSelector);
 
 
-  React.useEffect(() => {
-    console.log("error", error, data);
 
-    if (data && !error){
-      dispatch(yogiSlice.actions.initialYogi(data?.data?.userList));
+    React.useEffect(() => {
+      const abortController = new AbortController();
+        const url = `${baseUrl}/user/instructor`;
+        console.log(url);
+        
+        const fetchTeachers = async () => {
+          console.log("fetchTeachers");
+          try {
+            setIsLoading(true);
+            const response = await axios.get(url, {
+              signal: abortController.signal,
+              timeout: 10000,
+            });
+            console.log("response", response.data);
+            console.log("response", response.data.data);
+            if (response.status === 200) {
+              dispatch(yogiSlice.actions.initialYogi(response.data?.data?.userList));
+              setIsLoading(false);
+              return;
+            } else {
+              console.log(response.status);
+              setErrorFlag(true);
+              throw new Error("Failed to fetch users");
+            }
+          } catch (error) {
+            if (abortController.signal.aborted) {
+              console.log("Data fetching cancelled");
+            } else {
+              console.log("error", error);
+
+              setErrorFlag(true);
+              setIsLoading(false);
+            }
+          }
+        };
+        fetchTeachers();
+
+
+    }, []);
+
+    if (yogi.length === 0 && isLoading) {
+      return <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
     }
-  }, [data, dispatch]);
 
-  if (isLoading && yogi.length==0) {
-    return <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
-  }
+    if (yogi.length === 0 && hasError){
+      return (
+        <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
+        <View style={{alignItems:'center', justifyContent:'center', height:'100%', width:'100%'}}>
+          <Text style={{fontSize: themefonts.font16, fontFamily: themeFontFamily.raleway, margin:20}}> 
+          Something went wrong, Please try again later after sometime. </Text>
+        </View>
+       </ImageBackground>
+      )
+    }
 
-
-  // dispatch(yogiSlice.actions.initialYogi(data?.data));
-
-  // const onBookSession = async () => {
-  //   let session = {userId: '313cbfd3-4fc1-4763-9d18-caedd0be4a63',
-  //               courseId: '0f94e351-fd3a-4a71-84c4-123399f50bb4'};
-
-  // const result = await bookSession(session);
-  // console.log('put result', result.data);
-  // };
-
-  // onBookSession()
-
-  // console.log(data.data);
-  // console.log(data.data.userList[0].slots);
   
 
   return (

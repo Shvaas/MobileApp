@@ -16,11 +16,14 @@ import {themeColor, themefonts} from '../constants/theme';
 import BackgroundImageDup from '../common/BackgroundImageFullPage'
 import SessionCardView from '../components/SessionCardView';
 import UpcomingSessionCardView from './UpcomingSessionCardView';
+import { useState} from "react";
 import RouteNames from '../constants/routeName';
+
 
 import {useDispatch, useSelector} from 'react-redux';
 import {useGetStudentSessionsQuery} from '../store/apiSlice';
 import {userSessionSlice, getSessions} from '../store/userSessionSlice';
+
 export interface ToggleButtonProps {
   navigation: any;
   activeOption?: number;
@@ -43,23 +46,6 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
   dataCurrent,
   dataPast,
 }) => {
-  const userId = useSelector((state) => state.user.userId);
-  const {data, error, isLoading} = useGetStudentSessionsQuery(userId);
-
-  const dispatch = useDispatch();
-
-  // if (isLoading) {
-  //   return <ActivityIndicator />;
-  // }
-
-  React.useEffect(() => {
-    //data?.data?.status
-    if (data && data?.status==200){
-      // console.log("dispatch(userSessionSlice", data?.data);
-      dispatch(userSessionSlice.actions.initiateSessions(data?.data?.courses));
-    }
-  }, [data, dispatch]);
-
 
   const selectedOption = activeOption ?? OPTION.FIRST;
   const handleOptionPress = (index) => {

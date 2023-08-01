@@ -16,6 +16,8 @@ import {
   import { TouchableOpacity } from 'react-native-gesture-handler';
   import {GestureHandlerRootView} from 'react-native-gesture-handler';
   import RouteNames from '../../../constants/routeName';
+  import { userSlice,  } from '../../../store/userSlice';
+  import { useDispatch, useSelector } from 'react-redux';
 import { Auth } from 'aws-amplify';
 
   interface PropsType {
@@ -25,6 +27,7 @@ import { Auth } from 'aws-amplify';
   }
   
   const SettingItem: React.FC<PropsType> = ({item, index, navigation}) => {
+    const dispatch = useDispatch();
 
     const onShare = async () => {
       try {
@@ -47,8 +50,10 @@ import { Auth } from 'aws-amplify';
     };
 
     const onSignOut = async () => {
+
       Auth.signOut()
       .then(() => {
+        dispatch(userSlice.actions.setUserId(null));
          navigation.navigate('spinner');
       })
       .catch(err => console.log(err));

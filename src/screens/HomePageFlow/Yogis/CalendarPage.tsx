@@ -17,7 +17,8 @@ import {getAllSessionsbyMonthYear, sessionSelector,
   getAllSessionsbyId, sessionSlice} from '../../../store/sessionSlice';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import RouteNames from '../../../constants/routeName';
-
+import {baseUrl} from '../../../constants/urls';
+import axios from "axios";
 import {useGetTeacherSessionsQuery} from '../../../store/apiSlice';
 import {instructorPhotoLinkSelector} from '../../../store/userSlice';
 
@@ -34,8 +35,11 @@ interface PropsType {
 // };
 
 const CalendarPage: React.FC<PropsType> = ({route, navigation}) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setErrorFlag] = useState(false);
+
   const userType = useSelector((state) => state.user.userType);
-  const header = userType === 'Teacher' ? 'Sessions': 'Book Sessions';
+  const header = userType === 'Teacher' ? 'Sessions' : 'Book Sessions';
   let userId = null;
 
   const instructorPhoto = useSelector(instructorPhotoLinkSelector);
@@ -50,29 +54,65 @@ console.log("userId ********", userId);
 console.log();
 
 
-const {data, error,isLoading} = useGetTeacherSessionsQuery(userId);
 
 const dispatch = useDispatch();
 // let session = useSelector(sessionSelector);
 let session = useSelector((state) => getAllSessionsbyId(state, [userId]));
 console.log("all sessions", session);
 
-if (isLoading && session==null) {
-  return <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
-}
 
 React.useEffect(() => {
-  console.log("data *******", data);
-  console.log();
-  
-  if (data && !error && data?.status==200){
-    console.log("data", data);
-    dispatch(sessionSlice.actions.initiateSessions({
-      sessions: data?.data?.courses,
-      instructor_id: userId,
-    }));
-  }
-}, [data, dispatch]);
+  const abortController = new AbortController();
+    const url = `${baseUrl}/course/instructor/${userId}`;
+    console.log(url);
+    
+    const fetchSessions = async () => {
+      console.log("fetchSessions");
+      try {
+        setIsLoading(true);
+        const response = await axios.get(url, {
+          signal: abortController.signal,
+          timeout: 10000,
+        });
+        console.log("response", response.data);
+        console.log("response", response.data.data);
+        if (response.status === 200) {
+
+          dispatch(sessionSlice.actions.initiateSessions({
+            sessions: response.data?.data?.courses,
+            instructor_id: userId,
+          }));
+          setIsLoading(false);
+          
+        } else {
+          console.log(response.status);
+          setErrorFlag(true);
+          throw new Error("Failed to fetch users");
+        }
+      } catch (error) {
+        if (abortController.signal.aborted) {
+          console.log("Data fetching cancelled");
+        } else {
+          console.log("error", error);
+
+          setErrorFlag(true);
+          setIsLoading(false);
+        }
+      }
+    };
+    fetchSessions();
+
+
+}, []);
+
+
+
+// if (isLoading && session==null) {
+//   return <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
+// }
+console.log("***** session ******", session);
+console.log(isLoading);
+
 
 function goBack() {
   if (userType=='Teacher'){
@@ -221,7 +261,23 @@ function getPastDate(numberOfDays: number) {
     return <AgendaItem item={item} navigation={navigation}/>;
   }, []);
 
+  if (session.length === 0 && isLoading) {
+    return <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
+  }
+
+  if (session.length === 0 && hasError){
+    return (
+      <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
+      <View style={{alignItems:'center', justifyContent:'center', height:'100%', width:'100%'}}>
+        <Text style={{fontSize: themefonts.font16, fontFamily: themeFontFamily.raleway, margin:20}}> 
+        Something went wrong, Please try again later after sometime. </Text>
+      </View>
+     </ImageBackground>
+    )
+  }
+
   return (
+
     <SafeAreaView style={styles.safeArea}>
     <ImageBackground source={backgroundImageLight} style={styles.image}>
       <View style={styles.topContainer}>

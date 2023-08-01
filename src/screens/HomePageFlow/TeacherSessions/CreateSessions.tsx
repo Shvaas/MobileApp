@@ -23,8 +23,10 @@ import SimpleButton from '../../../common/buttons/SimpleButton';
 
 import {sessionSlice} from '../../../store/sessionSlice';
 import {useDispatch, useSelector} from 'react-redux';
+import {baseUrl} from '../../../constants/urls';
 
 import {useCreateSessionMutation} from '../../../store/apiSlice';
+import axios from "axios";
 interface PropsType {
   navigation: any,
   route: any;
@@ -32,6 +34,7 @@ interface PropsType {
 
   const CreateSessions: React.FC<PropsType> = ({route, navigation}) => {
   const [createSession, { data, error, isLoading }] = useCreateSessionMutation();
+
   const userId = useSelector((state) => state.user.userId);
   const dispatch = useDispatch();
 
@@ -103,20 +106,25 @@ interface PropsType {
           courseType: 'GROUP_SESSION',
         }
 
-        const result = await createSession(serverSession);
-        console.log(" result ",result);
-        
 
-        console.log("Create Session --> Note: Do this after succesfull session creation at server");
-        if (result.data.status === 200){
-          dispatch(
-            sessionSlice.actions.addSession({
-              'session' : session,
-            }),
-          );
-          Alert.alert('Success', 'New Session Created');
-          navigation.goBack();
-        }else{
+        try {
+          const response = await axios.post(`${baseUrl}/course/create`, serverSession);
+  
+          console.log("response", response.data);
+          console.log("response", response.data?.data);
+          if (response.status === 200) {
+            dispatch(
+              sessionSlice.actions.addSession({
+                'session' : session,
+              }),
+            );
+            Alert.alert('Success', 'New Session Created');
+            navigation.goBack();
+          } else {
+            Alert.alert('Failure', 'Cannot create a session, Please try after sometime');
+            throw new Error("An error has occurred");
+          }
+        } catch (error) {
           Alert.alert('Failure', 'Cannot create a session, Please try after sometime');
         }
     }

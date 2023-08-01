@@ -198,8 +198,6 @@ export const sessionSlice = createSlice({
             state.currentSession.end_date = sessions[i]?.sessionEndTime;
             state.currentSession.markCompleted = false;
             state.currentSession.studentList = sessions[i]?.studentProfileList ? sessions[i]?.studentProfileList: []
-            
-            
 
             if(newSession){
               state.sessions.push(state.currentSession);

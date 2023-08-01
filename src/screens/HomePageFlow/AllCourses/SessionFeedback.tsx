@@ -23,13 +23,15 @@ import {userSessionSlice} from '../../../store/userSessionSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {useSendFeedbackToTeacherMutation} from '../../../store/apiSlice';
 
+import {baseUrl} from '../../../constants/urls';
+import axios from "axios";
+
 interface PropsType {
     navigation: any,
     route: any;
 }
 
 const SessionFeedback: React.FC<PropsType> = ({route, navigation}) => {
-  const [sendFeedback, { data, error, isLoading }] = useSendFeedbackToTeacherMutation();
   const userId = useSelector((state) => state.user.userId);
     const dispatch = useDispatch();
     const {session} = route.params;
@@ -62,25 +64,54 @@ const SessionFeedback: React.FC<PropsType> = ({route, navigation}) => {
                       + " : " 
                       + minutes
                       + am;
+
     const submitFeedback = async () => {
       if (commentValue.trim() === '' || rating==0) {
         Alert.alert('Error', 'Please enter a valid feedback or rating');
+        return
       }
-      const result = await sendFeedback([session.sessionId,
-        {userId: userId,
-          instructorFeedback: commentValue,
-          courseRating: rating,
-        }]);
-      console.log("result", result);
+
+      console.log(session.sessionId, userId, commentValue, rating);
+      console.log();
       
-      // dispatch(
-      //   userSessionSlice.actions.submitFeedback({
-      //     'sessionId' : session.sessionId,
-      //     'feedback' : commentValue,
-      //     'rating' : rating,
-      //   }),
-      // );
-      Alert.alert('Success', 'Succesfully submitted the feedback');
+      
+
+      try {
+        const response = await axios.post(`${baseUrl}/course/${session.sessionId}/instructor-feedback`,
+        {userId: userId,
+         feedbackForInstructor: commentValue,
+         courseRating: rating,
+        });
+
+        console.log("response", response.data);
+        console.log("response", response.data?.data);
+        if (response.status === 200) {
+          Alert.alert('Success', 'Succesfully submitted the feedback');
+            dispatch(
+              userSessionSlice.actions.submitFeedback({
+                'sessionId' : session.sessionId,
+                'feedback' : commentValue,
+                'rating' : rating,
+              }),
+            );
+        } else {
+          Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
+          throw new Error("An error has occurred");
+        }
+      } catch (error) {
+        Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
+      }
+
+
+      // const result = await sendFeedback([session.sessionId,
+      //   {userId: userId,
+      //     instructorFeedback: commentValue,
+      //     courseRating: rating,
+      //   }]);
+      // console.log("result", result);
+      
+      
+      
     }
 
     return (
