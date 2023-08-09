@@ -76,6 +76,7 @@ React.useEffect(() => {
         });
         console.log("response", response.data);
         console.log("response", response.data.data);
+        console.log("response student list", response.data.data.courses[1].studentProfileList);
         if (response.status === 200) {
 
           dispatch(sessionSlice.actions.initiateSessions({
@@ -294,7 +295,7 @@ function getPastDate(numberOfDays: number) {
             <Text style={styles.heading}>{header}</Text>
         </View>
         <GestureHandlerRootView style={{backgroundColor: themeColor.white}}>
-        <TouchableOpacity onPress={()=>navigation.navigate(RouteNames.HomePageFlow.CreateSessions)}>
+        <TouchableOpacity disabled={userType!='Teacher'} onPress={()=>navigation.navigate(RouteNames.HomePageFlow.CreateSessions)}>
             <Image source={plus} style={[styles.backbutton, userType=='Teacher' ? {opacity:1}:{opacity:0}]}/>
         </TouchableOpacity>
         </GestureHandlerRootView> 

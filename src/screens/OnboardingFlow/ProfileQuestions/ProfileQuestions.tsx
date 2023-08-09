@@ -9,6 +9,7 @@ import {
     Image,
     Button,
     Animated,
+    Alert,
   } from 'react-native';
  import React, { Component } from 'react';
  import { useEffect, useState, useCallback } from 'react';
@@ -45,6 +46,7 @@ import { useRef } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Auth} from "aws-amplify";
 import {withAuthenticator, AmplifyTheme} from 'aws-amplify-react-native'
+import { baseUrl } from '../../../constants/urls';
 
 const MyTheme = {
   ...AmplifyTheme,
@@ -96,6 +98,8 @@ const [questionOneState, setquestionOneState] = useState(QuestionOneInitialState
 const [questionTwoState, setquestionTwoState] = useState(QuestionTwoInitialState);
 const [selectedHeight, setSelectedHeight] = useState(" ");
 const [selectedWeight, setSelectedWeight] = useState(" ");
+const [selectedAge, setSelectedAge] = useState(0);
+const [selectedGender, setSelectedGender] = useState();
 
   const [toggleCheckBox, setToggleCheckBox] = useState(false)
 
@@ -116,6 +120,7 @@ const [selectedWeight, setSelectedWeight] = useState(" ");
   const [user, setUser] = useState(null);
   const slidesRef = useRef(null);
 
+  const userId = useSelector((state) => state.user.userId);
 
   const scrollX = useRef(new Animated.Value(0)).current;
   const dispatch = useDispatch();
@@ -132,22 +137,51 @@ const [selectedWeight, setSelectedWeight] = useState(" ");
     []
   );
 
-  const scrollTo = () => {
+  const scrollTo = async () => {
       if (currentIndex < 2){
         slidesRef.current.scrollToIndex({index: currentIndex+1});
       }else{
-        console.log(questionOneState);
-        console.log(questionTwoState);
-        console.log(selectedHeight);
-        console.log(selectedWeight);
-        dispatch(userSlice.actions.setUserProfileQuestion({
+        
+        let profileQuestionnaire = {profileQuestionnaire: {
           height: selectedHeight,
           weight: selectedWeight,
+          age: selectedAge,
+          gender: selectedGender,
           questionOneState: questionOneState,
           questionTwoState: questionTwoState,
-      }));
+      }}
+      
+      try {
         
-      navigation.navigate('Home');
+        const response = await axios.post(`${baseUrl}/user/${userId}/add-questionnaire`,profileQuestionnaire);
+
+        console.log("response profile quesition", response.data);
+        console.log("response", response.data?.data);
+        if (response.status === 200) {
+          Alert.alert('Success', 'Succesfully added profile questions');
+
+          console.log(questionOneState);
+          console.log(questionTwoState);
+          console.log(selectedHeight);
+          console.log(selectedWeight);
+          dispatch(userSlice.actions.setUserProfileQuestion({
+            height: selectedHeight,
+            weight: selectedWeight,
+            age: selectedAge,
+            gender: selectedGender,
+            questionOneState: questionOneState,
+            questionTwoState: questionTwoState,
+          }));
+
+          navigation.navigate('Home');
+
+        } else {
+          Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
+          throw new Error("An error has occurred");
+        }
+      } catch (error) {
+        Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]); 
+      }
       }
   }
 
@@ -170,8 +204,8 @@ const [selectedWeight, setSelectedWeight] = useState(" ");
          
          <View style={styles.topContainer}>
             <GestureHandlerRootView>    
-                  <TouchableOpacity onPress={scrollBack}>
-                    <Image source={backButton} style={styles.backbutton}/>
+                  <TouchableOpacity disabled={currentIndex==0} onPress={scrollBack}>
+                    <Image source={backButton} style={[styles.backbutton, currentIndex==0 ? {opacity:0}:{opacity:1}]}/>
                   </TouchableOpacity>
             </GestureHandlerRootView>
           </View>
@@ -197,6 +231,10 @@ const [selectedWeight, setSelectedWeight] = useState(" ");
                 setSelectedHeight={setSelectedHeight}
                 selectedWeight={selectedWeight}
                 setSelectedWeight={setSelectedWeight}
+                selectedAge={selectedAge}
+                setSelectedAge={setSelectedAge}
+                selectedGender={selectedGender}
+                setSelectedGender={setSelectedGender}
             />}
                 horizontal
                 pagingEnabled={true}

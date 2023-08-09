@@ -23,8 +23,10 @@ import TeacherAttendanceCardView from '../../../components/TeacherAttendanceCard
 import TeacherFeedbackCardView from '../../../components/TeacherFeedbackCardView';
 import {useDispatch, useSelector} from 'react-redux';
 import {sessionSlice} from '../../../store/sessionSlice';
-import {instructorPhotoLinkSelector} from '../../../store/userSlice';
+import {instructorPhotoLinkSelector, userGenderSelector} from '../../../store/userSlice';
 import {Auth} from "aws-amplify";
+import { baseUrl } from '../../../constants/urls';
+import axios from '@aws-amplify/storage/node_modules/axios';
 interface PropsType {
     navigation: any,
     route: any;
@@ -34,6 +36,7 @@ const Sessions: React.FC<PropsType> = ({route, navigation}) => {
     const { session } = route.params;
     const [commentValue, setcommentValue] = useState('');
     const [markCompleted, setMarkCompleted] = useState(session.markCompleted);
+    const userId = useSelector((state) => state.user.userId);
 
     // const students = [{name:'utkarsh', photo:utkarsh, marked:true, studentFeedback: false},
     //             {name:'shikha', photo:utkarsh, marked:false , studentFeedback: true},
@@ -69,12 +72,43 @@ const Sessions: React.FC<PropsType> = ({route, navigation}) => {
                       + am;
 
     const onAttendanceCompleted = async () => {
-      setMarkCompleted(true);
-      dispatch(
-        sessionSlice.actions.markSessionCompleted({
-          sessionId: session.sessionId,
-        }),
-      );
+      
+      // console.log("attendanceMap", attendanceMap);
+      console.log("attendanceDict", attendanceDict);
+
+      try {
+        const response = await axios.post(`${baseUrl}/course/${session.sessionId}/update-attendance`,
+        {"userId": userId,
+        "courseId": session.sessionId,
+        "courseListRequestType": "UPDATE_ATTENDANCE",
+        "attendance":attendanceDict});
+
+        console.log("response", response.data);
+        console.log("response", response.data?.data);
+        if (response.status === 200) {
+          Alert.alert('Success', 'Succesfully submitted the feedback');
+          setMarkCompleted(true);
+          dispatch(
+            sessionSlice.actions.markSessionCompleted({
+              sessionId: session.sessionId,
+            }),
+          );
+          
+        } else {
+          Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
+          throw new Error("An error has occurred");
+        }
+      } catch (error) {
+        // Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
+        console.log("error",error);
+      }
+
+      // setMarkCompleted(true);
+      // dispatch(
+      //   sessionSlice.actions.markSessionCompleted({
+      //     sessionId: session.sessionId,
+      //   }),
+      // );
 
       // const result = await updateReaction(like);
       // console.log('put result', result.data);
@@ -96,6 +130,9 @@ const Sessions: React.FC<PropsType> = ({route, navigation}) => {
 
     const students = session.studentList;
     console.log("students", students);
+
+    let attendanceMap = new Map<string, boolean>();
+    let attendanceDict = {};
 
     // const userInfo = Auth.currentAuthenticatedUser({ bypassCache: true });
     // console.log(userInfo.attributes.name);
@@ -132,7 +169,7 @@ const Sessions: React.FC<PropsType> = ({route, navigation}) => {
           <View>
           <FlatList
           data={students}
-          renderItem={({item, index}) => <TeacherAttendanceCardView student={item} sessionId={session.sessionId}/>}
+          renderItem={({item, index}) => <TeacherAttendanceCardView student={item} sessionId={session.sessionId} attendanceDict={attendanceDict}/>}
           keyExtractor={(item) => item.studentId}/>
           <PrimaryButton
                 title={"Mark Completed"}

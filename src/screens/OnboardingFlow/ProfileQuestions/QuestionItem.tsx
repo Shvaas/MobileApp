@@ -11,6 +11,8 @@ import Footer from './Footer';
 
 import {Picker} from '@react-native-picker/picker';
 import CheckBox from "react-native-bouncy-checkbox";
+import {DropdownList,PickerDate,PickerItem} from 'react-native-ultimate-modal-picker';
+import { withTheme } from 'react-native-elements';
 
 interface PropsType {
   item: any;
@@ -19,27 +21,40 @@ interface PropsType {
   setquestionOneState: any;
   questionTwoState: any;
   setquestionTwoState: any;
+  selectedAge: any;
+  setSelectedAge: any;
+  selectedGender:any;
+  setSelectedGender:any;
 }
 
 const QuestionItem: React.FC<PropsType> = ({item, index, 
     questionOneState, setquestionOneState, 
     questionTwoState, setquestionTwoState,
     selectedHeight, setSelectedHeight,
-    selectedWeight, setSelectedWeight}) => {
+    selectedWeight, setSelectedWeight,
+    selectedAge, setSelectedAge,
+  selectedGender,setSelectedGender}) => {
 
     const {width} = useWindowDimensions();
 
-    const height = ["Please select...", "4 Foot", "4 Foot 1 inch", "4 Foot 2 inch", "4 Foot 3 inch", "4 Foot 4 inch", "4 Foot 5 inch", 
+    const height = ["4 Foot", "4 Foot 1 inch", "4 Foot 2 inch", "4 Foot 3 inch", "4 Foot 4 inch", "4 Foot 5 inch", 
     "4 Foot 6 inch", "4 Foot 7 inch", "4 Foot 8 inch", "4 Foot 9 inch", "4 Foot 10 inch", "4 Foot 11 inch", "4 Foot 12 inch",
     "5 Foot", "5 Foot 1 inch", "5 Foot 2 inch", "5 Foot 3 inch", "5 Foot 4 inch", "5 Foot 5 inch", 
     "5 Foot 6 inch", "5 Foot 7 inch", "5 Foot 8 inch", "5 Foot 9 inch", "5 Foot 10 inch", "5 Foot 11 inch", "5 Foot 12 inch", 
     "6 Foot", "6 Foot 1 inch", "6 Foot 2 inch", "6 Foot 3 inch", "6 Foot 4 inch", "6 Foot 5 inch", 
     "6 Foot 6 inch", "6 Foot 7 inch", "6 Foot 8 inch", "6 Foot 9 inch", "6 Foot 10 inch", "6 Foot 11 inch", "6 Foot 12 inch",];
 
-    const weight = ["Please select..."];
+    const weight = [];
     for (let index = 0; index < 500; index++) {
         weight.push(index + " lb")
     }
+
+    const age = [];
+    for (let index = 7; index < 110; index++) {
+        age.push(index)
+    }
+
+    const gender = ["Female","Male","Other","Don't wish to specify"];
 
     const QuestionOnekeys = ["Asthma", "Depression or/and Anxiety", "Cardiovascular issues", "Arthritis",
     "Osteoporosis", "Back Pain", "Cancer", "Obstructive pulmonary problems", "Diabetes"]
@@ -48,13 +63,19 @@ const QuestionItem: React.FC<PropsType> = ({item, index,
     "Concentration","Strength", "Focused cure according to chronic ailments", 
     "General health benefits", "Community engagement"]
 
-
+    const heightItems = height.map((item) => {return {label:item, value:item}});
+    const weightItems = weight.map((item) => {return {label:item, value:item}});
+    const ageItems = age.map((item) => {return {label:""+item, value:item}});
+    const genderItems = gender.map((item) => {return {label:item, value:item}});
+    
+    // height.map(item => { items.push(<PickerItem>{ label:{item}, value:{item}})});
     if(index==0){
         return (
             <View style={[styles.middleContainer, {width}]}>
+              <View style={styles.middleInternalContainer}>
               <View style={styles.middleContainerItem}>
                 <Text style={styles.heading}> Height :  </Text>
-                <Picker style={styles.infoContainer} itemStyle={{height: 40}}
+                {/* <Picker style={styles.infoContainer} itemStyle={{height: 40}}
                     selectedValue={selectedHeight}
                     itemStyle={styles.pickerItem}
                     onValueChange={(itemValue, itemIndex) => setSelectedHeight(itemValue)}>
@@ -64,12 +85,38 @@ const QuestionItem: React.FC<PropsType> = ({item, index,
                   value={item}
                   key={item}/>}
                   ))}
-                  </Picker>
+                  </Picker> */}
+                  <DropdownList
+                    title=""
+                    items={heightItems}
+                    onChange={(value: string) => setSelectedHeight(value)}
+                    customStyleContainer={{
+                      containerLight: {
+                        borderBottomWidth: -1,
+                      },
+                      containerDark: {
+                        borderBottomWidth: -1,
+                      },
+                    }}
+                    customStyleFieldText={{
+                      fieldTextLight: {
+                        fontFamily: styles.heading.fontFamily,
+                        fontSize: styles.heading.fontSize,
+                        fontWeight: '100',
+                      },
+                      fieldTextDark: {
+                        fontFamily: styles.heading.fontFamily,
+                        fontSize: styles.heading.fontSize,
+                        fontWeight: '100',
+                      },
+                    }}
+                    defaultValue = "Height"
+                  />
               </View>
 
               <View style={styles.middleContainerItem}>
                 <Text style={styles.heading}> Weight : </Text>
-                <Picker style={styles.infoContainer} itemStyle={{height: 40}}
+                {/* <Picker style={styles.infoContainer} itemStyle={{height: 40}}
                     itemStyle={styles.pickerItem}
                     selectedValue={selectedWeight}
                     onValueChange={(itemValue, itemIndex) => setSelectedWeight(itemValue)}>
@@ -79,14 +126,100 @@ const QuestionItem: React.FC<PropsType> = ({item, index,
                   value={item}
                   key={item}/>}
                   ))}
-                  </Picker>
+                  </Picker> */}
+                  <DropdownList
+                    title=""
+                    items={weightItems}
+                    onChange={(value: string) => setSelectedWeight(value)}
+                    customStyleContainer={{
+                      containerLight: {
+                        borderBottomWidth: -1,
+                      },
+                      containerDark: {
+                        borderBottomWidth: -1,
+                      },
+                    }}
+                    customStyleFieldText={{
+                      fieldTextLight: {
+                        fontFamily: styles.heading.fontFamily,
+                        fontSize: styles.heading.fontSize,
+                        fontWeight: '100',
+                      },
+                      fieldTextDark: {
+                        fontFamily: styles.heading.fontFamily,
+                        fontSize: styles.heading.fontSize,
+                        fontWeight: '100',
+                      },
+                    }}
+                    defaultValue = "Width"
+                  />
               </View>
-          </View>
+              <View style={styles.middleContainerItem}>
+                <Text style={styles.heading}> Age :       </Text>
+                  <DropdownList
+                    title=""
+                    items={ageItems}
+                    onChange={(value: number) => setSelectedAge(value)}
+                    customStyleContainer={{
+                      containerLight: {
+                        borderBottomWidth: -1,
+                      },
+                      containerDark: {
+                        borderBottomWidth: -1,
+                      },
+                    }}
+                    customStyleFieldText={{
+                      fieldTextLight: {
+                        fontFamily: styles.heading.fontFamily,
+                        fontSize: styles.heading.fontSize,
+                        fontWeight: '100',
+                      },
+                      fieldTextDark: {
+                        fontFamily: styles.heading.fontFamily,
+                        fontSize: styles.heading.fontSize,
+                        fontWeight: '100',
+                      },
+                    }}
+                    defaultValue = "Age"
+                  />
+              </View>
+              <View style={styles.middleContainerItem}>
+                <Text style={styles.heading}> Gender :</Text>
+                  <DropdownList
+                      title=""
+                      items={genderItems}
+                      onChange={(value) => setSelectedGender(value)}
+                      customStyleContainer={{
+                        containerLight: {
+                          borderBottomWidth: -1,
+                        },
+                        containerDark: {
+                          borderBottomWidth: -1,
+                        },
+                      }}
+                      customStyleFieldText={{
+                        fieldTextLight: {
+                          fontFamily: styles.heading.fontFamily,
+                          fontSize: styles.heading.fontSize,
+                          fontWeight: '100',
+                        },
+                        fieldTextDark: {
+                          fontFamily: styles.heading.fontFamily,
+                          fontSize: styles.heading.fontSize,
+                          fontWeight: '100',
+                        },
+                      }}
+                      defaultValue = "Gender"
+                    />
+              </View>
+              </View>
+            </View>
           ); 
     }
     if(index==1){
         return (
             <View style={[styles.middleContainer, {width}]}>
+              <View style={styles.middleInternalContainer}>
                <Text style={styles.greetingText}>Please select all the health challenges you may have</Text>
               <View style={styles.middleContainerItem}>
               <CheckBox
@@ -177,7 +310,7 @@ const QuestionItem: React.FC<PropsType> = ({item, index,
                 onPress={(value) => setquestionOneState({...questionOneState, keys8 : value})}
                 />
               </View>
-
+              </View>
           </View>
 
           ); 
@@ -185,6 +318,7 @@ const QuestionItem: React.FC<PropsType> = ({item, index,
    
   return (
     <View style={[styles.middleContainer, {width}]}>
+      <View style={styles.middleInternalContainer}>
     <Text style={styles.greetingText}>How can we help you?</Text>
     <View style={styles.middleContainerItem}>
     <CheckBox
@@ -265,7 +399,7 @@ const QuestionItem: React.FC<PropsType> = ({item, index,
       onPress={(value) => setquestionTwoState({...questionTwoState, keys7 : value})}
       />
     </View>
-
+    </View>
 
 </View>
   );
@@ -285,7 +419,25 @@ greetingText: {
 
    middleContainer: {
      flex: 0.5,
-     marginTop: 10,
+     marginTop: 10
+   },
+
+   middleInternalContainer: {
+    margin: 15,
+    backgroundColor: 'white',
+    padding: 20,
+    paddingHorizontal:10,
+     shadowColor:"black",
+     shadowOpacity: 0.25,
+     shadowRadius:4,
+     shadowOffset: {
+     width: -4,
+     height: 4,
+     },
+     opacity: 0.78,
+     borderRadius:10,
+     // justifyContent: 'center',
+     height: "90%"
    },
 
    middleContainerItem: {

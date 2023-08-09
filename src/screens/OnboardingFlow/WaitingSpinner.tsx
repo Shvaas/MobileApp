@@ -85,9 +85,15 @@ const WaitingSpinner = ({navigation}) => {
                 navigation.navigate('Home');
             }
             else {
+                var profileQuestionnaireCompleted = response?.data?.data.profileQuestionnaireCompleted;
                 dispatch(userSlice.actions.setUser({type: 'Student', userId: userId,
                 firsName: response?.data?.data.name, lastName:response?.data?.data.name}));
-                navigation.navigate(RouteNames.OnboardingFlow.ProfileQuestions);
+                if (profileQuestionnaireCompleted){
+                  navigation.navigate('Home');
+                }
+                else{
+                  navigation.navigate(RouteNames.OnboardingFlow.ProfileQuestions);
+                }
             }
               setIsLoading(false);
               return;

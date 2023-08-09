@@ -8,6 +8,7 @@ import {
     KeyboardAvoidingView,
     TouchableWithoutFeedback,
     Keyboard,
+    Alert,
   } from 'react-native';
   import React, {useState} from 'react';
 
@@ -23,10 +24,12 @@ import {
 
   import {sessionSlice} from '../store/sessionSlice';
   import {useDispatch, useSelector} from 'react-redux';
+import axios from 'axios';
+import { baseUrl } from '../constants/urls';
 
   interface PropsType {
     student : any,
-    sessionId: any
+    sessionId: any,
   }
 
   const HideKeyboard = ({ children }) => (
@@ -39,6 +42,7 @@ import {
 
     const feedbackForTeacher = 'Great Session!';
     const ratingForTeacher = 5;
+    const userId = useSelector((state) => state.user.userId);
 
     const [marked, setMarked] = useState(student.marked);
     const [commentValue, setcommentValue] = useState(student.feedbackForStudent);
@@ -72,19 +76,55 @@ import {
 
 
     const onPostButton = async () => {
-      if (!commentPosted){
-          setbuttonTitle('Edit');
-      }else{
-          setbuttonTitle('Post');
+
+      try {
+        const response = await axios.post(`${baseUrl}/course/${sessionId}/student-feedback`,
+        {
+           userId: userId,
+           studentId: student.studentId ,
+           feedbackForStudent: commentValue,
+           courseListRequestType: "ADD_FEEDBACK_FOR_STUDENT",
+           courseId: sessionId
+        });
+
+        console.log("response", response.data);
+        console.log("response", response.data?.data);
+        if (response.status === 200) {
+          Alert.alert('Success', 'Succesfully submitted the feedback');
+          if (!commentPosted){
+            setbuttonTitle('Edit');
+          }else{
+              setbuttonTitle('Post');
+          }
+          setcommentPosted(!commentPosted);
+          dispatch(
+            sessionSlice.actions.addFeedbackForStudent({
+              sessionId: sessionId,
+              studentId: student.studentId,
+              feedback: commentValue,
+            }),
+          );
+        } else {
+          Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
+          throw new Error("An error has occurred");
+        }
+      } catch (error) {
+        console.log("error",error);
       }
-      setcommentPosted(!commentPosted);
-      dispatch(
-        sessionSlice.actions.addFeedbackForStudent({
-          sessionId: sessionId,
-          studentId: student.studentId,
-          feedback: commentValue,
-        }),
-      );
+
+      // if (!commentPosted){
+      //     setbuttonTitle('Edit');
+      // }else{
+      //     setbuttonTitle('Post');
+      // }
+      // setcommentPosted(!commentPosted);
+      // dispatch(
+      //   sessionSlice.actions.addFeedbackForStudent({
+      //     sessionId: sessionId,
+      //     studentId: student.studentId,
+      //     feedback: commentValue,
+      //   }),
+      // );
 
       // const result = await updateReaction(like);
       // console.log('put result', result.data);
@@ -92,8 +132,10 @@ import {
 
     student.abs = 5;
     console.log("student.feedbackForTeacher", student);
-    
 
+    if(false){
+      return null
+    }
     return (
         <GestureHandlerRootView>
         <HideKeyboard>

@@ -33,7 +33,8 @@ import {
 
  import {useDispatch, useSelector} from 'react-redux';
  import {Picker} from '@react-native-picker/picker';
- import { userHeightSelector, userWeightSelector, userQuestionOneSelector, userQuestionTwoSelector } from '../../../store/userSlice';
+ import { userHeightSelector, userWeightSelector, userAgeSelector, userGenderSelector, userQuestionOneSelector, userQuestionTwoSelector } from '../../../store/userSlice';
+import { DropdownList } from 'react-native-ultimate-modal-picker';
  
  interface PropsType {
    navigation: any;
@@ -67,6 +68,8 @@ import {
     
     const userHeight = useSelector(userHeightSelector);
     const userWeight = useSelector(userWeightSelector);
+    const userAge = useSelector(userAgeSelector);
+    const userGender = useSelector(userGenderSelector);
     const userQuestionOne = useSelector(userQuestionOneSelector);
     const userQuestionTwo = useSelector(userQuestionTwoSelector);
 
@@ -74,6 +77,8 @@ import {
     const [questionTwoState, setquestionTwoState] = useState(QuestionTwoInitialState);
     const [selectedHeight, setSelectedHeight] = useState(" ");
     const [selectedWeight, setSelectedWeight] = useState(" ");
+    const [selectedAge, setSelectedAge] = useState(" ");
+    const [selectedGender, setSelectedGender] = useState(" ");
 
 
     const {width} = useWindowDimensions();
@@ -91,6 +96,18 @@ import {
         weight.push(index + " lb")
     }
 
+    const age = [];
+    for (let index = 7; index < 110; index++) {
+        age.push(index)
+    }
+
+    const gender = ["Female","Male","Other","Don't wish to specify"];
+
+    const heightItems = height.map((item) => {return {label:item, value:item}});
+    const weightItems = weight.map((item) => {return {label:item, value:item}});
+    const ageItems = age.map((item) => {return {label:""+item, value:item}});
+    const genderItems = gender.map((item) => {return {label:item, value:item}});
+
     const QuestionOnekeys = ["Asthma", "Depression or/and Anxiety", "Cardiovascular issues", "Arthritis",
     "Osteoporosis", "Back Pain", "Cancer", "Obstructive pulmonary problems", "Diabetes"]
 
@@ -102,6 +119,8 @@ import {
     React.useEffect(() => {
         setSelectedHeight(userHeight);
         setSelectedWeight(userWeight);
+        setSelectedAge(userAge);
+        setSelectedGender(userGender);
         setquestionOneState(userQuestionOne);
         setquestionTwoState(userQuestionTwo);
       }, []);
@@ -112,6 +131,8 @@ import {
         dispatch(userSlice.actions.setUserProfileQuestion({
           height: selectedHeight,
           weight: selectedWeight,
+          age: selectedAge,
+          gender: selectedGender,
           questionOneState: questionOneState,
           questionTwoState: questionTwoState,
       }));
@@ -138,7 +159,7 @@ import {
           <View style={[styles.middleContainer, {width}, {marginTop:10}]}>
               <View style={styles.middleContainerItem}>
                 <Text style={styles.heading}> Height :  </Text>
-                <Picker style={styles.infoContainer} itemStyle={{height: 40}}
+                {/* <Picker style={styles.infoContainer} itemStyle={{height: 40}}
                     selectedValue={selectedHeight}
                     itemStyle={styles.pickerItem}
                     onValueChange={(itemValue, itemIndex) => setSelectedHeight(itemValue)}>
@@ -148,12 +169,38 @@ import {
                   value={item}
                   key={item}/>}
                   ))}
-                  </Picker>
+                  </Picker> */}
+                  <DropdownList
+                    title=""
+                    items={heightItems}
+                    onChange={(value: string) => setSelectedHeight(value)}
+                    customStyleContainer={{
+                      containerLight: {
+                        borderBottomWidth: -1,
+                      },
+                      containerDark: {
+                        borderBottomWidth: -1,
+                      },
+                    }}
+                    customStyleFieldText={{
+                      fieldTextLight: {
+                        fontFamily: styles.heading.fontFamily,
+                        fontSize: styles.heading.fontSize,
+                        fontWeight: '100',
+                      },
+                      fieldTextDark: {
+                        fontFamily: styles.heading.fontFamily,
+                        fontSize: styles.heading.fontSize,
+                        fontWeight: '100',
+                      },
+                    }}
+                    defaultValue = {selectedHeight}
+                  />
               </View>
 
               <View style={styles.middleContainerItem}>
                 <Text style={styles.heading}> Weight : </Text>
-                <Picker style={styles.infoContainer} itemStyle={{height: 40}}
+                {/* <Picker style={styles.infoContainer} itemStyle={{height: 40}}
                     itemStyle={styles.pickerItem}
                     selectedValue={selectedWeight}
                     onValueChange={(itemValue, itemIndex) => setSelectedWeight(itemValue)}>
@@ -163,7 +210,91 @@ import {
                   value={item}
                   key={item}/>}
                   ))}
-                  </Picker>
+                  </Picker> */}
+                  <DropdownList
+                    title=""
+                    items={weightItems}
+                    onChange={(value: string) => setSelectedWeight(value)}
+                    customStyleContainer={{
+                      containerLight: {
+                        borderBottomWidth: -1,
+                      },
+                      containerDark: {
+                        borderBottomWidth: -1,
+                      },
+                    }}
+                    customStyleFieldText={{
+                      fieldTextLight: {
+                        fontFamily: styles.heading.fontFamily,
+                        fontSize: styles.heading.fontSize,
+                        fontWeight: '100',
+                      },
+                      fieldTextDark: {
+                        fontFamily: styles.heading.fontFamily,
+                        fontSize: styles.heading.fontSize,
+                        fontWeight: '100',
+                      },
+                    }}
+                    defaultValue = {selectedWeight}
+                  />
+              </View>
+              <View style={styles.middleContainerItem}>
+                <Text style={styles.heading}> Age : </Text>
+                  <DropdownList
+                    title=""
+                    items={ageItems}
+                    onChange={(value: number) => setSelectedAge(value)}
+                    customStyleContainer={{
+                      containerLight: {
+                        borderBottomWidth: -1,
+                      },
+                      containerDark: {
+                        borderBottomWidth: -1,
+                      },
+                    }}
+                    customStyleFieldText={{
+                      fieldTextLight: {
+                        fontFamily: styles.heading.fontFamily,
+                        fontSize: styles.heading.fontSize,
+                        fontWeight: '100',
+                      },
+                      fieldTextDark: {
+                        fontFamily: styles.heading.fontFamily,
+                        fontSize: styles.heading.fontSize,
+                        fontWeight: '100',
+                      },
+                    }}
+                    defaultValue = {selectedAge}
+                  />
+              </View>
+              <View style={styles.middleContainerItem}>
+                <Text style={styles.heading}> Gender : </Text>
+                  <DropdownList
+                      title=""
+                      items={genderItems}
+                      onChange={(value) => setSelectedGender(value)}
+                      customStyleContainer={{
+                        containerLight: {
+                          borderBottomWidth: -1,
+                        },
+                        containerDark: {
+                          borderBottomWidth: -1,
+                        },
+                      }}
+                      customStyleFieldText={{
+                        fieldTextLight: {
+                          fontFamily: styles.heading.fontFamily,
+                          fontSize: styles.heading.fontSize,
+                          fontWeight: '100',
+                        },
+                        fieldTextDark: {
+                          fontFamily: styles.heading.fontFamily,
+                          fontSize: styles.heading.fontSize,
+                          fontWeight: '100',
+                        },
+                      }}
+                      defaultValue = {selectedGender}
+                    />
               </View>
           </View>
 

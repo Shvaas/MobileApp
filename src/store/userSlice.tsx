@@ -11,6 +11,8 @@ const initialState = {
   lastName: '',
   height: '',
   weight: '',
+  age: '',
+  gender: '',
   questionOne: {
     keys0: false,
     keys1: false,
@@ -72,10 +74,12 @@ export const userSlice = createSlice({
       },
       setUserProfileQuestion: (state, action) => {
         console.log('User Slice: setUserProfileQuestion', action.payload);
-        const {height, weight, questionOneState, questionTwoState} = action.payload;
+        const {height, weight, age, gender, questionOneState, questionTwoState} = action.payload;
 
         state.height = height;
         state.weight = weight;
+        state.age = age;
+        state.gender = gender;
         state.questionOne = questionOneState;
         state.questionTwo = questionTwoState;
       },
@@ -89,5 +93,7 @@ export const userSlice = createSlice({
   export const userIdSelector = (state) => state.user.userId;
   export const userHeightSelector = (state) => state.user.height;
   export const userWeightSelector = (state) => state.user.weight;
+  export const userAgeSelector = (state) => state.user.age;
+  export const userGenderSelector = (state) => state.user.gender;
   export const userQuestionOneSelector = (state) => state.user.questionOne;
   export const userQuestionTwoSelector = (state) => state.user.questionTwo;
