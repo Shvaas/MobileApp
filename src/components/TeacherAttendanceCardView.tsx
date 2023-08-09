@@ -20,11 +20,9 @@ import {
   interface PropsType {
     student : any,
     sessionId: any,
-    // attendanceMap: any,
-    attendanceDict: any,
   }
   
-  const TeacherAttendanceCardView: React.FC<PropsType> = ({student, sessionId, attendanceDict}) => {
+  const TeacherAttendanceCardView: React.FC<PropsType> = ({student, sessionId}) => {
     console.log("TeacherAttendanceCardView", student);
 
     student.attendance = null;
@@ -50,10 +48,6 @@ import {
           attendance: attendance,
         }),
       );
-      // attendanceMap.set(student.studentId, attendance);
-      attendanceDict[student.studentId]=attendance;
-      // const result = await updateReaction(like);
-      // console.log('put result', result.data);
     };
 
     return (

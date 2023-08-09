@@ -133,7 +133,7 @@ import { baseUrl } from '../constants/urls';
     student.abs = 5;
     console.log("student.feedbackForTeacher", student);
 
-    if(false){
+    if(!student?.attendance){
       return null
     }
     return (

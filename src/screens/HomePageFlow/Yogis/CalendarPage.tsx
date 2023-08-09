@@ -76,6 +76,7 @@ React.useEffect(() => {
         });
         console.log("response", response.data);
         console.log("response", response.data.data);
+        console.log("response student list", response.data.data.courses[0].studentProfileList);
         console.log("response student list", response.data.data.courses[1].studentProfileList);
         if (response.status === 200) {
 

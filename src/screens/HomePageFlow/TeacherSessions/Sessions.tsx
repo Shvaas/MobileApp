@@ -22,7 +22,7 @@ import ProfilePicture from '../../../components/ProfilePicture';
 import TeacherAttendanceCardView from '../../../components/TeacherAttendanceCardView';
 import TeacherFeedbackCardView from '../../../components/TeacherFeedbackCardView';
 import {useDispatch, useSelector} from 'react-redux';
-import {sessionSlice} from '../../../store/sessionSlice';
+import {getAttendancebySessionId, getStudentListbySessionId, sessionSlice} from '../../../store/sessionSlice';
 import {instructorPhotoLinkSelector, userGenderSelector} from '../../../store/userSlice';
 import {Auth} from "aws-amplify";
 import { baseUrl } from '../../../constants/urls';
@@ -71,9 +71,13 @@ const Sessions: React.FC<PropsType> = ({route, navigation}) => {
                       + minutes
                       + am;
 
+                      
+  const attendanceDict = useSelector((state) => getAttendancebySessionId(state, [session.sessionId]))
+
     const onAttendanceCompleted = async () => {
       
       // console.log("attendanceMap", attendanceMap);
+      
       console.log("attendanceDict", attendanceDict);
 
       try {
@@ -128,11 +132,12 @@ const Sessions: React.FC<PropsType> = ({route, navigation}) => {
       // console.log('put result', result.data);
     };
 
-    const students = session.studentList;
+    // const students = session.studentList;
+    const students = useSelector((state) => getStudentListbySessionId(state, [session.sessionId]))
     console.log("students", students);
 
-    let attendanceMap = new Map<string, boolean>();
-    let attendanceDict = {};
+    // let attendanceMap = new Map<string, boolean>();
+    // let attendanceDict = {};
 
     // const userInfo = Auth.currentAuthenticatedUser({ bypassCache: true });
     // console.log(userInfo.attributes.name);
@@ -169,7 +174,7 @@ const Sessions: React.FC<PropsType> = ({route, navigation}) => {
           <View>
           <FlatList
           data={students}
-          renderItem={({item, index}) => <TeacherAttendanceCardView student={item} sessionId={session.sessionId} attendanceDict={attendanceDict}/>}
+          renderItem={({item, index}) => <TeacherAttendanceCardView student={item} sessionId={session.sessionId}/>}
           keyExtractor={(item) => item.studentId}/>
           <PrimaryButton
                 title={"Mark Completed"}

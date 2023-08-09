@@ -316,3 +316,30 @@ export const sessionSlice = createSlice({
       return instructorSessions;
     },
   );
+
+  export const getStudentListbySessionId = createSelector(
+    [sessionSelector, (sessionSelector, [sessionId]) => [sessionId]],
+    (sessionSelector, [sessionId]) => {
+      console.log("getStudentListbySessionId", sessionId);
+      console.log(sessionSelector);
+      
+      const session = sessionSelector.filter(p => p.sessionId === sessionId);
+      return session[0].studentList;
+    },
+  );
+
+  export const getAttendancebySessionId = createSelector(
+    [sessionSelector, (sessionSelector, [sessionId]) => [sessionId]],
+    (sessionSelector, [sessionId]) => {
+      console.log("getStudentListbySessionId", sessionId);
+      console.log(sessionSelector);
+      
+      const session = sessionSelector.filter(p => p.sessionId === sessionId);
+      const attendanceDict = {};
+      session[0].studentList.forEach( item => {
+        attendanceDict[item.studentId]=item?.attendance;
+      }
+      )
+      return attendanceDict;
+    },
+  );
