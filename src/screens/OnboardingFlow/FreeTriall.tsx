@@ -30,6 +30,8 @@ import { useCreatePaymentIntentMutation } from '../../store/apiSlice';
 
 
 import axios from "axios";
+import { baseUrl } from '../../constants/urls';
+import { useSelector } from 'react-redux';
 
 interface PropsType {
   navigation: any;
@@ -44,42 +46,117 @@ const FreeTrial = ({navigation}) => {
   React.useEffect(() => {
   }, []);
 
-
+  const userId = useSelector((state) => state.user.userId);
+  
   const onSubcriptionPressed = async () => {
-    const response = await createPaymentIntent({
-      userId: '313cbfd3-4fc1-4763-9d18-caedd0be4a63',
-      subscriptionType: 'STANDARD',
-		});
+    console.log("subscirption pressed");
+
+    try {
+      const response = await axios.post(`${baseUrl}/payment/create-subscription`,
+      {
+        userId : userId,
+        paymentRequestType: "CREATE_SUBSCRIPTION",
+        subscriptionType: 'STANDARD'
+      });
+
+      console.log("response", response.data);
+      console.log("response", response.data?.data);
+      if (response.status === 200) {
+        Alert.alert('Success', 'Succesfully submitted the feedback');
+        const clientSecret = response.data?.data?.clientSecret;
+        const subscriptionId = response.data?.data?.subscriptionId;
+        
+        console.log("subscirption pressed step 0")
+        console.log(clientSecret, subscriptionId);
+
+        if (response.error) {
+          console.log('Something went wrong1', response.error);
+          return;
+        }
+
+        console.log("subscirption pressed step 1")
+
+        const { error: paymentSheetError } = await initPaymentSheet({
+          merchantDisplayName: 'Shvaas, Inc.',
+          paymentIntentClientSecret: clientSecret,
+          defaultBillingDetails: {
+            name: 'Utkarsh Nath',
+          },
+        });
+
+        console.log("subscirption pressed step 2")
+
+        if (paymentSheetError) {
+          console.log('Something went wrong2', paymentSheetError.message);
+          return;
+        }
+
+        console.log("subscirption pressed step 3")
 
 
-    const clientSecret = response.data.data.clientSecret;
-    const subscriptionId = response.data.data.subscriptionId;
-    console.log(clientSecret, subscriptionId);
+        const { error: paymentError } = await presentPaymentSheet();
 
-		if (response.error) {
-      console.log('Something went wrong1', response.error);
-      return;
-		}
+        console.log("subscirption pressed step 4")
 
-    const { error: paymentSheetError } = await initPaymentSheet({
-      merchantDisplayName: 'Shvaas, Inc.',
-      paymentIntentClientSecret: clientSecret,
-      defaultBillingDetails: {
-        name: 'Utkarsh Nath',
-      },
-		});
-
-		if (paymentSheetError) {
-      console.log('Something went wrong2', paymentSheetError.message);
-      return;
-		}
-
-    const { error: paymentError } = await presentPaymentSheet();
-
-    if (paymentError) {
-      console.log('Error code: ${paymentError.code}', paymentError.message);
-      return;
+        if (paymentError) {
+          console.log('Error code: ${paymentError.code}', paymentError.message);
+          return;
+        }
+        
+      } else {
+        Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
+        throw new Error("An error has occurred");
+      }
+    } catch (error) {
+      // Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
+      console.log("error",error);
     }
+
+    // const response = await createPaymentIntent({
+    //   userId: '313cbfd3-4fc1-4763-9d18-caedd0be4a63',
+    //   paymentRequestType: "CREATE_SUBSCRIPTION",
+    //   subscriptionType: 'STANDARD',
+		// });
+
+
+    // const clientSecret = response.data?.data?.clientSecret;
+    // const subscriptionId = response.data?.data?.subscriptionId;
+    // console.log("subscirption pressed step 0")
+    // console.log(clientSecret, subscriptionId);
+
+		// if (response.error) {
+    //   console.log('Something went wrong1', response.error);
+    //   return;
+		// }
+
+    // console.log("subscirption pressed step 1")
+
+    // const { error: paymentSheetError } = await initPaymentSheet({
+    //   merchantDisplayName: 'Shvaas, Inc.',
+    //   paymentIntentClientSecret: clientSecret,
+    //   defaultBillingDetails: {
+    //     name: 'Utkarsh Nath',
+    //   },
+		// });
+
+    // console.log("subscirption pressed step 2")
+
+		// if (paymentSheetError) {
+    //   console.log('Something went wrong2', paymentSheetError.message);
+    //   return;
+		// }
+
+    // console.log("subscirption pressed step 3")
+
+
+    // const { error: paymentError } = await presentPaymentSheet();
+
+    // console.log("subscirption pressed step 4")
+
+    // if (paymentError) {
+    //   console.log('Error code: ${paymentError.code}', paymentError.message);
+    //   return;
+    // }
   };
 
 

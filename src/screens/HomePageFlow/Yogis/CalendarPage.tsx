@@ -9,7 +9,7 @@ import { ImageBackground } from 'react-native';
 import {themeFontFamily, themefonts, themeColor} from '../../../constants/theme';
 
 import AgendaItem from '../../../components/AgendaItem';
-import {next, prev, plus, backgroundImageLight, backButton, utkarsh} from '../../../images/imageLinks'
+import {next, prev, plus, backgroundImageLight, backButton, utkarsh, backgroundImageMedium} from '../../../images/imageLinks'
 
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -278,6 +278,13 @@ function getPastDate(numberOfDays: number) {
     )
   }
 
+  if(isLoading){
+    <ImageBackground source={backgroundImageMedium} style={{height:'100%', width:'100%'}}>
+      <Text>waiting</Text>
+      <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
+    </ImageBackground>
+  }
+  else{
   return (
 
     <SafeAreaView style={styles.safeArea}>
@@ -353,7 +360,7 @@ function getPastDate(numberOfDays: number) {
     </CalendarProvider>
     </ImageBackground>
     </SafeAreaView>
-  );
+  );}
 };
 
 export default CalendarPage;

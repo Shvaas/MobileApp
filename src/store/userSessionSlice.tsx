@@ -121,6 +121,10 @@ export const userSessionSlice = createSlice({
         state.currentSession.ratingForTeacher = rating;
       },
 
+      setInitialState: (state, action) => {
+        state = initialState;
+      },
+
     },
   });
 

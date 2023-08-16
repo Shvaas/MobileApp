@@ -23,6 +23,7 @@ import RouteNames from '../constants/routeName';
 import {useDispatch, useSelector} from 'react-redux';
 import {useGetStudentSessionsQuery} from '../store/apiSlice';
 import {userSessionSlice, getSessions} from '../store/userSessionSlice';
+import { withTheme } from 'react-native-elements';
 
 export interface ToggleButtonProps {
   navigation: any;
@@ -65,7 +66,9 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
               selectedOption === OPTION.FIRST ? styles.activeFirstContainer : {},
             ]}>
             <Text
-              style={styles.firstOption}>
+              style={[
+                styles.firstOption,
+                selectedOption === OPTION.FIRST ? styles.activeFirstOption : {}]}>
               {"Upcoming sessions"}
             </Text>
           </View>
@@ -80,7 +83,9 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
               selectedOption === OPTION.SECOND ? styles.activeSecondContainer : {},
             ]}>
             <Text
-              style={styles.secondOption}>
+              style={[
+                styles.secondOption,
+                selectedOption === OPTION.SECOND ? styles.activeSecondOption : {}]}>
               {"Completed sessions"}
             </Text>
           </View>
@@ -129,36 +134,81 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     backgroundColor: themeColor.white,
-    borderRadius: 15,
-    padding: 4,
+    borderRadius: 6,
+    // padding: 4,
     marginHorizontal: 5,
+    // borderBottomWidth: 2,
+    borderBottomEndRadius: 0,
+    borderBottomStartRadius: 0,
+    // borderWidth: 1,
+    // borderColor: themeColor.vividRed,
+    // borderColor: "#fa661c", //bright orange
+    // borderColor: '#fbd6bc',//light orange
+    // borderColor: themeColor.lightBlue
+    // borderColor: '#FD7C23',
   },
   
   option: {
     borderRadius: 6,
+    borderBottomStartRadius:0,
+    borderBottomEndRadius:0,
     justifyContent: 'center',
     width: "50%",
     height: 30,
     padding: 2,
+    opacity: 0.6,
+
   },
   FirstContainer: {
   },
   SecondContainer: {
   },
   activeFirstContainer: {
-    backgroundColor: themeColor.lightBlue,
+    backgroundColor: themeColor.vividRed,
+    opacity: 1,
+    // backgroundColor: '#fa661c'
+    // backgroundColor: '#fbd6bc',//light orange
+    // borderWidth: 1.5,
+    // borderColor: themeColor.vividRed,
+    // backgroundColor:themeColor.lightBlue,
+    // backgroundColor: '#FD7C23',
+
+
   },
   activeSecondContainer: {
-    backgroundColor: themeColor.lightBlue,
+    backgroundColor: themeColor.vividRed,
+    opacity: 1,
+    // backgroundColor: '#fa661c'
+    // backgroundColor: '#fbd6bc',//light orange
+    // borderWidth: 1.5,
+    // borderColor: themeColor.vividRed,
+    // backgroundColor:themeColor.lightBlue,
+    // backgroundColor: '#FD7C23',
   },
 
   firstOption: {
     textAlign: 'center',
-    color: themeColor.black,
+    color: themeColor.vividRed,
+    // color: "#fa661c"
+    // color: '#fbd6bc',//light orange
+    // color:themeColor.lightBlue,
+    // color: '#FD7C23',
   },
   secondOption: {
     textAlign: 'center',
-    color: themeColor.black,
+    color: themeColor.vividRed,
+    // color: "#fa661c"
+    // color: '#fbd6bc',//light orange
+    // color:themeColor.lightBlue,
+    // color: '#FD7C23',
+  },
+  activeFirstOption: {
+    color: themeColor.white,
+    // fontWeight:"bold",
+  },
+  activeSecondOption: {
+    color: themeColor.white,
+    // fontWeight:"bold",
   },
 
   scrollContainerStyle: {

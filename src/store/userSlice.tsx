@@ -83,6 +83,10 @@ export const userSlice = createSlice({
         state.questionOne = questionOneState;
         state.questionTwo = questionTwoState;
       },
+      setInitialState: (state, action) => {
+        console.log("User Slice: setInitialState", action.payload);
+        state = initialState;
+      },
     },
   });
 

@@ -19,6 +19,9 @@ import {
   import { userSlice,  } from '../../../store/userSlice';
   import { useDispatch, useSelector } from 'react-redux';
 import { Auth } from 'aws-amplify';
+import { userSessionSlice } from '../../../store/userSessionSlice';
+import { sessionSlice } from '../../../store/sessionSlice';
+import { yogiSlice } from '../../../store/yogiSlice';
 
   interface PropsType {
     item : any,
@@ -54,6 +57,10 @@ import { Auth } from 'aws-amplify';
       Auth.signOut()
       .then(() => {
         dispatch(userSlice.actions.setUserId(null));
+        dispatch(userSlice.actions.setInitialState(null));
+        dispatch(sessionSlice.actions.setInitialState(null));
+        dispatch(userSessionSlice.actions.setInitialState(null));
+        dispatch(yogiSlice.actions.setInitialState(null));
          navigation.navigate('spinner');
       })
       .catch(err => console.log(err));

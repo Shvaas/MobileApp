@@ -266,6 +266,9 @@ export const sessionSlice = createSlice({
         }
       },
 
+      setInitialState: (state, action) => {
+        state = initialState;
+      }
 
     },
   });

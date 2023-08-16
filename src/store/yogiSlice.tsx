@@ -159,6 +159,10 @@ export const yogiSlice = createSlice({
             state.currentYogi = state.yogi.find((p) => p.userId === userId);
           },
 
+          setInitialState: (state, action) => {
+            state = initialState;
+          }
+
     },
   });
 

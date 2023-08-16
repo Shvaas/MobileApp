@@ -173,7 +173,7 @@ const [selectedGender, setSelectedGender] = useState();
             questionTwoState: questionTwoState,
           }));
 
-          navigation.navigate('Home');
+          navigation.navigate(RouteNames.OnboardingFlow.FreeTrial);
 
         } else {
           Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
