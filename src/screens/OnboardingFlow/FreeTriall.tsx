@@ -63,9 +63,11 @@ const FreeTrial = ({navigation}) => {
       console.log("response", response.data?.data);
       if (response.status === 200) {
         Alert.alert('Success', 'Succesfully submitted the feedback');
+        console.log(response.data);
+        
         const clientSecret = response.data?.data?.clientSecret;
         const subscriptionId = response.data?.data?.subscriptionId;
-        
+
         console.log("subscirption pressed step 0")
         console.log(clientSecret, subscriptionId);
 
@@ -78,7 +80,7 @@ const FreeTrial = ({navigation}) => {
 
         const { error: paymentSheetError } = await initPaymentSheet({
           merchantDisplayName: 'Shvaas, Inc.',
-          paymentIntentClientSecret: clientSecret,
+          setupIntentClientSecret: clientSecret,
           defaultBillingDetails: {
             name: 'Utkarsh Nath',
           },
@@ -102,6 +104,9 @@ const FreeTrial = ({navigation}) => {
           console.log('Error code: ${paymentError.code}', paymentError.message);
           return;
         }
+
+        console.log("Payment Successful");
+        
         
       } else {
         Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
