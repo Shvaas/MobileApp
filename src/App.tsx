@@ -42,8 +42,10 @@ const App = () => {
   }, []);
 
   const Stack = createNativeStackNavigator();
-
-  const STRIPE_KEY = 'pk_test_51NFknnLrbws9WSwO25PGiyKTzjZlfoDYvV9mBiwCHPL6PVUEknKfJeAcrVQ8LpCLoGfhg4797YTbPvKxfJWL58SB00gv2zdRnv'
+  // India
+  const STRIPE_KEY = 'pk_test_51NYPgqSCuYArEC5oOK4UODZU9chPXxrQFmlKyenSu9qOYWe3PjNTQHjslpUOm2D6HVgbXU7baQKCuUrbGwzkV2J500qYf4mAEX'
+  // USA
+  //const STRIPE_KEY = 'pk_test_51NFknnLrbws9WSwO25PGiyKTzjZlfoDYvV9mBiwCHPL6PVUEknKfJeAcrVQ8LpCLoGfhg4797YTbPvKxfJWL58SB00gv2zdRnv'
 
   return (
     <Provider store={store}>

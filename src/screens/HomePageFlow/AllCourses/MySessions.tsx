@@ -42,8 +42,8 @@ const MySessions: React.FC<PropsType> = ({navigation}) => {
             signal: abortController.signal,
             timeout: 10000,
           });
-          console.log("response", response.data);
-          console.log("response", response.data.data);
+          console.log(" fetchUserSessions response", response.data);
+          console.log(" fetchUserSessions response", response.data.data);
           if (response.status === 200) {
             dispatch(userSessionSlice.actions.initiateSessions(response.data?.data?.courses));
             setIsLoading(false);

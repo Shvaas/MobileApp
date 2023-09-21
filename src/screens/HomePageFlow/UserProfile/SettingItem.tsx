@@ -8,6 +8,7 @@ import {
     Alert,
   } from 'react-native';
   import React, {useState} from 'react';
+  import { Linking} from 'react-native';
 
   // local
   import {themeFontFamily, themefonts, themeColor} from '../../../constants/theme';
@@ -22,6 +23,10 @@ import { Auth } from 'aws-amplify';
 import { userSessionSlice } from '../../../store/userSessionSlice';
 import { sessionSlice } from '../../../store/sessionSlice';
 import { yogiSlice } from '../../../store/yogiSlice';
+import {baseUrl} from '../../../constants/urls';
+import axios from "axios";
+import { InAppBrowser } from 'react-native-inappbrowser-reborn';
+import Spinner from 'react-native-loading-spinner-overlay';
 
   interface PropsType {
     item : any,
@@ -31,6 +36,8 @@ import { yogiSlice } from '../../../store/yogiSlice';
   
   const SettingItem: React.FC<PropsType> = ({item, index, navigation}) => {
     const dispatch = useDispatch();
+    const userId = useSelector((state) => state.user.userId);
+    const [isLoading, setIsLoading] = useState(false);
 
     const onShare = async () => {
       try {
@@ -66,14 +73,94 @@ import { yogiSlice } from '../../../store/yogiSlice';
       .catch(err => console.log(err));
     };
 
+    const openLink = async (url) => {
+      console.log(url);
+      
+      try {
+        if (await InAppBrowser.isAvailable()) {
+          const result = await InAppBrowser.open(url, {
+            // iOS Properties
+            dismissButtonStyle: 'cancel',
+            // preferredBarTintColor: themeColor.vividRed,
+            // preferredControlTintColor: 'white',
+            readerMode: false,
+            animated: true,
+            modalPresentationStyle: 'fullScreen',
+            modalTransitionStyle: 'coverVertical',
+            modalEnabled: true,
+            enableBarCollapsing: false,
+            // Android Properties
+            showTitle: true,
+            secondaryToolbarColor: 'black',
+            navigationBarColor: 'black',
+            navigationBarDividerColor: 'white',
+            enableUrlBarHiding: true,
+            enableDefaultShare: true,
+            forceCloseOnRedirection: false,
+            // Specify full animation resource identifier(package:anim/name)
+            // or only resource name(in case of animation bundled with app).
+            animations: {
+              startEnter: 'slide_in_right',
+              startExit: 'slide_out_left',
+              endEnter: 'slide_in_left',
+              endExit: 'slide_out_right'
+            },
+          })
+        }
+        else Linking.openURL(url)
+      } catch (error) {
+        console.log(error);
+        Alert.alert("Sorry, something went wrong!")
+      }
+    }
+
+    const onManageSubscription = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axios.post(`${baseUrl}/payment/dashboard-url`,{userId: userId});
+        setIsLoading(false);
+        console.log("response", response.data);
+        console.log("response", response.data?.data?.redirectURL);
+        
+        if (response.status === 200) {
+          console.log('success');
+          const redirectURL = response.data?.data?.redirectURL;
+          console.log("redirectURL", redirectURL);
+          await InAppBrowser.close();
+          openLink(redirectURL);
+          
+        } else {
+          setIsLoading(false);
+          Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
+          throw new Error("An error has occurred");
+        }
+      } catch (error) {
+        setIsLoading(false);
+        Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
+      }
+      
+    };
+
     function onPressed(){      
-      if(index==0){
+      if(index === 0){
+        //Profile Questions
         navigation.navigate(RouteNames.HomePageFlow.UserDetails);
       }
-      if(index==1){
+      if(index === 1){
+        //Invite Friends
         onShare();
       }
-      if(index==3){
+      if(index === 2){
+        //Help
+        navigation.navigate(RouteNames.HomePageFlow.Help);
+      }
+      if(index === 3){
+        //Manage Subscription
+        onManageSubscription();
+        // Linking.openURL('https://billing.stripe.com/p/login/test_bIYaGO6aC28L3OE4gg');
+      }
+      if(index === 4){
+        //Logout
         onSignOut();
       }
       
@@ -82,9 +169,14 @@ import { yogiSlice } from '../../../store/yogiSlice';
     return (
         <TouchableOpacity onPress={onPressed}
         style={{flexDirection:'row', alignItems:'center', marginVertical:10, height:40}}>
+          <Spinner
+          visible={isLoading}
+          // textContent={'Loading...'}
+          textStyle={styles.spinnerTextStyle}
+          />
             <View style={{flex:0.8}}>
                 <Text style={styles.standardText}>{item.title}</Text>
-                <Text style={styles.descriptionText}>{item.description}</Text>
+                {item.description && <Text style={styles.descriptionText}>{item.description}</Text>}
             </View>
             <View style={{flex:0.2, alignItems:'flex-end'}}>
                 <Image source={next} style={styles.backbutton}/>
@@ -150,5 +242,12 @@ import { yogiSlice } from '../../../store/yogiSlice';
     backbutton: {
         margin: 10,
     },
+
+    spinnerTextStyle: {
+      fontFamily: themeFontFamily.raleway,
+      fontSize: themefonts.font14,
+      color: themeColor.black,
+      opacity: 0.8
+    }
 
   });

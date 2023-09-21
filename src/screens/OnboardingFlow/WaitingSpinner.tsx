@@ -74,8 +74,7 @@ const WaitingSpinner = ({navigation}) => {
               signal: abortController.signal,
               timeout: 10000,
             });
-            console.log("response", response.data);
-            console.log("response", response.data.data);
+            console.log("response.data.data", response.data.data);
             if (response.status === 200) {
 
               if (response?.data?.data.type === "INSTRUCTOR"){

@@ -12,7 +12,7 @@ import {
   ActivityIndicator
 } from 'react-native';
 
-import {themeColor, themefonts} from '../constants/theme';
+import {themeColor, themefonts, themeFontFamily} from '../constants/theme';
 import BackgroundImageDup from '../common/BackgroundImageFullPage'
 import SessionCardView from '../components/SessionCardView';
 import UpcomingSessionCardView from './UpcomingSessionCardView';
@@ -91,6 +91,16 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
           </View>
         </TouchableWithoutFeedback>
       </View>
+      <View
+        style={{
+          height: 3,
+          marginTop: 5,
+          alignSelf:'center',
+          width: "98%",
+          backgroundColor: 'grey',
+          opacity: 0.1,
+        }}
+      />
       {selectedOption === OPTION.FIRST?
       dataCurrent.length==0?
       <Text style={styles.noSessionText}>No sessions</Text>:
@@ -164,7 +174,7 @@ const styles = StyleSheet.create({
   SecondContainer: {
   },
   activeFirstContainer: {
-    backgroundColor: themeColor.vividRed,
+    backgroundColor: '#22C6F3',
     opacity: 1,
     // backgroundColor: '#fa661c'
     // backgroundColor: '#fbd6bc',//light orange
@@ -176,7 +186,7 @@ const styles = StyleSheet.create({
 
   },
   activeSecondContainer: {
-    backgroundColor: themeColor.vividRed,
+    backgroundColor: '#22C6F3',
     opacity: 1,
     // backgroundColor: '#fa661c'
     // backgroundColor: '#fbd6bc',//light orange
@@ -188,7 +198,9 @@ const styles = StyleSheet.create({
 
   firstOption: {
     textAlign: 'center',
-    color: themeColor.vividRed,
+    color: themeColor.black,
+    fontSize: themefonts.font16,
+    fontFamily: themeFontFamily.raleway,
     // color: "#fa661c"
     // color: '#fbd6bc',//light orange
     // color:themeColor.lightBlue,
@@ -196,7 +208,9 @@ const styles = StyleSheet.create({
   },
   secondOption: {
     textAlign: 'center',
-    color: themeColor.vividRed,
+    color: themeColor.black,
+    fontSize: themefonts.font16,
+    fontFamily: themeFontFamily.raleway,
     // color: "#fa661c"
     // color: '#fbd6bc',//light orange
     // color:themeColor.lightBlue,
@@ -204,10 +218,14 @@ const styles = StyleSheet.create({
   },
   activeFirstOption: {
     color: themeColor.white,
+    fontSize: themefonts.font16,
+    fontFamily: themeFontFamily.ralewaySemiBold,
     // fontWeight:"bold",
   },
   activeSecondOption: {
     color: themeColor.white,
+    fontSize: themefonts.font16,
+    fontFamily: themeFontFamily.ralewaySemiBold,
     // fontWeight:"bold",
   },
 

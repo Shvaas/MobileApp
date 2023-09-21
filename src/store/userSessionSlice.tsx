@@ -97,6 +97,8 @@ export const userSessionSlice = createSlice({
              }
 
         }
+        const sessions1 =  state.userSessions;
+        console.log("UserSessionsessions1Slice: getSessions", sessions1);
       },
 
       addSession: (state, action) => {

@@ -43,7 +43,8 @@ import {
   const settings = [{title:'Profile Questions', description: 'Your health profile'},
                     {title:'Invite Friends', description: 'Invite your friends to a zenful session'},
                     {title:'Help', description: 'Understand Shvaas better'},
-                    {title:'Logout', description: 'Sign out'},]
+                    {title:'Manage Subscription'},
+                    {title:'Logout'},]
 
  
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -107,7 +108,7 @@ import {
           <FlatList
             data={settings}
             ItemSeparatorComponent={FlatListItemSeparator}
-            renderItem={({item, index}) => <SettingItem item={item} index={index} navigation={navigation}/>}
+            renderItem={({item, index}) => <SettingItem item={item} index={index} navigation={navigation} />}
             keyExtractor={(item) => item.title}
           /> 
           </GestureHandlerRootView>
@@ -127,7 +128,7 @@ import {
           </GestureHandlerRootView> */}
 
           <GestureHandlerRootView style={styles.premiumContainer}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>navigation.navigate(RouteNames.OnboardingFlow.FreeTrial)}>
                 <View style={{height:'100%', alignItems: 'center', justifyContent:'center'}}>
                     <Text style={[styles.inviteHeadingText, {color:themeColor.white}]}>Get Shvaas Premium</Text>
                     <Text style={[styles.inviteText, {color:themeColor.white}]}>10 % off on all subsciptions</Text>

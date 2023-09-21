@@ -65,7 +65,7 @@ React.useEffect(() => {
   const abortController = new AbortController();
     const url = `${baseUrl}/course/instructor/${userId}`;
     console.log(url);
-    
+
     const fetchSessions = async () => {
       console.log("fetchSessions");
       try {
@@ -85,7 +85,7 @@ React.useEffect(() => {
             instructor_id: userId,
           }));
           setIsLoading(false);
-          
+
         } else {
           console.log(response.status);
           setErrorFlag(true);
@@ -269,12 +269,19 @@ function getPastDate(numberOfDays: number) {
 
   if (session.length === 0 && hasError){
     return (
+      <SafeAreaView style={styles.safeArea}>
       <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
-      <View style={{alignItems:'center', justifyContent:'center', height:'100%', width:'100%'}}>
-        <Text style={{fontSize: themefonts.font16, fontFamily: themeFontFamily.raleway, margin:20}}> 
+        <GestureHandlerRootView style={{backgroundColor: themeColor.white}}>
+        <TouchableOpacity onPress={goBack}>
+          <Image source={backButton} style={[styles.backbutton]} /> 
+        </TouchableOpacity>
+      <View style={{alignItems:'center', justifyContent:'center', height:'90%', width:'100%'}}>
+        <Text style={{fontSize: themefonts.font16, fontFamily: themeFontFamily.raleway, margin:0}}> 
         Something went wrong, Please try again later after sometime. </Text>
       </View>
+      </GestureHandlerRootView>
      </ImageBackground>
+     </SafeAreaView>
     )
   }
 

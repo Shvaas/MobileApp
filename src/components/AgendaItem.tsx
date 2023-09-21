@@ -4,7 +4,9 @@ import React, {useCallback, useState} from 'react';
 import {StyleSheet, Alert, View, Text, TouchableOpacity, Button} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {userSessionSlice, userSessionSelector} from '../store/userSessionSlice';
-import {utkarsh} from '../images/imageLinks'
+import {utkarsh} from '../images/imageLinks';
+import Spinner from 'react-native-loading-spinner-overlay';
+
 import {
   themeFontFamily,
   themefonts,
@@ -15,6 +17,7 @@ import RouteNames from '../constants/routeName';
 import {useBookSessionMutation} from '../store/apiSlice';
 import axios from "axios";
 import {baseUrl} from '../constants/urls';
+import { extractKeyIfExists } from '@aws-amplify/datastore/lib-esm/util';
 
 interface PropsType {
     item: any,
@@ -70,13 +73,13 @@ const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
                 courseId: item.sessionId};
 
     console.log("onAppointmentConfirm", userId, item.sessionId);
-
+    setIsLoading(true);
 
     try {
       const response = await axios.post(`${baseUrl}/course/enroll`, session);
-      console.log(response);
+      console.log("response dara", response.data);
 
-      if (response.status === 200) {
+      if (response.data.status === 200) {
         dispatch(
           userSessionSlice.actions.addSession({
             'sessionId': item.sessionId,
@@ -98,16 +101,25 @@ const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
                 }
             ]
             )
+// 9004 already extract
+// 9002 course not found
         setIsLoading(false);
-
-      } else {
-        Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
-        throw new Error("An error has occurred");
       }
+      else if (response.data.status === 9004 || response.data.status === 9002 ) {
+        setIsLoading(false);
+          Alert.alert('Error', response.data.message,[{text: 'OK',onPress: () => {},}]);
+      }
+      else {
+        setIsLoading(false);
+        Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
+        // throw new Error("An error has occurredd");
+      }
+      
     } catch (error) {
+      setIsLoading(false);
       Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
       alert("An error has occurred");
-      setIsLoading(false);
+      
     }
 
 
@@ -152,6 +164,11 @@ const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
 // Title, Descripion, duration
   return (
     <TouchableOpacity onPress={userType=='Teacher' ? getSession : bookAppointment} style={styles.container} testID={'item'}>
+      <Spinner
+          visible={isLoading}
+          textContent={'Booking...'}
+          textStyle={styles.spinnerTextStyle}
+        />
       <View style={{flex:0.6, flexDirection:'column'}}>
         <Text style={[styles.itemTitleText,{marginBottom:5}]}>{item.title}</Text>
         <Text style={[styles.textStyle,{marginTop:5}]}>{item.description}</Text>
@@ -184,7 +201,6 @@ const styles = StyleSheet.create({
     borderRadius:10,
     flexDirection:"row",
     justifyContent:'space-between'
-    
   },
 
   item: {
@@ -218,5 +234,12 @@ const styles = StyleSheet.create({
     fontSize: themefonts.font14,
     color: themeColor.black
   },
+
+  spinnerTextStyle: {
+    fontFamily: themeFontFamily.raleway,
+    fontSize: themefonts.font14,
+    color: themeColor.black,
+    opacity: 0.8
+  }
   
 });
