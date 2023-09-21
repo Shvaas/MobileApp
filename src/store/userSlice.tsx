@@ -86,6 +86,7 @@ export const userSlice = createSlice({
       setInitialState: (state, action) => {
         console.log("User Slice: setInitialState", action.payload);
         state = initialState;
+        console.log(state.userId);
       },
     },
   });

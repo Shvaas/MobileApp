@@ -3,18 +3,19 @@ import {ActivityIndicator, Text, View, ImageBackground,} from 'react-native';
 import React from 'react';
 import { useEffect, useState, useCallback } from 'react';
 
-import RouteNames from '../../constants/routeName';
+import RouteNames from '../constants/routeName';
 
 import {Auth} from "aws-amplify";
 import {withAuthenticator, AmplifyTheme} from 'aws-amplify-react-native'
-import { useGetUserDetailQuery } from '../../store/apiSlice';
-import { themeColor, themefonts, themeFontFamily } from '../../constants/theme';
+import { useGetUserDetailQuery } from '../store/apiSlice';
+import { themeColor, themefonts, themeFontFamily } from '../constants/theme';
 import { useDispatch, useSelector } from 'react-redux';
-import { userSlice, userIdSelector } from '../../store/userSlice';
-import {backgroundImageMedium} from '../../images/imageLinks';
+import { userSlice, userIdSelector } from '../store/userSlice';
+import {backgroundImageMedium} from '../images/imageLinks';
+import SplashScreen from 'react-native-splash-screen';
 
 import axios from "axios";
-import LoginStack from '../../screenStack/LoginStack';
+import LoginStack from '../screenStack/LoginStack';
 import { BounceOutRight } from 'react-native-reanimated';
 
 const MyTheme = {
@@ -39,7 +40,7 @@ interface PropsType {
 
 const baseUrl = 'https://6sm5d5xzu8.execute-api.us-west-2.amazonaws.com/stage';
 
-const WaitingSpinner = ({navigation}) => {
+const WaitingSpinner2 = ({navigation}) => {
     const dispatch = useDispatch();
 
     const [userId, setUserId] = useState(useSelector(userIdSelector));
@@ -49,17 +50,81 @@ const WaitingSpinner = ({navigation}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [hasError, setErrorFlag] = useState(false);
 
+    const fetchUsers = async () => {
+        const abortController = new AbortController();
+        const url = `${baseUrl}/user/${userId}`;
+        try {
+          setIsLoading(true);
+          const response = await axios.get(url, {
+            signal: abortController.signal,
+            timeout: 10000,
+          });
+          console.log("response", response.data);
+          console.log("response", response.data.data);
+          if (response.status === 200) {
+
+            if (response?.data?.data.type === "INSTRUCTOR"){
+              dispatch(userSlice.actions.setInstructor({type: 'Teacher', userId: userId,
+              firsName: response?.data?.data.name, lastName:response?.data?.data.name,
+              profilePic: response?.data?.data.userProfilePic}));
+              navigation.navigate('Home');
+          }
+          else {
+              var profileQuestionnaireCompleted = response?.data?.data.profileQuestionnaireCompleted;
+              dispatch(userSlice.actions.setUser({type: 'Student', userId: userId,
+              firsName: response?.data?.data.name, lastName:response?.data?.data.name}));
+              if (profileQuestionnaireCompleted){
+                navigation.navigate('Home');
+              }
+              else{
+                navigation.navigate(RouteNames.OnboardingFlow.ProfileQuestions);
+              }
+          }
+            setIsLoading(false);
+            return;
+          } else {
+            setErrorFlag(true);
+            throw new Error("Failed to fetch users");
+          }
+        } catch (error) {
+          if (abortController.signal.aborted) {
+            console.log("Data fetching cancelled");
+          } else {
+            setErrorFlag(true);
+            setIsLoading(false);
+          }
+        }
+      };
 
     const updateUser = async () => {
         // Get current authenticated user
-        const userInfo = await Auth.currentAuthenticatedUser({ bypassCache: true });
-        console.log("userInfo", userInfo);
-
-        if(userInfo) {
-            setUserId(userInfo?.attributes?.sub);
-            setFirstName(userInfo?.attributes?.given_name);
-            setLastName(userInfo?.attributes?.family_name);
+        console.log("updateUser");
+        var userInfo;
+        try {
+          userInfo = await Auth.currentAuthenticatedUser({ bypassCache: true });
         }
+        catch(e){
+          userInfo = null;
+        }
+        console.log("userInfo", userInfo);
+        if(userInfo) {
+          setUserId(userInfo?.attributes?.sub);
+          setFirstName(userInfo?.attributes?.given_name);
+          setLastName(userInfo?.attributes?.family_name);
+      }
+      else{
+          navigation.navigate('SignIn');
+      }
+
+      if (userId != null){
+          console.log("userId", userId);
+          fetchUsers();
+      }
+      else{
+          navigation.navigate('SignIn');
+      }
+        
+
       }
 
       const checkUser = async () => {
@@ -69,63 +134,13 @@ const WaitingSpinner = ({navigation}) => {
 
 
     React.useEffect(() => {
+      SplashScreen.hide();
+      console.log("splash gone")
         updateUser();
 
-        const abortController = new AbortController();
-        const url = `${baseUrl}/user/${userId}`;
-        const fetchUsers = async () => {
-          try {
-            setIsLoading(true);
-            const response = await axios.get(url, {
-              signal: abortController.signal,
-              timeout: 10000,
-            });
-            console.log("response.data.data", response.data.data);
-            if (response.status === 200) {
+       
 
-              if (response?.data?.data.type === "INSTRUCTOR"){
-                dispatch(userSlice.actions.setInstructor({type: 'Teacher', userId: userId,
-                firsName: response?.data?.data.name, lastName:response?.data?.data.name,
-                profilePic: response?.data?.data.userProfilePic}));
-                navigation.navigate('Home');
-            }
-            else {
-                var profileQuestionnaireCompleted = response?.data?.data.profileQuestionnaireCompleted;
-                dispatch(userSlice.actions.setUser({type: 'Student', userId: userId,
-                firsName: response?.data?.data.name, lastName:response?.data?.data.name}));
-                if (profileQuestionnaireCompleted){
-                  navigation.navigate('Home');
-                }
-                else{
-                  navigation.navigate(RouteNames.OnboardingFlow.ProfileQuestions);
-                }
-            }
-              setIsLoading(false);
-              return;
-            } else {
-              setErrorFlag(true);
-              throw new Error("Failed to fetch users");
-            }
-          } catch (error) {
-            if (abortController.signal.aborted) {
-              console.log("Data fetching cancelled");
-            } else {
-              setErrorFlag(true);
-              setIsLoading(false);
-            }
-          }
-        };
-        if (userId != null){
-          // if(){
-            console.log("userId", userId);
-            fetchUsers();
-          // }
-          // else{
-          //   setUserId(null);
-          // }
-
-        }
-    }, [userId]);
+    }, []);
 
 
     if (hasError){
@@ -140,7 +155,7 @@ const WaitingSpinner = ({navigation}) => {
     }
 
     console.log("this is it");
-    
+
     return (
     <ImageBackground source={backgroundImageMedium} style={{height:'100%', width:'100%'}}>
         <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
@@ -196,4 +211,4 @@ const signUpConfig = {
   };
 
 // export default withAuthenticator(WaitingSpinner, { usernameAttributes: 'email', signUpConfig, includeGreetings: false }, [], null, MyTheme);
-export default WaitingSpinner;
+export default WaitingSpinner2;

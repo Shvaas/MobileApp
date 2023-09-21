@@ -17,7 +17,7 @@ import {
   import { TouchableOpacity } from 'react-native-gesture-handler';
   import {GestureHandlerRootView} from 'react-native-gesture-handler';
   import RouteNames from '../../../constants/routeName';
-  import { userSlice,  } from '../../../store/userSlice';
+  import { userIdSelector, userSlice,  } from '../../../store/userSlice';
   import { useDispatch, useSelector } from 'react-redux';
 import { Auth } from 'aws-amplify';
 import { userSessionSlice } from '../../../store/userSessionSlice';
@@ -69,8 +69,11 @@ import Spinner from 'react-native-loading-spinner-overlay';
         dispatch(userSessionSlice.actions.setInitialState(null));
         dispatch(yogiSlice.actions.setInitialState(null));
          navigation.navigate('spinner');
+        
       })
       .catch(err => console.log(err));
+
+      // console.log(userIdSelector(userIdSelector));
     };
 
     const openLink = async (url) => {

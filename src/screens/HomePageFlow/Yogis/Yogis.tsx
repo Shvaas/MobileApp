@@ -94,8 +94,9 @@ const Yogis: React.FC<PropsType> = ({navigation}) => {
     }, []);
 
     if (yogi.length === 0 && isLoading) {
+      console.log("yogi indicator");
       return <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
-    }
+    } 
 
     if (yogi.length === 0 && hasError){
       return (

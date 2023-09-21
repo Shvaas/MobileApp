@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 // Local
@@ -15,6 +15,17 @@ import Sessions from '../screens/HomePageFlow/TeacherSessions/Sessions';
 import SessionFeedback from '../screens/HomePageFlow/AllCourses/SessionFeedback';
 import Profile from '../screens/HomePageFlow/UserProfile/Profile';
 import WaitingSpinner from '../screens/OnboardingFlow/WaitingSpinner';
+import SignInScreen from '../screens/SignInScreen';
+import SignUpScreen from '../screens/SignUpScreen';
+import LoginStack from './LoginStack';
+import Auth from '@aws-amplify/auth';
+import { ActivityIndicator, ImageBackground } from 'react-native';
+import { backgroundImageMedium } from '../images/imageLinks';
+import WaitingSpinner2 from '../screens/WaitingSpinner2';
+import ConfirmCodeScreen from '../screens/ConfirmCodeScreen';
+import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
+import NewPasswordScreen from '../screens/NewPasswordScreen';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -22,16 +33,39 @@ function HomeNav() {
   return <HomePageStack />;
 }
 
+function UserLogin() {
+  return <LoginStack />;
+}
+
 const OnboardingStack = () => {
+  
   return (
     <Stack.Navigator
       screenOptions={{
         gestureEnabled: false,
         headerShown: false,
       }}>
-        <Stack.Screen 
-        name={'spinner'} 
-        component={WaitingSpinner}/>
+      <Stack.Screen 
+      name={'spinner'} 
+      component={WaitingSpinner2}/>
+      <Stack.Screen
+      name={'SignIn'}
+      component={SignInScreen}/>
+      <Stack.Screen
+      name={'SignUp'}
+      component={SignUpScreen}/>
+       <Stack.Screen
+        name={"ConfirmCode"}
+        component={ConfirmCodeScreen}
+      />
+      <Stack.Screen
+        name={"ForgotPassword"}
+        component={ForgotPasswordScreen}
+      />
+      <Stack.Screen
+        name={"NewPassword"}
+        component={NewPasswordScreen}
+      />
       <Stack.Screen
         name={RouteNames.OnboardingFlow.Welcome}
         component={Welcome}
@@ -39,11 +73,9 @@ const OnboardingStack = () => {
       <Stack.Screen
       name={RouteNames.OnboardingFlow.Login}
       component={Login} />
-
       <Stack.Screen
       name={RouteNames.OnboardingFlow.ProfileQuestions}
       component={ProfileQuestion} />
-
       <Stack.Screen
       name="Home"
       component={HomeNav} />

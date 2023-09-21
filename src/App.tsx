@@ -16,6 +16,13 @@ import OnboardingStack from './screenStack/OnboardingStack';
 import {APP_FLOWS} from './constants/routeName';
 import HomePageStack from './screenStack/HomePageStack';
 import { StripeProvider } from '@stripe/stripe-react-native';
+import LoginStack from './screenStack/LoginStack';
+import SignInScreen from './screens/SignInScreen';
+import SignUpScreen from './screens/SignUpScreen';
+import ConfirmCodeScreen from './screens/ConfirmCodeScreen';
+import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
+import NewPasswordScreen from './screens/NewPasswordScreen';
+import { ActivityIndicator } from 'react-native';
 
 function HomeNav() {
   return <HomePageStack />;
@@ -25,27 +32,76 @@ let persistor = persistStore(store);
 
 const App = () => {
   const [user,setUser] = useState(null);
+  const [isLoading,setIsLoading] = useState(true);
 
-  React.useEffect(() => {
-    console.log("user", user?.attributes?.email);
+  // const updateUser = async () => {
+  //   // Get current authenticated user
+  //   const userInfo = await Auth.currentAuthenticatedUser({ bypassCache: true });
+
+  //   if(userInfo) {
+  //     setUser(userInfo);
+  //   }
+  // }
+
+  // React.useEffect(() => {
+  //   console.log("user", user?.attributes?.email);
     
-    SplashScreen.hide();
-    const updateUser = async () => {
-      // Get current authenticated user
-      const userInfo = await Auth.currentAuthenticatedUser({ bypassCache: true });
-
-      // if(userInfo) {
-      //   setUser(userInfo);
-      // }
-    }
-    updateUser();
-  }, []);
+  //   SplashScreen.hide();
+  //   updateUser();
+  // }, []);
 
   const Stack = createNativeStackNavigator();
   // India
   const STRIPE_KEY = 'pk_test_51NYPgqSCuYArEC5oOK4UODZU9chPXxrQFmlKyenSu9qOYWe3PjNTQHjslpUOm2D6HVgbXU7baQKCuUrbGwzkV2J500qYf4mAEX'
   // USA
   //const STRIPE_KEY = 'pk_test_51NFknnLrbws9WSwO25PGiyKTzjZlfoDYvV9mBiwCHPL6PVUEknKfJeAcrVQ8LpCLoGfhg4797YTbPvKxfJWL58SB00gv2zdRnv'
+
+  // if(!user){
+  //   return(
+  //     <Provider store={store}>
+  //     <PersistGate loading={null} persistor={persistor}>
+  //     <SafeAreaProvider>
+  //     <StripeProvider publishableKey={STRIPE_KEY}>
+  //       <NavigationContainer>
+  //     <Stack.Navigator
+  //     screenOptions={{
+  //       gestureEnabled: false,
+  //       headerShown: false,
+  //     }}>
+  //         <Stack.Screen
+  //           name={"SignIn"}
+  //           component={SignInScreen}
+  //         />
+  //         <Stack.Screen
+  //           name={"SignUp"}
+  //           component={SignUpScreen}
+  //         />
+  //         <Stack.Screen
+  //           name={"ConfirmCode"}
+  //           component={ConfirmCodeScreen}
+  //         />
+  //         <Stack.Screen
+  //           name={"ForgotPassword"}
+  //           component={ForgotPasswordScreen}
+  //         />
+  //         <Stack.Screen
+  //           name={"NewPassword"}
+  //           component={NewPasswordScreen}
+  //         />
+  //         </Stack.Navigator>
+  //         </NavigationContainer>
+  //       </StripeProvider>
+  //     </SafeAreaProvider>
+  //     </PersistGate>
+  //   </Provider>
+  //   )
+  // }
+
+  // if (isLoading){
+  //   return(
+  //   <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
+  //   )
+  // }
 
   return (
     <Provider store={store}>
@@ -58,21 +114,10 @@ const App = () => {
               gestureEnabled: false,
               headerShown: false,
             }}>
-              {
-                user?
-             <Stack.Screen
-                name="Home"
-                component={HomePageStack}
-            /> :
             <Stack.Screen
             name={APP_FLOWS.OnboardingFlow}
             component={OnboardingStack}
           />
-          }
-          {/* <Stack.Screen
-            name={APP_FLOWS.OnboardingFlow}
-            component={OnboardingStack}
-          /> */}
           </Stack.Navigator>
         </NavigationContainer>
         </StripeProvider>

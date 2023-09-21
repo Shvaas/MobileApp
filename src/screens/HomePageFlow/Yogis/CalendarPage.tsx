@@ -285,6 +285,7 @@ function getPastDate(numberOfDays: number) {
     )
   }
 
+
   if(isLoading){
     <ImageBackground source={backgroundImageMedium} style={{height:'100%', width:'100%'}}>
       <Text>waiting</Text>
