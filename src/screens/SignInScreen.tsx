@@ -25,7 +25,9 @@ interface PropsType {
     navigation: any;
   }
 
-const SignInScreen = ({navigation}) => {
+const SignInScreen = ({route,navigation}) => {
+
+    const {setUserStatus} = route.params;
 
     const {
         control,
@@ -42,7 +44,8 @@ const SignInScreen = ({navigation}) => {
             console.log("sending for sign in ",email," and ", password);
             const response = await Auth.signIn(email, password);
             console.log(response);
-            navigation.navigate('Home');
+            setUserStatus('userSignedInUnknown');
+            // navigation.navigate('Home');
         }
         catch(error){
             console.log('Error',error);

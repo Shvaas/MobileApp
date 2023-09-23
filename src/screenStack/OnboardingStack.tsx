@@ -25,6 +25,7 @@ import WaitingSpinner2 from '../screens/WaitingSpinner2';
 import ConfirmCodeScreen from '../screens/ConfirmCodeScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import NewPasswordScreen from '../screens/NewPasswordScreen';
+import WaitingSpinner3 from '../screens/WaitingSpinner3';
 
 
 const Stack = createNativeStackNavigator();
@@ -45,9 +46,12 @@ const OnboardingStack = () => {
         gestureEnabled: false,
         headerShown: false,
       }}>
+      {/* <Stack.Screen 
+      name={'spinner'} 
+      component={WaitingSpinner2}/> */}
       <Stack.Screen 
       name={'spinner'} 
-      component={WaitingSpinner2}/>
+      component={WaitingSpinner3}/>
       <Stack.Screen
       name={'SignIn'}
       component={SignInScreen}/>
