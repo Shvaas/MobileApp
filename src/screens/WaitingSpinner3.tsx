@@ -44,7 +44,6 @@ const baseUrl = 'https://6sm5d5xzu8.execute-api.us-west-2.amazonaws.com/stage';
 const WaitingSpinner3 = ({navigation}) => {
     const dispatch = useDispatch();
 
-    const [userId, setUserId] = useState(useSelector(userIdSelector));
     const [userStatus, setUserStatus] = useState("null");
     const [firstName, setFirstName] = useState(null);
     const [lastName, setLastName] = useState(null);
@@ -52,7 +51,9 @@ const WaitingSpinner3 = ({navigation}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [hasError, setErrorFlag] = useState(false);
 
-    const fetchUsers = async () => {
+    console.log("userStatus",userStatus);
+
+    const fetchUsers = async (userId) => {
         const abortController = new AbortController();
         const url = `${baseUrl}/user/${userId}`;
         try {
@@ -70,7 +71,6 @@ const WaitingSpinner3 = ({navigation}) => {
               firsName: response?.data?.data.name, lastName:response?.data?.data.name,
               profilePic: response?.data?.data.userProfilePic}));
               navigation.navigate('Home');
-              // setUserStatus('userSignedInKnown');
           }
           else {
               var profileQuestionnaireCompleted = response?.data?.data.profileQuestionnaireCompleted;
@@ -113,27 +113,20 @@ const WaitingSpinner3 = ({navigation}) => {
         }
         console.log("userInfo", userInfo);
         if(userInfo) {
-          setUserId(userInfo?.attributes?.sub);
-          setFirstName(userInfo?.attributes?.given_name);
-          setLastName(userInfo?.attributes?.family_name);
-          // setUserStatus('userSignedInUnknown');
+          // check local db
+            if (userInfo?.attributes?.sub){
+                console.log("update user userId",userInfo?.attributes?.sub);
+                fetchUsers(userInfo?.attributes?.sub);
+            }
+            else{
+                console.log("updateUser2");
+                navigation.navigate('SignIn');
+            }
         }
         else{
-            // setUserStatus('userNotSignedIn');
-            navigation.navigate('SignIn',{setUserStatus});
+            console.log("updateUser1");
+            navigation.navigate('SignIn');
         }
-
-       // check local db
-       if (userId != null){
-        console.log("userId", userId);
-        fetchUsers();
-        }
-        else{
-            // setUserStatus('userNotSignedIn');
-            navigation.navigate('SignIn',{setUserStatus});
-        }
-        
-
       }
 
 
@@ -151,6 +144,7 @@ const WaitingSpinner3 = ({navigation}) => {
     }
 
     if(userStatus == "userNotSignedIn"){
+        console.log("updateUser3");
         navigation.navigate('SignIn',{setUserStatus});
     }
 

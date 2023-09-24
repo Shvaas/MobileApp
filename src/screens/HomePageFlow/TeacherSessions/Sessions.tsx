@@ -25,8 +25,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getAttendancebySessionId, getStudentListbySessionId, sessionSlice} from '../../../store/sessionSlice';
 import {instructorPhotoLinkSelector, userGenderSelector} from '../../../store/userSlice';
 import {Auth} from "aws-amplify";
+import axios from "axios";
 import { baseUrl } from '../../../constants/urls';
-import axios from '@aws-amplify/storage/node_modules/axios';
 interface PropsType {
     navigation: any,
     route: any;

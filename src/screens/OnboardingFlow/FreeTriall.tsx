@@ -174,7 +174,7 @@ const FreeTrial = ({navigation}) => {
             containerStyle={styles.primaryButton}
             />
             <GestureHandlerRootView>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>navigation.navigate('Home')}>
               <Text style={styles.skip}>Skip</Text>
             </TouchableOpacity>
             </GestureHandlerRootView>

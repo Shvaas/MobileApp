@@ -11,6 +11,7 @@ import {
     Alert,
     useWindowDimensions,
     TouchableOpacity,
+    ActivityIndicator,
   } from 'react-native';
 import { useEffect, useState, useCallback } from 'react';
 import {Auth} from "aws-amplify";
@@ -18,16 +19,73 @@ import {backgroundImageLight, backgroundImageMedium} from '../images/imageLinks'
 import CustomInput from '../components/CustomInput';
 import PrimaryButton from '../common/buttons/PrimaryButton';
 import SimpleButton from '../common/buttons/SimpleButton';
-import { themefonts } from '../constants/theme';
-import {useForm, Controller} from 'react-hook-form'
+import { themeColor, themeFontFamily, themefonts } from '../constants/theme';
+import {useForm, Controller} from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from "axios";
+import { userSlice } from '../store/userSlice';
+import RouteNames from '../constants/routeName';
 
 interface PropsType {
     navigation: any;
   }
 
-const SignInScreen = ({route,navigation}) => {
+const baseUrl = 'https://6sm5d5xzu8.execute-api.us-west-2.amazonaws.com/stage';
 
-    const {setUserStatus} = route.params;
+const SignInScreen = ({navigation}) => {
+
+    const dispatch = useDispatch();
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [hasError, setErrorFlag] = useState(false);
+
+    const fetchUsers = async (userId) => {
+        const abortController = new AbortController();
+        const url = `${baseUrl}/user/${userId}`;
+        try {
+          setIsLoading(true);
+          const response = await axios.get(url, {
+            signal: abortController.signal,
+            timeout: 10000,
+          });
+          console.log("response", response.data);
+          console.log("response", response.data.data);
+          if (response.status === 200) {
+            setEmail('');
+            setPassword('');
+            if (response?.data?.data.type === "INSTRUCTOR"){
+              dispatch(userSlice.actions.setInstructor({type: 'Teacher', userId: userId,
+              firsName: response?.data?.data.name, lastName:response?.data?.data.name,
+              profilePic: response?.data?.data.userProfilePic}));
+              navigation.navigate('Home');
+              // setUserStatus('userSignedInKnown');
+          }
+          else {
+              var profileQuestionnaireCompleted = response?.data?.data.profileQuestionnaireCompleted;
+              dispatch(userSlice.actions.setUser({type: 'Student', userId: userId,
+              firsName: response?.data?.data.name, lastName:response?.data?.data.name}));
+              if (profileQuestionnaireCompleted){
+                navigation.navigate('Home');
+              }
+              else{
+                navigation.navigate(RouteNames.OnboardingFlow.ProfileQuestions);
+              }
+          }
+            setIsLoading(false);
+            return;
+          } else {
+            setErrorFlag(true);
+            throw new Error("Failed to fetch users");
+          }
+        } catch (error) {
+          if (abortController.signal.aborted) {
+            console.log("Data fetching cancelled");
+          } else {
+            setErrorFlag(true);
+            setIsLoading(false);
+          }
+        }
+      };
 
     const {
         control,
@@ -44,7 +102,13 @@ const SignInScreen = ({route,navigation}) => {
             console.log("sending for sign in ",email," and ", password);
             const response = await Auth.signIn(email, password);
             console.log(response);
-            setUserStatus('userSignedInUnknown');
+            const userId = response?.attributes?.sub;
+            if (userId != null){
+                console.log("userId", userId);
+                fetchUsers(userId);
+            }
+            
+            // setUserStatus('userSignedInUnknown');
             // navigation.navigate('Home');
         }
         catch(error){
@@ -59,28 +123,37 @@ const SignInScreen = ({route,navigation}) => {
     const onForgotPasswordPressed = async () => {
     };
 
+    if (hasError){
+        return (
+          <ImageBackground source={backgroundImageMedium} style={{height:'100%', width:'100%'}}>
+          <View style={{alignItems:'center', justifyContent:'center', height:'100%', width:'100%'}}>
+            <Text style={{fontSize: themefonts.font16, fontFamily: themeFontFamily.raleway, margin:20}}> 
+            Something went wrong, Please try again later after sometime. </Text>
+          </View>
+         </ImageBackground>
+        )
+      }
+
+    if(isLoading){
+        return (
+            <ImageBackground source={backgroundImageMedium} style={{height:'100%', width:'100%'}}>
+                <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
+            </ImageBackground>
+            )
+    }
+
     return(
         <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
             <View style={styles.container}>
-            <Text style={{fontSize: themefonts.font24,margin:15}}>Sign In</Text>
+            <Text style={styles.signInHeading}>Sign In</Text>
             <CustomInput
             value={email}
             setValue={setEmail}
-            // name="email"
-            // control={control}
-            // rules={{required: 'Email is required'}}
-            placeholder="username"/>
+            placeholder="email"/>
 
             <CustomInput
             value={password}
             setValue={setPassword}
-            // name="password"
-            // control={control}
-            // rules={{required: 'Password is required',
-            // minLength: {
-            //     value: 3,
-            //     message: 'Password should be minimum 3 characters long',
-            //   }}}
             placeholder="password"
             secureTextEntry={true}/>
             <SimpleButton
@@ -89,9 +162,9 @@ const SignInScreen = ({route,navigation}) => {
                 onPress={handleSubmit(onSignInPressed)}
             />
             
-            <View style={{flexDirection:'row',justifyContent:'space-around',width:'100%',marginVertical:20}}>
-            <View><TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}><Text>Forgot Password</Text></TouchableOpacity></View>
-            <View><TouchableOpacity onPress={() => navigation.navigate("SignUp")}><Text>Sign Up</Text></TouchableOpacity></View>
+            <View style={{flexDirection:'row',justifyContent:'space-around',width:'80%',marginVertical:10}}>
+            <View><TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}><Text style={styles.footerLinks}>Forgot Password</Text></TouchableOpacity></View>
+            <View><TouchableOpacity onPress={() => navigation.navigate("SignUp")}><Text style={styles.footerLinks}>Sign Up</Text></TouchableOpacity></View>
             </View>
             
             </View>
@@ -112,5 +185,22 @@ const styles = StyleSheet.create({
         width:'100%',
         top: 50,
     },
-    primaryButton: {margin: 16,width: 150,alignSelf:'center'},
+    primaryButton: {
+        margin: 16,
+        width: 150,
+        alignSelf:'center'
+    },
+    signInHeading: {
+        fontFamily: themeFontFamily.raleway,
+        color:'#222222',
+        fontSize: 20,
+		fontWeight: '500',
+        margin:15
+    },
+    footerLinks: {
+        color:themeColor.vividRed,
+        fontFamily: themeFontFamily.raleway,
+        fontSize: 14,
+        textAlign: 'center',
+    }
 });

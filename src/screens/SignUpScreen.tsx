@@ -48,90 +48,69 @@ const SignUpScreen = ({navigation}) => {
 
     const onSignUpPressed = async () => {
         try {
-          await Auth.signUp({
-            username: email,
-            password: password,
-            attributes: {email, given_name: firstName, family_name: lastName,phone_number:String(phoneNumber)},
-          });
-    
-          navigation.navigate('ConfirmCode', {email});
+            await Auth.signUp({
+              username: email,
+              password: password,
+              attributes: {email, given_name: firstName, family_name: lastName,phone_number:String(phoneNumber)},
+              autoSignIn: {
+                enabled: true,
+              }
+            });
+          navigation.navigate('ConfirmCode', {email, password});
         } catch (e) {
           Alert.alert('Oops', e.message);
         }
     };
 
-    const onForgotPasswordPressed = async () => {
+    const onConfirmCodePressed = async () => {
+      if(email!=null && password!=null){
+        navigation.navigate('ConfirmCode', {email, password});
+      }
+      else{
+        navigation.navigate('ConfirmCode');
+      }
+    };
+
+    const onSignInPressed = async () => {
+      navigation.navigate("SignIn");
     };
 
     return(
-        <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
+      <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
             <View style={styles.container}>
-            <View style={styles.topContainer}>
-                <GestureHandlerRootView>
-                <Image source={backButton} style={[styles.backbutton,{'opacity':0}]}/>
-                </GestureHandlerRootView> 
-                <View style={styles.headingContainer}>
-                    <Text style={styles.heading}>Sign Up</Text>
-                </View>
-                <Image source={backButton} style={[styles.backbutton,{'opacity':0}]}/>
-            </View>
+            <Text style={styles.signUpHeading}>Sign Up</Text>
             <CustomInput
             value={firstName}
             setValue={setFirstName}
-            name="firstName"
-            control={control} 
-            rules={{required: 'First name is required',minLength: {value: 3,
-              message: 'Name should be at least 3 characters long',
-            },
-            maxLength: {
-              value: 24,
-              message: 'Name should be max 24 characters long',
-            }}}
-            placeholder="First name"></CustomInput>
+            placeholder="first name"></CustomInput>
+
             <CustomInput
-            value={lastName}
-            setValue={setLastName}
-            name="lastName"
-            control={control}
-            rules={{required: 'Last name is required',
-            minLength: {
-                value: 3,
-                message: 'Name should be at least 3 characters long',
-              },
-              maxLength: {
-                value: 24,
-                message: 'Name should be max 24 characters long',
-              }}}
-              placeholder="Last name"></CustomInput>
+              value={lastName}
+              setValue={setLastName}
+              placeholder="last name">
+            </CustomInput>
+            
             <CustomInput
-            value={email}
-            setValue={setEmail}
-            name="email"
-            control={control}
-            rules={{required: 'Email is required',
-            pattern: {value: EMAIL_REGEX, message: 'Email is invalid'}}}
-            placeholder="email"></CustomInput>
-            <CustomInput value={phoneNumber} setValue={setPhoneNumber}  name="phoneNumber" control={control} rules={{required: 'Phone number is required'}} placeholder="Phone number"></CustomInput>
+              value={email}
+              setValue={setEmail}
+              name="email"
+              placeholder="email"></CustomInput>
+
             <CustomInput
-                placeholder="Password"
-                name="password" control={control} 
+              value={phoneNumber}
+              setValue={setPhoneNumber}
+              placeholder="phone number"></CustomInput>
+
+            <CustomInput
+                placeholder="password"
                 value={password}
                 setValue={setPassword}
-                rules={{required: 'Password is required',
-                minLength: {
-                    value: 8,
-                    message: 'Password should be at least 8 characters long',
-                }}} 
                 secureTextEntry={true}
             />
             <CustomInput
-                placeholder="Repeat Password"
+                placeholder="repeat password"
                 value={passwordRepeat}
                 setValue={setPasswordRepeat}
-                name="passwordRepeat" control={control} rules={{
-                    required: 'Password is required',
-                    validate: value => value === pwd || 'Password do not match',
-                }}
                 secureTextEntry={true}
             />
             <SimpleButton
@@ -141,8 +120,8 @@ const SignUpScreen = ({navigation}) => {
             />
             
             <View style={{flexDirection:'row',justifyContent:'space-around',width:'80%',marginVertical:20}}>
-            <View><TouchableOpacity onPress={() => navigation.navigate("ConfirmCode")}><Text>Confirm a code</Text></TouchableOpacity></View>
-            <View><TouchableOpacity onPress={() => navigation.navigate("SignIn")}><Text>Sign In</Text></TouchableOpacity></View>
+            <View><TouchableOpacity onPress={onConfirmCodePressed}><Text style={styles.footerLinks}>Confirm a code</Text></TouchableOpacity></View>
+            <View><TouchableOpacity onPress={onSignInPressed}><Text style={styles.footerLinks}>Sign In</Text></TouchableOpacity></View>
             </View>
             
             </View>
@@ -163,7 +142,11 @@ const styles = StyleSheet.create({
         width:'100%',
         top: 50,
     },
-    primaryButton: {margin: 16,width: 150,alignSelf:'center'},
+    primaryButton: {
+      margin: 16,
+      width: 150,
+      alignSelf:'center'
+    },
     topContainer: {
         flexDirection: 'row',
         flex: 0.1,
@@ -182,4 +165,17 @@ const styles = StyleSheet.create({
         fontFamily: themeFontFamily.ralewaySemiBold,
         color: themeColor.black,
       },
+      signUpHeading: {
+        fontFamily: themeFontFamily.raleway,
+        color:'#222222',
+        fontSize: 20,
+		    fontWeight: '500',
+        margin:15
+    },
+    footerLinks: {
+      color:themeColor.vividRed,
+      fontFamily: themeFontFamily.raleway,
+      fontSize: 14,
+      textAlign: 'center',
+  }
 });

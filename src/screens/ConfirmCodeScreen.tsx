@@ -11,6 +11,7 @@ import {
     Alert,
     useWindowDimensions,
     TouchableOpacity,
+    ActivityIndicator,
   } from 'react-native';
 import { useEffect, useState, useCallback } from 'react';
 import {Auth} from "aws-amplify";
@@ -18,71 +19,167 @@ import {backgroundImageLight, backgroundImageMedium} from '../images/imageLinks'
 import CustomInput from '../components/CustomInput';
 import PrimaryButton from '../common/buttons/PrimaryButton';
 import SimpleButton from '../common/buttons/SimpleButton';
-import { themefonts } from '../constants/theme';
+import { themeColor, themeFontFamily, themefonts } from '../constants/theme';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {useForm} from 'react-hook-form';
+import SignInScreen from './SignInScreen';
+import axios from "axios";
+import { userSlice } from '../store/userSlice';
+import RouteNames from '../constants/routeName';
+import { useDispatch, useSelector } from 'react-redux';
 
 interface PropsType {
     navigation: any;
   }
 
-const ConfirmCodeScreen = ({navigation, email}) => {
+const baseUrl = 'https://6sm5d5xzu8.execute-api.us-west-2.amazonaws.com/stage';
+
+const ConfirmCodeScreen = ({route,navigation}) => {
+
+   const {email, password} = route.params;
+
+   const dispatch = useDispatch();
 
     const [code, setCode] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [hasError, setErrorFlag] = useState(false);
+    const [confirmEmail, setConfirmEmail] = useState(email);
 
     const {control, handleSubmit, watch} = useForm({
         defaultValues: {email: email},
       });
 
+      const fetchUsers = async (userId) => {
+        const abortController = new AbortController();
+        const url = `${baseUrl}/user/${userId}`;
+        try {
+          setIsLoading(true);
+          const response = await axios.get(url, {
+            signal: abortController.signal,
+            timeout: 10000,
+          });
+          console.log("response", response.data);
+          console.log("response", response.data.data);
+          if (response.status === 200) {
+            if (response?.data?.data.type === "INSTRUCTOR"){
+              dispatch(userSlice.actions.setInstructor({type: 'Teacher', userId: userId,
+              firsName: response?.data?.data.name, lastName:response?.data?.data.name,
+              profilePic: response?.data?.data.userProfilePic}));
+              navigation.navigate('Home');
+              // setUserStatus('userSignedInKnown');
+          }
+          else {
+              var profileQuestionnaireCompleted = response?.data?.data.profileQuestionnaireCompleted;
+              dispatch(userSlice.actions.setUser({type: 'Student', userId: userId,
+              firsName: response?.data?.data.name, lastName:response?.data?.data.name}));
+              if (profileQuestionnaireCompleted){
+                navigation.navigate('Home');
+              }
+              else{
+                navigation.navigate(RouteNames.OnboardingFlow.ProfileQuestions);
+              }
+          }
+            setIsLoading(false);
+            return;
+          } else {
+            setErrorFlag(true);
+            throw new Error("Failed to fetch users");
+          }
+        } catch (error) {
+          if (abortController.signal.aborted) {
+            console.log("Data fetching cancelled");
+          } else {
+            setErrorFlag(true);
+            setIsLoading(false);
+          }
+        }
+      };
+
     const onConfirmPressed = async () => {
         try {
-          await Auth.confirmSignUp(email, code);
-          navigation.navigate('SignIn');
+          if(confirmEmail!=null){
+            console.log("confirm sign up email", confirmEmail);
+            const response = await Auth.confirmSignUp(confirmEmail, code);
+            console.log(response);
+            if (response=="SUCCESS") {
+              console.log("success");
+              if(password!=null){
+                const signInResponse = await Auth.signIn(confirmEmail, password);
+                console.log(signInResponse);
+                const userId = signInResponse?.attributes?.sub;
+                if (userId != null){
+                    console.log("userId", userId);
+                    fetchUsers(userId);
+                }
+              }
+              else{
+                navigation.navigate("SignUp");
+              }  
+            }
+          }
+          else{
+            Alert.alert("Oops","Enter your email");
+          }
+          
         } catch (e) {
           Alert.alert('Oops', e.message);
         }
-      };
+    };
     
     const onSignInPress = () => {
-    navigation.navigate('SignIn');
+      navigation.navigate('SignIn');
     };
 
     const onResendPress = async () => {
     try {
-        await Auth.resendSignUp(email);
+        await Auth.resendSignUp(confirmEmail);
         Alert.alert('Success', 'Code was resent to your email');
     } catch (e) {
         Alert.alert('Oops', e.message);
     }
     };
 
+    if (hasError){
+      return (
+        <ImageBackground source={backgroundImageMedium} style={{height:'100%', width:'100%'}}>
+        <View style={{alignItems:'center', justifyContent:'center', height:'100%', width:'100%'}}>
+          <Text style={{fontSize: themefonts.font16, fontFamily: themeFontFamily.raleway, margin:20}}> 
+          Something went wrong, Please try again later after sometime. </Text>
+        </View>
+       </ImageBackground>
+      )
+    }
+
+    if(isLoading){
+        return (
+            <ImageBackground source={backgroundImageMedium} style={{height:'100%', width:'100%'}}>
+                <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
+            </ImageBackground>
+            )
+    }
+
     return(
         <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
             <View style={styles.container}>
-            <Text>Confirm Sign Up</Text>
-            <CustomInput placeholder="Email" name="email"
-            control={control}
-            rules={{
-                required: 'Email code is required',
-            }}></CustomInput>
+            <Text style={styles.confirmCodeHeading}>Confirm Code</Text>
             <CustomInput
-            name="Enter your confirmation code"
-            control={control}
+            placeholder="email"
+            value = {confirmEmail}
+            setValue = {setConfirmEmail}
+            ></CustomInput>
+            <CustomInput
             placeholder="Enter your confirmation code"
             value={code}
-            setValue={setCode}
-            rules={{
-              required: 'Confirmation code is required',
-            }}></CustomInput>
+            setValue={setCode}></CustomInput>
             <SimpleButton
                 title='Confirm'
                 containerStyle={styles.primaryButton}
                 onPress={handleSubmit(onConfirmPressed)}
             />
             
-            <View style={{flexDirection:'row',justifyContent:'space-around',width:'80%',marginVertical:20}}>
-            <View><TouchableOpacity><Text>Resend code</Text></TouchableOpacity></View>
-            <View><TouchableOpacity onPress={()=> navigation.navigate('SignIn')}><Text>Back to Sign In</Text></TouchableOpacity></View>
+            <View style={{flexDirection:'row',justifyContent:'space-around',width:'80%',marginVertical:10}}>
+            <View><TouchableOpacity onPress={onResendPress}><Text style={styles.footerLinks}>Resend code</Text></TouchableOpacity></View>
+            <View><TouchableOpacity onPress={onSignInPress}><Text style={styles.footerLinks}>Back to Sign In</Text></TouchableOpacity></View>
             </View>
             
             </View>
@@ -103,5 +200,18 @@ const styles = StyleSheet.create({
         width:'100%',
         top: 50,
     },
+    confirmCodeHeading: {
+      fontFamily: themeFontFamily.raleway,
+      color:'#222222',
+      fontSize: 20,
+      fontWeight: '500',
+      margin:15
+  },
+  footerLinks: {
+    color:themeColor.vividRed,
+    fontFamily: themeFontFamily.raleway,
+    fontSize: 14,
+    textAlign: 'center',
+},
     primaryButton: {margin: 16,width: 150,alignSelf:'center'},
 });

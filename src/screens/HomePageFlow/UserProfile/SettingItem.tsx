@@ -68,7 +68,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
         dispatch(sessionSlice.actions.setInitialState(null));
         dispatch(userSessionSlice.actions.setInitialState(null));
         dispatch(yogiSlice.actions.setInitialState(null));
-         navigation.navigate('spinner');
+         navigation.navigate('SignIn');
         
       })
       .catch(err => console.log(err));

@@ -38,7 +38,7 @@ const ForgotPasswordScreen = ({navigation}) => {
     const onForgotPasswordPressed = async () => {
         try {
             await Auth.forgotPassword(email);
-            navigation.navigate('NewPassword');
+            navigation.navigate('NewPassword',{email});
           } catch (e) {
             Alert.alert('Oops', e.message);
           }
@@ -46,28 +46,22 @@ const ForgotPasswordScreen = ({navigation}) => {
 
     return(
         <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
-            <View style={styles.container}>
-            <View style={styles.topContainer}>
-                <GestureHandlerRootView>
-                <Image source={backButton} style={[styles.backbutton,{'opacity':0}]}/>
-                </GestureHandlerRootView> 
-                <View style={styles.headingContainer}>
-                    <Text style={styles.heading}>Reset your password</Text>
-                </View>
-                <Image source={backButton} style={[styles.backbutton,{'opacity':0}]}/>
-            </View>
-            <CustomInput placeholder="email" value="email" setValue={setEmail} name="email" control={control} rules={{required: 'Email is required'}}></CustomInput>
-            <SimpleButton
-                title='Send'
-                containerStyle={styles.primaryButton}
-                onPress={handleSubmit(onForgotPasswordPressed)}
-            />
-            
-            <View style={{flexDirection:'row',justifyContent:'space-around',width:'80%',marginVertical:20}}>
-            <View><TouchableOpacity onPress={() => navigation.navigate("SignIn")}><Text>Back to Sign In</Text></TouchableOpacity></View>
-            </View>
-            
-            </View>
+          <View style={styles.container}>
+          <Text style={styles.resetPasswordHeading}>Reset your password</Text>
+          <CustomInput
+          value={email}
+          setValue={setEmail}
+          placeholder="email"/>
+          <SimpleButton
+            title='Send'
+            containerStyle={styles.primaryButton}
+            onPress={handleSubmit(onForgotPasswordPressed)}
+          />
+          <View style={{flexDirection:'row',justifyContent:'space-around',width:'80%',marginVertical:10}}>
+          <View style={{width: 120}}><TouchableOpacity onPress={() => navigation.navigate("SignIn")}><Text style={styles.footerLinks}>Back to Sign In</Text></TouchableOpacity></View>
+          </View>
+          
+          </View>
         </ImageBackground>
 
     );
@@ -99,9 +93,17 @@ const styles = StyleSheet.create({
       backbutton: {
         margin: 10,
       },
-      heading: {
-        fontSize: themefonts.font32,
-        fontFamily: themeFontFamily.ralewaySemiBold,
-        color: themeColor.black,
+      resetPasswordHeading: {
+        fontFamily: themeFontFamily.raleway,
+        color:'#222222',
+        fontSize: 20,
+		    fontWeight: '500',
+        margin:15
       },
+      footerLinks: {
+        color:themeColor.vividRed,
+        fontFamily: themeFontFamily.raleway,
+        fontSize: 14,
+        textAlign: 'center',
+    }
 });
