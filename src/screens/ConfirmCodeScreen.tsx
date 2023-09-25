@@ -27,6 +27,7 @@ import axios from "axios";
 import { userSlice } from '../store/userSlice';
 import RouteNames from '../constants/routeName';
 import { useDispatch, useSelector } from 'react-redux';
+import Spinner from 'react-native-loading-spinner-overlay/lib';
 
 interface PropsType {
     navigation: any;
@@ -42,6 +43,8 @@ const ConfirmCodeScreen = ({route,navigation}) => {
 
     const [code, setCode] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [isSigningIn, setIsSigningIn] = useState(false);
+    const [isResendingCode, setIsResendingCode] = useState(false);
     const [hasError, setErrorFlag] = useState(false);
     const [confirmEmail, setConfirmEmail] = useState(email);
 
@@ -53,7 +56,6 @@ const ConfirmCodeScreen = ({route,navigation}) => {
         const abortController = new AbortController();
         const url = `${baseUrl}/user/${userId}`;
         try {
-          setIsLoading(true);
           const response = await axios.get(url, {
             signal: abortController.signal,
             timeout: 10000,
@@ -79,7 +81,7 @@ const ConfirmCodeScreen = ({route,navigation}) => {
                 navigation.navigate(RouteNames.OnboardingFlow.ProfileQuestions);
               }
           }
-            setIsLoading(false);
+            setIsSigningIn(false);
             return;
           } else {
             setErrorFlag(true);
@@ -90,7 +92,7 @@ const ConfirmCodeScreen = ({route,navigation}) => {
             console.log("Data fetching cancelled");
           } else {
             setErrorFlag(true);
-            setIsLoading(false);
+            setIsSigningIn(false);
           }
         }
       };
@@ -99,11 +101,14 @@ const ConfirmCodeScreen = ({route,navigation}) => {
         try {
           if(confirmEmail!=null){
             console.log("confirm sign up email", confirmEmail);
+            setIsLoading(true);
             const response = await Auth.confirmSignUp(confirmEmail, code);
+            setIsLoading(false);
             console.log(response);
             if (response=="SUCCESS") {
               console.log("success");
               if(password!=null){
+                setIsSigningIn(true);
                 const signInResponse = await Auth.signIn(confirmEmail, password);
                 console.log(signInResponse);
                 const userId = signInResponse?.attributes?.sub;
@@ -111,18 +116,22 @@ const ConfirmCodeScreen = ({route,navigation}) => {
                     console.log("userId", userId);
                     fetchUsers(userId);
                 }
+                else{
+                  setIsSigningIn(false);
+                }
               }
               else{
+                setIsSigningIn(false);
                 navigation.navigate("SignUp");
               }  
             }
           }
           else{
-            Alert.alert("Oops","Enter your email");
+            Alert.alert("Error","Enter your email");
           }
           
         } catch (e) {
-          Alert.alert('Oops', e.message);
+          Alert.alert('Error', e.message);
         }
     };
     
@@ -132,10 +141,12 @@ const ConfirmCodeScreen = ({route,navigation}) => {
 
     const onResendPress = async () => {
     try {
+        setIsResendingCode(true);
         await Auth.resendSignUp(confirmEmail);
+        setIsResendingCode(false);
         Alert.alert('Success', 'Code was resent to your email');
     } catch (e) {
-        Alert.alert('Oops', e.message);
+        Alert.alert('Error', e.message);
     }
     };
 
@@ -150,16 +161,31 @@ const ConfirmCodeScreen = ({route,navigation}) => {
       )
     }
 
-    if(isLoading){
-        return (
-            <ImageBackground source={backgroundImageMedium} style={{height:'100%', width:'100%'}}>
-                <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
-            </ImageBackground>
-            )
-    }
+    // if(isLoading){
+    //     return (
+    //         <ImageBackground source={backgroundImageMedium} style={{height:'100%', width:'100%'}}>
+    //             <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
+    //         </ImageBackground>
+    //         )
+    // }
 
     return(
         <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
+            <Spinner
+            visible={isLoading}
+            textContent={'Confirming code...'}
+            textStyle={styles.spinnerTextStyle}
+            />
+            <Spinner
+            visible={isResendingCode}
+            textContent={'Resending code...'}
+            textStyle={styles.spinnerTextStyle}
+            />
+            <Spinner
+            visible={isSigningIn}
+            textContent={'Signing In...'}
+            textStyle={styles.spinnerTextStyle}
+            />
             <View style={styles.container}>
             <Text style={styles.confirmCodeHeading}>Confirm Code</Text>
             <CustomInput
@@ -206,12 +232,18 @@ const styles = StyleSheet.create({
       fontSize: 20,
       fontWeight: '500',
       margin:15
-  },
-  footerLinks: {
-    color:themeColor.vividRed,
-    fontFamily: themeFontFamily.raleway,
-    fontSize: 14,
-    textAlign: 'center',
-},
+    },
+    footerLinks: {
+      color:themeColor.vividRed,
+      fontFamily: themeFontFamily.raleway,
+      fontSize: 14,
+      textAlign: 'center',
+    },
     primaryButton: {margin: 16,width: 150,alignSelf:'center'},
+    spinnerTextStyle: {
+        fontFamily: themeFontFamily.raleway,
+        fontSize: themefonts.font14,
+        color: themeColor.vividRed,
+        opacity: 0.8
+    }
 });

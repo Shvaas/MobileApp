@@ -32,9 +32,10 @@ import Spinner from 'react-native-loading-spinner-overlay';
     item : any,
     navigation : any,
     index: any,
+    teacher: boolean,
   }
   
-  const SettingItem: React.FC<PropsType> = ({item, index, navigation}) => {
+  const SettingItem: React.FC<PropsType> = ({item, index, teacher, navigation}) => {
     const dispatch = useDispatch();
     const userId = useSelector((state) => state.user.userId);
     const [isLoading, setIsLoading] = useState(false);
@@ -147,7 +148,12 @@ import Spinner from 'react-native-loading-spinner-overlay';
     function onPressed(){      
       if(index === 0){
         //Profile Questions
-        navigation.navigate(RouteNames.HomePageFlow.UserDetails);
+        if(teacher){
+          onSignOut();
+        }
+        else{
+          navigation.navigate(RouteNames.HomePageFlow.UserDetails);
+        }
       }
       if(index === 1){
         //Invite Friends

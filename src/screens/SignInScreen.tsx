@@ -25,6 +25,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
 import { userSlice } from '../store/userSlice';
 import RouteNames from '../constants/routeName';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 interface PropsType {
     navigation: any;
@@ -96,10 +97,10 @@ const SignInScreen = ({navigation}) => {
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
 
-    const {height} = useWindowDimensions();
     const onSignInPressed = async () => {
         try{
             console.log("sending for sign in ",email," and ", password);
+            setIsLoading(true);
             const response = await Auth.signIn(email, password);
             console.log(response);
             const userId = response?.attributes?.sub;
@@ -107,20 +108,24 @@ const SignInScreen = ({navigation}) => {
                 console.log("userId", userId);
                 fetchUsers(userId);
             }
-            
-            // setUserStatus('userSignedInUnknown');
-            // navigation.navigate('Home');
+            else{
+                setIsLoading(false);
+            }
         }
-        catch(error){
-            console.log('Error',error);
+        catch(e){
+            console.log('Error',e);
+            Alert.alert('Error', e.message);
+            setIsLoading(false);
         }
         
     };
 
     const onSignUpPressed = async () => {
+        navigation.navigate("SignUp");
     };
 
     const onForgotPasswordPressed = async () => {
+        navigation.navigate("ForgotPassword");
     };
 
     if (hasError){
@@ -134,16 +139,21 @@ const SignInScreen = ({navigation}) => {
         )
       }
 
-    if(isLoading){
-        return (
-            <ImageBackground source={backgroundImageMedium} style={{height:'100%', width:'100%'}}>
-                <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
-            </ImageBackground>
-            )
-    }
+    // if(isLoading){
+    //     return (
+    //         <ImageBackground source={backgroundImageMedium} style={{height:'100%', width:'100%'}}>
+    //             <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
+    //         </ImageBackground>
+    //         )
+    // }
 
     return(
         <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
+            <Spinner
+            visible={isLoading}
+            textContent={'Signing In...'}
+            textStyle={styles.spinnerTextStyle}
+            />
             <View style={styles.container}>
             <Text style={styles.signInHeading}>Sign In</Text>
             <CustomInput
@@ -156,6 +166,7 @@ const SignInScreen = ({navigation}) => {
             setValue={setPassword}
             placeholder="password"
             secureTextEntry={true}/>
+
             <SimpleButton
                 title='Sign In'
                 containerStyle={styles.primaryButton}
@@ -163,8 +174,8 @@ const SignInScreen = ({navigation}) => {
             />
             
             <View style={{flexDirection:'row',justifyContent:'space-around',width:'80%',marginVertical:10}}>
-            <View><TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}><Text style={styles.footerLinks}>Forgot Password</Text></TouchableOpacity></View>
-            <View><TouchableOpacity onPress={() => navigation.navigate("SignUp")}><Text style={styles.footerLinks}>Sign Up</Text></TouchableOpacity></View>
+            <View><TouchableOpacity onPress={onForgotPasswordPressed}><Text style={styles.footerLinks}>Forgot Password</Text></TouchableOpacity></View>
+            <View><TouchableOpacity onPress={onSignUpPressed}><Text style={styles.footerLinks}>Sign Up</Text></TouchableOpacity></View>
             </View>
             
             </View>
@@ -202,5 +213,11 @@ const styles = StyleSheet.create({
         fontFamily: themeFontFamily.raleway,
         fontSize: 14,
         textAlign: 'center',
+    },
+    spinnerTextStyle: {
+        fontFamily: themeFontFamily.raleway,
+        fontSize: themefonts.font14,
+        color: themeColor.vividRed,
+        opacity: 0.8
     }
 });

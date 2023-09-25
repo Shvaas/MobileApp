@@ -6,7 +6,8 @@ import {useForm} from 'react-hook-form';
 import {Auth} from 'aws-amplify';
 import SimpleButton from '../common/buttons/SimpleButton';
 import {backButton, backgroundImageLight, backgroundImageMedium} from '../images/imageLinks';
-import { themeColor, themeFontFamily } from '../constants/theme';
+import { themeColor, themeFontFamily, themefonts } from '../constants/theme';
+import Spinner from 'react-native-loading-spinner-overlay/lib';
 
 const NewPasswordScreen = ({route,navigation}) => {
 
@@ -22,13 +23,17 @@ const NewPasswordScreen = ({route,navigation}) => {
     const [code, setCode] = useState('');
     const [password, setPassword] = useState('');
     const [passwordRepeat, setPasswordRepeat] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
   const onSubmitPressed = async () => {
     try {
+      setIsLoading(true);
       await Auth.forgotPasswordSubmit(email, code, password);
+      setIsLoading(false);
       navigation.navigate('SignIn');
     } catch (e) {
-      Alert.alert('Oops', e.message);
+      setIsLoading(false);
+      Alert.alert('Error', e.message);
     }
   };
 
@@ -38,6 +43,11 @@ const NewPasswordScreen = ({route,navigation}) => {
 
   return (
     <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
+    <Spinner
+          visible={isLoading}
+          textContent={'Resetting password...'}
+          textStyle={styles.spinnerTextStyle}
+          />
     <View style={styles.container}>
     <Text style={styles.resetPasswordHeading}>Reset your password</Text>
     <CustomInput
@@ -134,5 +144,11 @@ topContainer: {
     fontFamily: themeFontFamily.raleway,
     fontSize: 14,
     textAlign: 'center',
-}
+  },
+  spinnerTextStyle: {
+    fontFamily: themeFontFamily.raleway,
+    fontSize: themefonts.font14,
+    color: themeColor.vividRed,
+    opacity: 0.8
+  }
 });

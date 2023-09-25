@@ -118,7 +118,7 @@ console.log(isLoading);
 
 function goBack() {
   if (userType=='Teacher'){
-    navigation.navigate(RouteNames.HomePageFlow.UserProfile);
+    navigation.navigate("TeacherProfile");
  }else{
   navigation.goBack();
  }

@@ -3,7 +3,7 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
-import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
+import {getFocusedRouteNameFromRoute, NavigationContainer} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 
 // Local
@@ -38,24 +38,7 @@ function getTabStyle(route){
       }
 }
 
-const HomePageStack = () => {
-  const userType = useSelector((state) => state.user.userType);
-  console.log(userType);
-
-  if(userType === 'Teacher'){
-    return (
-      <Stack.Navigator
-        screenOptions={{
-          gestureEnabled: false,
-          headerShown: false,
-        }}>
-        <Stack.Screen
-          name={RouteNames.HomePageFlow.CalendarPage}
-          component={TeacherSessionStack}
-        />
-      </Stack.Navigator>
-    );
-  } else {
+function StudentTabNavigator() {
   return (
     <Tab.Navigator
       initialRouteName= {RouteNames.HomePageFlow.AllYogis}
@@ -97,6 +80,35 @@ const HomePageStack = () => {
         })}
       />
     </Tab.Navigator>
+  );
+}
+
+const HomePageStack = () => {
+  const userType = useSelector((state) => state.user.userType);
+  console.log(userType);
+
+  if(userType === 'Teacher'){
+    return (
+      <Stack.Navigator
+        screenOptions={{
+          gestureEnabled: false,
+          headerShown: false,
+        }}>
+        <Stack.Screen
+          name={RouteNames.HomePageFlow.CalendarPage}
+          component={TeacherSessionStack}
+        />
+      </Stack.Navigator>
+    );
+  } else {
+  return (
+      <Stack.Navigator
+      screenOptions={{
+        gestureEnabled: false,
+        headerShown: false}}>
+    <Stack.Screen name="StudentTabNavigator" component={StudentTabNavigator} />
+    <Stack.Screen name={RouteNames.HomePageFlow.UserProfile} component={Profile}/>
+    </Stack.Navigator>
   )};
 };
 

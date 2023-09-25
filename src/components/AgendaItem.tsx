@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
   spinnerTextStyle: {
     fontFamily: themeFontFamily.raleway,
     fontSize: themefonts.font14,
-    color: themeColor.black,
+    color: themeColor.vividRed,
     opacity: 0.8
   }
   

@@ -38,13 +38,9 @@ import {
    navigation: any;
  }
  
- const Profile = ({navigation}) => {
+ const TeacherProfile = ({navigation}) => {
 
-  const settings = [{title:'Profile Questions', description: 'Your health profile'},
-                    {title:'Invite Friends', description: 'Invite your friends to a zenful session'},
-                    {title:'Help', description: 'Understand Shvaas better'},
-                    {title:'Manage Subscription'},
-                    {title:'Logout'},]
+  const settings = [{title:'Logout'}]
 
  
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -85,58 +81,18 @@ import {
           </View>
 
           <View style={styles.secondContainer}>
-                {/* <Image source={utkarsh} style={styles.imageStyle}/> */}
                 <UserAvatar size={100} name={username}  style={styles.imageStyle}/>
           </View>
           <Text style={styles.usernameText}> {username} </Text>
-          <View style={styles.thirdContainer}>
-                <Text style={styles.standardText}> Level : </Text>
-                <Text style={[styles.standardText, {color: themeColor.vividRed}]}> Beginner </Text>
-          </View>
-          <View style={styles.progressContainer}>
-            <ProgressBar progress={sessions.length/100} width={width-40} height={10}
-            borderRadius={6}
-            color={themeColor.vividRed}
-            unfilledColor={themeColor.white} />
-            <View style={{flexDirection:'row', justifyContent:'space-between', marginTop:5}}>
-                <Text style={[styles.standardText]}>{sessions.length}/100 sessions</Text>
-                <Text style={[styles.standardText]}>Next Level: Intermidiate</Text>
-            </View>
-          </View>
 
           <GestureHandlerRootView style={{marginTop:10, marginHorizontal:20}}>
           <FlatList
             data={settings}
             ItemSeparatorComponent={FlatListItemSeparator}
-            renderItem={({item, index}) => <SettingItem item={item} index={index} teacher={false} navigation={navigation} />}
+            renderItem={({item, index}) => <SettingItem item={item} index={index} teacher={true} navigation={navigation} />}
             keyExtractor={(item) => item.title}
           /> 
           </GestureHandlerRootView>
-
-          <View style={{flex:0.5, justifyContent:'flex-end'}}>
-
-          {/* <GestureHandlerRootView style={styles.shareContainer}>
-            <TouchableOpacity style={{flexDirection: 'row', height:'100%'}} onPress={onShare}>
-                <View style={{ flex:0.2, justifyContent:'center', alignItems: 'center',}}>
-                <Image source={inviteIcon} style={styles.backbutton}/>
-                </View>
-                <View style={{flex:0.8, justifyContent:'center'}}>
-                    <Text style={styles.inviteHeadingText}>Invite Friends</Text>
-                    <Text style={styles.inviteText}>Invite your friends to a zenful session</Text>
-                </View>
-            </TouchableOpacity>
-          </GestureHandlerRootView> */}
-
-          <GestureHandlerRootView style={styles.premiumContainer}>
-            <TouchableOpacity onPress={()=>navigation.navigate(RouteNames.OnboardingFlow.FreeTrial)}>
-                <View style={{height:'100%', alignItems: 'center', justifyContent:'center'}}>
-                    <Text style={[styles.inviteHeadingText, {color:themeColor.white}]}>Get Shvaas Premium</Text>
-                    <Text style={[styles.inviteText, {color:themeColor.white}]}>10 % off on all subsciptions</Text>
-                </View>
-            </TouchableOpacity>
-          </GestureHandlerRootView>
-
-          </View>
         
 
          </ImageBackground>
@@ -145,7 +101,7 @@ import {
    );
  };
  
- export default Profile;
+ export default TeacherProfile;
  
  const styles = StyleSheet.create({
    safeArea: {

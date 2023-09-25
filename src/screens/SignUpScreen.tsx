@@ -21,6 +21,7 @@ import SimpleButton from '../common/buttons/SimpleButton';
 import { themeColor, themeFontFamily, themefonts } from '../constants/theme';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {useForm} from 'react-hook-form';
+import Spinner from 'react-native-loading-spinner-overlay/lib';
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -44,10 +45,12 @@ const SignUpScreen = ({navigation}) => {
     const [lastName, setLastName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [passwordRepeat,setPasswordRepeat] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     
 
     const onSignUpPressed = async () => {
         try {
+          setIsLoading(true);
             await Auth.signUp({
               username: email,
               password: password,
@@ -56,9 +59,10 @@ const SignUpScreen = ({navigation}) => {
                 enabled: true,
               }
             });
+            setIsLoading(false);
           navigation.navigate('ConfirmCode', {email, password});
         } catch (e) {
-          Alert.alert('Oops', e.message);
+          Alert.alert('Error', e.message);
         }
     };
 
@@ -77,6 +81,11 @@ const SignUpScreen = ({navigation}) => {
 
     return(
       <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
+            <Spinner
+            visible={isLoading}
+            textContent={'Signing Up...'}
+            textStyle={styles.spinnerTextStyle}
+            />
             <View style={styles.container}>
             <Text style={styles.signUpHeading}>Sign Up</Text>
             <CustomInput
@@ -177,5 +186,11 @@ const styles = StyleSheet.create({
       fontFamily: themeFontFamily.raleway,
       fontSize: 14,
       textAlign: 'center',
-  }
+    },
+    spinnerTextStyle: {
+        fontFamily: themeFontFamily.raleway,
+        fontSize: themefonts.font14,
+        color: themeColor.vividRed,
+        opacity: 0.8
+    }
 });

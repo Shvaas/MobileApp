@@ -5,6 +5,7 @@ import Profile from '../screens/HomePageFlow/UserProfile/Profile';
 import UserDetails from '../screens/HomePageFlow/UserProfile/UserDetails';
 // Local
 import RouteNames from '../constants/routeName';
+import TeacherProfile from '../screens/HomePageFlow/UserProfile/TeacherProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,7 +20,7 @@ const TeacherSessionStack = () => {
         name={RouteNames.HomePageFlow.CalendarPage}
         component={CalendarPage}
       />
-      <Stack.Screen name={RouteNames.HomePageFlow.UserProfile} component={Profile}/>
+      <Stack.Screen name={"TeacherProfile"} component={TeacherProfile}/>
       <Stack.Screen name={RouteNames.HomePageFlow.UserDetails} component={UserDetails}/>
     </Stack.Navigator>
   );

@@ -21,6 +21,7 @@ import SimpleButton from '../common/buttons/SimpleButton';
 import { themeColor, themeFontFamily, themefonts } from '../constants/theme';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {useForm} from 'react-hook-form';
+import Spinner from 'react-native-loading-spinner-overlay/lib';
 
 interface PropsType {
     navigation: any;
@@ -34,18 +35,27 @@ const ForgotPasswordScreen = ({navigation}) => {
       } = useForm();
 
     const [email, setEmail] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const onForgotPasswordPressed = async () => {
         try {
+            setIsLoading(true);
             await Auth.forgotPassword(email);
+            setIsLoading(false);
             navigation.navigate('NewPassword',{email});
           } catch (e) {
-            Alert.alert('Oops', e.message);
+            setIsLoading(false);
+            Alert.alert('Error', e.message);
           }
     };
 
     return(
         <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
+          <Spinner
+            visible={isLoading}
+            textContent={'Loading...'}
+            textStyle={styles.spinnerTextStyle}
+            />
           <View style={styles.container}>
           <Text style={styles.resetPasswordHeading}>Reset your password</Text>
           <CustomInput
@@ -105,5 +115,11 @@ const styles = StyleSheet.create({
         fontFamily: themeFontFamily.raleway,
         fontSize: 14,
         textAlign: 'center',
-    }
+      },
+      spinnerTextStyle: {
+        fontFamily: themeFontFamily.raleway,
+        fontSize: themefonts.font14,
+        color: themeColor.vividRed,
+        opacity: 0.8
+      }
 });
