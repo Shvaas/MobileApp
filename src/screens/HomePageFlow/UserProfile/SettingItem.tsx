@@ -161,6 +161,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
       }
       if(index === 2){
         //Help
+        console.log("RouteNames.HomePageFlow.Help");
         navigation.navigate(RouteNames.HomePageFlow.Help);
       }
       if(index === 3){

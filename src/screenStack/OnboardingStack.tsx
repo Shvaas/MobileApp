@@ -26,7 +26,7 @@ import ConfirmCodeScreen from '../screens/ConfirmCodeScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import NewPasswordScreen from '../screens/NewPasswordScreen';
 import WaitingSpinner3 from '../screens/WaitingSpinner3';
-
+import Help from '../screens/HomePageFlow/UserProfile/Help';
 
 const Stack = createNativeStackNavigator();
 
@@ -107,6 +107,9 @@ const OnboardingStack = () => {
         name={RouteNames.HomePageFlow.AllCourseDetail}
         component={SessionFeedback}
       />
+      {/* <Stack.Screen 
+      name={RouteNames.HomePageFlow.Help} 
+      component={Help}/> */}
 
     </Stack.Navigator>
   );

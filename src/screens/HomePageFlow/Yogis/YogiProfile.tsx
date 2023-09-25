@@ -8,6 +8,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import RouteNames from '../../../constants/routeName';
 import { backButton, backgroundImageMedium, backgroundImageLight } from '../../../images/imageLinks';
+import UserAvatar from 'react-native-user-avatar';
 
 import BackgroundImage from '../../../common/BackgroundImage';
 import {
@@ -56,7 +57,8 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
     return (
       <View style={styles.textContainerStyle}>
         <View style={styles.itemTopContainer}>
-          <Image source={item.image} style={styles.carousalImage} />
+          {/* <Image source={item.image} style={styles.carousalImage} /> */}
+          <UserAvatar size={30} name={item.name}  style={styles.carousalImage}/>
           <Text style={styles.itemName}>{item.name}</Text>
         </View>
         <Text style={styles.itemReview}>{item.review}</Text>

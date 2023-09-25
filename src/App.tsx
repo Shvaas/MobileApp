@@ -52,7 +52,7 @@ const App = () => {
 
   const Stack = createNativeStackNavigator();
   // India
-  const STRIPE_KEY = 'pk_test_51NYPgqSCuYArEC5oOK4UODZU9chPXxrQFmlKyenSu9qOYWe3PjNTQHjslpUOm2D6HVgbXU7baQKCuUrbGwzkV2J500qYf4mAEX'
+  const STRIPE_KEY = 'pk_test_51NqUmhSIc3Jo74FNEOgu0FbZAsiJZ8aORZAs3X2ZVGGx7kncyFMA4R6Mw26lUJK94LtozCTEXNSkXWReJQTfAZCG00FejgHpMk'
   // USA
   //const STRIPE_KEY = 'pk_test_51NFknnLrbws9WSwO25PGiyKTzjZlfoDYvV9mBiwCHPL6PVUEknKfJeAcrVQ8LpCLoGfhg4797YTbPvKxfJWL58SB00gv2zdRnv'
 
