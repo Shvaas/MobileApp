@@ -58,7 +58,7 @@ const FreeTrial = ({navigation}) => {
       {
         userId : userId,
         paymentRequestType: "CREATE_SUBSCRIPTION",
-        subscriptionType: 'MONTHLY'
+        subscriptionType: planType==0 ? 'MONTHLY' : 'QUARTERLY',
       });
 
       console.log("response", response.data);
