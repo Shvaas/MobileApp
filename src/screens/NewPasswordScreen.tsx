@@ -68,6 +68,7 @@ const NewPasswordScreen = ({route,navigation}) => {
       setValue={setPassword}
       secureTextEntry
     />
+    <Text style={styles.passwordReq}>Length minimum 8, should have 1 number, 1 special character, 1 uppercase, 1 lowercase</Text>
     <CustomInput
       placeholder="Repeat new password"
       value={passwordRepeat}
@@ -150,5 +151,10 @@ topContainer: {
     fontSize: themefonts.font14,
     color: themeColor.vividRed,
     opacity: 0.8
-  }
+  },
+  passwordReq: {
+    fontFamily: themeFontFamily.raleway,
+  fontSize: themefonts.font14,
+  color: "#808080",
+  opacity: 0.8}
 });
