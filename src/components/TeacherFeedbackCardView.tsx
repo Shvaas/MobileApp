@@ -40,8 +40,8 @@ import { baseUrl } from '../constants/urls';
   
   const TeacherFeedbackCardView: React.FC<PropsType> = ({student, sessionId}) => {
 
-    const feedbackForTeacher = 'Great Session!';
-    const ratingForTeacher = 5;
+    const feedbackForTeacher = student.feedbackForInstructor;
+    const ratingForTeacher = student.courseRatingByStudent;
     const userId = useSelector((state) => state.user.userId);
 
     const [marked, setMarked] = useState(student.marked);

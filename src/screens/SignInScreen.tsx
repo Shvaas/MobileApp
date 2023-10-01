@@ -34,7 +34,7 @@ interface PropsType {
 const baseUrl = 'https://6sm5d5xzu8.execute-api.us-west-2.amazonaws.com/stage';
 
 const SignInScreen = ({navigation}) => {
-
+    console.log("SignInScreen");
     const dispatch = useDispatch();
 
     const [isLoading, setIsLoading] = useState(false);
@@ -64,7 +64,10 @@ const SignInScreen = ({navigation}) => {
           else {
               var profileQuestionnaireCompleted = response?.data?.data.profileQuestionnaireCompleted;
               dispatch(userSlice.actions.setUser({type: 'Student', userId: userId,
-              firsName: response?.data?.data.name, lastName:response?.data?.data.name}));
+              firsName: response?.data?.data.firstName, 
+              lastName:response?.data?.data.lastName, 
+              isSubscribed:response?.data?.data.subscriptionStatus==='ACTIVE', 
+              trialUsed:response?.data?.data.trailUsed}));
               if (profileQuestionnaireCompleted){
                 navigation.navigate('Home');
               }

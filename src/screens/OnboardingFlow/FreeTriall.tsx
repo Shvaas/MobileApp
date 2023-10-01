@@ -24,15 +24,16 @@ import LoginButton from '../../common/buttons/LoginButton';
 import SubcriptionPlan from '../../components/SubcriptionPlan';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import { userSlice } from '../../store/userSlice';
 
 import { useStripe } from '@stripe/stripe-react-native';
 
 import { useCreatePaymentIntentMutation } from '../../store/apiSlice';
-
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import axios from "axios";
 import { baseUrl } from '../../constants/urls';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 interface PropsType {
   navigation: any;
@@ -40,19 +41,49 @@ interface PropsType {
 
 const FreeTrial = ({navigation}) => {
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [planType, setPlan] = useState(0);
   const [createPaymentIntent] = useCreatePaymentIntentMutation();
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
+
+  const dispatch = useDispatch();
 
 
   React.useEffect(() => {
   }, []);
 
   const userId = useSelector((state) => state.user.userId);
+
+  const fetchUsers = async (userId) => {
+    const abortController = new AbortController();
+    const url = `${baseUrl}/user/${userId}`;
+    try {
+      setIsLoading(true);
+      const response = await axios.get(url, {
+        signal: abortController.signal,
+        timeout: 10000,
+      });
+
+      if (response.status === 200) {
+        const subcription = response?.data?.data.subscriptionStatus==='ACTIVE'
+        dispatch(userSlice.actions.setSubscription(subcription))
+        setIsLoading(false);
+        return;
+      } else {
+        throw new Error("Failed to fetch users");
+      }
+    } catch (error) {
+      if (abortController.signal.aborted) {
+        console.log("Data fetching cancelled");
+      } else {
+        setIsLoading(false);
+      }
+    }
+  };
   
   const onSubcriptionPressed = async () => {
     console.log("subscirption pressed");
-
+    setIsLoading(true)
     try {
       const response = await axios.post(`${baseUrl}/payment/create-subscription`,
       {
@@ -60,12 +91,12 @@ const FreeTrial = ({navigation}) => {
         paymentRequestType: "CREATE_SUBSCRIPTION",
         subscriptionType: planType==0 ? 'MONTHLY' : 'QUARTERLY',
       });
-
+      
       console.log("response", response.data);
       console.log("response", response.data?.data);
       if (response.status === 200) {
         console.log(response.data);
-
+        
         const clientSecret = response.data?.data?.clientSecret;
         const subscriptionId = response.data?.data?.subscriptionId;
 
@@ -73,10 +104,12 @@ const FreeTrial = ({navigation}) => {
         console.log(clientSecret, subscriptionId);
 
         if (response.error) {
+          setIsLoading(false)
+          Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
           console.log('Something went wrong1', response.error);
           return;
         }
-
+        setIsLoading(false)
         const { error: paymentSheetError } = await initPaymentSheet({
           merchantDisplayName: 'Yogit, Inc.',
           setupIntentClientSecret: clientSecret,
@@ -85,17 +118,25 @@ const FreeTrial = ({navigation}) => {
           },
         });
 
+        
+
         if (paymentSheetError) {
+          Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
           console.log('Something went wrong2', paymentSheetError.message);
           return;
         }
 
         const { error: paymentError } = await presentPaymentSheet();
         if (paymentError) {
+          setIsLoading(false)
+          Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
           console.log('Error code: ${paymentError.code}', paymentError.message);
           return;
         }
 
+        fetchUsers(userId)
+        navigation.navigate('Home')
+        
         console.log("Payment Successful");
 
       } else {
@@ -113,6 +154,11 @@ const FreeTrial = ({navigation}) => {
   return (
     <SafeAreaView style={styles.safeArea}>
         <ImageBackground source={backgroundImageLight} style={styles.image}>
+          <Spinner
+            visible={isLoading}
+            textContent={'Loading...'}
+            textStyle={styles.spinnerTextStyle}
+          />
             <View style={styles.topContainer}>
                 <GestureHandlerRootView>
                   <TouchableOpacity onPress={()=>navigation.goBack()}>
@@ -212,6 +258,13 @@ const styles = StyleSheet.create({
 
   buttonContainer: {
     flex: 0.8,
+  },
+
+  spinnerTextStyle: {
+    fontFamily: themeFontFamily.raleway,
+    fontSize: themefonts.font14,
+    color: themeColor.vividRed,
+    opacity: 0.8
   },
 
   heading: {

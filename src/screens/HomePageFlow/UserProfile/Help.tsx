@@ -87,7 +87,7 @@ const Item: React.FC<PropsType> = ({question, answer, index}) => (
   </View>
 );
 
-const help: React.FC<PropsType> = ({navigation}) => {
+const Help: React.FC<PropsType> = ({navigation}) => {
 
   return (
       <SafeAreaView style={styles.safeArea}>
@@ -118,7 +118,7 @@ const help: React.FC<PropsType> = ({navigation}) => {
       
 };
 
-export default help;
+export default Help;
 
 const styles = StyleSheet.create({
   safeArea: {

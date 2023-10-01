@@ -7,6 +7,8 @@ const initialState = {
   userId: null, // student id
   // teacherId: '313cbfd3-4fc1-4763-9d18-caedd0be4a63', // student id
   instructorPhotoLink: '',
+  isSubscribed: false,
+  trialUsed: false,
   firsName: '',
   lastName: '',
   height: '',
@@ -42,12 +44,16 @@ export const userSlice = createSlice({
     reducers: {
 
       setUser: (state, action) => {
-        const {type, userId, firsName, lastName} = action.payload;
+        const {type, userId, firsName, lastName, isSubscribed, trialUsed} = action.payload;
         console.log('User Slice: setUser', action.payload);
         state.userType = type;
         state.userId = userId;
         state.firsName = firsName;
         state.lastName = lastName;
+        state.isSubscribed = isSubscribed;
+        state.trialUsed = trialUsed;
+        console.log("state.isSubscribed", state.isSubscribed);
+        
         // state.instructorPhotoLink = 'https://www.yogabaron.com/wp-content/uploads/2018/12/Yoga-teacher-at-front-of-yoga-class-dec9.jpg';
       },
 
@@ -71,6 +77,11 @@ export const userSlice = createSlice({
         console.log('User Slice: setUserId', action.payload);
         const userId = action.payload;
         state.userType = userId;
+      },
+      setSubscription: (state, action) => {
+        console.log('User Slice: setUserId', action.payload);
+        const subscription = action.payload;
+        state.isSubscribed = subscription;
       },
       setUserProfileQuestion: (state, action) => {
         console.log('User Slice: setUserProfileQuestion', action.payload);
@@ -102,3 +113,4 @@ export const userSlice = createSlice({
   export const userGenderSelector = (state) => state.user.gender;
   export const userQuestionOneSelector = (state) => state.user.questionOne;
   export const userQuestionTwoSelector = (state) => state.user.questionTwo;
+  export const userIsSubscribedSelector = (state) => state.user.isSubscribed;

@@ -36,10 +36,11 @@ interface PropsType {
 const baseUrl = 'https://6sm5d5xzu8.execute-api.us-west-2.amazonaws.com/stage';
 
 const ConfirmCodeScreen = ({route,navigation}) => {
+    console.log("ConfirmCodeScreen");
 
    const {email, password} = route.params;
 
-   const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
     const [code, setCode] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -73,7 +74,10 @@ const ConfirmCodeScreen = ({route,navigation}) => {
           else {
               var profileQuestionnaireCompleted = response?.data?.data.profileQuestionnaireCompleted;
               dispatch(userSlice.actions.setUser({type: 'Student', userId: userId,
-              firsName: response?.data?.data.name, lastName:response?.data?.data.name}));
+              firsName: response?.data?.data.firstName, 
+              lastName:response?.data?.data.lastName,
+              isSubscribed:response?.data?.data.subscriptionStatus==='ACTIVE', 
+              trialUsed:response?.data?.data.trailUsed}));
               if (profileQuestionnaireCompleted){
                 navigation.navigate('Home');
               }

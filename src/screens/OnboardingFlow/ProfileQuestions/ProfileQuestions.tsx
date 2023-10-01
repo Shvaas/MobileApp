@@ -153,13 +153,11 @@ const [selectedGender, setSelectedGender] = useState();
       
       try {
         
-        const response = await axios.post(`${baseUrl}/user/${userId}/add-questionnaire`,profileQuestionnaire);
+        const response = await axios.post(`${baseUrl}/user/${userId}/add-questionnaire`, profileQuestionnaire);
 
         console.log("response profile quesition", response.data);
         console.log("response", response.data?.data);
         if (response.status === 200) {
-          Alert.alert('Success', 'Succesfully added profile questions');
-
           console.log(questionOneState);
           console.log(questionTwoState);
           console.log(selectedHeight);

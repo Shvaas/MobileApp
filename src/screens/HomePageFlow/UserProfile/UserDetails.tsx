@@ -144,18 +144,22 @@ import { DropdownList } from 'react-native-ultimate-modal-picker';
    return (
      <SafeAreaView style={styles.safeArea}>
          <ImageBackground source={backgroundImageMedium} style={styles.image}>
-         <GestureHandlerRootView>
-         <ScrollView>
+         <GestureHandlerRootView style={{flex:1}}>
          <View style={styles.topContainer}>
             <GestureHandlerRootView style={styles.topContainerItem}>
                   <TouchableOpacity onPress={()=>navigation.goBack()}>
                         <Image source={backButton} style={styles.backbutton}/>
                   </TouchableOpacity>
+                  <View style={styles.headingContainer}>
+                    <Text style={styles.title}>My Profile</Text>
+                  </View>
                   <TouchableOpacity >
                         <Image source={settingsButton} style={[styles.backbutton, {opacity:0}]}/>
                   </TouchableOpacity>
             </GestureHandlerRootView>
           </View>
+
+         <ScrollView style={{flex:0.8}}>
           <View style={[styles.middleContainer, {width}, {marginTop:10}]}>
               <View style={styles.middleContainerItem}>
                 <Text style={styles.heading}> Height :  </Text>
@@ -511,16 +515,15 @@ import { DropdownList } from 'react-native-ultimate-modal-picker';
                 </View>
             </View>
           </View>
-          <View style={{alignItems:'center', justifyContent:'center', marginVertical:20}}>
+          </ScrollView>
+          <View style={{alignItems:'center', justifyContent:'center', flex:0.1}}>
             <PrimaryButton
                     title={"Save"}
                     buttonStyle={styles.buttonStyle}
                     titleStyle={{color: themeColor.vividRed}}
                     onPress={updateInfo}
                 />
-        </View>
-
-            </ScrollView>
+          </View>
         </GestureHandlerRootView>
          </ImageBackground>
 
@@ -557,6 +560,12 @@ import { DropdownList } from 'react-native-ultimate-modal-picker';
        height:'100%',
      },
 
+     headingContainer: {
+      flex: 1,
+      justifyContent:'center',
+      alignItems: 'center',
+    },
+
     greetingText: {
         fontSize: themefonts.font16,
         fontFamily: themeFontFamily.raleway,
@@ -588,6 +597,12 @@ import { DropdownList } from 'react-native-ultimate-modal-picker';
           height: "100%",
           width:"100%",
           flex: 1,
+        },
+
+        title: {
+          fontSize: themefonts.font18,
+          fontFamily: themeFontFamily.ralewaySemiBold,
+          color: '#222222'
         },
     
         heading: {

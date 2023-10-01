@@ -80,7 +80,6 @@ const SessionFeedback: React.FC<PropsType> = ({route, navigation}) => {
       }
 
       console.log(session.sessionId, userId, commentValue, rating);
-      console.log();
       
       
 
@@ -164,6 +163,7 @@ const SessionFeedback: React.FC<PropsType> = ({route, navigation}) => {
           <TextInput 
             placeholder="Add a comment..."
             value={commentValue}
+            style={styles.standardText}
             onChangeText={setcommentValue}
             multiline/>
         </View>

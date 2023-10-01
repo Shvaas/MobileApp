@@ -42,6 +42,8 @@ interface PropsType {
 const baseUrl = 'https://6sm5d5xzu8.execute-api.us-west-2.amazonaws.com/stage';
 
 const WaitingSpinner3 = ({navigation}) => {
+    console.log("WaitingSpinner3");
+    
     const dispatch = useDispatch();
 
     const [userStatus, setUserStatus] = useState("null");
@@ -62,20 +64,23 @@ const WaitingSpinner3 = ({navigation}) => {
             signal: abortController.signal,
             timeout: 10000,
           });
-          console.log("response", response.data);
-          console.log("response", response.data.data);
+          // console.log("response", response.data);
+          console.log(" fetchUsers response", response.data.data);
           if (response.status === 200) {
 
             if (response?.data?.data.type === "INSTRUCTOR"){
               dispatch(userSlice.actions.setInstructor({type: 'Teacher', userId: userId,
-              firsName: response?.data?.data.name, lastName:response?.data?.data.name,
+              firsName: response?.data?.data.name, lastName:response?.data?.data.lastName,
               profilePic: response?.data?.data.userProfilePic}));
               navigation.navigate('Home');
           }
           else {
               var profileQuestionnaireCompleted = response?.data?.data.profileQuestionnaireCompleted;
               dispatch(userSlice.actions.setUser({type: 'Student', userId: userId,
-              firsName: response?.data?.data.name, lastName:response?.data?.data.name}));
+              firsName: response?.data?.data.firstName, 
+              lastName:response?.data?.data.lastName, 
+              isSubscribed:response?.data?.data.subscriptionStatus==='ACTIVE', 
+              trialUsed:response?.data?.data.trailUsed}));
               if (profileQuestionnaireCompleted){
                 navigation.navigate('Home');
               }

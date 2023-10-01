@@ -198,7 +198,8 @@ export const sessionSlice = createSlice({
             state.currentSession.end_date = sessions[i]?.sessionEndTime;
             state.currentSession.markCompleted = sessions[i]?.attendanceUpdated;
             state.currentSession.studentList = sessions[i]?.studentProfileList ? sessions[i]?.studentProfileList: []
-
+            console.log("studentProfileList: ", state.currentSession.studentList);
+            
             if(newSession){
               state.sessions.push(state.currentSession);
             }

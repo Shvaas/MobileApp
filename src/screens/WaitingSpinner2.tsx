@@ -70,6 +70,7 @@ const WaitingSpinner2 = ({navigation}) => {
               navigation.navigate('Home');
           }
           else {
+            console.log("WaitingSpinner2");
               var profileQuestionnaireCompleted = response?.data?.data.profileQuestionnaireCompleted;
               dispatch(userSlice.actions.setUser({type: 'Student', userId: userId,
               firsName: response?.data?.data.name, lastName:response?.data?.data.name}));

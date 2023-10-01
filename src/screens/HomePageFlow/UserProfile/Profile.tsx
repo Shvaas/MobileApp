@@ -30,7 +30,7 @@ import {
  import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
  import {GestureHandlerRootView} from 'react-native-gesture-handler';
  import SettingItem from './SettingItem';
- import {userFirstNameSelector, userLastNameSelector} from '../../../store/userSlice';
+ import {userFirstNameSelector, userLastNameSelector, userIsSubscribedSelector} from '../../../store/userSlice';
  import {userSessionSelector} from '../../../store/userSessionSlice';
  import UserAvatar from 'react-native-user-avatar';
  
@@ -42,8 +42,13 @@ import {
 
   const settings = [{title:'Profile Questions', description: 'Your health profile'},
                     {title:'Invite Friends', description: 'Invite your friends to a zenful session'},
-                    {title:'Help', description: 'Understand Shvaas better'},
+                    {title:'Help', description: 'Understand Yogit better'},
                     {title:'Manage Subscription'},
+                    {title:'Logout'},]
+
+  const settingsUnsubscribed = [{title:'Profile Questions', description: 'Your health profile'},
+                    {title:'Invite Friends', description: 'Invite your friends to a zenful session'},
+                    {title:'Help', description: 'Understand Yogit better'},
                     {title:'Logout'},]
 
  
@@ -52,9 +57,10 @@ import {
 
   const username = useSelector(userFirstNameSelector) + " " + useSelector(userLastNameSelector);
   const sessions = useSelector(userSessionSelector);
+  const subscription = useSelector(userIsSubscribedSelector);
 
   console.log("sessions.length", sessions.length);
-  
+
 
   const FlatListItemSeparator = () => {
     return (
@@ -69,6 +75,9 @@ import {
     );
   }
 
+ 
+  console.log("isSubscribed", subscription);
+  
    return (
      <SafeAreaView style={styles.safeArea}>
          <ImageBackground source={backgroundImageMedium} style={styles.image}>
@@ -106,9 +115,9 @@ import {
 
           <GestureHandlerRootView style={{marginTop:10, marginHorizontal:20}}>
           <FlatList
-            data={settings}
+            data={subscription? settings: settingsUnsubscribed}
             ItemSeparatorComponent={FlatListItemSeparator}
-            renderItem={({item, index}) => <SettingItem item={item} index={index} teacher={false} navigation={navigation} />}
+            renderItem={({item, index}) => <SettingItem item={item} index={index} teacher={false} navigation={navigation} isSubscribed={subscription}/>}
             keyExtractor={(item) => item.title}
           /> 
           </GestureHandlerRootView>
@@ -127,14 +136,14 @@ import {
             </TouchableOpacity>
           </GestureHandlerRootView> */}
 
-          <GestureHandlerRootView style={styles.premiumContainer}>
+          { !subscription && <GestureHandlerRootView style={styles.premiumContainer}>
             <TouchableOpacity onPress={()=>navigation.navigate(RouteNames.OnboardingFlow.FreeTrial)}>
                 <View style={{height:'100%', alignItems: 'center', justifyContent:'center'}}>
                     <Text style={[styles.inviteHeadingText, {color:themeColor.white}]}>Get Shvaas Premium</Text>
-                    <Text style={[styles.inviteText, {color:themeColor.white}]}>10 % off on all subsciptions</Text>
+                    <Text style={[styles.inviteText, {color:themeColor.white}]}>50 % off on all subsciptions</Text>
                 </View>
             </TouchableOpacity>
-          </GestureHandlerRootView>
+          </GestureHandlerRootView>}
 
           </View>
         

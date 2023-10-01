@@ -33,9 +33,10 @@ import Spinner from 'react-native-loading-spinner-overlay';
     navigation : any,
     index: any,
     teacher: boolean,
+    isSubscribed: boolean,
   }
   
-  const SettingItem: React.FC<PropsType> = ({item, index, teacher, navigation}) => {
+  const SettingItem: React.FC<PropsType> = ({item, index, teacher, navigation, isSubscribed}) => {
     const dispatch = useDispatch();
     const userId = useSelector((state) => state.user.userId);
     const [isLoading, setIsLoading] = useState(false);
@@ -69,7 +70,14 @@ import Spinner from 'react-native-loading-spinner-overlay';
         dispatch(sessionSlice.actions.setInitialState(null));
         dispatch(userSessionSlice.actions.setInitialState(null));
         dispatch(yogiSlice.actions.setInitialState(null));
-         navigation.navigate('SignIn');
+
+        
+        navigation.reset({
+          index: 0,
+          routes: [{ name : "StudentTabNavigator"}],
+        });
+        navigation.navigate('SignIn');
+        
         
       })
       .catch(err => console.log(err));
@@ -166,7 +174,12 @@ import Spinner from 'react-native-loading-spinner-overlay';
       }
       if(index === 3){
         //Manage Subscription
-        onManageSubscription();
+        if(isSubscribed){
+          onManageSubscription();
+        }else{
+          onSignOut();
+        }
+        
         // Linking.openURL('https://billing.stripe.com/p/login/test_bIYaGO6aC28L3OE4gg');
       }
       if(index === 4){
@@ -256,7 +269,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
     spinnerTextStyle: {
       fontFamily: themeFontFamily.raleway,
       fontSize: themefonts.font14,
-      color: themeColor.black,
+      color: themeColor.vividRed,
       opacity: 0.8
     }
 

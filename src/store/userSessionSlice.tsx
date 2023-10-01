@@ -88,9 +88,9 @@ export const userSessionSlice = createSlice({
              state.currentSession.start_date = sessions[i]?.sessionStartTime;
              state.currentSession.end_date = sessions[i]?.sessionEndTime;
              state.currentSession.zoomlink = sessions[i]?.zoom ? sessions[i]?.zoom : '';
-             state.currentSession.feedbackForStudent = sessions[i]?.instructorFeedback ? sessions[i]?.instructorFeedback : '';
-             state.currentSession.feedbackForTeacher = sessions[i]?.studentFeedback ? sessions[i]?.studentFeedback : '';
-             state.currentSession.ratingForTeacher = sessions[i]?.rating ? sessions[i]?.rating : 5;
+             state.currentSession.feedbackForStudent = sessions[i]?.feedbackForStudent ? sessions[i]?.feedbackForStudent : '';
+             state.currentSession.feedbackForTeacher = sessions[i]?.feedbackForInstructor ? sessions[i]?.feedbackForInstructor : '';
+             state.currentSession.ratingForTeacher = sessions[i]?.courseRatingByStudent ? sessions[i]?.courseRatingByStudent : 5;
 
              if(newSession){
               state.userSessions.push(state.currentSession);

@@ -35,7 +35,7 @@ interface PropsType {
 // };
 
 const CalendarPage: React.FC<PropsType> = ({route, navigation}) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [hasError, setErrorFlag] = useState(false);
 
   const userType = useSelector((state) => state.user.userType);
@@ -287,10 +287,10 @@ function getPastDate(numberOfDays: number) {
 
 
   if(isLoading){
-    <ImageBackground source={backgroundImageMedium} style={{height:'100%', width:'100%'}}>
-      <Text>waiting</Text>
+    return (<ImageBackground source={backgroundImageMedium} style={{height:'100%', width:'100%'}}>
       <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
     </ImageBackground>
+    )
   }
   else{
   return (

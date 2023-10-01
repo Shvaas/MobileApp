@@ -15,6 +15,7 @@ import {
 import RouteNames from '../constants/routeName';
 
 import {useBookSessionMutation} from '../store/apiSlice';
+import {userIsSubscribedSelector} from '../store/userSlice';
 import axios from "axios";
 import {baseUrl} from '../constants/urls';
 import { extractKeyIfExists } from '@aws-amplify/datastore/lib-esm/util';
@@ -26,6 +27,7 @@ interface PropsType {
 
 const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isSubscribed, setSubscription] = useState(useSelector(userIsSubscribedSelector));
 
   const dispatch = useDispatch();
 
@@ -141,18 +143,24 @@ const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
 
   const bookAppointment = async () => {
     // let myDate = new Date(sessionBooked.start_date * 1000);
-    Alert.alert('Confirm the appointment at',
-    myDate.toISOString().substring(0,myDate.toISOString().search('T')) + ' for ' + item.title,
-    [
-    {
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-    },
-    {text: 'OK', onPress: () => {onAppointmentConfirm()}
-    }]);
-    }
 
+    if (isSubscribed){
+      Alert.alert('Confirm the appointment at',
+      myDate.toISOString().substring(0,myDate.toISOString().search('T')) + ' for ' + item.title,
+      [
+      {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+      },
+      {text: 'OK', onPress: () => {onAppointmentConfirm()}
+      }]);
+      }
+    else{
+      navigation.navigate(RouteNames.OnboardingFlow.FreeTrial)
+    }
+  }
+    
 
   if (Object.keys(item).length === 0) {
     return (
