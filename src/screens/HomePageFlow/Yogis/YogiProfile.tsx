@@ -32,10 +32,21 @@ interface PropsType {
 
 const Yogi: React.FC<PropsType> = ({route, navigation}) => {
   const {yogiProfile} = route.params;
-  const {image, name, certificates, yearsOfExp, studentsTrained, reviews, rating, description, userId} =
-    yogiProfile;
+  
 
-  console.log("userId", userId);
+  console.log("yogiProfile ", yogiProfile);
+  
+  const numberOfRating = "(" + yogiProfile.numberOfRatings + " ratings)";
+
+  let degree = "";
+  for (let i = 0; i < (yogiProfile.certificates.length)-1; i++) {
+    degree += yogiProfile.certificates[i] + ", ";
+  }
+  if (yogiProfile.certificates.length > 0){
+    degree += yogiProfile.certificates[yogiProfile.certificates.length-1];
+  }
+
+
 
   
 
@@ -54,6 +65,7 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
   // }, [data, dispatch]);
   
   const getCarouselItem = ({item}) => {
+    console.log(item);
     return (
       <View style={styles.textContainerStyle}>
         <View style={styles.itemTopContainer}>
@@ -75,9 +87,9 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
           </TouchableOpacity>
         </GestureHandlerRootView>
 
-        <Image source={image} style={styles.imageStyle} />
+        <Image source={{uri: yogiProfile.image}} style={styles.imageStyle} />
         <View style={{flexDirection:'row', alignItems:'center' , justifyContent:'center'}}>
-            <Text style={styles.usernameText}>{name}</Text>
+            <Text style={styles.usernameText}>{yogiProfile.name}</Text>
         </View>
         
         <View style={{flexDirection:'row', alignItems:'center' , justifyContent:'center'}}>
@@ -88,24 +100,24 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
               ratingColor={'#FD7C23'}
               tintColor='none'
               imageSize={18}
-              startingValue={rating}
+              startingValue={yogiProfile.rating}
               style={styles.ratings}
             />
-            <Text style={{fontFamily:themeFontFamily.raleway, fontSize:themefonts.font12}}> (12 ratings)</Text>
+            <Text style={{fontFamily:themeFontFamily.raleway, fontSize:themefonts.font12}}> {numberOfRating}</Text>
           
         </View>
 
 
           <View style={{flexDirection:'row'}}>
           <View style={{marginHorizontal:10, marginTop:20}}>
-              <Text style={styles.textStyle}>Experience: {yearsOfExp} years</Text>
-              <Text style={styles.textStyle}>{certificates}</Text>
-              <Text style={styles.textStyle}>Students trained: {studentsTrained}</Text>
+              <Text style={styles.textStyle}>Experience: {yogiProfile.yearsOfExperience}</Text>
+              <Text style={styles.textStyle}>{degree}</Text>
+              <Text style={styles.textStyle}>Students trained: {yogiProfile.studentsTrained}</Text>
           </View>
           <View style={{ marginTop:0, flex:1}}>
             <SimpleButton
             title="Book session"
-            onPress={() => {navigation.navigate(RouteNames.HomePageFlow.CalendarPage, {userId: userId})}}
+            onPress={() => {navigation.navigate(RouteNames.HomePageFlow.CalendarPage, {userId: yogiProfile.userId})}}
               containerStyle={styles.primaryButton}
             />
           </View>
@@ -118,14 +130,14 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
             <FontAwesome name="instagram" size={20} color={themeColor.vividRed} />
         </View>
           <Text style={styles.textStyle}>
-          {description}
+          {yogiProfile.description}
           </Text>
         </View>
 
 
         <GestureHandlerRootView style={{justifyContent: 'flex-end', flex:1 , alignItems:'center'}}>
           <Carousel
-            data={reviews}
+            data={yogiProfile.testimonials}
             renderItem={getCarouselItem}
             loop
             style={styles.carouselContainer}

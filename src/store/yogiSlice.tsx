@@ -124,12 +124,20 @@ export const yogiSlice = createSlice({
              state.currentYogi.studentsTrained = serverYogi[i]?.shavaasStudentsCount;
              state.currentYogi.sessionCount = serverYogi[i]?.slotCount;
              state.currentYogi.sessions = serverYogi[i]?.slots;
-             state.currentYogi.certificates = serverYogi[i]?.certificates? serverYogi[i]?.certificates[0] : 'RYT-500';
+             state.currentYogi.certificates = serverYogi[i]?.degree? serverYogi[i]?.degree : ['RYT-500'];
              state.currentYogi.interest = serverYogi[i]?.interests ? serverYogi[i]?.interests : ['Yoga', 'Pranayama'];
-             state.currentYogi.yearsOfExp = serverYogi[i]?.yearsOfExperience? serverYogi[i]?.yearsOfExperience: 2;
-             state.currentYogi.image = yoga_instructor3;
+             state.currentYogi.yearsOfExp = serverYogi[i]?.yearsOfExperience? serverYogi[i]?.yearsOfExperience: 10;
+             state.currentYogi.numberOfRatings = serverYogi[i]?.numberOfRatings? serverYogi[i]?.numberOfRatings: 0;
+             if(serverYogi[i]?.userProfilePic){
+              if(serverYogi[i]?.userProfilePic.substring(0, 5) === "https"){
+                state.currentYogi.image = serverYogi[i]?.userProfilePic;
+              }else{
+                state.currentYogi.image = 'https://via.placeholder.com/640x360';
+              }
+             }
+             state.currentYogi.email = serverYogi[i]?.emailId;
              state.currentYogi.description = serverYogi[i]?.introduction? serverYogi[i]?.introduction: 'No Intro';
-             
+             state.currentYogi.testimonials = serverYogi[i]?.testimonials? serverYogi[i]?.testimonials: [];
              if(newSession){
               state.yogi.push(state.currentYogi);
              }

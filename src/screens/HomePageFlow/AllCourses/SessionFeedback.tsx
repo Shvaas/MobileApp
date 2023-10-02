@@ -24,6 +24,7 @@ import RouteNames from '../../../constants/routeName';
 import {userSessionSlice} from '../../../store/userSessionSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {useSendFeedbackToTeacherMutation} from '../../../store/apiSlice';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import {baseUrl} from '../../../constants/urls';
 import axios from "axios";
@@ -41,6 +42,8 @@ const HideKeyboard = ({ children }) => (
 
 const SessionFeedback: React.FC<PropsType> = ({route, navigation}) => {
   const userId = useSelector((state) => state.user.userId);
+  const [isLoading, setIsLoading] = useState(false);
+
     const dispatch = useDispatch();
     const {session} = route.params;
 
@@ -74,7 +77,7 @@ const SessionFeedback: React.FC<PropsType> = ({route, navigation}) => {
                       + am;
 
     const submitFeedback = async () => {
-      if (commentValue.trim() === '' || rating==0) {
+      if (commentValue.trim() == '' && rating==0) {
         Alert.alert('Error', 'Please enter a valid feedback or rating');
         return
       }
@@ -82,8 +85,9 @@ const SessionFeedback: React.FC<PropsType> = ({route, navigation}) => {
       console.log(session.sessionId, userId, commentValue, rating);
       
       
-
+      setIsLoading(true);
       try {
+        
         const response = await axios.post(`${baseUrl}/course/${session.sessionId}/instructor-feedback`,
         {userId: userId,
          feedbackForInstructor: commentValue,
@@ -101,11 +105,14 @@ const SessionFeedback: React.FC<PropsType> = ({route, navigation}) => {
                 'rating' : rating,
               }),
             );
+            setIsLoading(false);
         } else {
+          setIsLoading(false);
           Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
           throw new Error("An error has occurred");
         }
       } catch (error) {
+        setIsLoading(false);
         Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
       }
 
@@ -125,6 +132,11 @@ const SessionFeedback: React.FC<PropsType> = ({route, navigation}) => {
       <SafeAreaView style={styles.safeArea}>
       <HideKeyboard>
       <ImageBackground source={backgroundImageMedium} style={styles.image}>
+      <Spinner
+          visible={isLoading}
+          
+          textStyle={styles.spinnerTextStyle}
+        />
         <View style={styles.topContainer}>
             <GestureHandlerRootView>    
                   <TouchableOpacity onPress={()=>navigation.goBack()}>
@@ -186,6 +198,13 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: themeColor.white,
+  },
+
+  spinnerTextStyle: {
+    fontFamily: themeFontFamily.raleway,
+    fontSize: themefonts.font14,
+    color: themeColor.vividRed,
+    opacity: 0.8
   },
 
   topContainer: {

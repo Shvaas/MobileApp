@@ -22,16 +22,25 @@ const ProfileCardView: React.FC<PropsType> = ({profile, onButtonPress, navigatio
     image,
     name,
     certificates,
-    yearsOfExp,
+    yearsOfExperience,
     rating,
     studentsTrained,
-    interest,
+    interest, 
   } = profile;
 
+  let degree = "";
+  for (let i = 0; i < (certificates.length)-1; i++) {
+    degree += certificates[i] + ", ";
+  }
+  if (certificates.length > 0){
+    degree += certificates[certificates.length-1];
+  }
+
+  console.log(profile);
   return (
     <View style={styles.container}>
       <View style={styles.internalContainer}>
-        <Image source={image} style={styles.imageStyle} />
+        <Image source={{uri:image}} style={styles.imageStyle} />
         <View style={styles.textContainerStyle}>
           <Text style={styles.textStyleBold}>{name}</Text>
           <Rating
@@ -43,8 +52,8 @@ const ProfileCardView: React.FC<PropsType> = ({profile, onButtonPress, navigatio
             startingValue={rating}
             style={styles.ratings}
           />
-          <Text style={styles.textStyle}>Experience: {yearsOfExp}</Text>
-          <Text style={styles.textStyle}>{certificates}</Text>
+          <Text style={styles.textStyle}>Experience: {yearsOfExperience}</Text>
+          <Text style={styles.textStyle}>{degree}</Text>
           <Text style={styles.textStyle}>
             Students trained: {studentsTrained}
           </Text>

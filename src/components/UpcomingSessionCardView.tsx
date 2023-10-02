@@ -4,9 +4,10 @@ import {
     StyleSheet,
     Text,
     View,
+    Alert,
     TouchableOpacity,
   } from 'react-native';
-  import React from 'react';
+  import React, {useCallback, useState} from 'react';
 
 import {themeFontFamily, themefonts, themeColor} from '../constants/theme';
 import {utkarsh} from '../images/imageLinks';
@@ -15,6 +16,9 @@ import PrimaryButton from '../common/buttons/PrimaryButton';
 import SimpleButton from '../common/buttons/SimpleButton';
 import {userSessionSlice} from '../store/userSessionSlice';
 import {useDispatch, useSelector} from 'react-redux';
+import axios from "axios";
+import {baseUrl} from '../constants/urls';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import {getSessions} from '../../../store/userSessionSlice';
   
@@ -25,11 +29,13 @@ interface PropsType {
 
 const UpcomingSessionCardView: React.FC<PropsType> = ({item}) => {
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
 
   const month = ['Jan', 'Feb', 'Mar', 'April', 'May',
                   'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
   let myDate = new Date(item.start_date);
+  const userId = useSelector((state) => state.user.userId);
 
     let minutes = '';
     if(myDate.getMinutes() < 10){
@@ -51,16 +57,62 @@ const UpcomingSessionCardView: React.FC<PropsType> = ({item}) => {
                       + minutes
                       + am;
 
-  const onCancel = async () => {
-    dispatch(
-      userSessionSlice.actions.cancelSession({
-        'sessionId' : item.sessionId,
-      }),
+  const cancelAppointment = async () => {
+    let myDate = new Date(item.start_date);
+    Alert.alert('Cancel the appointment at',
+    item.start_date.substring(0,item.start_date.search('T')) + ' for ' + item.title,
+    [
+      {
+          text: 'No',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+      },
+      {text: 'Yes', onPress: () => {onCancel()}
+      }]
     );
+  }
+
+  const onCancel = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.post(`${baseUrl}/course/cancel-enrollment`, {
+        "userId": userId,
+        "courseId": item.sessionId,
+        "courseListRequestType": "CANCEL_ENROLLMENT"
+      });
+
+      console.log("onCancel: ", response);
+      
+      if (response.data.status === 200) {
+        dispatch(
+          userSessionSlice.actions.cancelSession({
+            'sessionId' : item.sessionId,
+          }),
+        );
+        
+        setIsLoading(false);
+      }
+      else {
+        setIsLoading(false);
+        Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
+        // throw new Error("An error has occurredd");
+      }
+      
+    } catch (error) {
+      setIsLoading(false);
+      Alert.alert("An error has occurred");
+    }
+
+
+    
   }
 
   return (
     <View style={styles.container}>
+      <Spinner
+          visible={isLoading}
+          textStyle={styles.spinnerTextStyle}
+        />
       <View style={{flexDirection:'row'}}>
         <View style={{flex:0.27, flexDirection:'column', alignItems:'center', justifyContent:'center'}}>
             <ProfilePicture uri={item.instructorPhotoLink} size={70} borderWidth={2}/>
@@ -79,7 +131,7 @@ const UpcomingSessionCardView: React.FC<PropsType> = ({item}) => {
         <SimpleButton
         title='Cancel'
         containerStyle={styles.primaryButton}
-        onPress={onCancel}/>
+        onPress={cancelAppointment}/>
       </View>
     </View>
 
@@ -174,6 +226,12 @@ const UpcomingSessionCardView: React.FC<PropsType> = ({item}) => {
       flexDirection:"column",
       justifyContent:'space-around'
       
+    },
+    spinnerTextStyle: {
+      fontFamily: themeFontFamily.raleway,
+      fontSize: themefonts.font14,
+      color: themeColor.vividRed,
+      opacity: 0.8
     },
     internalContainer: {
       width:'100%',

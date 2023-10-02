@@ -53,8 +53,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
     onOptionPress(index);
   };
   return (
-    <View>
-      <View>
+    <View style={{height:'100%'}}>
       <View style={styles.container}>
         <TouchableWithoutFeedback
           disabled={disabled}
@@ -132,8 +131,6 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
         </ScrollView>
       </View>
       }
-
-      </View>
     </View>
   );
 };
@@ -231,6 +228,7 @@ const styles = StyleSheet.create({
 
   scrollContainerStyle: {
     padding:10,
+    height:'100%'
   },
   scrollViewStyle: {
     paddingVertical: 5,
