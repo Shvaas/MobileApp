@@ -145,7 +145,7 @@ const SessionFeedback: React.FC<PropsType> = ({route, navigation}) => {
             </GestureHandlerRootView>
         </View>
         <View style={styles.secondContainer}>
-                <Image source={utkarsh} style={styles.imageStyle}/>
+                <Image source={{uri:session.instructorPhotoLink}} style={styles.imageStyle}/>
           </View>
         <Text style={styles.usernameText}> {session.title} </Text>
         <View style={{margin:20}}>
@@ -167,15 +167,17 @@ const SessionFeedback: React.FC<PropsType> = ({route, navigation}) => {
                 ratingColor={'#FD7C23'}
                 // tintColor={themeColor.white}
                 onFinishRating={setRating}
+                minValue={1}
                 imageSize={18}
                 startingValue={rating}
+                
                 style={styles.ratings}
               />
             </View>
           <TextInput 
             placeholder="Add a comment..."
             value={commentValue}
-            style={styles.standardText}
+            style={[styles.standardText, {minHeight:100}]}
             onChangeText={setcommentValue}
             multiline/>
         </View>

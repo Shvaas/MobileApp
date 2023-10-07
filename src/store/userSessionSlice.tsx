@@ -81,8 +81,15 @@ export const userSessionSlice = createSlice({
              state.currentSession.sessionId = sessions[i].courseId;
              state.currentSession.instructorId = sessions[i].instructorId;
              state.currentSession.name = sessions[i].instructorName;
-             state.currentSession.instructorPhoto = utkarsh;
-             state.currentSession.instructorPhotoLink = 'https://i.imgur.com/CzXTtJV.jpg';
+             
+             if(serverYogi[i]?.instructorProfilePicture){
+              if(serverYogi[i]?.instructorProfilePicture.substring(0, 5) === "https"){
+                state.currentSession.instructorPhotoLink = sessions[i]?.instructorProfilePicture;
+              }else{
+                state.currentSession.instructorPhotoLink = 'https://via.placeholder.com/640x360';
+              }
+             }
+             
              state.currentSession.title = sessions[i].courseName;
              state.currentSession.description = sessions[i].description;
              state.currentSession.start_date = sessions[i]?.sessionStartTime;
@@ -144,6 +151,7 @@ function compareSessions(a, b) {
   }
   return 0;
 }
+
 
 
 export const getSessions = (state) => {

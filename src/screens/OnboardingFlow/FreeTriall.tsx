@@ -98,10 +98,10 @@ const FreeTrial = ({navigation}) => {
         console.log(response.data);
         
         const clientSecret = response.data?.data?.clientSecret;
-        const subscriptionId = response.data?.data?.subscriptionId;
+        // const subscriptionId = response.data?.data?.subscriptionId;
 
         console.log("subscirption pressed step 0")
-        console.log(clientSecret, subscriptionId);
+        console.log(clientSecret);
 
         if (response.error) {
           setIsLoading(false)
