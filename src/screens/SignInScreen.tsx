@@ -117,8 +117,15 @@ const SignInScreen = ({navigation}) => {
         }
         catch(e){
             console.log('Error',e);
-            Alert.alert('Error', e.message);
-            setIsLoading(false);
+            if(e.message=="User is not confirmed."){
+              setIsLoading(false);
+              Alert.alert('Error', e.message + "\nPlease confirm the code",[{text: 'OK',onPress: () => {navigation.navigate('ConfirmCode', {email, password})},}]);
+            }
+            else{
+              Alert.alert('Error', e.message);
+              setIsLoading(false);
+            }
+            
         }
         
     };

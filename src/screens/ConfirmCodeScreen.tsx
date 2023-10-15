@@ -111,8 +111,9 @@ const ConfirmCodeScreen = ({route,navigation}) => {
             console.log(response);
             if (response=="SUCCESS") {
               console.log("success");
-              if(password!=null){
+              if(password!=null && password!=""){
                 setIsSigningIn(true);
+                console.log("password",password);
                 const signInResponse = await Auth.signIn(confirmEmail, password);
                 console.log(signInResponse);
                 const userId = signInResponse?.attributes?.sub;
@@ -126,15 +127,20 @@ const ConfirmCodeScreen = ({route,navigation}) => {
               }
               else{
                 setIsSigningIn(false);
-                navigation.navigate("SignUp");
+                console.log("sign in error");
+                navigation.navigate("SignIn");
               }  
             }
           }
           else{
+            setIsLoading(false);
+            console.log("email error");
             Alert.alert("Error","Enter your email");
           }
           
         } catch (e) {
+          setIsLoading(false);
+          console.log("confirm error");
           Alert.alert('Error', e.message);
         }
     };

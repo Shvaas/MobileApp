@@ -361,8 +361,8 @@ function getPastDate(numberOfDays: number) {
       <AgendaList
         sections={itemsCopy}
         renderItem={renderItem}
-        // scrollToNextEvent
         sectionStyle={[styles.section]}
+        stickySectionHeadersEnabled={false}
         // dayFormat={'yyyy-MM-d'}
       />
     </CalendarProvider>

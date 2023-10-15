@@ -62,6 +62,7 @@ const SignUpScreen = ({navigation}) => {
             setIsLoading(false);
           navigation.navigate('ConfirmCode', {email, password});
         } catch (e) {
+          setIsLoading(false);
           Alert.alert('Error', e.message);
         }
     };
@@ -109,6 +110,7 @@ const SignUpScreen = ({navigation}) => {
               value={phoneNumber}
               setValue={setPhoneNumber}
               placeholder="phone number"></CustomInput>
+            <Text style={styles.passwordReq}>Please enter phone number with country code. For example +19999999999</Text>
 
             <CustomInput
                 placeholder="password"
@@ -195,8 +197,10 @@ const styles = StyleSheet.create({
         opacity: 0.8
     },
     passwordReq: {
-      fontFamily: themeFontFamily.raleway,
+    fontFamily: themeFontFamily.raleway,
     fontSize: themefonts.font14,
     color: "#808080",
-    opacity: 0.8}
+    opacity: 0.8,
+    width: '100%'
+  }
 });

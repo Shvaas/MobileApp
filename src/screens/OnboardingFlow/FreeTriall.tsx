@@ -59,19 +59,28 @@ const FreeTrial = ({navigation}) => {
     const url = `${baseUrl}/user/${userId}`;
     try {
       setIsLoading(true);
+      var subcription = false;
+      do{
       const response = await axios.get(url, {
         signal: abortController.signal,
         timeout: 10000,
       });
 
       if (response.status === 200) {
-        const subcription = response?.data?.data.subscriptionStatus==='ACTIVE'
-        dispatch(userSlice.actions.setSubscription(subcription))
-        setIsLoading(false);
-        return;
+        subcription = response?.data?.data.subscriptionStatus==='ACTIVE';
+        console.log("subscription status ",subcription)
+        if(subcription){
+          dispatch(userSlice.actions.setSubscription(subcription))
+          setIsLoading(false);
+          navigation.navigate('Home');
+          console.log("Payment Successful");
+        }
       } else {
         throw new Error("Failed to fetch users");
       }
+    }
+    while(subcription == false)
+
     } catch (error) {
       if (abortController.signal.aborted) {
         console.log("Data fetching cancelled");
@@ -135,9 +144,9 @@ const FreeTrial = ({navigation}) => {
         }
 
         fetchUsers(userId)
-        navigation.navigate('Home')
         
-        console.log("Payment Successful");
+        
+        
 
       } else {
         Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
