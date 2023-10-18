@@ -52,8 +52,16 @@ const WaitingSpinner3 = ({navigation}) => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [hasError, setErrorFlag] = useState(false);
+    const [token,setToken] = useState();
 
     console.log("userStatus",userStatus);
+
+    const updateUserTimeZone = async (userId) => {
+      const urlBackStage = `${baseUrl}/stage/user/${userId}/update-user-data/`;
+      var timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      console.log("timezone",timeZone);
+      axios.post(urlBackStage, {timezone: timeZone});
+    }
 
     const fetchUsers = async (userId) => {
         const abortController = new AbortController();
@@ -67,29 +75,29 @@ const WaitingSpinner3 = ({navigation}) => {
           // console.log("response", response.data);
           console.log(" fetchUsers response", response.data.data);
           if (response.status === 200) {
-
+            updateUserTimeZone(userId);
             if (response?.data?.data.type === "INSTRUCTOR"){
               dispatch(userSlice.actions.setInstructor({type: 'Teacher', userId: userId,
               firsName: response?.data?.data.name, lastName:response?.data?.data.lastName,
               profilePic: response?.data?.data.userProfilePic}));
               navigation.navigate('Home');
-          }
-          else {
-              var profileQuestionnaireCompleted = response?.data?.data.profileQuestionnaireCompleted;
-              dispatch(userSlice.actions.setUser({type: 'Student', userId: userId,
-              firsName: response?.data?.data.firstName, 
-              lastName:response?.data?.data.lastName, 
-              isSubscribed:response?.data?.data.subscriptionStatus==='ACTIVE', 
-              trialUsed:response?.data?.data.trailUsed}));
-              if (profileQuestionnaireCompleted){
-                navigation.navigate('Home');
-              }
-              else{
-                navigation.navigate(RouteNames.OnboardingFlow.ProfileQuestions);
-              }
-          }
-            setIsLoading(false);
-            return;
+            }
+            else {
+                var profileQuestionnaireCompleted = response?.data?.data.profileQuestionnaireCompleted;
+                dispatch(userSlice.actions.setUser({type: 'Student', userId: userId,
+                firsName: response?.data?.data.firstName, 
+                lastName:response?.data?.data.lastName, 
+                isSubscribed:response?.data?.data.subscriptionStatus==='ACTIVE', 
+                trialUsed:response?.data?.data.trailUsed}));
+                if (profileQuestionnaireCompleted){
+                  navigation.navigate('Home');
+                }
+                else{
+                  navigation.navigate(RouteNames.OnboardingFlow.ProfileQuestions);
+                }
+            }
+              setIsLoading(false);
+              return;
           } else {
             setErrorFlag(true);
             throw new Error("Failed to fetch users");

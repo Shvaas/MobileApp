@@ -89,6 +89,25 @@ const FreeTrial = ({navigation}) => {
       }
     }
   };
+
+  const initializePaymentSheet = async (clientSecret) => {
+
+    const { error } = await initPaymentSheet({
+      merchantDisplayName: 'Yogit, Inc.',
+      setupIntentClientSecret: clientSecret,
+      defaultBillingDetails: {
+        name: 'Utkarsh Nath',
+      },
+    });
+
+    console.log("subscirption pressed step 1")
+
+    if (error) {
+      Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
+      console.log('Something went wrong2', error.message);
+      return;
+    }
+  }
   
   const onSubcriptionPressed = async () => {
     console.log("subscirption pressed");
@@ -119,34 +138,25 @@ const FreeTrial = ({navigation}) => {
           return;
         }
         setIsLoading(false)
-        const { error: paymentSheetError } = await initPaymentSheet({
-          merchantDisplayName: 'Yogit, Inc.',
-          setupIntentClientSecret: clientSecret,
-          defaultBillingDetails: {
-            name: 'Utkarsh Nath',
-          },
-        });
 
-        
+        await initializePaymentSheet(clientSecret);
 
-        if (paymentSheetError) {
-          Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
-          console.log('Something went wrong2', paymentSheetError.message);
-          return;
-        }
+        console.log("subscirption pressed step 2")
 
-        const { error: paymentError } = await presentPaymentSheet();
-        if (paymentError) {
+        const { error } = await presentPaymentSheet();
+
+        if (error) {
           setIsLoading(false)
-          Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
-          console.log('Error code: ${paymentError.code}', paymentError.message);
+          Alert.alert('Error', error.message + " Please try again later.",[{text: 'OK',onPress: () => {},}]);
+          console.log('Error code: ${error.code}', error.message);
           return;
+        } else {
+          Alert.alert('Success', 'Your order is confirmed!');
         }
+
+        console.log("subscirption pressed step 3")
 
         fetchUsers(userId)
-        
-        
-        
 
       } else {
         Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
