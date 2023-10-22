@@ -15,6 +15,7 @@ import {backgroundImageLight, backgroundImageMedium, backButton, utkarsh} from '
 
 import {useDispatch, useSelector} from 'react-redux';
 import axios from "axios";
+import Auth from '@aws-amplify/auth';
 interface PropsType {
   navigation: any;
 }
@@ -41,6 +42,9 @@ const MySessions: React.FC<PropsType> = ({navigation}) => {
           const response = await axios.get(url, {
             signal: abortController.signal,
             timeout: 10000,
+            headers: {
+              Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`
+            }
           });
           console.log(" fetchUserSessions response", response.data);
           console.log(" fetchUserSessions response", response.data.data);

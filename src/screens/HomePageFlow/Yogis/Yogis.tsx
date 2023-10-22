@@ -33,6 +33,7 @@ import {yogiSlice, YogiSelector} from '../../../store/yogiSlice';
 import {userFirstNameSelector, userLastNameSelector} from '../../../store/userSlice';
 import UserAvatar from 'react-native-user-avatar';
 import axios from "axios";
+import { Auth } from 'aws-amplify';
 interface PropsType {
   navigation: any;
 }
@@ -65,6 +66,9 @@ const Yogis: React.FC<PropsType> = ({navigation}) => {
             const response = await axios.get(url, {
               signal: abortController.signal,
               timeout: 10000,
+              headers: {
+                Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`
+              }
             });
             console.log("response", response.data);
             console.log("response", response.data.data);

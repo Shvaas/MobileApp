@@ -21,6 +21,7 @@ import {baseUrl} from '../../../constants/urls';
 import axios from "axios";
 import {useGetTeacherSessionsQuery} from '../../../store/apiSlice';
 import {instructorPhotoLinkSelector} from '../../../store/userSlice';
+import { Auth } from 'aws-amplify';
 
 
 interface PropsType {
@@ -73,6 +74,9 @@ React.useEffect(() => {
         const response = await axios.get(url, {
           signal: abortController.signal,
           timeout: 10000,
+          headers: {
+            Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`
+          }
         });
         console.log("response", response.data);
         console.log("response", response.data.data);

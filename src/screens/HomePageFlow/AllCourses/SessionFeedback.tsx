@@ -92,6 +92,10 @@ const SessionFeedback: React.FC<PropsType> = ({route, navigation}) => {
         {userId: userId,
          feedbackForInstructor: commentValue,
          courseRating: rating,
+        }, {
+          headers: {
+            Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`
+          }
         });
 
         console.log("response", response.data);

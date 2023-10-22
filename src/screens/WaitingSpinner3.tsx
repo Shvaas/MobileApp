@@ -56,14 +56,26 @@ const WaitingSpinner3 = ({navigation}) => {
 
     console.log("userStatus",userStatus);
 
-    const updateUserTimeZone = async (userId) => {
-      const urlBackStage = `${baseUrl}/stage/user/${userId}/update-user-data/`;
+    const updateUserTimeZone = async (userId, jwtToken) => {
+      const urlBackStage = `${baseUrl}/user/${userId}/update-user-data/`;
       var timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
       console.log("timezone",timeZone);
-      axios.post(urlBackStage, {timezone: timeZone});
+      console.log("token",jwtToken);
+      try{
+        const response = await axios.post(urlBackStage, {timezone: timeZone} ,{
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          }
+        });
+        console.log("update user response",response);
+      }
+      catch(error){
+        console.log("update user error",error.message);
+      }
+
     }
 
-    const fetchUsers = async (userId) => {
+    const fetchUsers = async (userId, jwtToken) => {
         const abortController = new AbortController();
         const url = `${baseUrl}/user/${userId}`;
         try {
@@ -71,11 +83,14 @@ const WaitingSpinner3 = ({navigation}) => {
           const response = await axios.get(url, {
             signal: abortController.signal,
             timeout: 10000,
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+            }
           });
           // console.log("response", response.data);
           console.log(" fetchUsers response", response.data.data);
           if (response.status === 200) {
-            updateUserTimeZone(userId);
+            updateUserTimeZone(userId, jwtToken);
             if (response?.data?.data.type === "INSTRUCTOR"){
               dispatch(userSlice.actions.setInstructor({type: 'Teacher', userId: userId,
               firsName: response?.data?.data.name, lastName:response?.data?.data.lastName,
@@ -100,12 +115,15 @@ const WaitingSpinner3 = ({navigation}) => {
               return;
           } else {
             setErrorFlag(true);
+            console.log("failed to fetch users");
             throw new Error("Failed to fetch users");
+            
           }
         } catch (error) {
           if (abortController.signal.aborted) {
             console.log("Data fetching cancelled");
           } else {
+            console.log("failed to fetch users");
             setErrorFlag(true);
             setIsLoading(false);
           }
@@ -129,7 +147,7 @@ const WaitingSpinner3 = ({navigation}) => {
           // check local db
             if (userInfo?.attributes?.sub){
                 console.log("update user userId",userInfo?.attributes?.sub);
-                fetchUsers(userInfo?.attributes?.sub);
+                fetchUsers(userInfo?.attributes?.sub, userInfo?.signInUserSession?.idToken?.jwtToken);
             }
             else{
                 console.log("updateUser2");

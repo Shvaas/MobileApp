@@ -79,6 +79,11 @@ const UpcomingSessionCardView: React.FC<PropsType> = ({item}) => {
         "userId": userId,
         "courseId": item.sessionId,
         "courseListRequestType": "CANCEL_ENROLLMENT"
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`
+        }
       });
 
       console.log("onCancel: ", response);

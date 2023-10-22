@@ -153,7 +153,11 @@ const [selectedGender, setSelectedGender] = useState();
       
       try {
         
-        const response = await axios.post(`${baseUrl}/user/${userId}/add-questionnaire`, profileQuestionnaire);
+        const response = await axios.post(`${baseUrl}/user/${userId}/add-questionnaire`, profileQuestionnaire, {
+          headers: {
+            Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`
+          }
+        });
 
         console.log("response profile quesition", response.data);
         console.log("response", response.data?.data);

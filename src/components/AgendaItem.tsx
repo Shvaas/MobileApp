@@ -19,6 +19,7 @@ import {userIsSubscribedSelector} from '../store/userSlice';
 import axios from "axios";
 import {baseUrl} from '../constants/urls';
 import { extractKeyIfExists } from '@aws-amplify/datastore/lib-esm/util';
+import { Auth } from 'aws-amplify';
 
 interface PropsType {
     item: any,
@@ -78,7 +79,11 @@ const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(`${baseUrl}/course/enroll`, session);
+      const response = await axios.post(`${baseUrl}/course/enroll`, session, {
+        headers: {
+          Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`
+        }
+      });
       console.log("response dara", response.data);
 
       if (response.data.status === 200) {

@@ -34,6 +34,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import axios from "axios";
 import { baseUrl } from '../../constants/urls';
 import { useDispatch, useSelector } from 'react-redux';
+import { Auth } from 'aws-amplify';
 
 interface PropsType {
   navigation: any;
@@ -64,6 +65,9 @@ const FreeTrial = ({navigation}) => {
       const response = await axios.get(url, {
         signal: abortController.signal,
         timeout: 10000,
+        headers: {
+          Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`
+        }
       });
 
       if (response.status === 200) {
@@ -118,6 +122,10 @@ const FreeTrial = ({navigation}) => {
         userId : userId,
         paymentRequestType: "CREATE_SUBSCRIPTION",
         subscriptionType: planType==0 ? 'MONTHLY' : 'QUARTERLY',
+      }, {
+        headers: {
+          Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`
+        }
       });
       
       console.log("response", response.data);

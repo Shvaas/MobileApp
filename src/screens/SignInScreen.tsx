@@ -47,7 +47,7 @@ const SignInScreen = ({navigation}) => {
           setIsLoading(true);
           const response = await axios.get(url, {
             signal: abortController.signal,
-            timeout: 10000,
+            timeout: 10000
           });
           console.log("response", response.data);
           console.log("response", response.data.data);

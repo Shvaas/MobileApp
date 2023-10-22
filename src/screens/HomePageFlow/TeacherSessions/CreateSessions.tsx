@@ -116,7 +116,11 @@ const HideKeyboard = ({ children }) => (
 
 
         try {
-          const response = await axios.post(`${baseUrl}/course/create`, serverSession);
+          const response = await axios.post(`${baseUrl}/course/create`, serverSession, {
+            headers: {
+              Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`
+            }
+          });
   
           console.log("response", response.data);
           console.log("response", response.data?.data);

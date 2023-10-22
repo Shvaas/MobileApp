@@ -85,7 +85,10 @@ import { baseUrl } from '../constants/urls';
            feedbackForStudent: commentValue,
            courseListRequestType: "ADD_FEEDBACK_FOR_STUDENT",
            courseId: sessionId
-        });
+        },
+        {headers: {
+          Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`
+        }});
 
         console.log("response", response.data);
         console.log("response", response.data?.data);

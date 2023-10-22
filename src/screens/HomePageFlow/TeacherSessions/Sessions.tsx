@@ -85,7 +85,11 @@ const Sessions: React.FC<PropsType> = ({route, navigation}) => {
         {"userId": userId,
         "courseId": session.sessionId,
         "courseListRequestType": "UPDATE_ATTENDANCE",
-        "attendance":attendanceDict});
+        "attendance":attendanceDict}, {
+          headers: {
+            Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`
+          }
+        });
 
         console.log("response", response.data);
         console.log("response", response.data?.data);

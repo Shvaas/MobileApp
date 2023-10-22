@@ -129,7 +129,11 @@ import Spinner from 'react-native-loading-spinner-overlay';
     const onManageSubscription = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.post(`${baseUrl}/payment/dashboard-url`,{userId: userId});
+        const response = await axios.post(`${baseUrl}/payment/dashboard-url`,{userId: userId}, {
+          headers: {
+            Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`
+          }
+        });
         setIsLoading(false);
         console.log("response", response.data);
         console.log("response", response.data?.data?.redirectURL);
