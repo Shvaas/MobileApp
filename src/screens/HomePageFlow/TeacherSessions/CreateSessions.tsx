@@ -29,6 +29,7 @@ import {baseUrl} from '../../../constants/urls';
 
 import {useCreateSessionMutation} from '../../../store/apiSlice';
 import axios from "axios";
+import { Auth } from 'aws-amplify';
 interface PropsType {
   navigation: any,
   route: any;

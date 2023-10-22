@@ -26,6 +26,7 @@ import {
   import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 import { baseUrl } from '../constants/urls';
+import { Auth } from 'aws-amplify';
 
   interface PropsType {
     student : any,

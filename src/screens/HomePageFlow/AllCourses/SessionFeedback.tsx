@@ -28,6 +28,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 import {baseUrl} from '../../../constants/urls';
 import axios from "axios";
+import { Auth } from 'aws-amplify';
 
 interface PropsType {
     navigation: any,

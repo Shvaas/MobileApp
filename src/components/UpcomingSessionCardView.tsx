@@ -21,6 +21,7 @@ import {baseUrl} from '../constants/urls';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import {getSessions} from '../../../store/userSessionSlice';
+import { Auth } from 'aws-amplify';
   
 interface PropsType {
   course : object
