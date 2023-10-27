@@ -171,7 +171,7 @@ import { Auth } from 'aws-amplify';
                     placeholder=" Write an encouraging feedback..." 
                     value={commentValue}
                     onChangeText={setcommentValue}
-                    multiline/>}
+                    />}
                 </View>
                 <View style={styles.rightContainer}>
                     <Button titleStyle={styles.button} onPress={onPostButton} type="submit" title={buttonTitle}  

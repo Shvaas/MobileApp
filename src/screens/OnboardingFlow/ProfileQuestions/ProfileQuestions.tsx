@@ -32,6 +32,7 @@ import {
  
  import { useCreatePaymentIntentMutation } from '../../store/apiSlice';
  import {userFirstNameSelector} from '../../../store/userSlice';
+ import { StackActions } from '@react-navigation/native';
  
  import QuestionItem from './QuestionItem'
  import Paginator from './Paginator';
@@ -175,8 +176,13 @@ const [selectedGender, setSelectedGender] = useState();
             questionTwoState: questionTwoState,
           }));
 
-          navigation.navigate(RouteNames.OnboardingFlow.FreeTrial);
-
+          navigation.navigate(RouteNames.OnboardingFlow.FreeTrial, {onSignUp:true});
+          // navigation.dispatch(
+          //   StackActions.replace( RouteNames.OnboardingFlow.FreeTrial, {
+          //     onSignUp: true,
+          //   })
+          // );
+          
         } else {
           Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
           throw new Error("An error has occurred");

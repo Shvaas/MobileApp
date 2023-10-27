@@ -4,10 +4,9 @@ import {
    StyleSheet,
    Text,
    View,
-   Linking,
+   TextInput,
    ImageBackground,
    Image,
-   Button,
    Alert,
  } from 'react-native';
 import React, { Component } from 'react';
@@ -16,7 +15,7 @@ import { useEffect, useState } from 'react';
 
 import {themeFontFamily, themefonts,themeColor} from '../../constants/theme';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
-import BackgroundImage from './LoginBackgroundImage';
+import { Button } from 'react-native-elements';
 import {backgroundImageLight, backButton, tick, line} from '../../images/imageLinks';
 
 import SimpleButton from '../../common/buttons/SimpleButton';
@@ -38,11 +37,16 @@ import { Auth } from 'aws-amplify';
 
 interface PropsType {
   navigation: any;
+  onSignUp: boolean;
 }
 
-const FreeTrial = ({navigation}) => {
+const FreeTrial = ({onSignUp=false, navigation}) => {
+
+  console.log("onSignUp", onSignUp);
+  
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [couponCode, setCouponCode] = useState("");
   const [planType, setPlan] = useState(0);
   const [createPaymentIntent] = useCreatePaymentIntentMutation();
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
@@ -54,6 +58,7 @@ const FreeTrial = ({navigation}) => {
   }, []);
 
   const userId = useSelector((state) => state.user.userId);
+
 
   const fetchUsers = async (userId) => {
     const abortController = new AbortController();
@@ -188,9 +193,14 @@ const FreeTrial = ({navigation}) => {
           />
             <View style={styles.topContainer}>
                 <GestureHandlerRootView>
+                  {onSignUp? <TouchableOpacity>
+                    <Image source={backButton} style={[styles.backbutton, {'opacity': 0}]}/>
+                  </TouchableOpacity> 
+                  :
                   <TouchableOpacity onPress={()=>navigation.goBack()}>
                     <Image source={backButton} style={styles.backbutton}/>
                   </TouchableOpacity>
+                  }
                 </GestureHandlerRootView>
                 <View style={styles.headingContainer}>
                     <Text style={styles.heading}>Get Premium</Text>
@@ -241,15 +251,30 @@ const FreeTrial = ({navigation}) => {
             specialText='LIMITED OFFER' bottomText='Unlimited Classes' selected={planType==1}/>
             </View>
 
+            <View style={styles.feedbackContainer}>
+                <View style={styles.leftContainer}>
+                    <TextInput 
+                    placeholder="Coupon Code" 
+                    value={couponCode}
+                    style={{'fontSize': themefonts.font16}}
+                    onChangeText={setCouponCode}/>
+                </View>
+                <View style={styles.rightContainer}>
+                    <Button titleStyle={styles.button} onPress={()=>{}} type="submit" title="Apply"  
+                        className="comments-button" />
+                </View>
+            </View>
+            <Text style={styles.couponText}> 25% Coupon Applied </Text>
+
             <SimpleButton
             title="Start 7 days Free Trial"
             onPress={onSubcriptionPressed}
             containerStyle={styles.primaryButton}
             />
             <GestureHandlerRootView>
-            <TouchableOpacity onPress={()=>navigation.navigate('Home')}>
+            {onSignUp && <TouchableOpacity onPress={()=>navigation.navigate('Home')}>
               <Text style={styles.skip}>Skip</Text>
-            </TouchableOpacity>
+            </TouchableOpacity>}
             </GestureHandlerRootView>
 
           
@@ -280,7 +305,7 @@ const styles = StyleSheet.create({
   },
 
   backbutton: {
-    margin: 10,
+    marginLeft: 10,
   },
 
   buttonContainer: {
@@ -303,8 +328,6 @@ const styles = StyleSheet.create({
   infoContainer: {
     justifyContent:'center',
     alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
     flex: 0.1,
   },
 
@@ -312,13 +335,14 @@ const styles = StyleSheet.create({
     fontSize: themefonts.font16,
     fontFamily: themeFontFamily.raleway,
     color: '#222222',
+    marginTop: 10, 
     marginHorizontal: 10, 
   },
 
   bodyContainer: {
     justifyContent:'center',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 10,
     flex: 0.5,
   },
 
@@ -340,7 +364,7 @@ const styles = StyleSheet.create({
     fontSize: themefonts.font24,
     fontFamily: themeFontFamily.ralewayMedium,
     color: themeColor.black,
-    marginBottom: 20
+    marginBottom: 10
   },
 
   bodyItemText: {
@@ -355,7 +379,7 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     justifyContent:'space-around',
     alignItems: 'center',
-    marginBottom: 10,
+    flex:0.1,
   },
 
   lineText: {
@@ -368,14 +392,14 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     justifyContent:'space-around',
     alignItems: 'center',
-    flex: 0.3
+    flex: 0.4,
   },
 
   primaryButton: {
     marginHorizontal: 10,
     width: 200,
     alignSelf:'center',
-    marginTop: 20,
+    marginTop: 5,
   },
 
   skip:{
@@ -387,19 +411,49 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
 
-//   heading: {
-//     fontSize: themefonts.font32,
-//     alignContent:'center',
-//     justifyContent: 'center',
-    
-//     fontFamily: themeFontFamily.ralewaySemiBold,
-//     color: themeColor.black,
-//     marginTop:0,
-//     borderColor:'black',
-//     borderWidth:2,
-    
-    
-//   },
+feedbackContainer: {
+  flexDirection:"row",
+  margin:2,
+  marginHorizontal:10, 
+  // backgroundColor: '#ebe8e9',
+  borderWidth:1,
+  borderColor: themeColor.vividRed,
+  borderRadius: 10,
+},
+leftContainer: {
+    flex:3,
+    paddingLeft: 10,
+    //borderWidth:1, 
+    justifyContent: 'center',
+  },
+  couponText:{
+    marginHorizontal:10,
+    fontSize: themefonts.font14,
+    fontFamily: themeFontFamily.raleway,
+    color: '#000',
+    opacity: 0
+  },
+
+  rightContainer: {
+    flex:1,
+    //borderWidth:1, 
+    flexDirection:"row",
+    justifyContent:'flex-end',
+    margin:5,
+  },
+
+  descriptionText: {
+    margin:10,
+    fontSize: themefonts.font14,
+    fontFamily: themeFontFamily.raleway,
+    color: '#000',
+  },
+  
+  button: {
+    color: themeColor.vividRed,
+    fontSize: themefonts.font18,
+    fontFamily: themeFontFamily.raleway,
+  },
 
   
   image: {
