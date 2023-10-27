@@ -4,7 +4,7 @@ import {Image, SafeAreaView, StyleSheet,
 import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Carousel from 'react-native-reanimated-carousel';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {GestureHandlerRootView, ScrollView} from 'react-native-gesture-handler';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import RouteNames from '../../../constants/routeName';
 import { backButton, backgroundImageMedium, backgroundImageLight } from '../../../images/imageLinks';
@@ -86,7 +86,9 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
             <Image source={backButton} style={styles.backbutton}/>
           </TouchableOpacity>
         </GestureHandlerRootView>
-
+        
+        <GestureHandlerRootView>
+        <ScrollView>
         <Image source={{uri: yogiProfile.image}} style={styles.imageStyle} />
         <View style={{flexDirection:'row', alignItems:'center' , justifyContent:'center'}}>
             <Text style={styles.usernameText}>{yogiProfile.name}</Text>
@@ -112,7 +114,7 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
           <View style={{marginHorizontal:10, marginTop:20}}>
               <Text style={styles.textStyle}>Experience: {yogiProfile.yearsOfExperience}</Text>
               <Text style={styles.textStyle}>{degree}</Text>
-              <Text style={styles.textStyle}>Students trained: {yogiProfile.studentsTrained}</Text>
+              {/* <Text style={styles.textStyle}>Students trained: {yogiProfile.studentsTrained}</Text> */}
           </View>
           <View style={{ marginTop:0, flex:1}}>
             <SimpleButton
@@ -124,11 +126,11 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
           </View>
 
         <View style={{marginHorizontal:10}}>
-          <View style={{flexDirection:'row', marginBottom:5}}>
+          {/* <View style={{flexDirection:'row', marginBottom:5}}>
             <Text style={styles.textStyle}>Connect on: </Text>
             <FontAwesome name="facebook-square" size={20} style={styles.fbIcon} />
             <FontAwesome name="instagram" size={20} color={themeColor.vividRed} />
-        </View>
+        </View> */}
           <Text style={styles.textStyle}>
           {yogiProfile.description}
           </Text>
@@ -144,8 +146,11 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
             width={wp(88)}
             height={220}
           />
+          
         </GestureHandlerRootView>
-
+        </ScrollView>
+        </GestureHandlerRootView>
+        
       </ImageBackground>
     </SafeAreaView>
   );
@@ -161,6 +166,7 @@ const styles = StyleSheet.create({
   },
   textContainerStyle: {
     margin: 10,
+    height: 200,
     shadowColor: 'black',
     shadowOpacity: 0.25,
     shadowRadius: 4,

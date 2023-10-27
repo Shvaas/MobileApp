@@ -35,8 +35,8 @@ const ProfileCardView: React.FC<PropsType> = ({profile, onButtonPress, navigatio
   if (certificates.length > 0){
     degree += certificates[certificates.length-1];
   }
-
-  console.log(profile);
+  
+  console.log("profile", profile);
   return (
     <View style={styles.container}>
       <View style={styles.internalContainer}>
@@ -54,9 +54,7 @@ const ProfileCardView: React.FC<PropsType> = ({profile, onButtonPress, navigatio
           />
           <Text style={styles.textStyle}>Experience: {yearsOfExperience}</Text>
           <Text style={styles.textStyle}>{degree}</Text>
-          <Text style={styles.textStyle}>
-            Students trained: {studentsTrained}
-          </Text>
+          {/* <Text style={styles.textStyle}> Students trained: {studentsTrained} </Text> */}
         </View>
       </View>
       <View style={styles.chipContainer}>
@@ -99,7 +97,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     height: 100,
     width: 100,
-    resizeMode: 'contain',
+    alignSelf: 'center',
+    resizeMode: 'cover',
   },
   textStyle: {
     fontFamily: themeFontFamily.raleway,

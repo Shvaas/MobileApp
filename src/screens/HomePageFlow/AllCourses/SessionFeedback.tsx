@@ -47,10 +47,13 @@ const SessionFeedback: React.FC<PropsType> = ({route, navigation}) => {
 
     const dispatch = useDispatch();
     const {session} = route.params;
-
+  
+    
     const [commentValue, setcommentValue] = useState(session.feedbackForTeacher);
     const [rating, setRating] = useState(session.ratingForTeacher);
-    console.log("SessionFeedback: ", session, session.title);
+    console.log("SessionFeedback: ", session, session.feedbackForTeacher);
+  
+    
 
     const month = ['Jan', 'Feb', 'Mar', 'April', 'May',
                   'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];

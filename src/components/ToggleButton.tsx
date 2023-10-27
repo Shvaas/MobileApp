@@ -48,6 +48,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
   dataPast,
 }) => {
 
+  
   const selectedOption = activeOption ?? OPTION.FIRST;
   const handleOptionPress = (index) => {
     onOptionPress(index);
@@ -141,6 +142,8 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     backgroundColor: themeColor.white,
+    borderWidth:0,
+    marginTop:10,
     borderRadius: 6,
     // padding: 4,
     marginHorizontal: 5,

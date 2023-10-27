@@ -113,6 +113,8 @@ const UpcomingSessionCardView: React.FC<PropsType> = ({item}) => {
     
   }
 
+  console.log("item.instructorPhotoLink", item);
+  
   return (
     <View style={styles.container}>
       <Spinner

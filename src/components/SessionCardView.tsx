@@ -36,7 +36,9 @@ import {
     if(myDate.getHours()> 12){
       am = " pm";
     }
-    
+  
+  console.log("SessionCardView", item);
+  
   const displayDate = myDate.getDate()
                       + " " 
                       + month[myDate.getMonth()]
@@ -46,9 +48,10 @@ import {
                       + minutes
                       + am;
 
+
     return (
         <TouchableOpacity style={styles.container} testID={'item'} onPress={() =>
-          navigation.navigate(RouteNames.HomePageFlow.AllCourseDetail,{session: item})}>
+          navigation.navigate(RouteNames.HomePageFlow.AllCourseDetail, {session: item})}>
           <View style={{flex:0.6, flexDirection:'column'}}>
             <Text style={[styles.itemTitleText,{marginBottom:5}]}>{item.title}</Text>
             <Text style={[styles.textStyle,{marginTop:5}]}>{item.description}</Text>

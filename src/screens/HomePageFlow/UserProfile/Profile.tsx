@@ -33,6 +33,7 @@ import {
  import {userFirstNameSelector, userLastNameSelector, userIsSubscribedSelector} from '../../../store/userSlice';
  import {userSessionSelector} from '../../../store/userSessionSlice';
  import UserAvatar from 'react-native-user-avatar';
+
  
  interface PropsType {
    navigation: any;

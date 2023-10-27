@@ -82,13 +82,13 @@ export const userSessionSlice = createSlice({
              state.currentSession.instructorId = sessions[i].instructorId;
              state.currentSession.name = sessions[i].instructorName;
              
-             if(serverYogi[i]?.instructorProfilePicture){
-              if(serverYogi[i]?.instructorProfilePicture.substring(0, 5) === "https"){
-                state.currentSession.instructorPhotoLink = sessions[i]?.instructorProfilePicture;
-              }else{
-                state.currentSession.instructorPhotoLink = 'https://via.placeholder.com/640x360';
-              }
-             }
+             
+            if(sessions[i]?.instructorProfilePicture.substring(0, 5) === "https"){
+              state.currentSession.instructorPhotoLink = sessions[i]?.instructorProfilePicture;
+            }else{
+              state.currentSession.instructorPhotoLink = 'https://via.placeholder.com/640x360';
+            }
+             
              
              state.currentSession.title = sessions[i].courseName;
              state.currentSession.description = sessions[i].description;
@@ -99,6 +99,9 @@ export const userSessionSlice = createSlice({
              state.currentSession.feedbackForTeacher = sessions[i]?.feedbackForInstructor ? sessions[i]?.feedbackForInstructor : '';
              state.currentSession.ratingForTeacher = sessions[i]?.courseRatingByStudent ? sessions[i]?.courseRatingByStudent : 5;
 
+
+             console.log("state.currentSession", state.currentSession);
+             
              if(newSession){
               state.userSessions.push(state.currentSession);
              }

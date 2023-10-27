@@ -126,7 +126,7 @@ export const yogiSlice = createSlice({
              state.currentYogi.sessions = serverYogi[i]?.slots;
              state.currentYogi.certificates = serverYogi[i]?.degree? serverYogi[i]?.degree : ['RYT-500'];
              state.currentYogi.interest = serverYogi[i]?.interests ? serverYogi[i]?.interests : ['Yoga', 'Pranayama'];
-             state.currentYogi.yearsOfExp = serverYogi[i]?.yearsOfExperience? serverYogi[i]?.yearsOfExperience: 10;
+             state.currentYogi.yearsOfExperience = serverYogi[i]?.yearsOfExperience? serverYogi[i]?.yearsOfExperience: 10;
              state.currentYogi.numberOfRatings = serverYogi[i]?.numberOfRatings? serverYogi[i]?.numberOfRatings: 0;
              if(serverYogi[i]?.userProfilePic){
               if(serverYogi[i]?.userProfilePic.substring(0, 5) === "https"){

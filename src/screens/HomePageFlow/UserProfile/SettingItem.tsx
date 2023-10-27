@@ -27,6 +27,7 @@ import {baseUrl} from '../../../constants/urls';
 import axios from "axios";
 import { InAppBrowser } from 'react-native-inappbrowser-reborn';
 import Spinner from 'react-native-loading-spinner-overlay';
+import RNRestart from 'react-native-restart';
 
   interface PropsType {
     item : any,
@@ -70,7 +71,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
         dispatch(sessionSlice.actions.setInitialState(null));
         dispatch(userSessionSlice.actions.setInitialState(null));
         dispatch(yogiSlice.actions.setInitialState(null));
-
+        RNRestart.restart();
         
         navigation.reset({
           index: 0,

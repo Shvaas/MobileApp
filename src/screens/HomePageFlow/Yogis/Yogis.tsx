@@ -128,9 +128,10 @@ const Yogis: React.FC<PropsType> = ({navigation}) => {
             fontFamily:themeFontFamily.ralewayBold, alignSelf:"center"}}>
             YOGIT</Text>
           <View style={{flexDirection:"row"}}>
-            <IoniconsIcon name="notifications" color={"#939393"} size={30} style={{alignSelf:"center", marginRight:5}}/>
+            <IoniconsIcon name="notifications" color={"#939393"} size={30} style={{alignSelf:"center", marginRight:5, opacity:0}}/>
           </View>
           </View>
+          
           <FlatList
             style={{height:'90%'}}
             data={yogi}
@@ -195,7 +196,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   contentContainer: {
-    paddingVertical: 5,
+    marginVertical: 5,
     contentOffset: {x: 0, y: 0},
   },
   imageStyle: {
