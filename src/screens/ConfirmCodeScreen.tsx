@@ -60,6 +60,9 @@ const ConfirmCodeScreen = ({route,navigation}) => {
           const response = await axios.get(url, {
             signal: abortController.signal,
             timeout: 10000,
+            headers: {
+              Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`
+            }
           });
           console.log("response", response.data);
           console.log("response", response.data.data);
@@ -88,15 +91,22 @@ const ConfirmCodeScreen = ({route,navigation}) => {
             setIsSigningIn(false);
             return;
           } else {
-            setErrorFlag(true);
-            throw new Error("Failed to fetch users");
+            // setErrorFlag(true);
+            setIsLoading(false);
+            console.log("confirm error", "Failed to fetch user");
+            Alert.alert('Error', "Failed to fetch user");
+            // throw new Error("Failed to fetch users");
           }
         } catch (error) {
           if (abortController.signal.aborted) {
             console.log("Data fetching cancelled");
           } else {
-            setErrorFlag(true);
+            // setErrorFlag(true);
+            setIsLoading(false);
+            console.log("confirm error", error.message);
+            Alert.alert('Error', error.message);
             setIsSigningIn(false);
+            return;
           }
         }
       };

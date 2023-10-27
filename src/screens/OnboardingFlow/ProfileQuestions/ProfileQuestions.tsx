@@ -48,6 +48,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Auth} from "aws-amplify";
 import {withAuthenticator, AmplifyTheme} from 'aws-amplify-react-native'
 import { baseUrl } from '../../../constants/urls';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const MyTheme = {
   ...AmplifyTheme,
@@ -119,6 +120,7 @@ const [selectedGender, setSelectedGender] = useState();
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const slidesRef = useRef(null);
 
   const userId = useSelector((state) => state.user.userId);
@@ -142,7 +144,7 @@ const [selectedGender, setSelectedGender] = useState();
       if (currentIndex < 2){
         slidesRef.current.scrollToIndex({index: currentIndex+1});
       }else{
-        
+        setIsLoading(true);
         let profileQuestionnaire = {profileQuestionnaire: {
           height: selectedHeight,
           weight: selectedWeight,
@@ -176,6 +178,7 @@ const [selectedGender, setSelectedGender] = useState();
             questionTwoState: questionTwoState,
           }));
 
+          setIsLoading(false);
           navigation.navigate(RouteNames.OnboardingFlow.FreeTrial, {onSignUp:true});
           // navigation.dispatch(
           //   StackActions.replace( RouteNames.OnboardingFlow.FreeTrial, {
@@ -184,10 +187,12 @@ const [selectedGender, setSelectedGender] = useState();
           // );
           
         } else {
+          setIsLoading(false);
           Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
           throw new Error("An error has occurred");
         }
       } catch (error) {
+        setIsLoading(false);
         Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]); 
       }
       }
@@ -209,7 +214,11 @@ const [selectedGender, setSelectedGender] = useState();
    return (
      <SafeAreaView style={styles.safeArea}>
          <ImageBackground source={backgroundImageMedium} style={styles.image}>
-         
+         <Spinner
+            visible={isLoading}
+            textContent={'Loading...'}
+            textStyle={styles.spinnerTextStyle}
+          />
          <View style={styles.topContainer}>
             <GestureHandlerRootView>    
                   <TouchableOpacity disabled={currentIndex==0} onPress={scrollBack}>
@@ -398,5 +407,11 @@ export default ProfileQuestion;
     margin: 10,
   },
  
+  spinnerTextStyle: {
+    fontFamily: themeFontFamily.raleway,
+    fontSize: themefonts.font14,
+    color: themeColor.vividRed,
+    opacity: 0.8
+  },
  
  });
