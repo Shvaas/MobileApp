@@ -28,6 +28,7 @@ import axios from "axios";
 import { InAppBrowser } from 'react-native-inappbrowser-reborn';
 import Spinner from 'react-native-loading-spinner-overlay';
 import RNRestart from 'react-native-restart';
+import { CommonActions } from '@react-navigation/native';
 
   interface PropsType {
     item : any,
@@ -73,11 +74,16 @@ import RNRestart from 'react-native-restart';
         dispatch(yogiSlice.actions.setInitialState(null));
         RNRestart.restart();
         
-        navigation.reset({
+        // navigation.reset({
+        //   index: 0,
+        //   routes: [{ name : "StudentTabNavigator"}],
+        // });
+        // navigation.navigate('SignIn');
+        const resetAction = CommonActions.reset({
           index: 0,
-          routes: [{ name : "StudentTabNavigator"}],
+          routes: [{ name: 'SignIn'}]
         });
-        navigation.navigate('SignIn');
+        navigation.dispatch(resetAction);
         
         
       })

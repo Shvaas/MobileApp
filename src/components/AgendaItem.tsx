@@ -162,7 +162,7 @@ const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
       }]);
       }
     else{
-      navigation.navigate(RouteNames.OnboardingFlow.FreeTrial)
+      navigation.navigate(RouteNames.OnboardingFlow.FreeTrial, {onSignUp:false})
     }
   }
     

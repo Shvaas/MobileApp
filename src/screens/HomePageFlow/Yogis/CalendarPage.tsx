@@ -36,6 +36,7 @@ interface PropsType {
 // };
 
 const CalendarPage: React.FC<PropsType> = ({route, navigation}) => {
+
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setErrorFlag] = useState(false);
 

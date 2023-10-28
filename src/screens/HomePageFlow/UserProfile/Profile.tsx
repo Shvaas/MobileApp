@@ -138,7 +138,7 @@ import {
           </GestureHandlerRootView> */}
 
           { !subscription && <GestureHandlerRootView style={styles.premiumContainer}>
-            <TouchableOpacity onPress={()=>navigation.navigate(RouteNames.OnboardingFlow.FreeTrial)}>
+            <TouchableOpacity onPress={()=>navigation.navigate(RouteNames.OnboardingFlow.FreeTrial, {onSignUp:false})}>
                 <View style={{height:'100%', alignItems: 'center', justifyContent:'center'}}>
                     <Text style={[styles.inviteHeadingText, {color:themeColor.white}]}>Get Shvaas Premium</Text>
                     <Text style={[styles.inviteText, {color:themeColor.white}]}>50 % off on all subsciptions</Text>

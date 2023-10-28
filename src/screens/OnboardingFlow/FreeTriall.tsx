@@ -34,14 +34,17 @@ import axios from "axios";
 import { baseUrl } from '../../constants/urls';
 import { useDispatch, useSelector } from 'react-redux';
 import { Auth } from 'aws-amplify';
+import RouteNames from '../../constants/routeName';
+import { CommonActions } from '@react-navigation/native';
 
 interface PropsType {
   navigation: any;
   onSignUp: boolean;
 }
 
-const FreeTrial = ({onSignUp=false, navigation}) => {
+const FreeTrial = ({route, navigation}) => {
 
+  const {onSignUp} = route.params;
   console.log("onSignUp", onSignUp);
   
   const [user, setUser] = useState(null);
@@ -182,6 +185,15 @@ const FreeTrial = ({onSignUp=false, navigation}) => {
 
   };
 
+  const onSkip = async() =>{
+    const resetAction = CommonActions.reset({
+      index: 0,
+      routes: [{ name: 'Home'}]
+    });
+    navigation.dispatch(resetAction);
+    // navigation.navigate('Home')
+  }
+
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -193,13 +205,14 @@ const FreeTrial = ({onSignUp=false, navigation}) => {
           />
             <View style={styles.topContainer}>
                 <GestureHandlerRootView>
-                  {onSignUp? <TouchableOpacity>
-                    <Image source={backButton} style={[styles.backbutton, {'opacity': 0}]}/>
-                  </TouchableOpacity> 
-                  :
-                  <TouchableOpacity onPress={()=>navigation.goBack()}>
-                    <Image source={backButton} style={styles.backbutton}/>
-                  </TouchableOpacity>
+                  {onSignUp?
+                    <TouchableOpacity>
+                      <Image source={backButton} style={[styles.backbutton, {'opacity': 0}]}/>
+                    </TouchableOpacity> 
+                    :
+                    <TouchableOpacity onPress={()=>navigation.goBack()}>
+                      <Image source={backButton} style={styles.backbutton}/>
+                    </TouchableOpacity>
                   }
                 </GestureHandlerRootView>
                 <View style={styles.headingContainer}>
@@ -272,7 +285,7 @@ const FreeTrial = ({onSignUp=false, navigation}) => {
             containerStyle={styles.primaryButton}
             />
             <GestureHandlerRootView>
-            {onSignUp && <TouchableOpacity onPress={()=>navigation.navigate('Home')}>
+            {onSignUp && <TouchableOpacity onPress={onSkip}>
               <Text style={styles.skip}>Skip</Text>
             </TouchableOpacity>}
             </GestureHandlerRootView>

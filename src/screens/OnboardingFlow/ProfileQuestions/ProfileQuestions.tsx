@@ -32,7 +32,6 @@ import {
  
  import { useCreatePaymentIntentMutation } from '../../store/apiSlice';
  import {userFirstNameSelector} from '../../../store/userSlice';
- import { StackActions } from '@react-navigation/native';
  
  import QuestionItem from './QuestionItem'
  import Paginator from './Paginator';
@@ -179,12 +178,8 @@ const [selectedGender, setSelectedGender] = useState();
           }));
 
           setIsLoading(false);
+
           navigation.navigate(RouteNames.OnboardingFlow.FreeTrial, {onSignUp:true});
-          // navigation.dispatch(
-          //   StackActions.replace( RouteNames.OnboardingFlow.FreeTrial, {
-          //     onSignUp: true,
-          //   })
-          // );
           
         } else {
           setIsLoading(false);
@@ -287,45 +282,6 @@ const [selectedGender, setSelectedGender] = useState();
    );
  };
 
- const signUpConfig = {
-  header: 'My Customized Sign Up',
-  hideAllDefaults: true,
-  defaultCountryCode: '1',
-  signUpFields: 
-  [
-    {
-      label: 'Name',
-      key: 'name',
-      required: true,
-      displayOrder: 1,
-      type: 'string'
-    },
-    {
-      label: 'Email',
-      key: 'email',
-      required: true,
-      displayOrder: 2,
-      type: 'string'
-    },
-    {
-      label: 'Password',
-      key: 'password',
-      required: true,
-      displayOrder: 3,
-      type: 'password'
-    },
-    {
-      label: 'PhoneNumber',
-      key: 'phone_number',
-      required: true,
-      displayOrder: 4,
-      type: 'string'
-    },
-    // and other custom attributes
-  ]
-};
- 
-// export default withAuthenticator(ProfileQuestion, { usernameAttributes: 'email', signUpConfig, includeGreetings: true }, [], null, MyTheme);
 export default ProfileQuestion;
  
  const styles = StyleSheet.create({
