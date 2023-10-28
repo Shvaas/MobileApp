@@ -47,7 +47,10 @@ const SignInScreen = ({navigation}) => {
           setIsLoading(true);
           const response = await axios.get(url, {
             signal: abortController.signal,
-            timeout: 10000
+            timeout: 10000,
+            headers: {
+              Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`
+            }
           });
           console.log("response", response.data);
           console.log("response", response.data.data);

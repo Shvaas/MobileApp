@@ -14,14 +14,12 @@ import ProfileQuestion from '../screens/OnboardingFlow/ProfileQuestions/ProfileQ
 import Sessions from '../screens/HomePageFlow/TeacherSessions/Sessions';
 import SessionFeedback from '../screens/HomePageFlow/AllCourses/SessionFeedback';
 import Profile from '../screens/HomePageFlow/UserProfile/Profile';
-import WaitingSpinner from '../screens/OnboardingFlow/WaitingSpinner';
 import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import LoginStack from './LoginStack';
 import Auth from '@aws-amplify/auth';
 import { ActivityIndicator, ImageBackground } from 'react-native';
 import { backgroundImageMedium } from '../images/imageLinks';
-import WaitingSpinner2 from '../screens/WaitingSpinner2';
 import ConfirmCodeScreen from '../screens/ConfirmCodeScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import NewPasswordScreen from '../screens/NewPasswordScreen';
@@ -47,9 +45,6 @@ const OnboardingStack = () => {
         gestureEnabled: false,
         headerShown: false,
       }}>
-      {/* <Stack.Screen 
-      name={'spinner'} 
-      component={WaitingSpinner2}/> */}
       <Stack.Screen 
       name={'spinner'} 
       component={WaitingSpinner3}/>
