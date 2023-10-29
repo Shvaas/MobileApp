@@ -29,6 +29,7 @@ import { InAppBrowser } from 'react-native-inappbrowser-reborn';
 import Spinner from 'react-native-loading-spinner-overlay';
 import RNRestart from 'react-native-restart';
 import { CommonActions } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
   interface PropsType {
     item : any,
@@ -72,6 +73,7 @@ import { CommonActions } from '@react-navigation/native';
         dispatch(sessionSlice.actions.setInitialState(null));
         dispatch(userSessionSlice.actions.setInitialState(null));
         dispatch(yogiSlice.actions.setInitialState(null));
+        AsyncStorage.clear();
         RNRestart.restart();
         
         // navigation.reset({

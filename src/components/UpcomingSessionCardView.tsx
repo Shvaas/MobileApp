@@ -19,6 +19,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import axios from "axios";
 import {baseUrl} from '../constants/urls';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { InAppBrowser } from 'react-native-inappbrowser-reborn';
+import { Linking} from 'react-native';
 
 import {getSessions} from '../../../store/userSessionSlice';
 import { Auth } from 'aws-amplify';
@@ -113,6 +115,70 @@ const UpcomingSessionCardView: React.FC<PropsType> = ({item}) => {
     
   }
 
+  const openLink = async (url) => {
+    console.log(url);
+    
+    try {
+      if (await InAppBrowser.isAvailable()) {
+        const result = await InAppBrowser.open(url, {
+          // iOS Properties
+          dismissButtonStyle: 'cancel',
+          // preferredBarTintColor: themeColor.vividRed,
+          // preferredControlTintColor: 'white',
+          readerMode: false,
+          animated: true,
+          modalPresentationStyle: 'fullScreen',
+          modalTransitionStyle: 'coverVertical',
+          modalEnabled: true,
+          enableBarCollapsing: false,
+          // Android Properties
+          showTitle: true,
+          secondaryToolbarColor: 'black',
+          navigationBarColor: 'black',
+          navigationBarDividerColor: 'white',
+          enableUrlBarHiding: true,
+          enableDefaultShare: true,
+          forceCloseOnRedirection: false,
+          // Specify full animation resource identifier(package:anim/name)
+          // or only resource name(in case of animation bundled with app).
+          animations: {
+            startEnter: 'slide_in_right',
+            startExit: 'slide_out_left',
+            endEnter: 'slide_in_left',
+            endExit: 'slide_out_right'
+          },
+        })
+      }
+      else Linking.openURL(url)
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Sorry, something went wrong!")
+    }
+  }
+
+  const onStartSession = async () => {
+
+    setIsLoading(true);
+      try {
+        const zoomLink = item.zoomlink;
+        setIsLoading(false);
+        console.log("zoom link", zoomLink);
+        
+        if (zoomLink != '') {
+          await InAppBrowser.close();
+          openLink(zoomLink);
+          
+        } else {
+          setIsLoading(false);
+          Alert.alert('Error','Link to join the session will be updated at least 12 hours before the session. If you are seeing this within 12 hours of the session please contact us.',[{text: 'OK',onPress: () => {},}]);
+        }
+      } catch (error) {
+        setIsLoading(false);
+        Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
+      }
+
+  }
+
   console.log("item.instructorPhotoLink", item);
   
   return (
@@ -135,6 +201,7 @@ const UpcomingSessionCardView: React.FC<PropsType> = ({item}) => {
         <SimpleButton
         title='Start'
         containerStyle={styles.primaryButton}
+        onPress={onStartSession}
         />
         <SimpleButton
         title='Cancel'

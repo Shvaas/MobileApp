@@ -226,8 +226,9 @@ function getPastDate(numberOfDays: number) {
   for (let index = 0; index < session.length; index++) {
     let myDate = session[index].start_date;
     let dateObj = new Date(myDate);
-    const key = myDate.substring(0,myDate.search('T'));
-    
+    // const key = myDate.substring(0,myDate.search('T'));
+    const key = dateObj.toString().substring(0,myDate.search('T'));
+
     if (key in sessionMap){
       sessionMap[key].push(session[index]);
     }else{

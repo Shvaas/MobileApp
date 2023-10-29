@@ -99,7 +99,7 @@ const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
             'markCompleted':  false,
           }));
           Alert.alert(
-            'Session Booked at ' + item.start_date.substring(0,item.start_date.search('T'))
+            'Session Booked at ' + myDate.toLocaleDateString().substring(0,item.start_date.search('T'))/*item.start_date.substring(0,item.start_date.search('T'))*/
             + ' for ' + item.title,'',
             [
                 {
@@ -149,9 +149,9 @@ const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
   const bookAppointment = async () => {
     // let myDate = new Date(sessionBooked.start_date * 1000);
 
-    if (isSubscribed){
+    // if (isSubscribed){
       Alert.alert('Confirm the appointment at',
-      myDate.toISOString().substring(0,myDate.toISOString().search('T')) + ' for ' + item.title,
+      myDate.toLocaleDateString().substring(0,item.start_date.search('T'))/*myDate.toISOString().substring(0,myDate.toISOString().search('T'))*/ + ' for ' + item.title,
       [
       {
           text: 'Cancel',
@@ -160,10 +160,10 @@ const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
       },
       {text: 'OK', onPress: () => {onAppointmentConfirm()}
       }]);
-      }
-    else{
-      navigation.navigate(RouteNames.OnboardingFlow.FreeTrial, {onSignUp:false})
-    }
+    //   }
+    // else{
+    //   navigation.navigate(RouteNames.OnboardingFlow.FreeTrial, {onSignUp:false})
+    // }
   }
     
 

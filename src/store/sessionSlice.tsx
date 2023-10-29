@@ -166,6 +166,7 @@ export const sessionSlice = createSlice({
       initiateSessions: (state, action) => {
         const {sessions, instructor_id} = action.payload;
         console.log("Session Slice: initiateSessions", sessions);
+        console.log("Session slice: initiateSessions previous list:", state.sessions);
         if(sessions === undefined){
           return
         }
@@ -204,6 +205,8 @@ export const sessionSlice = createSlice({
               state.sessions.push(state.currentSession);
             }
         }
+
+        console.log("Session slice: initiateSessions updated list:", state.sessions);
       },
 
       addSession: (state, action) => {
@@ -268,7 +271,8 @@ export const sessionSlice = createSlice({
       },
 
       setInitialState: (state, action) => {
-        state = initialState;
+        state.sessions = [];
+        state.currentSession = null;
       }
 
     },
