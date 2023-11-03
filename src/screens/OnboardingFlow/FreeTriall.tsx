@@ -8,6 +8,7 @@ import {
    ImageBackground,
    Image,
    Alert,
+   Linking,
  } from 'react-native';
 import React, { Component } from 'react';
 import { useEffect, useState } from 'react';
@@ -120,6 +121,47 @@ const FreeTrial = ({route, navigation}) => {
       return;
     }
   }
+
+  const openLink = async (url) => {
+    console.log(url);
+    
+    try {
+      if (await InAppBrowser.isAvailable()) {
+        const result = await InAppBrowser.open(url, {
+          // iOS Properties
+          dismissButtonStyle: 'cancel',
+          // preferredBarTintColor: themeColor.vividRed,
+          // preferredControlTintColor: 'white',
+          readerMode: false,
+          animated: true,
+          modalPresentationStyle: 'fullScreen',
+          modalTransitionStyle: 'coverVertical',
+          modalEnabled: true,
+          enableBarCollapsing: false,
+          // Android Properties
+          showTitle: true,
+          secondaryToolbarColor: 'black',
+          navigationBarColor: 'black',
+          navigationBarDividerColor: 'white',
+          enableUrlBarHiding: true,
+          enableDefaultShare: true,
+          forceCloseOnRedirection: false,
+          // Specify full animation resource identifier(package:anim/name)
+          // or only resource name(in case of animation bundled with app).
+          animations: {
+            startEnter: 'slide_in_right',
+            startExit: 'slide_out_left',
+            endEnter: 'slide_in_left',
+            endExit: 'slide_out_right'
+          },
+        })
+      }
+      else Linking.openURL(url)
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Sorry, something went wrong!")
+    }
+  }
   
   const onSubcriptionPressed = async () => {
     console.log("subscirption pressed");
@@ -138,46 +180,60 @@ const FreeTrial = ({route, navigation}) => {
       
       console.log("response", response.data);
       console.log("response", response.data?.data);
+
       if (response.status === 200) {
-        console.log(response.data);
-        
-        const clientSecret = response.data?.data?.clientSecret;
-        // const subscriptionId = response.data?.data?.subscriptionId;
-
-        console.log("subscirption pressed step 0")
-        console.log(clientSecret);
-
-        if (response.error) {
-          setIsLoading(false)
-          Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
-          console.log('Something went wrong1', response.error);
-          return;
-        }
-        setIsLoading(false)
-
-        await initializePaymentSheet(clientSecret);
-
-        console.log("subscirption pressed step 2")
-
-        const { error } = await presentPaymentSheet();
-
-        if (error) {
-          setIsLoading(false)
-          Alert.alert('Error', error.message + " Please try again later.",[{text: 'OK',onPress: () => {},}]);
-          console.log('Error code: ${error.code}', error.message);
-          return;
-        } else {
-          Alert.alert('Success', 'Your order is confirmed!');
-        }
-
-        console.log("subscirption pressed step 3")
-
-        fetchUsers(userId)
-
+        console.log('success');
+        const redirectURL = response.data?.data?.redirectURL;
+        console.log("redirectURL", redirectURL);
+        await InAppBrowser.close();
+        openLink(redirectURL);
       } else {
+        setIsLoading(false);
         Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
         throw new Error("An error has occurred");
       }
+
+
+      // if (response.status === 200) {
+      //   console.log(response.data);
+        
+      //   const clientSecret = response.data?.data?.clientSecret;
+      //   // const subscriptionId = response.data?.data?.subscriptionId;
+
+      //   console.log("subscirption pressed step 0")
+      //   console.log(clientSecret);
+
+      //   if (response.error) {
+      //     setIsLoading(false)
+      //     Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
+      //     console.log('Something went wrong1', response.error);
+      //     return;
+      //   }
+      //   setIsLoading(false)
+
+      //   await initializePaymentSheet(clientSecret);
+
+      //   console.log("subscirption pressed step 2")
+
+      //   const { error } = await presentPaymentSheet();
+
+      //   if (error) {
+      //     setIsLoading(false)
+      //     Alert.alert('Error', error.message + " Please try again later.",[{text: 'OK',onPress: () => {},}]);
+      //     console.log('Error code: ${error.code}', error.message);
+      //     return;
+      //   } else {
+      //     Alert.alert('Success', 'Your order is confirmed!');
+      //   }
+
+      //   console.log("subscirption pressed step 3")
+
+      //   fetchUsers(userId)
+
+      // } else {
+      //   Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
+      //   throw new Error("An error has occurred");
+      // }
     } catch (error) {
       // Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
       console.log("error",error);
@@ -264,7 +320,7 @@ const FreeTrial = ({route, navigation}) => {
             specialText='LIMITED OFFER' bottomText='Unlimited Classes' selected={planType==1}/>
             </View>
 
-            <View style={styles.feedbackContainer}>
+            {/* <View style={styles.feedbackContainer}>
                 <View style={styles.leftContainer}>
                     <TextInput 
                     placeholder="Coupon Code" 
@@ -277,7 +333,7 @@ const FreeTrial = ({route, navigation}) => {
                         className="comments-button" />
                 </View>
             </View>
-            <Text style={styles.couponText}> 25% Coupon Applied </Text>
+            <Text style={styles.couponText}> 25% Coupon Applied </Text> */}
 
             <SimpleButton
             title="Start 7 days Free Trial"

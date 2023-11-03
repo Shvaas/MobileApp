@@ -49,7 +49,7 @@ const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
     minutes = myDate.getMinutes().toString();
   }
   let am = " am";
-  if(myDate.getHours()> 12){
+  if(myDate.getHours()>= 12){
     am = " pm";
   }
   
@@ -149,7 +149,7 @@ const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
   const bookAppointment = async () => {
     // let myDate = new Date(sessionBooked.start_date * 1000);
 
-    // if (isSubscribed){
+    if (isSubscribed){
       Alert.alert('Confirm the appointment at',
       myDate.toLocaleDateString().substring(0,item.start_date.search('T'))/*myDate.toISOString().substring(0,myDate.toISOString().search('T'))*/ + ' for ' + item.title,
       [
@@ -160,10 +160,10 @@ const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
       },
       {text: 'OK', onPress: () => {onAppointmentConfirm()}
       }]);
-    //   }
-    // else{
-    //   navigation.navigate(RouteNames.OnboardingFlow.FreeTrial, {onSignUp:false})
-    // }
+      }
+    else{
+      navigation.navigate(RouteNames.OnboardingFlow.FreeTrial, {onSignUp:false})
+    }
   }
     
 
