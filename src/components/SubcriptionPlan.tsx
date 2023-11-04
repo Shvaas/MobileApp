@@ -15,21 +15,25 @@ import { color } from 'react-native-elements/dist/helpers';
     bottomText: string,
     selected: boolean,
     onPress: any,
+    isIndia: boolean,
+    repeatText: string,
   }
  
-  const SubcriptionPlan: React.FC<PropsType> = ({onPress, title, subPrice, monthlyPrice, specialText, bottomText, selected}) => {
+  const SubcriptionPlan: React.FC<PropsType> = ({onPress, title, subPrice, monthlyPrice, 
+    specialText, bottomText, selected, isIndia, repeatText}) => {
 
     if (selected){
       return (
         <TouchableOpacity style={styles.selectedContainer} onPress={onPress}>
             <Text style={styles.selectedTitle}> {title}</Text>
             <View style={{flexDirection:'row'}}>
-              <Text style={[styles.price, {color:'#FFFFFF'}]}>$</Text>
+              {isIndia ? <Text style={[styles.price, {color:'#FFFFFF'}]}>{'\u20B9'}</Text> :
+              <Text style={[styles.price, {color:'#FFFFFF'}]}>$</Text>}
               <Text style={[styles.subprice, {textDecorationLine: 'line-through', color:'#FFFFFF'}]}> {subPrice}</Text>
               <Text style={[styles.price, {color:'#FFFFFF'}]}> {monthlyPrice}</Text>
             </View>
             <Text style={{fontSize: themefonts.font12, fontFamily: themeFontFamily.raleway, 
-                alignSelf:'center', justifyContent:'flex-end', color:'#FFFFFF'}}>per month</Text>
+                alignSelf:'center', justifyContent:'flex-end', color:'#FFFFFF'}}>per {repeatText}</Text>
             <View style={styles.selectedSpecialText}>
             <Text style={{fontSize: themefonts.font12, 
             fontFamily: themeFontFamily.ralewayBold, color: '#FAFDFE',}}>{specialText}</Text>
@@ -43,12 +47,13 @@ import { color } from 'react-native-elements/dist/helpers';
         <TouchableOpacity style={styles.container} onPress={onPress}>
             <Text style={styles.title}> {title}</Text>
             <View style={{flexDirection:'row'}}>
-              <Text style={styles.price}>$</Text>
+            {isIndia ? <Text style={styles.price}>{'\u20B9'}</Text> : 
+            <Text style={styles.price}>$</Text>}
               <Text style={[styles.subprice, {textDecorationLine: 'line-through'}]}> {subPrice}</Text>
               <Text style={styles.price}> {monthlyPrice}</Text>
             </View>
             <Text style={{fontSize: themefonts.font12, fontFamily: themeFontFamily.raleway, 
-                alignSelf:'center', justifyContent:'flex-end', borderWidth:0}}>per quarter</Text>
+                alignSelf:'center', justifyContent:'flex-end', borderWidth:0}}>per {repeatText}</Text>
             <View style={styles.specialText}>
             <Text style={{fontSize: themefonts.font12, 
             fontFamily: themeFontFamily.raleway, color: '#2D2D2D',}}>{specialText}</Text> 

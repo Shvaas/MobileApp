@@ -4,6 +4,7 @@ import {createSlice, createSelector} from '@reduxjs/toolkit';
 
 const initialState = {
   userType: '',
+  timeZone: ' ',
   userId: null, // student id
   // teacherId: '313cbfd3-4fc1-4763-9d18-caedd0be4a63', // student id
   instructorPhotoLink: '',
@@ -99,6 +100,12 @@ export const userSlice = createSlice({
         state = initialState;
         console.log(state.userId);
       },
+
+      setTime: (state, action) => {
+        const {timeZone} = action.payload;
+        state.timeZone = timeZone
+      },
+
     },
   });
 
@@ -114,3 +121,4 @@ export const userSlice = createSlice({
   export const userQuestionOneSelector = (state) => state.user.questionOne;
   export const userQuestionTwoSelector = (state) => state.user.questionTwo;
   export const userIsSubscribedSelector = (state) => state.user.isSubscribed;
+  export const userTimeZone = (state) => state.user.timeZone;

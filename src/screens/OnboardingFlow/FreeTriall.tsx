@@ -24,7 +24,7 @@ import LoginButton from '../../common/buttons/LoginButton';
 import SubcriptionPlan from '../../components/SubcriptionPlan';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import { userSlice } from '../../store/userSlice';
+import { userSlice, userTimeZone } from '../../store/userSlice';
 
 import { useStripe } from '@stripe/stripe-react-native';
 
@@ -51,7 +51,7 @@ const FreeTrial = ({route, navigation}) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [couponCode, setCouponCode] = useState("");
-  const [planType, setPlan] = useState(0);
+  const [planType, setPlan] = useState(1);
   const [createPaymentIntent] = useCreatePaymentIntentMutation();
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
 
@@ -62,6 +62,8 @@ const FreeTrial = ({route, navigation}) => {
   }, []);
 
   const userId = useSelector((state) => state.user.userId);
+  const timezone = useSelector(userTimeZone);
+  const isIndia = (timezone=='Asia/Calcutta' || timezone=='Asia/Kolkata');
 
 
   const fetchUsers = async (userId) => {
@@ -166,12 +168,18 @@ const FreeTrial = ({route, navigation}) => {
   const onSubcriptionPressed = async () => {
     console.log("subscirption pressed");
     setIsLoading(true)
+    let subscriptionType = 'MONTHLY'
+    if(planType==0){
+      subscriptionType = 'WEEKLY'
+    }else if (planType==2){
+      subscriptionType = 'QUARTERLY'
+    }
     try {
       const response = await axios.post(`${baseUrl}/payment/create-subscription`,
       {
         userId : userId,
         paymentRequestType: "CREATE_SUBSCRIPTION",
-        subscriptionType: planType==0 ? 'MONTHLY' : 'QUARTERLY',
+        subscriptionType: subscriptionType,
       }, {
         headers: {
           Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`
@@ -314,10 +322,28 @@ const FreeTrial = ({route, navigation}) => {
             </View>
 
             <View style={styles.planContainer}>
-            <SubcriptionPlan  onPress={() => setPlan(0)} title='Monthly Plan' subPrice='99'
-            monthlyPrice='49' specialText='LIMITED OFFER' bottomText='Unlimited Classes' selected= {planType==0}/>
-            <SubcriptionPlan onPress={() => setPlan(1)} title='Quaterly Plan' subPrice='299' monthlyPrice='129' 
-            specialText='LIMITED OFFER' bottomText='Unlimited Classes' selected={planType==1}/>
+            {isIndia ? 
+            <SubcriptionPlan  onPress={() => setPlan(1)} title='Monthly Plan' subPrice='9999'
+            monthlyPrice='7500' specialText='LIMITED OFFER' bottomText='Unlimited Classes' 
+            selected={planType==1} isIndia={isIndia}
+            repeatText='Month'/>
+            :
+            <SubcriptionPlan  onPress={() => setPlan(0)} title='Weekly Plan' subPrice='79'
+            monthlyPrice='69' specialText='LIMITED OFFER' bottomText='Unlimited Classes' 
+            selected={planType==0} isIndia={isIndia}
+            repeatText='Week'/>
+            }
+
+            {isIndia ? 
+            <SubcriptionPlan onPress={() => setPlan(2)} title='Quaterly Plan' subPrice='24999' monthlyPrice='17999' 
+            specialText='LIMITED OFFER' bottomText='Unlimited Classes' selected={planType==2} 
+            isIndia={isIndia} repeatText='Quater'/>
+            :
+            <SubcriptionPlan  onPress={() => setPlan(1)} title='Monthly Plan' subPrice='249'
+            monthlyPrice='199' specialText='LIMITED OFFER' bottomText='Unlimited Classes' 
+            selected={planType==1} isIndia={isIndia}
+            repeatText='Month'/>
+            }
             </View>
 
             {/* <View style={styles.feedbackContainer}>

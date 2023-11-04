@@ -59,6 +59,7 @@ const WaitingSpinner3 = ({navigation}) => {
     const updateUserTimeZone = async (userId, jwtToken) => {
       const urlBackStage = `${baseUrl}/user/${userId}/update-user-data/`;
       var timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      dispatch(userSlice.actions.setTime({timeZone:timeZone}))
       console.log("timezone",timeZone);
       console.log("token",jwtToken);
       try{

@@ -35,7 +35,8 @@ import {
  import {Picker} from '@react-native-picker/picker';
  import { userHeightSelector, userWeightSelector, userAgeSelector, userGenderSelector, userQuestionOneSelector, userQuestionTwoSelector } from '../../../store/userSlice';
 import { DropdownList } from 'react-native-ultimate-modal-picker';
- 
+import { userTimeZone } from '../../../store/userSlice';
+
  interface PropsType {
    navigation: any;
  }
@@ -84,24 +85,33 @@ import { DropdownList } from 'react-native-ultimate-modal-picker';
     const {width} = useWindowDimensions();
     const dispatch = useDispatch();
 
-    const height = ["4 Foot", "4 Foot 1 inch", "4 Foot 2 inch", "4 Foot 3 inch", "4 Foot 4 inch", "4 Foot 5 inch", 
+    const height = ["Select", "4 Foot", "4 Foot 1 inch", "4 Foot 2 inch", "4 Foot 3 inch", "4 Foot 4 inch", "4 Foot 5 inch", 
     "4 Foot 6 inch", "4 Foot 7 inch", "4 Foot 8 inch", "4 Foot 9 inch", "4 Foot 10 inch", "4 Foot 11 inch", "4 Foot 12 inch",
     "5 Foot", "5 Foot 1 inch", "5 Foot 2 inch", "5 Foot 3 inch", "5 Foot 4 inch", "5 Foot 5 inch", 
     "5 Foot 6 inch", "5 Foot 7 inch", "5 Foot 8 inch", "5 Foot 9 inch", "5 Foot 10 inch", "5 Foot 11 inch", "5 Foot 12 inch", 
     "6 Foot", "6 Foot 1 inch", "6 Foot 2 inch", "6 Foot 3 inch", "6 Foot 4 inch", "6 Foot 5 inch", 
     "6 Foot 6 inch", "6 Foot 7 inch", "6 Foot 8 inch", "6 Foot 9 inch", "6 Foot 10 inch", "6 Foot 11 inch", "6 Foot 12 inch",];
 
-    const weight = [];
-    for (let index = 0; index < 500; index++) {
+    const timezone = useSelector(userTimeZone);
+   const isIndia = (timezone=='Asia/Calcutta' || timezone=='Asia/Kolkata');
+
+    const weight = ["Select"];
+    if (!isIndia){
+      for (let index = 0; index < 500; index++) {
         weight.push(index + " lb")
+      }
+    }else{
+      for (let index = 0; index < 200; index++) {
+        weight.push(index + " kg")
+      }
     }
 
-    const age = [];
+    const age = ["Select"];
     for (let index = 7; index < 110; index++) {
         age.push(index)
     }
 
-    const gender = ["Female","Male","Other","Don't wish to specify"];
+    const gender = ["Select", "Female","Male","Other","Don't wish to specify"];
 
     const heightItems = height.map((item) => {return {label:item, value:item}});
     const weightItems = weight.map((item) => {return {label:item, value:item}});

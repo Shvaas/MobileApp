@@ -52,7 +52,7 @@ const SignUpScreen = ({navigation}) => {
         try {
           setIsLoading(true);
             await Auth.signUp({
-              username: email,
+              username: email.toLowerCase(),
               password: password,
               attributes: {email, given_name: firstName, family_name: lastName,phone_number:String(phoneNumber)},
               autoSignIn: {
