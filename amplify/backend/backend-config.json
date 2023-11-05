@@ -1,33 +1,101 @@
 {
   "auth": {
-    "mobileapp4ed5638f": {
+    "mobileappedd77717": {
       "customAuth": false,
       "dependsOn": [],
-      "frontendAuthConfig": {
-        "mfaConfiguration": "OFF",
-        "mfaTypes": [
-          "SMS"
-        ],
-        "passwordProtectionSettings": {
-          "passwordPolicyCharacters": [],
-          "passwordPolicyMinLength": 8
-        },
-        "signupAttributes": [
-          "EMAIL",
-          "FAMILY_NAME",
-          "GIVEN_NAME",
-          "PHONE_NUMBER"
-        ],
-        "socialProviders": [],
-        "usernameAttributes": [
-          "EMAIL"
-        ],
-        "verificationMechanisms": [
-          "EMAIL"
-        ]
-      },
       "providerPlugin": "awscloudformation",
-      "service": "Cognito"
+      "service": "Cognito",
+      "serviceType": "imported"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_auth_mobileappedd77717_allowUnauthenticatedIdentities": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "mobileappedd77717"
+        }
+      ]
+    },
+    "AMPLIFY_auth_mobileappedd77717_authRoleArn": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "mobileappedd77717"
+        }
+      ]
+    },
+    "AMPLIFY_auth_mobileappedd77717_authRoleName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "mobileappedd77717"
+        }
+      ]
+    },
+    "AMPLIFY_auth_mobileappedd77717_identityPoolId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "mobileappedd77717"
+        }
+      ]
+    },
+    "AMPLIFY_auth_mobileappedd77717_identityPoolName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "mobileappedd77717"
+        }
+      ]
+    },
+    "AMPLIFY_auth_mobileappedd77717_nativeClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "mobileappedd77717"
+        }
+      ]
+    },
+    "AMPLIFY_auth_mobileappedd77717_unauthRoleArn": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "mobileappedd77717"
+        }
+      ]
+    },
+    "AMPLIFY_auth_mobileappedd77717_unauthRoleName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "mobileappedd77717"
+        }
+      ]
+    },
+    "AMPLIFY_auth_mobileappedd77717_userPoolId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "mobileappedd77717"
+        }
+      ]
+    },
+    "AMPLIFY_auth_mobileappedd77717_userPoolName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "mobileappedd77717"
+        }
+      ]
+    },
+    "AMPLIFY_auth_mobileappedd77717_webClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "mobileappedd77717"
+        }
+      ]
     }
   }
 }
