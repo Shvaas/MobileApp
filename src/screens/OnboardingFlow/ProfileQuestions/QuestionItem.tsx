@@ -151,7 +151,7 @@ const QuestionItem: React.FC<PropsType> = ({item, index,
                         fontWeight: '100',
                       },
                     }}
-                    defaultValue = "Width"
+                    defaultValue = "Weight"
                   />
               </View>
               <View style={styles.middleContainerItem}>

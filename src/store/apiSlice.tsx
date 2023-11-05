@@ -1,6 +1,6 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
-const baseUrl = 'https://6sm5d5xzu8.execute-api.us-west-2.amazonaws.com/stage/';
+const baseUrl = 'https://k96k0c1776.execute-api.us-east-1.amazonaws.com/prod/';
 
 //'https://6sm5d5xzu8.execute-api.us-west-2.amazonaws.com/stage/feed/313cbfd3-4fc1-4763-9d18-caedd0be4a63'
 // https://6sm5d5xzu8.execute-api.us-west-2.amazonaws.com/stage/feed/post/{postid}/react

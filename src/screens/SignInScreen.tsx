@@ -31,7 +31,7 @@ interface PropsType {
     navigation: any;
   }
 
-const baseUrl = 'https://6sm5d5xzu8.execute-api.us-west-2.amazonaws.com/stage';
+const baseUrl = 'https://k96k0c1776.execute-api.us-east-1.amazonaws.com/prod/';
 
 const SignInScreen = ({navigation}) => {
     console.log("SignInScreen");

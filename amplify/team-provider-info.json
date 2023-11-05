@@ -10,10 +10,35 @@
       "StackName": "amplify-mobileapp-dev-23200",
       "StackId": "arn:aws:cloudformation:us-west-2:900841648662:stack/amplify-mobileapp-dev-23200/4cc3e1f0-2c47-11ee-b89f-021d77b68f79",
       "AmplifyAppId": "d1v4b7m2o7cyvj"
+    }
+  },
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-mobileapp-prod-15516-authRole",
+      "UnauthRoleArn": "arn:aws:iam::900841648662:role/amplify-mobileapp-prod-15516-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::900841648662:role/amplify-mobileapp-prod-15516-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-mobileapp-prod-15516-deployment",
+      "UnauthRoleName": "amplify-mobileapp-prod-15516-unauthRole",
+      "StackName": "amplify-mobileapp-prod-15516",
+      "StackId": "arn:aws:cloudformation:us-east-1:900841648662:stack/amplify-mobileapp-prod-15516/90d97d00-7a0d-11ee-89d9-0e082218f901",
+      "AmplifyAppId": "d2xt4i66oq8mu9"
     },
     "categories": {
       "auth": {
-        "mobileapp4ed5638f": {}
+        "mobileappb79e95bd": {
+          "userPoolId": "us-east-1_QNMDI1z0G",
+          "userPoolName": "YogitProd-staging",
+          "webClientId": "2f0t3pgbaif8oe8log4kjhgrb1",
+          "nativeClientId": "6ge80ldk2uhiqp68o5hosmojah",
+          "identityPoolId": "us-east-1:9a2b8675-44a4-4be3-9fa8-5eb370271915",
+          "identityPoolName": "testAuthIdentityPool__staging",
+          "allowUnauthenticatedIdentities": false,
+          "authRoleArn": "arn:aws:iam::900841648662:role/amplify-yogitprod-staging-231252-authRole",
+          "authRoleName": "amplify-yogitprod-staging-231252-authRole",
+          "unauthRoleArn": "arn:aws:iam::900841648662:role/amplify-yogitprod-staging-231252-unauthRole",
+          "unauthRoleName": "amplify-yogitprod-staging-231252-unauthRole"
+        }
       }
     }
   }
