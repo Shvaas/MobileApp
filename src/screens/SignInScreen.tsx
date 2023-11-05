@@ -26,12 +26,11 @@ import axios from "axios";
 import { userSlice } from '../store/userSlice';
 import RouteNames from '../constants/routeName';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { baseUrl } from '../constants/urls';
 
 interface PropsType {
     navigation: any;
   }
-
-const baseUrl = 'https://6sm5d5xzu8.execute-api.us-west-2.amazonaws.com/stage';
 
 const SignInScreen = ({navigation}) => {
     console.log("SignInScreen");

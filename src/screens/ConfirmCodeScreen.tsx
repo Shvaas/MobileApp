@@ -28,12 +28,11 @@ import { userSlice } from '../store/userSlice';
 import RouteNames from '../constants/routeName';
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
+import { baseUrl } from '../constants/urls';
 
 interface PropsType {
     navigation: any;
   }
-
-const baseUrl = 'https://6sm5d5xzu8.execute-api.us-west-2.amazonaws.com/stage';
 
 const ConfirmCodeScreen = ({route,navigation}) => {
     console.log("ConfirmCodeScreen");
