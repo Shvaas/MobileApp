@@ -9,6 +9,7 @@ import {
    Image,
    Alert,
    Linking,
+   AppState,
  } from 'react-native';
 import React, { Component } from 'react';
 import { useEffect, useState } from 'react';
@@ -24,7 +25,7 @@ import LoginButton from '../../common/buttons/LoginButton';
 import SubcriptionPlan from '../../components/SubcriptionPlan';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import { userSlice, userTimeZone } from '../../store/userSlice';
+import { userSlice, userTimeZone, userPrevAppState } from '../../store/userSlice';
 
 import { useStripe } from '@stripe/stripe-react-native';
 
@@ -43,6 +44,54 @@ interface PropsType {
   onSignUp: boolean;
 }
 
+
+// class FreeTria1 extends Component {
+  
+//   constructor(props){
+//     super(props);
+//     console.log("constructor ", props);
+    
+//     this.state = {
+//       onSignUp : props.route.params.onSignUp,
+//       navigation : props.navigation,
+//       userId : null
+//     }
+
+//     // const [user, setUser] = useState(null);
+//     // const [isLoading, setIsLoading] = useState(false);
+
+//     // const userId = useSelector((state) => state.user.userId);
+//     // const timezone = useSelector(userTimeZone);
+//     // const isIndia = (timezone=='Asia/Calcutta' || timezone=='Asia/Kolkata');
+//   }
+
+  
+
+//   componentDidMount() {
+//     console.log('componentDidMount');
+//     // this.state.userId = useSelector((state) => state.user.userId) 
+//     console.log('userId', this.state.userId);
+//     // fetch('https://api.mydomain.com')
+//     //   .then(response => response.json())
+//     //   .then(data => this.setState({ message: data.message })); // data.message = 'updated message'
+//   }
+
+  
+
+//   render(){
+    
+//     console.log(this.state.userId);
+    
+//     return(
+//       <View>
+//         {/* 'updated message' will be rendered as soon as fetch return data */}
+        
+//       </View>
+//     )
+//   }
+// }
+
+
 const FreeTrial = ({route, navigation}) => {
 
   const {onSignUp} = route.params;
@@ -50,23 +99,20 @@ const FreeTrial = ({route, navigation}) => {
   
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [couponCode, setCouponCode] = useState("");
   const [planType, setPlan] = useState(1);
-  const [createPaymentIntent] = useCreatePaymentIntentMutation();
-  const { initPaymentSheet, presentPaymentSheet } = useStripe();
+
 
   const dispatch = useDispatch();
-
-
-  React.useEffect(() => {
-  }, []);
-
+  
   const userId = useSelector((state) => state.user.userId);
   const timezone = useSelector(userTimeZone);
   const isIndia = (timezone=='Asia/Calcutta' || timezone=='Asia/Kolkata');
+  const prevAppState = useSelector(userPrevAppState);
 
 
   const fetchUsers = async (userId) => {
+    console.log("fetchUsers called");
+    
     const abortController = new AbortController();
     const url = `${baseUrl}/user/${userId}`;
     try {
@@ -80,7 +126,8 @@ const FreeTrial = ({route, navigation}) => {
           Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`
         }
       });
-
+      console.log('fetchUsers', response?.data?.data);
+      
       if (response.status === 200) {
         subcription = response?.data?.data.subscriptionStatus==='ACTIVE';
         console.log("subscription status ",subcription)
@@ -105,24 +152,67 @@ const FreeTrial = ({route, navigation}) => {
     }
   };
 
-  const initializePaymentSheet = async (clientSecret) => {
+  useEffect(() => {
+    console.log("useEffect");
 
-    const { error } = await initPaymentSheet({
-      merchantDisplayName: 'Yogit, Inc.',
-      setupIntentClientSecret: clientSecret,
-      defaultBillingDetails: {
-        name: 'Utkarsh Nath',
-      },
-    });
+    const handleUrlChange = (event) => {
+      // Check if the URL matches the universal link you expect to return to your app.
+      if (event.url.includes('https://yogit.link/')) {
+        // Your app has been reopened from the universal link. You can perform actions here.
+        // For example, you can extract data from the URL and use it in your app.
+        console.log('App reopened from the universal link:', event.url);
+      }
+    };
 
-    console.log("subscirption pressed step 1")
+    Linking.addEventListener('url', handleUrlChange);
+    
 
-    if (error) {
-      Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
-      console.log('Something went wrong2', error.message);
-      return;
-    }
-  }
+    const handleAppStateChange = (nextAppState) => {
+      console.log("nextAppState", nextAppState, prevAppState);
+      
+      if (prevAppState==='background' && nextAppState === 'active') {
+        console.log('nextAppState');
+        fetchUsers(userId)
+        // Your app has returned to the active state (e.g., from the background).
+        // You can perform actions when your app is brought back to the foreground.
+      }
+      dispatch(userSlice.actions.setAppState(nextAppState))
+      //setAppState(nextAppState);
+    };
+
+    AppState.addEventListener('change', handleAppStateChange);
+
+    return () => {
+      Linking.removeEventListener('url', handleUrlChange);
+      AppState.removeEventListener('change', handleAppStateChange);
+      dispatch(userSlice.actions.setAppState(''))
+    };
+    
+  }, []);
+
+
+
+  // const initializePaymentSheet = async (clientSecret) => {
+
+  //   const { error } = await initPaymentSheet({
+  //     merchantDisplayName: 'Yogit, Inc.',
+  //     setupIntentClientSecret: clientSecret,
+  //     defaultBillingDetails: {
+  //       name: 'Utkarsh Nath',
+  //     },
+  //   });
+
+  //   console.log("subscirption pressed step 1")
+
+  //   if (error) {
+  //     Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
+  //     console.log('Something went wrong2', error.message);
+  //     return;
+  //   }
+  // }
+
+
+
 
   const openLink = async (url) => {
     console.log(url);
@@ -167,6 +257,8 @@ const FreeTrial = ({route, navigation}) => {
   
   const onSubcriptionPressed = async () => {
     console.log("subscirption pressed");
+    // Linking.openURL('https://yogit.link/')
+
     setIsLoading(true)
     let subscriptionType = 'MONTHLY'
     if(planType==0){
@@ -193,13 +285,16 @@ const FreeTrial = ({route, navigation}) => {
         console.log('success');
         const redirectURL = response.data?.data?.redirectURL;
         console.log("redirectURL", redirectURL);
-        await InAppBrowser.close();
-        openLink(redirectURL);
+        // await InAppBrowser.close();
+        // openLink(redirectURL);
+        Linking.openURL(redirectURL)
       } else {
         setIsLoading(false);
         Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
         throw new Error("An error has occurred");
       }
+
+
 
 
       // if (response.status === 200) {
@@ -242,6 +337,11 @@ const FreeTrial = ({route, navigation}) => {
       //   Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
       //   throw new Error("An error has occurred");
       // }
+
+
+
+
+
     } catch (error) {
       // Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
       console.log("error",error);
@@ -259,7 +359,8 @@ const FreeTrial = ({route, navigation}) => {
   }
 
 
-  return (
+  
+    return (
     <SafeAreaView style={styles.safeArea}>
         <ImageBackground source={backgroundImageLight} style={styles.image}>
           <Spinner
@@ -377,8 +478,11 @@ const FreeTrial = ({route, navigation}) => {
 
         </SafeAreaView>
 
-  );
+  )
 };
+
+
+
 
 export default FreeTrial;
 
