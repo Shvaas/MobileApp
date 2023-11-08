@@ -45,51 +45,6 @@ interface PropsType {
 }
 
 
-// class FreeTria1 extends Component {
-  
-//   constructor(props){
-//     super(props);
-//     console.log("constructor ", props);
-    
-//     this.state = {
-//       onSignUp : props.route.params.onSignUp,
-//       navigation : props.navigation,
-//       userId : null
-//     }
-
-//     // const [user, setUser] = useState(null);
-//     // const [isLoading, setIsLoading] = useState(false);
-
-//     // const userId = useSelector((state) => state.user.userId);
-//     // const timezone = useSelector(userTimeZone);
-//     // const isIndia = (timezone=='Asia/Calcutta' || timezone=='Asia/Kolkata');
-//   }
-
-  
-
-//   componentDidMount() {
-//     console.log('componentDidMount');
-//     // this.state.userId = useSelector((state) => state.user.userId) 
-//     console.log('userId', this.state.userId);
-//     // fetch('https://api.mydomain.com')
-//     //   .then(response => response.json())
-//     //   .then(data => this.setState({ message: data.message })); // data.message = 'updated message'
-//   }
-
-  
-
-//   render(){
-    
-//     console.log(this.state.userId);
-    
-//     return(
-//       <View>
-//         {/* 'updated message' will be rendered as soon as fetch return data */}
-        
-//       </View>
-//     )
-//   }
-// }
 
 
 const FreeTrial = ({route, navigation}) => {
@@ -109,16 +64,18 @@ const FreeTrial = ({route, navigation}) => {
   const isIndia = (timezone=='Asia/Calcutta' || timezone=='Asia/Kolkata');
   const prevAppState = useSelector(userPrevAppState);
 
-
+  const waitTimer = async () => {
+    setTimeout(function(){
+  },5000);
+  }
   const fetchUsers = async (userId) => {
     console.log("fetchUsers called");
-    
     const abortController = new AbortController();
     const url = `${baseUrl}/user/${userId}`;
     try {
       setIsLoading(true);
       var subcription = false;
-      do{
+      // do{
       const response = await axios.get(url, {
         signal: abortController.signal,
         timeout: 10000,
@@ -133,15 +90,18 @@ const FreeTrial = ({route, navigation}) => {
         console.log("subscription status ",subcription)
         if(subcription){
           dispatch(userSlice.actions.setSubscription(subcription))
-          setIsLoading(false);
-          navigation.navigate('Home');
+          onSkip();
           console.log("Payment Successful");
+        }
+        else{
+          setIsLoading(false);
+          console.log("Payment Cancelled");
         }
       } else {
         throw new Error("Failed to fetch users");
       }
-    }
-    while(subcription == false)
+    // }
+    // while(!doubleChecked)
 
     } catch (error) {
       if (abortController.signal.aborted) {
@@ -168,13 +128,18 @@ const FreeTrial = ({route, navigation}) => {
     
 
     const handleAppStateChange = (nextAppState) => {
-      console.log("nextAppState", nextAppState, prevAppState);
+      console.log("nextAppState", nextAppState);
+      console.log("previous app state", prevAppState);
       
-      if (prevAppState==='background' && nextAppState === 'active') {
+      if (prevAppState!='active' && nextAppState === 'active') {
         console.log('nextAppState');
-        fetchUsers(userId)
+        setTimeout(() => {fetchUsers(userId)},5000);
+        
         // Your app has returned to the active state (e.g., from the background).
         // You can perform actions when your app is brought back to the foreground.
+      }
+      else if (prevAppState==='active' && nextAppState === 'inactive') {
+        setIsLoading(false);
       }
       dispatch(userSlice.actions.setAppState(nextAppState))
       //setAppState(nextAppState);
@@ -295,55 +260,9 @@ const FreeTrial = ({route, navigation}) => {
       }
 
 
-
-
-      // if (response.status === 200) {
-      //   console.log(response.data);
-        
-      //   const clientSecret = response.data?.data?.clientSecret;
-      //   // const subscriptionId = response.data?.data?.subscriptionId;
-
-      //   console.log("subscirption pressed step 0")
-      //   console.log(clientSecret);
-
-      //   if (response.error) {
-      //     setIsLoading(false)
-      //     Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
-      //     console.log('Something went wrong1', response.error);
-      //     return;
-      //   }
-      //   setIsLoading(false)
-
-      //   await initializePaymentSheet(clientSecret);
-
-      //   console.log("subscirption pressed step 2")
-
-      //   const { error } = await presentPaymentSheet();
-
-      //   if (error) {
-      //     setIsLoading(false)
-      //     Alert.alert('Error', error.message + " Please try again later.",[{text: 'OK',onPress: () => {},}]);
-      //     console.log('Error code: ${error.code}', error.message);
-      //     return;
-      //   } else {
-      //     Alert.alert('Success', 'Your order is confirmed!');
-      //   }
-
-      //   console.log("subscirption pressed step 3")
-
-      //   fetchUsers(userId)
-
-      // } else {
-      //   Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
-      //   throw new Error("An error has occurred");
-      // }
-
-
-
-
-
     } catch (error) {
-      // Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
+      setIsLoading(false);
+      Alert.alert('Error',error,[{text: 'OK',onPress: () => {},}]);
       console.log("error",error);
     }
 
