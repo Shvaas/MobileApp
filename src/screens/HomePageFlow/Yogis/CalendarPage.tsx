@@ -80,11 +80,12 @@ React.useEffect(() => {
           }
         });
         console.log("response", response.data);
-        console.log("response", response.data.data);
-        console.log("response student list", response.data.data.courses[0].studentProfileList);
-        console.log("response student list", response.data.data.courses[1].studentProfileList);
+
         if (response.status === 200) {
 
+          console.log("response", response.data?.data);
+          console.log("response student list", response.data?.data?.courses[0]?.studentProfileList);
+          console.log("response student list", response.data?.data?.courses[1]?.studentProfileList);
           dispatch(sessionSlice.actions.initiateSessions({
             sessions: response.data?.data?.courses,
             instructor_id: userId,
@@ -101,7 +102,6 @@ React.useEffect(() => {
           console.log("Data fetching cancelled");
         } else {
           console.log("error", error);
-
           setErrorFlag(true);
           setIsLoading(false);
         }
@@ -273,6 +273,24 @@ function getPastDate(numberOfDays: number) {
     return <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
   }
 
+  if (session.length === 0 && !hasError){
+    return (
+      <SafeAreaView style={styles.safeArea}>
+      <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
+        <GestureHandlerRootView style={{backgroundColor: themeColor.white}}>
+        <TouchableOpacity onPress={goBack}>
+          <Image source={backButton} style={[styles.backbutton]} /> 
+        </TouchableOpacity>
+      <View style={{alignItems:'center', justifyContent:'center', height:'90%', width:'100%'}}>
+        <Text style={{fontSize: themefonts.font16, fontFamily: themeFontFamily.raleway, margin:20}}> 
+        No sessions for this teacher are available at this time. Please check back later. </Text>
+      </View>
+      </GestureHandlerRootView>
+     </ImageBackground>
+     </SafeAreaView>
+    )
+  }
+
   if (session.length === 0 && hasError){
     return (
       <SafeAreaView style={styles.safeArea}>
@@ -282,7 +300,7 @@ function getPastDate(numberOfDays: number) {
           <Image source={backButton} style={[styles.backbutton]} /> 
         </TouchableOpacity>
       <View style={{alignItems:'center', justifyContent:'center', height:'90%', width:'100%'}}>
-        <Text style={{fontSize: themefonts.font16, fontFamily: themeFontFamily.raleway, margin:0}}> 
+        <Text style={{fontSize: themefonts.font16, fontFamily: themeFontFamily.raleway, margin:20}}> 
         Something went wrong, Please try again later after sometime. </Text>
       </View>
       </GestureHandlerRootView>

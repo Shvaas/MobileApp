@@ -16,6 +16,7 @@ const initialState = {
   weight: '',
   age: '',
   gender: '',
+  prevAppState:'',
   questionOne: {
     keys0: false,
     keys1: false,
@@ -106,6 +107,11 @@ export const userSlice = createSlice({
         state.timeZone = timeZone
       },
 
+      setAppState: (state, action) => {
+        const appState = action.payload;
+        state.prevAppState = appState
+      },
+
     },
   });
 
@@ -122,3 +128,4 @@ export const userSlice = createSlice({
   export const userQuestionTwoSelector = (state) => state.user.questionTwo;
   export const userIsSubscribedSelector = (state) => state.user.isSubscribed;
   export const userTimeZone = (state) => state.user.timeZone;
+  export const userPrevAppState = (state) => state.user.prevAppState;

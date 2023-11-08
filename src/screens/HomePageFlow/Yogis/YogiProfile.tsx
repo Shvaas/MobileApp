@@ -105,7 +105,7 @@ const Yogi: React.FC<PropsType> = ({route, navigation}) => {
               startingValue={yogiProfile.rating}
               style={styles.ratings}
             />
-            <Text style={{fontFamily:themeFontFamily.raleway, fontSize:themefonts.font12}}> {numberOfRating}</Text>
+            {/* <Text style={{fontFamily:themeFontFamily.raleway, fontSize:themefonts.font12}}> {numberOfRating}</Text> */}
           
         </View>
 

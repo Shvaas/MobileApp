@@ -4,38 +4,33 @@ import {
    StyleSheet,
    Text,
    View,
-   TextInput,
    ImageBackground,
    Image,
    Alert,
    Linking,
+   AppState
  } from 'react-native';
-import React, { Component } from 'react';
+import React from 'react';
 import { useEffect, useState } from 'react';
 
 
 import {themeFontFamily, themefonts,themeColor} from '../../constants/theme';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
-import { Button } from 'react-native-elements';
 import {backgroundImageLight, backButton, tick, line} from '../../images/imageLinks';
 
 import SimpleButton from '../../common/buttons/SimpleButton';
-import LoginButton from '../../common/buttons/LoginButton';
 import SubcriptionPlan from '../../components/SubcriptionPlan';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import { userSlice, userTimeZone } from '../../store/userSlice';
+import { userSlice, userTimeZone, userPrevAppState} from '../../store/userSlice';
 
 import { useStripe } from '@stripe/stripe-react-native';
-
-import { useCreatePaymentIntentMutation } from '../../store/apiSlice';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import axios from "axios";
 import { baseUrl } from '../../constants/urls';
 import { useDispatch, useSelector } from 'react-redux';
 import { Auth } from 'aws-amplify';
-import RouteNames from '../../constants/routeName';
 import { CommonActions } from '@react-navigation/native';
 
 interface PropsType {
@@ -48,31 +43,26 @@ const FreeTrial = ({route, navigation}) => {
   const {onSignUp} = route.params;
   console.log("onSignUp", onSignUp);
   
-  const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [couponCode, setCouponCode] = useState("");
+
   const [planType, setPlan] = useState(1);
-  const [createPaymentIntent] = useCreatePaymentIntentMutation();
-  const { initPaymentSheet, presentPaymentSheet } = useStripe();
 
   const dispatch = useDispatch();
-
-
-  React.useEffect(() => {
-  }, []);
 
   const userId = useSelector((state) => state.user.userId);
   const timezone = useSelector(userTimeZone);
   const isIndia = (timezone=='Asia/Calcutta' || timezone=='Asia/Kolkata');
+  const prevAppState = useSelector(userPrevAppState);
 
 
   const fetchUsers = async (userId) => {
+    console.log("fetchusers called");
     const abortController = new AbortController();
     const url = `${baseUrl}/user/${userId}`;
     try {
       setIsLoading(true);
       var subcription = false;
-      do{
+
       const response = await axios.get(url, {
         signal: abortController.signal,
         timeout: 10000,
@@ -81,20 +71,23 @@ const FreeTrial = ({route, navigation}) => {
         }
       });
 
+      console.log('fetchUsers', response?.data?.data);
+
       if (response.status === 200) {
         subcription = response?.data?.data.subscriptionStatus==='ACTIVE';
         console.log("subscription status ",subcription)
         if(subcription){
           dispatch(userSlice.actions.setSubscription(subcription))
-          setIsLoading(false);
-          navigation.navigate('Home');
+          onSkip();
           console.log("Payment Successful");
+        }
+        else{
+          setIsLoading(false);
+          console.log("Payment Cancelled");
         }
       } else {
         throw new Error("Failed to fetch users");
       }
-    }
-    while(subcription == false)
 
     } catch (error) {
       if (abortController.signal.aborted) {
@@ -104,67 +97,50 @@ const FreeTrial = ({route, navigation}) => {
       }
     }
   };
-
-  const initializePaymentSheet = async (clientSecret) => {
-
-    const { error } = await initPaymentSheet({
-      merchantDisplayName: 'Yogit, Inc.',
-      setupIntentClientSecret: clientSecret,
-      defaultBillingDetails: {
-        name: 'Utkarsh Nath',
-      },
-    });
-
-    console.log("subscirption pressed step 1")
-
-    if (error) {
-      Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
-      console.log('Something went wrong2', error.message);
-      return;
-    }
-  }
-
-  const openLink = async (url) => {
-    console.log(url);
-    
-    try {
-      if (await InAppBrowser.isAvailable()) {
-        const result = await InAppBrowser.open(url, {
-          // iOS Properties
-          dismissButtonStyle: 'cancel',
-          // preferredBarTintColor: themeColor.vividRed,
-          // preferredControlTintColor: 'white',
-          readerMode: false,
-          animated: true,
-          modalPresentationStyle: 'fullScreen',
-          modalTransitionStyle: 'coverVertical',
-          modalEnabled: true,
-          enableBarCollapsing: false,
-          // Android Properties
-          showTitle: true,
-          secondaryToolbarColor: 'black',
-          navigationBarColor: 'black',
-          navigationBarDividerColor: 'white',
-          enableUrlBarHiding: true,
-          enableDefaultShare: true,
-          forceCloseOnRedirection: false,
-          // Specify full animation resource identifier(package:anim/name)
-          // or only resource name(in case of animation bundled with app).
-          animations: {
-            startEnter: 'slide_in_right',
-            startExit: 'slide_out_left',
-            endEnter: 'slide_in_left',
-            endExit: 'slide_out_right'
-          },
-        })
-      }
-      else Linking.openURL(url)
-    } catch (error) {
-      console.log(error);
-      Alert.alert("Sorry, something went wrong!")
-    }
-  }
   
+  useEffect(() => {
+    console.log("useEffect");
+
+    const handleUrlChange = (event) => {
+      // Check if the URL matches the universal link you expect to return to your app.
+      if (event.url.includes('https://yogit.link/')) {
+        // Your app has been reopened from the universal link. You can perform actions here.
+        // For example, you can extract data from the URL and use it in your app.
+        console.log('App reopened from the universal link:', event.url);
+      }
+    };
+
+    Linking.addEventListener('url', handleUrlChange);
+
+
+    const handleAppStateChange = (nextAppState) => {
+      console.log("nextAppState", nextAppState);
+      console.log("previous app state", prevAppState);
+
+      if (prevAppState!='active' && nextAppState === 'active') {
+        console.log('nextAppState');
+        setTimeout(() => {fetchUsers(userId)},5000);
+
+        // Your app has returned to the active state (e.g., from the background).
+        // You can perform actions when your app is brought back to the foreground.
+      }
+      else if (prevAppState==='active' && nextAppState === 'inactive') {
+        setIsLoading(false);
+      }
+      dispatch(userSlice.actions.setAppState(nextAppState))
+      //setAppState(nextAppState);
+    };
+
+    AppState.addEventListener('change', handleAppStateChange);
+
+    return () => {
+      Linking.removeEventListener('url', handleUrlChange);
+      AppState.removeEventListener('change', handleAppStateChange);
+      dispatch(userSlice.actions.setAppState(''))
+    };
+
+  }, []);
+
   const onSubcriptionPressed = async () => {
     console.log("subscirption pressed");
     setIsLoading(true)
@@ -193,8 +169,7 @@ const FreeTrial = ({route, navigation}) => {
         console.log('success');
         const redirectURL = response.data?.data?.redirectURL;
         console.log("redirectURL", redirectURL);
-        await InAppBrowser.close();
-        openLink(redirectURL);
+        Linking.openURL(redirectURL)
       } else {
         setIsLoading(false);
         Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
@@ -202,48 +177,9 @@ const FreeTrial = ({route, navigation}) => {
       }
 
 
-      // if (response.status === 200) {
-      //   console.log(response.data);
-        
-      //   const clientSecret = response.data?.data?.clientSecret;
-      //   // const subscriptionId = response.data?.data?.subscriptionId;
-
-      //   console.log("subscirption pressed step 0")
-      //   console.log(clientSecret);
-
-      //   if (response.error) {
-      //     setIsLoading(false)
-      //     Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
-      //     console.log('Something went wrong1', response.error);
-      //     return;
-      //   }
-      //   setIsLoading(false)
-
-      //   await initializePaymentSheet(clientSecret);
-
-      //   console.log("subscirption pressed step 2")
-
-      //   const { error } = await presentPaymentSheet();
-
-      //   if (error) {
-      //     setIsLoading(false)
-      //     Alert.alert('Error', error.message + " Please try again later.",[{text: 'OK',onPress: () => {},}]);
-      //     console.log('Error code: ${error.code}', error.message);
-      //     return;
-      //   } else {
-      //     Alert.alert('Success', 'Your order is confirmed!');
-      //   }
-
-      //   console.log("subscirption pressed step 3")
-
-      //   fetchUsers(userId)
-
-      // } else {
-      //   Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
-      //   throw new Error("An error has occurred");
-      // }
     } catch (error) {
-      // Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
+      setIsLoading(false);
+      Alert.alert('Error',error,[{text: 'OK',onPress: () => {},}]);
       console.log("error",error);
     }
 

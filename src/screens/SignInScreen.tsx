@@ -104,9 +104,10 @@ const SignInScreen = ({navigation}) => {
 
     const onSignInPressed = async () => {
         try{
-            console.log("sending for sign in ",email.toLowerCase()," and ", password);
+            setEmail(email.toLowerCase());
+            console.log("sending for sign in ",email," and ", password);
             setIsLoading(true);
-            const response = await Auth.signIn(email.toLowerCase(), password);
+            const response = await Auth.signIn(email, password);
             console.log(response);
             const userId = response?.attributes?.sub;
             if (userId != null){
