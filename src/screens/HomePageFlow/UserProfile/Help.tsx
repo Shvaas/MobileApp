@@ -16,12 +16,13 @@ import {themeFontFamily, themefonts, themeColor} from '../../../constants/theme'
 import { useDispatch, useSelector } from 'react-redux';
 import {backgroundImageLight, backButton, tick, line} from '../../../images/imageLinks';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {userTimeZone} from '../../../store/userSlice';
 
 const DATA = [
   {
     id: 1,
     question: '1. What is the subscription cost for the app?',
-    answer: 'The subscription fee is $49 per month, granting you access to unlimited group yoga classes.',
+    answer: 'The subscription fee is $249 per month or $79 per week(before disocunt), granting you access to unlimited group yoga classes.',
   },
   {
     id: 2,
@@ -36,7 +37,7 @@ const DATA = [
   {
     id: 4,
     question: '4. Are there any limitations on the number of classes I can attend?',
-    answer: 'With your subscription, you can participate in an unlimited number of group classes throughout the month.',
+    answer: 'With your subscription, you can participate in an unlimited number of group classes throughout the period.',
   },
   {
     id: 5,
@@ -46,7 +47,7 @@ const DATA = [
   {
     id: 6,
     question: '6. Can I speak to an instructor about any health concerns before taking a class?',
-    answer: 'Our instructors organize office hours once a week. Feel free to join and discuss any concerns you might have.',
+    answer: 'You can usually bring up any concerns at the beginning of the class. But if you wish to speak to the instructor 1-1, please contact us at admin@yogit.live and we will be happy to schedule that for you.',
   },
   {
     id: 7,
@@ -68,6 +69,11 @@ const DATA = [
     question: '10. How can I get support for technical issues or other concerns?',
     answer: 'For any technical problems or questions, feel free to reach out to our dedicated support team at admin@yogit.live',
   },
+  {
+    id: 11,
+    question: '11. Where can I contact you?',
+    answer: 'You can email us at admin@yogit.live or\nCall us at +91 9716269154 / +1 6028152265',
+  },
 ];
 
 //Enjoy your journey to wellness with Yogit and don’t forget to drop a review on the app store!
@@ -88,6 +94,12 @@ const Item: React.FC<PropsType> = ({question, answer, index}) => (
 );
 
 const Help: React.FC<PropsType> = ({navigation}) => {
+
+  const timezone = useSelector(userTimeZone);
+const isIndia = (timezone=='Asia/Calcutta' || timezone=='Asia/Kolkata');
+if(isIndia){
+  DATA[0]["answer"]= 'The subscription fee is Rs.2499 per month or Rs.9999 per week(before disocunt), granting you access to unlimited group yoga classes.';
+}
 
   return (
       <SafeAreaView style={styles.safeArea}>
