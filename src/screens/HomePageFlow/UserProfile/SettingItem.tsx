@@ -94,6 +94,28 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
       // console.log(userIdSelector(userIdSelector));
     };
 
+    const onDeleteAccount = async () => {
+
+      Auth.deleteUser()
+      .then(() => {
+        dispatch(userSlice.actions.setUserId(null));
+        dispatch(userSlice.actions.setInitialState(null));
+        dispatch(sessionSlice.actions.setInitialState(null));
+        dispatch(userSessionSlice.actions.setInitialState(null));
+        dispatch(yogiSlice.actions.setInitialState(null));
+        AsyncStorage.clear();
+        RNRestart.restart();
+        const resetAction = CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'SignIn'}]
+        });
+        navigation.dispatch(resetAction);
+        
+        
+      })
+      .catch(err => console.log(err));
+    };
+
     const openLink = async (url) => {
       console.log(url);
       
@@ -192,14 +214,40 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
         }else{
           onSignOut();
         }
-        
-        // Linking.openURL('https://billing.stripe.com/p/login/test_bIYaGO6aC28L3OE4gg');
       }
       if(index === 4){
-        //Logout
-        onSignOut();
+        if(isSubscribed){
+          //Logout
+          onSignOut();
+        }else{
+          Alert.alert("Are you sure you want to delete your account?", "On deleting your account you will loose your remaining subscription period and access to any classes you have already booked.",
+          [
+            {
+                text: 'NO',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+            },
+            {text: 'YES', onPress: () => {
+              //Delete account
+              onDeleteAccount();
+            }
+          }]);
+        }
       }
-      
+      if(index === 5){
+        Alert.alert("Are you sure you want to delete your account?", "On deleting your account you will loose your remaining subscription period and access to any classes you have already booked.",
+        [
+          {
+              text: 'NO',
+              onPress: () => console.log('Cancel Pressed'),
+              style: 'cancel',
+          },
+          {text: 'YES', onPress: () => {
+            //Delete account
+            onDeleteAccount();
+          }
+        }]);
+      } 
     };
 
     return (

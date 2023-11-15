@@ -45,12 +45,14 @@ import {
                     {title:'Invite Friends', description: 'Invite your friends to a zenful session'},
                     {title:'Help', description: 'Understand Yogit better'},
                     {title:'Manage Subscription'},
-                    {title:'Logout'},]
+                    {title:'Logout'},
+                    {title:'Delete my account'},]
 
   const settingsUnsubscribed = [{title:'Profile Questions', description: 'Your health profile'},
                     {title:'Invite Friends', description: 'Invite your friends to a zenful session'},
                     {title:'Help', description: 'Understand Yogit better'},
-                    {title:'Logout'},]
+                    {title:'Logout'},
+                    {title:'Delete my account'},]
 
  
   const [currentIndex, setCurrentIndex] = useState(0);
