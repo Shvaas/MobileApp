@@ -95,25 +95,43 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
     };
 
     const onDeleteAccount = async () => {
+      setIsLoading(true);
 
-      Auth.deleteUser()
-      .then(() => {
-        dispatch(userSlice.actions.setUserId(null));
-        dispatch(userSlice.actions.setInitialState(null));
-        dispatch(sessionSlice.actions.setInitialState(null));
-        dispatch(userSessionSlice.actions.setInitialState(null));
-        dispatch(yogiSlice.actions.setInitialState(null));
-        AsyncStorage.clear();
-        RNRestart.restart();
-        const resetAction = CommonActions.reset({
-          index: 0,
-          routes: [{ name: 'SignIn'}]
-        });
-        navigation.dispatch(resetAction);
+      try {
+        const response = await axios.delete(`${baseUrl}/user/${userId}`);
+        console.log("response", response.data);
         
+        if (response.status === 200) {
+          setIsLoading(false);
+          console.log('success');
+
+          Auth.deleteUser()
+          .then(() => {
+            dispatch(userSlice.actions.setUserId(null));
+            dispatch(userSlice.actions.setInitialState(null));
+            dispatch(sessionSlice.actions.setInitialState(null));
+            dispatch(userSessionSlice.actions.setInitialState(null));
+            dispatch(yogiSlice.actions.setInitialState(null));
+            AsyncStorage.clear();
+            RNRestart.restart();
+            const resetAction = CommonActions.reset({
+              index: 0,
+              routes: [{ name: 'SignIn'}]
+            });
+            navigation.dispatch(resetAction);
+
+          })
+          .catch(err => console.log(err));
         
-      })
-      .catch(err => console.log(err));
+        } else {
+          setIsLoading(false);
+          Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
+          throw new Error("An error has occurred");
+        }
+      } catch (error) {
+        setIsLoading(false);
+        Alert.alert('Error',error.message,[{text: 'OK',onPress: () => {},}]);
+      }
     };
 
     const openLink = async (url) => {
