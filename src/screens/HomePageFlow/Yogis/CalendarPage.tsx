@@ -82,10 +82,7 @@ React.useEffect(() => {
         console.log("response", response.data);
 
         if (response.status === 200) {
-
-          console.log("response", response.data?.data);
-          console.log("response student list", response.data?.data?.courses[0]?.studentProfileList);
-          console.log("response student list", response.data?.data?.courses[1]?.studentProfileList);
+          
           dispatch(sessionSlice.actions.initiateSessions({
             sessions: response.data?.data?.courses,
             instructor_id: userId,
@@ -93,7 +90,7 @@ React.useEffect(() => {
           setIsLoading(false);
 
         } else {
-          console.log(response.status);
+          console.log("response.status",response.status);
           setErrorFlag(true);
           throw new Error("Failed to fetch users");
         }
