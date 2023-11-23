@@ -265,7 +265,7 @@ const FreeTrial = ({route, navigation}) => {
             repeatText='Month'/>
             :
             <SubcriptionPlan  onPress={() => setPlan(0)} title='Weekly Plan' subPrice='79'
-            monthlyPrice='69' specialText='LIMITED OFFER' bottomText='Unlimited Classes' 
+            monthlyPrice='59' specialText='LIMITED OFFER' bottomText='Unlimited Classes' 
             selected={planType==0} isIndia={isIndia}
             repeatText='Week'/>
             }
