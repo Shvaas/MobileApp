@@ -12,6 +12,7 @@ import {
     useWindowDimensions,
     TouchableOpacity,
     ActivityIndicator,
+    BackHandler,
   } from 'react-native';
 import { useEffect, useState, useCallback } from 'react';
 import {Auth} from "aws-amplify";
@@ -33,6 +34,28 @@ interface PropsType {
   }
 
 const SignInScreen = ({navigation}) => {
+
+  React.useEffect(() => {
+
+    const backAction = () => {
+      Alert.alert('Hold on!', 'Are you sure you want to exit the app?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => BackHandler.exitApp()},
+      ]);
+      return true;
+    };
+
+    BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+  }, []);
+  
     console.log("SignInScreen");
     const dispatch = useDispatch();
 
@@ -81,7 +104,8 @@ const SignInScreen = ({navigation}) => {
             return;
           } else {
             setErrorFlag(true);
-            throw new Error("Failed to fetch users");
+            // throw new Error("Failed to fetch users");
+            console.log("Failed to fetch users");
           }
         } catch (error) {
           if (abortController.signal.aborted) {
@@ -89,6 +113,7 @@ const SignInScreen = ({navigation}) => {
           } else {
             setErrorFlag(true);
             setIsLoading(false);
+            console.log("cancelled fetch users");
           }
         }
       };
@@ -151,14 +176,6 @@ const SignInScreen = ({navigation}) => {
          </ImageBackground>
         )
       }
-
-    // if(isLoading){
-    //     return (
-    //         <ImageBackground source={backgroundImageMedium} style={{height:'100%', width:'100%'}}>
-    //             <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
-    //         </ImageBackground>
-    //         )
-    // }
 
     return(
         <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>

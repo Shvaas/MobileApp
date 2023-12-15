@@ -10,6 +10,8 @@ import {
   Image,
   Text,
   ImageBackground,
+  Alert,
+  BackHandler,
 } from 'react-native';
 import React from 'react';
 import { useState} from "react";
@@ -93,6 +95,23 @@ const Yogis: React.FC<PropsType> = ({navigation}) => {
           }
         };
         fetchTeachers();
+
+        const backAction = () => {
+          Alert.alert('Hold on!', 'Are you sure you want to exit the app?', [
+            {
+              text: 'Cancel',
+              onPress: () => null,
+              style: 'cancel',
+            },
+            {text: 'YES', onPress: () => BackHandler.exitApp()},
+          ]);
+          return true;
+        };
+    
+        BackHandler.addEventListener(
+          'hardwareBackPress',
+          backAction,
+        );
 
 
     }, []);

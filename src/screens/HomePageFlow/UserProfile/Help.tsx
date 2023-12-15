@@ -18,60 +18,113 @@ import {backgroundImageLight, backButton, tick, line} from '../../../images/imag
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {userTimeZone} from '../../../store/userSlice';
 
+// const DATA = [
+//   {
+//     id: 1,
+//     question: '1. What is the subscription cost for the app?',
+//     answer: 'The subscription fee is $249 per month or $79 per week(before disocunt), granting you access to unlimited group yoga classes.',
+//   },
+//   {
+//     id: 2,
+//     question: '2. How many participants are allowed in a group class?',
+//     answer: 'Each group class can accommodate a maximum of 15 participants, ensuring a personalized experience.',
+//   },
+//   {
+//     id: 3,
+//     question: '3. Can I choose my preferred Yoga instructor?',
+//     answer: 'Yes, you have the freedom to select any Yoga instructor listed on Yogit for your classes.',
+//   },
+//   {
+//     id: 4,
+//     question: '4. Are there any limitations on the number of classes I can attend?',
+//     answer: 'With your subscription, you can participate in an unlimited number of group classes throughout the period.',
+//   },
+//   {
+//     id: 5,
+//     question: '5. How do I book a class?',
+//     answer: 'Booking a class is simple! Navigate to the Yogis page to select the preferred instructor. Select your desired class and time slot from the available slots, and confirm your attendance.',
+//   },
+//   {
+//     id: 6,
+//     question: '6. Can I speak to an instructor about any health concerns before taking a class?',
+//     answer: 'You can usually bring up any concerns at the beginning of the class. But if you wish to speak to the instructor 1-1, please contact us at admin@yogit.live and we will be happy to schedule that for you.',
+//   },
+//   {
+//     id: 7,
+//     question: '7. How will I attend a class?',
+//     answer: 'Link to the class will be provided to you on the booking schedule. Please join through the link before class time.',
+//   },
+//   {
+//     id: 8,
+//     question: '8. What if I cannot attend a class after booking?',
+//     answer: 'If your plans change, make sure to cancel your booking at least 24 hours in advance to allow others to join.',
+//   },
+//   {
+//     id: 9,
+//     question: '9. Is there a trial period available?',
+//     answer: 'Currently, we offer a 7-days free trial where you can avail an unlimited number of classes and instructor profiles even before subscribing.',
+//   },
+//   {
+//     id: 10,
+//     question: '10. How can I get support for technical issues or other concerns?',
+//     answer: 'For any technical problems or questions, feel free to reach out to our dedicated support team at admin@yogit.live',
+//   },
+//   {
+//     id: 11,
+//     question: '11. Where can I contact you?',
+//     answer: 'You can email us at admin@yogit.live or\nCall us at +91 9716269154 / +1 6028152265',
+//   },
+// ];
+
 const DATA = [
   {
     id: 1,
     question: '1. What is the subscription cost for the app?',
-    answer: 'The subscription fee is $249 per month or $79 per week(before disocunt), granting you access to unlimited group yoga classes.',
+    answer: 'The subscription fee is $249 per month or $79 per week(before disocunt), granting you access to unlimited yoga classes.',
   },
   {
     id: 2,
-    question: '2. How many participants are allowed in a group class?',
-    answer: 'Each group class can accommodate a maximum of 15 participants, ensuring a personalized experience.',
-  },
-  {
-    id: 3,
-    question: '3. Can I choose my preferred Yoga instructor?',
+    question: '2. Can I choose my preferred Yoga instructor?',
     answer: 'Yes, you have the freedom to select any Yoga instructor listed on Yogit for your classes.',
   },
   {
-    id: 4,
-    question: '4. Are there any limitations on the number of classes I can attend?',
-    answer: 'With your subscription, you can participate in an unlimited number of group classes throughout the period.',
+    id: 3,
+    question: '3. Are there any limitations on the number of classes I can attend?',
+    answer: 'With your subscription, you can participate in an unlimited number of classes throughout the period.',
   },
   {
-    id: 5,
-    question: '5. How do I book a class?',
+    id: 4,
+    question: '4. How do I book a class?',
     answer: 'Booking a class is simple! Navigate to the Yogis page to select the preferred instructor. Select your desired class and time slot from the available slots, and confirm your attendance.',
   },
   {
-    id: 6,
-    question: '6. Can I speak to an instructor about any health concerns before taking a class?',
-    answer: 'You can usually bring up any concerns at the beginning of the class. But if you wish to speak to the instructor 1-1, please contact us at admin@yogit.live and we will be happy to schedule that for you.',
+    id: 5,
+    question: '5. Can I speak to an instructor about any health concerns before taking a class?',
+    answer: 'You can usually bring up any concerns at the beginning of the class. But if you wish to speak to the instructor outside the class, please contact us at admin@yogit.live and we will be happy to schedule that for you.',
   },
   {
-    id: 7,
-    question: '7. How will I attend a class?',
+    id: 6,
+    question: '6. How will I attend a class?',
     answer: 'Link to the class will be provided to you on the booking schedule. Please join through the link before class time.',
   },
   {
-    id: 8,
-    question: '8. What if I cannot attend a class after booking?',
+    id: 7,
+    question: '7. What if I cannot attend a class after booking?',
     answer: 'If your plans change, make sure to cancel your booking at least 24 hours in advance to allow others to join.',
   },
   {
-    id: 9,
-    question: '9. Is there a trial period available?',
+    id: 8,
+    question: '8. Is there a trial period available?',
     answer: 'Currently, we offer a 7-days free trial where you can avail an unlimited number of classes and instructor profiles even before subscribing.',
   },
   {
-    id: 10,
-    question: '10. How can I get support for technical issues or other concerns?',
+    id: 9,
+    question: '9. How can I get support for technical issues or other concerns?',
     answer: 'For any technical problems or questions, feel free to reach out to our dedicated support team at admin@yogit.live',
   },
   {
-    id: 11,
-    question: '11. Where can I contact you?',
+    id: 10,
+    question: '10. Where can I contact you?',
     answer: 'You can email us at admin@yogit.live or\nCall us at +91 9716269154 / +1 6028152265',
   },
 ];
@@ -98,7 +151,7 @@ const Help: React.FC<PropsType> = ({navigation}) => {
   const timezone = useSelector(userTimeZone);
 const isIndia = (timezone=='Asia/Calcutta' || timezone=='Asia/Kolkata');
 if(isIndia){
-  DATA[0]["answer"]= 'The subscription fee is Rs.2499 per month or Rs.9999 per week(before disocunt), granting you access to unlimited group yoga classes.';
+  DATA[0]["answer"]= 'The subscription fee is Rs.2499 per month or Rs.9999 per week(before disocunt), granting you access to unlimited yoga classes.';
 }
 
   return (

@@ -22,7 +22,7 @@ import SignUpScreen from './screens/SignUpScreen';
 import ConfirmCodeScreen from './screens/ConfirmCodeScreen';
 import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
 import NewPasswordScreen from './screens/NewPasswordScreen';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Alert, BackHandler } from 'react-native';
 
 function HomeNav() {
   return <HomePageStack />;
@@ -43,12 +43,26 @@ const App = () => {
   //   }
   // }
 
-  // React.useEffect(() => {
-  //   console.log("user", user?.attributes?.email);
-    
-  //   SplashScreen.hide();
-  //   updateUser();
-  // }, []);
+  React.useEffect(() => {
+
+    const backAction = () => {
+      Alert.alert('Hold on!', 'Are you sure you want to exit the app?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => BackHandler.exitApp()},
+      ]);
+      return true;
+    };
+
+    BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+  }, []);
 
   const Stack = createNativeStackNavigator();
   // India
