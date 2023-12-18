@@ -157,28 +157,6 @@ const FreeTrial = ({route, navigation}) => {
 
 
 
-  // const initializePaymentSheet = async (clientSecret) => {
-
-  //   const { error } = await initPaymentSheet({
-  //     merchantDisplayName: 'Yogit, Inc.',
-  //     setupIntentClientSecret: clientSecret,
-  //     defaultBillingDetails: {
-  //       name: 'Utkarsh Nath',
-  //     },
-  //   });
-
-  //   console.log("subscirption pressed step 1")
-
-  //   if (error) {
-  //     Alert.alert('Error','Please try again later',[{text: 'OK',onPress: () => {},}]);
-  //     console.log('Something went wrong2', error.message);
-  //     return;
-  //   }
-  // }
-
-
-
-
   const openLink = async (url) => {
     console.log(url);
     
