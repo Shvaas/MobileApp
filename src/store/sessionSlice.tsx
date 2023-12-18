@@ -181,14 +181,15 @@ export const sessionSlice = createSlice({
 
         //[{"capacity": 30, "courseId": "0f94e351-fd3a-4a71-84c4-123399f50bb4", 
         // "courseName": "Yoga101", "difficultyLevel": "BEGINNER", "price": 10, "sessionDate": "2023-01-01"}]
+        state.sessions = [];
         for (let i = 0; i < sessions.length; i++) {
-          let sessionId = sessions[i].courseId;
-          state.currentSession = state.sessions.find(p => p.sessionId === sessionId);
-          let newSession = false;
-          if (state.currentSession === undefined){
+          // let sessionId = sessions[i].courseId;
+          // state.currentSession = state.sessions.find(p => p.sessionId === sessionId);
+          // let newSession = false;
+          // if (state.currentSession === undefined){
              state.currentSession = {};
-             newSession = true;
-          }
+          //    newSession = true;
+          // }
             // add session
             state.currentSession.instructorId = instructor_id;
             state.currentSession.title = sessions[i]?.courseName;
@@ -201,9 +202,9 @@ export const sessionSlice = createSlice({
             state.currentSession.studentList = sessions[i]?.studentProfileList ? sessions[i]?.studentProfileList: []
             console.log("studentProfileList: ", state.currentSession.studentList);
             
-            if(newSession){
+            // if(newSession){
               state.sessions.push(state.currentSession);
-            }
+            // }
         }
 
         console.log("Session slice: initiateSessions updated list:", state.sessions);

@@ -15,9 +15,7 @@ import {backgroundImageMedium} from '../images/imageLinks';
 import SplashScreen from 'react-native-splash-screen';
 
 import axios from "axios";
-import LoginStack from '../screenStack/LoginStack';
-import { BounceOutRight } from 'react-native-reanimated';
-import { NavigationHelpersContext } from '@react-navigation/core';
+import { baseUrl } from '../constants/urls';
 
 const MyTheme = {
     ...AmplifyTheme,
@@ -38,8 +36,6 @@ const MyTheme = {
 interface PropsType {
     navigation: any,
   }
-
-const baseUrl = 'https://6sm5d5xzu8.execute-api.us-west-2.amazonaws.com/stage';
 
 const WaitingSpinner3 = ({navigation}) => {
     console.log("WaitingSpinner3");

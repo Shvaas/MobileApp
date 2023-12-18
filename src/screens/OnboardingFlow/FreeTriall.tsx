@@ -64,10 +64,25 @@ const FreeTrial = ({route, navigation}) => {
   const isIndia = (timezone=='Asia/Calcutta' || timezone=='Asia/Kolkata');
   const prevAppState = useSelector(userPrevAppState);
 
-  const waitTimer = async () => {
-    setTimeout(function(){
-  },5000);
+  const updateUserTimeZone = async (userId) => {
+    const urlBackStage = `${baseUrl}/user/${userId}/update-user-data/`;
+    var timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    dispatch(userSlice.actions.setTime({timeZone:timeZone}))
+    console.log("timezone",timeZone);
+    try{
+      const response = await axios.post(urlBackStage, {timezone: timeZone} ,{
+        headers: {
+          Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+        }
+      });
+      console.log("update user response",response);
+    }
+    catch(error){
+      console.log("update user error",error.message);
+    }
+
   }
+  
   const fetchUsers = async (userId) => {
     console.log("fetchUsers called");
     const abortController = new AbortController();
@@ -88,6 +103,7 @@ const FreeTrial = ({route, navigation}) => {
       if (response.status === 200) {
         subcription = response?.data?.data.subscriptionStatus==='ACTIVE';
         console.log("subscription status ",subcription)
+        updateUserTimeZone(userId);
         if(subcription){
           dispatch(userSlice.actions.setSubscription(subcription))
           onSkip();
@@ -327,7 +343,7 @@ const FreeTrial = ({route, navigation}) => {
             repeatText='Month'/>
             :
             <SubcriptionPlan  onPress={() => setPlan(0)} title='Weekly Plan' subPrice='79'
-            monthlyPrice='69' specialText='LIMITED OFFER' bottomText='Unlimited Classes' 
+            monthlyPrice='59' specialText='LIMITED OFFER' bottomText='Unlimited Classes' 
             selected={planType==0} isIndia={isIndia}
             repeatText='Week'/>
             }

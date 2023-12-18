@@ -80,9 +80,6 @@ React.useEffect(() => {
           }
         });
         console.log("response", response.data);
-        console.log("response", response.data.data);
-        console.log("response student list", response.data.data.courses[0].studentProfileList);
-        console.log("response student list", response.data.data.courses[1].studentProfileList);
         if (response.status === 200) {
 
           dispatch(sessionSlice.actions.initiateSessions({
@@ -92,7 +89,7 @@ React.useEffect(() => {
           setIsLoading(false);
 
         } else {
-          console.log(response.status);
+          console.log("response.status", response.status);
           setErrorFlag(true);
           throw new Error("Failed to fetch users");
         }
@@ -241,8 +238,9 @@ function getPastDate(numberOfDays: number) {
 
   for (var key in sessionMap) {
     let myDate = new Date(sessionMap[{key}["key"]][0].start_date);
+    console.log("mydate",key, myDate.toISOString().split('T')[0]);
     var sessionItem = {
-      title: key,
+      title: myDate.toISOString().split('T')[0],
       data: sessionMap[key]
     }
     itemsCopy.push(sessionItem)
@@ -254,14 +252,15 @@ function getPastDate(numberOfDays: number) {
     const marked = {};
       itemsCopy.forEach((val) => {
         if (val.data && val.data.length>0){
-            marked[val.title] = {marked: true};
+          console.log("val",val.data[0].start_date.split('T')[0]);
+          marked[val.data[0].start_date.split('T')[0]] = {marked: true};
           }
           else{
             marked[val.title] = {disabled: true};
           }}
       );
 
-  
+      const markedDict = useRef(marked);
 
 
   // console.log("sessionMap",sessionMap);
@@ -273,6 +272,24 @@ function getPastDate(numberOfDays: number) {
     return <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
   }
 
+  if (session.length === 0 && !hasError){
+    return (
+      <SafeAreaView style={styles.safeArea}>
+      <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
+        <GestureHandlerRootView style={{backgroundColor: themeColor.white}}>
+        <TouchableOpacity onPress={goBack}>
+          <Image source={backButton} style={[styles.backbutton]} /> 
+        </TouchableOpacity>
+      <View style={{alignItems:'center', justifyContent:'center', height:'90%', width:'100%'}}>
+        <Text style={{fontSize: themefonts.font16, fontFamily: themeFontFamily.raleway, margin:20}}> 
+        No sessions for this teacher are available at this time. Please check back later. </Text>
+      </View>
+      </GestureHandlerRootView>
+     </ImageBackground>
+     </SafeAreaView>
+    )
+  }
+
   if (session.length === 0 && hasError){
     return (
       <SafeAreaView style={styles.safeArea}>
@@ -282,7 +299,7 @@ function getPastDate(numberOfDays: number) {
           <Image source={backButton} style={[styles.backbutton]} /> 
         </TouchableOpacity>
       <View style={{alignItems:'center', justifyContent:'center', height:'90%', width:'100%'}}>
-        <Text style={{fontSize: themefonts.font16, fontFamily: themeFontFamily.raleway, margin:0}}> 
+        <Text style={{fontSize: themefonts.font16, fontFamily: themeFontFamily.raleway, margin:20}}> 
         Something went wrong, Please try again later after sometime. </Text>
       </View>
       </GestureHandlerRootView>
@@ -349,7 +366,7 @@ function getPastDate(numberOfDays: number) {
           theme={theme.current}
           // disableAllTouchEventsForDisabledDays
           firstDay={1}
-          markedDates={marked}
+          markedDates={markedDict.current}
           leftArrowImageSource={prev}
           rightArrowImageSource={next}
           animateScroll

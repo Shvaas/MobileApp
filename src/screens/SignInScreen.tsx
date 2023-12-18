@@ -12,6 +12,7 @@ import {
     useWindowDimensions,
     TouchableOpacity,
     ActivityIndicator,
+    BackHandler
   } from 'react-native';
 import { useEffect, useState, useCallback } from 'react';
 import {Auth} from "aws-amplify";
@@ -26,19 +27,59 @@ import axios from "axios";
 import { userSlice } from '../store/userSlice';
 import RouteNames from '../constants/routeName';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { baseUrl } from '../constants/urls';
 
 interface PropsType {
     navigation: any;
   }
 
-const baseUrl = 'https://6sm5d5xzu8.execute-api.us-west-2.amazonaws.com/stage';
-
 const SignInScreen = ({navigation}) => {
+
+  React.useEffect(() => {
+
+    const backAction = () => {
+      Alert.alert('Hold on!', 'Are you sure you want to exit the app?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => BackHandler.exitApp()},
+      ]);
+      return true;
+    };
+
+    BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+  }, []);
+
     console.log("SignInScreen");
     const dispatch = useDispatch();
 
     const [isLoading, setIsLoading] = useState(false);
     const [hasError, setErrorFlag] = useState(false);
+
+    const updateUserTimeZone = async (userId) => {
+      const urlBackStage = `${baseUrl}/user/${userId}/update-user-data/`;
+      var timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      dispatch(userSlice.actions.setTime({timeZone:timeZone}))
+      console.log("timezone",timeZone);
+      try{
+        const response = await axios.post(urlBackStage, {timezone: timeZone} ,{
+          headers: {
+            Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+          }
+        });
+        console.log("update user response",response);
+      }
+      catch(error){
+        console.log("update user error",error.message);
+      }
+  
+    }
 
     const fetchUsers = async (userId) => {
         const abortController = new AbortController();
@@ -57,6 +98,7 @@ const SignInScreen = ({navigation}) => {
           if (response.status === 200) {
             setEmail('');
             setPassword('');
+            updateUserTimeZone(userId);
             if (response?.data?.data.type === "INSTRUCTOR"){
               dispatch(userSlice.actions.setInstructor({type: 'Teacher', userId: userId,
               firsName: response?.data?.data.name, lastName:response?.data?.data.name,
@@ -105,9 +147,10 @@ const SignInScreen = ({navigation}) => {
 
     const onSignInPressed = async () => {
         try{
-            console.log("sending for sign in ",email.toLowerCase()," and ", password);
+            setEmail(email.toLowerCase());
+            console.log("sending for sign in ",email," and ", password);
             setIsLoading(true);
-            const response = await Auth.signIn(email.toLowerCase(), password);
+            const response = await Auth.signIn(email, password);
             console.log(response);
             const userId = response?.attributes?.sub;
             if (userId != null){

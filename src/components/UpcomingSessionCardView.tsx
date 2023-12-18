@@ -170,7 +170,7 @@ const UpcomingSessionCardView: React.FC<PropsType> = ({item}) => {
           
         } else {
           setIsLoading(false);
-          Alert.alert('Error','Link to join the session will be updated at least 12 hours before the session. If you are seeing this within 12 hours of the session please contact us.',[{text: 'OK',onPress: () => {},}]);
+          Alert.alert('Good things come at the right time!','There is still time for your booked session to begin. Link to join the session will be updated 12 hours before the session.',[{text: 'OK',onPress: () => {},}]);
         }
       } catch (error) {
         setIsLoading(false);

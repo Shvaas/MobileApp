@@ -50,11 +50,12 @@ const SignUpScreen = ({navigation}) => {
 
     const onSignUpPressed = async () => {
         try {
+          setEmail(email.toLowerCase());
           setIsLoading(true);
             await Auth.signUp({
-              username: email.toLowerCase(),
+              username: email,
               password: password,
-              attributes: {email, given_name: firstName, family_name: lastName,phone_number:String(phoneNumber)},
+              attributes: {email: email, given_name: firstName, family_name: lastName,phone_number:String(phoneNumber)},
               autoSignIn: {
                 enabled: true,
               }

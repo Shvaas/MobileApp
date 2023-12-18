@@ -10,6 +10,7 @@ import {Provider} from 'react-redux';
 import {store} from './store';
 import { useEffect, useState } from 'react';
 import {Auth} from "aws-amplify";
+import {BackHandler, Alert} from 'react-native';
 
 // Local
 import OnboardingStack from './screenStack/OnboardingStack';
@@ -43,12 +44,28 @@ const App = () => {
   //   }
   // }
 
-  // React.useEffect(() => {
-  //   console.log("user", user?.attributes?.email);
-    
-  //   SplashScreen.hide();
-  //   updateUser();
-  // }, []);
+  
+
+  React.useEffect(() => {
+
+    const backAction = () => {
+      Alert.alert('Hold on!', 'Are you sure you want to exit the app?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => BackHandler.exitApp()},
+      ]);
+      return true;
+    };
+
+    BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+  }, []);
 
   const Stack = createNativeStackNavigator();
   // India
