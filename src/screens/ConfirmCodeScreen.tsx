@@ -52,6 +52,25 @@ const ConfirmCodeScreen = ({route,navigation}) => {
         defaultValues: {email: email},
       });
 
+      const updateUserTimeZone = async (userId) => {
+        const urlBackStage = `${baseUrl}/user/${userId}/update-user-data/`;
+        var timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        dispatch(userSlice.actions.setTime({timeZone:timeZone}))
+        console.log("timezone",timeZone);
+        try{
+          const response = await axios.post(urlBackStage, {timezone: timeZone} ,{
+            headers: {
+              Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+            }
+          });
+          console.log("update user response",response);
+        }
+        catch(error){
+          console.log("update user error",error.message);
+        }
+
+      }
+
       const fetchUsers = async (userId) => {
         const abortController = new AbortController();
         const url = `${baseUrl}/user/${userId}`;
@@ -66,6 +85,7 @@ const ConfirmCodeScreen = ({route,navigation}) => {
           console.log("response", response.data);
           console.log("response", response.data.data);
           if (response.status === 200) {
+            updateUserTimeZone(userId);
             if (response?.data?.data.type === "INSTRUCTOR"){
               dispatch(userSlice.actions.setInstructor({type: 'Teacher', userId: userId,
               firsName: response?.data?.data.name, lastName:response?.data?.data.name,
