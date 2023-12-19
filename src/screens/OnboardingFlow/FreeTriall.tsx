@@ -51,9 +51,28 @@ const FreeTrial = ({route, navigation}) => {
 
   const userId = useSelector((state) => state.user.userId);
   const timezone = useSelector(userTimeZone);
+  console.log("timezone", timezone);
   const isIndia = (timezone=='Asia/Calcutta' || timezone=='Asia/Kolkata');
   const prevAppState = useSelector(userPrevAppState);
 
+  const updateUserTimeZone = async (userId) => {
+    const urlBackStage = `${baseUrl}/user/${userId}/update-user-data/`;
+    var timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    dispatch(userSlice.actions.setTime({timeZone:timeZone}))
+    console.log("timezone",timeZone);
+    try{
+      const response = await axios.post(urlBackStage, {timezone: timeZone} ,{
+        headers: {
+          Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+        }
+      });
+      console.log("update user response",response);
+    }
+    catch(error){
+      console.log("update user error",error.message);
+    }
+
+  }
 
   const fetchUsers = async (userId) => {
     console.log("fetchusers called");
@@ -76,6 +95,7 @@ const FreeTrial = ({route, navigation}) => {
       if (response.status === 200) {
         subcription = response?.data?.data.subscriptionStatus==='ACTIVE';
         console.log("subscription status ",subcription)
+        updateUserTimeZone(userId);
         if(subcription){
           dispatch(userSlice.actions.setSubscription(subcription))
           onSkip();

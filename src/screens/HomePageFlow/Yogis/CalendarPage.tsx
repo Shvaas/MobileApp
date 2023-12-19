@@ -238,8 +238,9 @@ function getPastDate(numberOfDays: number) {
 
   for (var key in sessionMap) {
     let myDate = new Date(sessionMap[{key}["key"]][0].start_date);
+    console.log("mydate",key, myDate.toISOString().split('T')[0]);
     var sessionItem = {
-      title: key,
+      title: myDate.toISOString().split('T')[0],
       data: sessionMap[key]
     }
     itemsCopy.push(sessionItem)
@@ -251,14 +252,15 @@ function getPastDate(numberOfDays: number) {
     const marked = {};
       itemsCopy.forEach((val) => {
         if (val.data && val.data.length>0){
-            marked[val.title] = {marked: true};
+            console.log("val",val.data[0].start_date.split('T')[0]);
+            marked[val.data[0].start_date.split('T')[0]] = {marked: true};
           }
           else{
             marked[val.title] = {disabled: true};
           }}
       );
 
-  
+    const markedDict = useRef(marked);
 
 
   // console.log("sessionMap",sessionMap);
@@ -364,7 +366,7 @@ function getPastDate(numberOfDays: number) {
           theme={theme.current}
           // disableAllTouchEventsForDisabledDays
           firstDay={1}
-          markedDates={marked}
+          markedDates={markedDict.current}
           leftArrowImageSource={prev}
           rightArrowImageSource={next}
           animateScroll
