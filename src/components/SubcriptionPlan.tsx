@@ -73,7 +73,7 @@ import { color } from 'react-native-elements/dist/helpers';
         justifyContent: 'center',
         borderWidth: 2,
         borderColor: themeColor.vividRed,
-        width: 175,
+        width: "45%",
         height: 175,
         borderRadius: 5
     }, 
@@ -84,7 +84,7 @@ import { color } from 'react-native-elements/dist/helpers';
       borderWidth: 2,
       borderColor: themeColor.vividRed,
       backgroundColor: themeColor.vividRed,
-      width: 175,
+      width: "45%",
       height: 175,
       borderRadius: 5
   }, 

@@ -13,6 +13,7 @@ import {
   } from 'react-native';
  import React, { Component } from 'react';
  import { useEffect, useState, useCallback } from 'react';
+ import { userTimeZone } from '../../../store/userSlice';
 
  import CheckBox from '@react-native-community/checkbox';
  import RouteNames from '../../../constants/routeName';
@@ -111,10 +112,19 @@ const [selectedGender, setSelectedGender] = useState();
   "6 Foot", "6 Foot 1 inch", "6 Foot 2 inch", "6 Foot 3 inch", "6 Foot 4 inch", "6 Foot 5 inch", 
   "6 Foot 6 inch", "6 Foot 7 inch", "6 Foot 8 inch", "6 Foot 9 inch", "6 Foot 10 inch", "6 Foot 11 inch", "6 Foot 12 inch",];
 
-  const weight = [" "];
-  for (let index = 0; index < 500; index++) {
-    weight.push(index + " lb")
-  }
+  const timezone = useSelector(userTimeZone);
+  const isIndia = (timezone=='Asia/Calcutta' || timezone=='Asia/Kolkata');
+
+   const weight = ["Select"];
+   if (!isIndia){
+     for (let index = 0; index < 500; index++) {
+       weight.push(index + " lb")
+     }
+   }else{
+     for (let index = 0; index < 200; index++) {
+       weight.push(index + " kg")
+     }
+   }
 
 
   const [currentIndex, setCurrentIndex] = useState(0);

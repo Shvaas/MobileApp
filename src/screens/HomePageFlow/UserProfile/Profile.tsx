@@ -112,7 +112,7 @@ import {
             unfilledColor={themeColor.white} />
             <View style={{flexDirection:'row', justifyContent:'space-between', marginTop:5}}>
                 <Text style={[styles.standardText]}>{sessions.length}/100 sessions</Text>
-                <Text style={[styles.standardText]}>Next Level: Intermidiate</Text>
+                <Text style={[styles.standardText]}>Next Level: Intermediate</Text>
             </View>
           </View>
 
@@ -142,8 +142,8 @@ import {
           { !subscription && <GestureHandlerRootView style={styles.premiumContainer}>
             <TouchableOpacity onPress={()=>navigation.navigate(RouteNames.OnboardingFlow.FreeTrial, {onSignUp:false})}>
                 <View style={{height:'100%', alignItems: 'center', justifyContent:'center'}}>
-                    <Text style={[styles.inviteHeadingText, {color:themeColor.white}]}>Get Shvaas Premium</Text>
-                    <Text style={[styles.inviteText, {color:themeColor.white}]}>Upto 20 % off on all subsciptions</Text>
+                    <Text style={[styles.inviteHeadingText, {color:themeColor.white}]}>Get Yogit Premium</Text>
+                    <Text style={[styles.inviteText, {color:themeColor.white}]}>Upto 30 % off on all subscriptions.</Text>
                 </View>
             </TouchableOpacity>
           </GestureHandlerRootView>}

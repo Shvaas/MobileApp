@@ -69,9 +69,9 @@ const QuestionItem: React.FC<PropsType> = ({item, index,
     const gender = ["Select", "Female", "Male","Other","Don't wish to specify"];
 
     const QuestionOnekeys = ["Asthma", "Depression or/and Anxiety", "Cardiovascular issues", "Arthritis",
-    "Osteoporosis", "Back Pain", "Cancer", "Obstructive pulmonary problems", "Diabetes"]
+    "Osteoporosis", "Back Pain", "Spondylitis", "Obstructive pulmonary problems", "Diabetes"]
 
-    const QuestionTwokeys = ["Stress relief", "Weight loss", "Flexibility",
+    const QuestionTwokeys = ["Stress relief", "Pain Relief", "Weight loss", "Flexibility",
     "Concentration","Strength", "Focused cure according to chronic ailments", 
     "General health benefits", "Community engagement"]
 
