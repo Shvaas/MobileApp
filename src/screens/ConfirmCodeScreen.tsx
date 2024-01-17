@@ -54,12 +54,6 @@ const ConfirmCodeScreen = ({route,navigation}) => {
         defaultValues: {email: email},
       });
 
-      const HideKeyboard = ({ children }) => (
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-          {children}
-        </TouchableWithoutFeedback>
-      );
-
       const updateUserTimeZone = async (userId) => {
         const urlBackStage = `${baseUrl}/user/${userId}/update-user-data/`;
         var timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -209,16 +203,8 @@ const ConfirmCodeScreen = ({route,navigation}) => {
       )
     }
 
-    // if(isLoading){
-    //     return (
-    //         <ImageBackground source={backgroundImageMedium} style={{height:'100%', width:'100%'}}>
-    //             <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
-    //         </ImageBackground>
-    //         )
-    // }
-
     return(
-      <HideKeyboard>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
             <Spinner
             visible={isLoading}
@@ -259,7 +245,7 @@ const ConfirmCodeScreen = ({route,navigation}) => {
             
             </View>
         </ImageBackground>
-        </HideKeyboard>
+        </TouchableWithoutFeedback>
 
     );
 

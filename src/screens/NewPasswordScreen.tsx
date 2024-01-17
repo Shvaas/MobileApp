@@ -25,12 +25,6 @@ const NewPasswordScreen = ({route,navigation}) => {
     const [passwordRepeat, setPasswordRepeat] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const HideKeyboard = ({ children }) => (
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        {children}
-      </TouchableWithoutFeedback>
-    );
-
   const onSubmitPressed = async () => {
     try {
       setIsLoading(true);
@@ -48,7 +42,7 @@ const NewPasswordScreen = ({route,navigation}) => {
   };
 
   return (
-    <HideKeyboard>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
     <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
     <Spinner
           visible={isLoading}
@@ -93,7 +87,7 @@ const NewPasswordScreen = ({route,navigation}) => {
     </View>
     </View>
     </ImageBackground>
-    </HideKeyboard>
+    </TouchableWithoutFeedback>
   );
 };
 

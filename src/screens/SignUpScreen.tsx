@@ -49,13 +49,6 @@ const SignUpScreen = ({navigation}) => {
     const [passwordRepeat,setPasswordRepeat] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const HideKeyboard = ({ children }) => (
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        {children}
-      </TouchableWithoutFeedback>
-    );
-    
-
     const onSignUpPressed = async () => {
         try {
           setEmail(email.toLowerCase());
@@ -90,7 +83,7 @@ const SignUpScreen = ({navigation}) => {
     };
 
     return(
-      <HideKeyboard>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
             <Spinner
             visible={isLoading}
@@ -148,7 +141,7 @@ const SignUpScreen = ({navigation}) => {
             
             </View>
         </ImageBackground>
-        </HideKeyboard>
+        </TouchableWithoutFeedback>
 
     );
 

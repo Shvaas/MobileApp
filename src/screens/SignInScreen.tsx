@@ -57,12 +57,6 @@ const SignInScreen = ({navigation}) => {
     );
 
   }, []);
-
-  const HideKeyboard = ({ children }) => (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      {children}
-    </TouchableWithoutFeedback>
-  );
   
     console.log("SignInScreen");
     const dispatch = useDispatch();
@@ -206,7 +200,7 @@ const SignInScreen = ({navigation}) => {
       }
 
     return(
-      <HideKeyboard>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
             <Spinner
             visible={isLoading}
@@ -240,7 +234,7 @@ const SignInScreen = ({navigation}) => {
             </View>
             
         </ImageBackground>
-        </HideKeyboard>
+        </TouchableWithoutFeedback>
 
     );
 
