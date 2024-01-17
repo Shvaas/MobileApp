@@ -11,6 +11,8 @@ import {
     Alert,
     useWindowDimensions,
     TouchableOpacity,
+    TouchableWithoutFeedback,
+    Keyboard,
   } from 'react-native';
 import { useEffect, useState, useCallback } from 'react';
 import {Auth} from "aws-amplify";
@@ -46,7 +48,6 @@ const SignUpScreen = ({navigation}) => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [passwordRepeat,setPasswordRepeat] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    
 
     const onSignUpPressed = async () => {
         try {
@@ -82,6 +83,7 @@ const SignUpScreen = ({navigation}) => {
     };
 
     return(
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
             <Spinner
             visible={isLoading}
@@ -139,6 +141,7 @@ const SignUpScreen = ({navigation}) => {
             
             </View>
         </ImageBackground>
+        </TouchableWithoutFeedback>
 
     );
 

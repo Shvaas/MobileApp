@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, ScrollView, Alert, TouchableOpacity, ImageBackground} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Alert, TouchableOpacity, ImageBackground, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import CustomInput from '../components/CustomInput';
 import {useNavigation} from '@react-navigation/native';
 import {useForm} from 'react-hook-form';
@@ -42,6 +42,7 @@ const NewPasswordScreen = ({route,navigation}) => {
   };
 
   return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
     <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
     <Spinner
           visible={isLoading}
@@ -86,6 +87,7 @@ const NewPasswordScreen = ({route,navigation}) => {
     </View>
     </View>
     </ImageBackground>
+    </TouchableWithoutFeedback>
   );
 };
 

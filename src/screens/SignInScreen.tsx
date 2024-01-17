@@ -12,6 +12,8 @@ import {
     useWindowDimensions,
     TouchableOpacity,
     ActivityIndicator,
+    TouchableWithoutFeedback,
+    Keyboard,
   } from 'react-native';
 import { useEffect, useState, useCallback } from 'react';
 import {Auth} from "aws-amplify";
@@ -172,15 +174,8 @@ const SignInScreen = ({navigation}) => {
         )
       }
 
-    // if(isLoading){
-    //     return (
-    //         <ImageBackground source={backgroundImageMedium} style={{height:'100%', width:'100%'}}>
-    //             <ActivityIndicator style={{alignSelf:'center', marginTop:150}}/>
-    //         </ImageBackground>
-    //         )
-    // }
-
     return(
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
             <Spinner
             visible={isLoading}
@@ -213,6 +208,7 @@ const SignInScreen = ({navigation}) => {
             
             </View>
         </ImageBackground>
+        </TouchableWithoutFeedback>
 
     );
 

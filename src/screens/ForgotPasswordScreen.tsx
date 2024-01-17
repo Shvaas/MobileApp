@@ -11,6 +11,8 @@ import {
     Alert,
     useWindowDimensions,
     TouchableOpacity,
+    TouchableWithoutFeedback,
+    Keyboard,
   } from 'react-native';
 import { useEffect, useState, useCallback } from 'react';
 import {Auth} from "aws-amplify";
@@ -50,6 +52,7 @@ const ForgotPasswordScreen = ({navigation}) => {
     };
 
     return(
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
           <Spinner
             visible={isLoading}
@@ -73,6 +76,7 @@ const ForgotPasswordScreen = ({navigation}) => {
           
           </View>
         </ImageBackground>
+        </TouchableWithoutFeedback>
 
     );
 
