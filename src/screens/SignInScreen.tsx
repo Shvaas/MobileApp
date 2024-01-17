@@ -13,6 +13,8 @@ import {
     TouchableOpacity,
     ActivityIndicator,
     BackHandler,
+    TouchableWithoutFeedback,
+    Keyboard,
   } from 'react-native';
 import { useEffect, useState, useCallback } from 'react';
 import {Auth} from "aws-amplify";
@@ -55,6 +57,12 @@ const SignInScreen = ({navigation}) => {
     );
 
   }, []);
+
+  const HideKeyboard = ({ children }) => (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      {children}
+    </TouchableWithoutFeedback>
+  );
   
     console.log("SignInScreen");
     const dispatch = useDispatch();
@@ -198,6 +206,7 @@ const SignInScreen = ({navigation}) => {
       }
 
     return(
+      <HideKeyboard>
         <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
             <Spinner
             visible={isLoading}
@@ -229,7 +238,9 @@ const SignInScreen = ({navigation}) => {
             </View>
             
             </View>
+            
         </ImageBackground>
+        </HideKeyboard>
 
     );
 

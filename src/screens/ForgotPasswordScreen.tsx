@@ -11,6 +11,8 @@ import {
     Alert,
     useWindowDimensions,
     TouchableOpacity,
+    TouchableWithoutFeedback,
+    Keyboard,
   } from 'react-native';
 import { useEffect, useState, useCallback } from 'react';
 import {Auth} from "aws-amplify";
@@ -37,6 +39,12 @@ const ForgotPasswordScreen = ({navigation}) => {
     const [email, setEmail] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
+    const HideKeyboard = ({ children }) => (
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        {children}
+      </TouchableWithoutFeedback>
+    );
+
     const onForgotPasswordPressed = async () => {
         try {
             setIsLoading(true);
@@ -50,6 +58,7 @@ const ForgotPasswordScreen = ({navigation}) => {
     };
 
     return(
+      <HideKeyboard>
         <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
           <Spinner
             visible={isLoading}
@@ -73,6 +82,7 @@ const ForgotPasswordScreen = ({navigation}) => {
           
           </View>
         </ImageBackground>
+        </HideKeyboard>
 
     );
 

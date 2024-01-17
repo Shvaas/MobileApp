@@ -12,6 +12,8 @@ import {
     useWindowDimensions,
     TouchableOpacity,
     ActivityIndicator,
+    TouchableWithoutFeedback,
+    Keyboard,
   } from 'react-native';
 import { useEffect, useState, useCallback } from 'react';
 import {Auth} from "aws-amplify";
@@ -51,6 +53,12 @@ const ConfirmCodeScreen = ({route,navigation}) => {
     const {control, handleSubmit, watch} = useForm({
         defaultValues: {email: email},
       });
+
+      const HideKeyboard = ({ children }) => (
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+          {children}
+        </TouchableWithoutFeedback>
+      );
 
       const updateUserTimeZone = async (userId) => {
         const urlBackStage = `${baseUrl}/user/${userId}/update-user-data/`;
@@ -185,6 +193,7 @@ const ConfirmCodeScreen = ({route,navigation}) => {
         setIsResendingCode(false);
         Alert.alert('Success', 'Code was resent to your email');
     } catch (e) {
+      setIsResendingCode(false);
         Alert.alert('Error', e.message);
     }
     };
@@ -209,6 +218,7 @@ const ConfirmCodeScreen = ({route,navigation}) => {
     // }
 
     return(
+      <HideKeyboard>
         <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
             <Spinner
             visible={isLoading}
@@ -249,6 +259,7 @@ const ConfirmCodeScreen = ({route,navigation}) => {
             
             </View>
         </ImageBackground>
+        </HideKeyboard>
 
     );
 

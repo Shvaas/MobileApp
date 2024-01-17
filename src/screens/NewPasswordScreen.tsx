@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, ScrollView, Alert, TouchableOpacity, ImageBackground} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Alert, TouchableOpacity, ImageBackground, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import CustomInput from '../components/CustomInput';
 import {useNavigation} from '@react-navigation/native';
 import {useForm} from 'react-hook-form';
@@ -25,6 +25,12 @@ const NewPasswordScreen = ({route,navigation}) => {
     const [passwordRepeat, setPasswordRepeat] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
+    const HideKeyboard = ({ children }) => (
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        {children}
+      </TouchableWithoutFeedback>
+    );
+
   const onSubmitPressed = async () => {
     try {
       setIsLoading(true);
@@ -42,6 +48,7 @@ const NewPasswordScreen = ({route,navigation}) => {
   };
 
   return (
+    <HideKeyboard>
     <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
     <Spinner
           visible={isLoading}
@@ -86,6 +93,7 @@ const NewPasswordScreen = ({route,navigation}) => {
     </View>
     </View>
     </ImageBackground>
+    </HideKeyboard>
   );
 };
 
