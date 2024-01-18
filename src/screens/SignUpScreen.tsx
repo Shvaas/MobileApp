@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
     SafeAreaView,
     StyleSheet,
@@ -24,8 +24,14 @@ import { themeColor, themeFontFamily, themefonts } from '../constants/theme';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {useForm} from 'react-hook-form';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
+import PhoneInput from "react-native-phone-number-input";
+// import 'react-phone-number-input/style.css'
+// import PhoneInput from 'react-phone-number-input'
+
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+
 
 interface PropsType {
     navigation: any;
@@ -48,6 +54,8 @@ const SignUpScreen = ({navigation}) => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [passwordRepeat,setPasswordRepeat] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+
+    const phoneInput = useRef<PhoneInput>(null);
 
     const onSignUpPressed = async () => {
         try {
@@ -109,11 +117,51 @@ const SignUpScreen = ({navigation}) => {
               name="email"
               placeholder="email"></CustomInput>
 
-            <CustomInput
+            {/* <CustomInput
               value={phoneNumber}
               setValue={setPhoneNumber}
-              placeholder="phone number"></CustomInput>
-            <Text style={styles.passwordReq}>Please enter phone number with country code. For example +19999999999</Text>
+              placeholder="phone number"></CustomInput> */}
+              {/* <PhoneInput
+                placeholder="phone number"
+                value={phoneNumber}
+                onChange={setPhoneNumber}/> */}
+                <PhoneInput
+                  ref={phoneInput}
+                  defaultValue={phoneNumber}
+                  defaultCode="IN"
+                  layout="first"
+                  onChangeText={(text) => {
+                    setPhoneNumber(text);
+                  }}
+                  autoFocus
+                  containerStyle = {{backgroundColor:'white',
+                  width: '100%',
+                  height: 40,
+                  borderColor:'#e8e8e8',
+                  // borderColor:'red',
+                  borderWidth:1,
+                  borderRadius: 5,
+                  // paddingHorizontal: 10,
+                  // marginVertical: 5
+                }}
+                  textInputStyle = {{
+                    height: 40,
+                    textAlignVertical: 'center'
+                  }}
+                  textContainerStyle = {{
+                    height: 38,
+                    backgroundColor:'white',
+                    borderWidth:1,
+                    borderRadius: 5,
+                    borderColor:'white',
+                  }}
+                  codeTextStyle = {{
+                    height: 40,
+                    marginBottom: 4,
+                    textAlignVertical: 'center'
+                  }}
+              />
+            {/* <Text style={styles.passwordReq}>Please enter phone number with country code. For example +19999999999</Text> */}
 
             <CustomInput
                 placeholder="password"
