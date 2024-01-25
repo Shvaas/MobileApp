@@ -26,6 +26,7 @@ import NewPasswordScreen from '../screens/NewPasswordScreen';
 import WaitingSpinner3 from '../screens/WaitingSpinner3';
 import Help from '../screens/HomePageFlow/UserProfile/Help';
 import UserDetails from '../screens/HomePageFlow/UserProfile/UserDetails';
+import DiscountCodeScreen from '../screens/DiscountCodeScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -73,6 +74,9 @@ const OnboardingStack = () => {
       <Stack.Screen
       name={RouteNames.OnboardingFlow.Login}
       component={Login} />
+      <Stack.Screen
+      name={RouteNames.OnboardingFlow.DiscountCode}
+      component={DiscountCodeScreen} />
       <Stack.Screen
       name={RouteNames.OnboardingFlow.ProfileQuestions}
       component={ProfileQuestion} />

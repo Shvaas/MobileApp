@@ -52,13 +52,27 @@ const SignUpScreen = ({navigation}) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [phoneNumberWithoutCode, setPhoneNumberWithoutCode] = useState('');
     const [passwordRepeat,setPasswordRepeat] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
     const phoneInput = useRef<PhoneInput>(null);
 
+    console.log("phonenumber", phoneNumberWithoutCode);
+    console.log("formattedphonenumber",phoneNumber);
+
     const onSignUpPressed = async () => {
         try {
+          
+          if(password.length < 8){
+            Alert.alert('Error', "Password less than 8 characters. Password should be of length minimum 8, should have 1 number, 1 special character, 1 uppercase, 1 lowercase character.");
+            return;
+          }
+          if( password !== passwordRepeat){
+            Alert.alert('Error', "Repeated Password is different than original.");
+            return;
+          }
+
           setEmail(email.toLowerCase());
           setIsLoading(true);
             await Auth.signUp({
@@ -103,19 +117,19 @@ const SignUpScreen = ({navigation}) => {
             <CustomInput
             value={firstName}
             setValue={setFirstName}
-            placeholder="first name"></CustomInput>
+            placeholder="First name"></CustomInput>
 
             <CustomInput
               value={lastName}
               setValue={setLastName}
-              placeholder="last name">
+              placeholder="Last name">
             </CustomInput>
             
             <CustomInput
               value={email}
               setValue={setEmail}
               name="email"
-              placeholder="email"></CustomInput>
+              placeholder="Email"></CustomInput>
 
             {/* <CustomInput
               value={phoneNumber}
@@ -131,6 +145,9 @@ const SignUpScreen = ({navigation}) => {
                   defaultCode="IN"
                   layout="first"
                   onChangeText={(text) => {
+                    setPhoneNumberWithoutCode(text);
+                  }}
+                  onChangeFormattedText={(text) => {
                     setPhoneNumber(text);
                   }}
                   autoFocus
@@ -141,8 +158,8 @@ const SignUpScreen = ({navigation}) => {
                   // borderColor:'red',
                   borderWidth:1,
                   borderRadius: 5,
-                  // paddingHorizontal: 10,
-                  // marginVertical: 5
+                  paddingHorizontal: 10,
+                  marginVertical: 5
                 }}
                   textInputStyle = {{
                     height: 40,
@@ -161,7 +178,6 @@ const SignUpScreen = ({navigation}) => {
                     textAlignVertical: 'center'
                   }}
               />
-            {/* <Text style={styles.passwordReq}>Please enter phone number with country code. For example +19999999999</Text> */}
 
             <CustomInput
                 placeholder="password"

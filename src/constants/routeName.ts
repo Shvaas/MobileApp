@@ -9,6 +9,7 @@ const RouteNames = {
     Login: 'Login',
     FreeTrial: 'FreeTrial',
     ProfileQuestions: 'ProfileQuestions',
+    DiscountCode: 'DiscountCode',
   },
   [APP_FLOWS.HomePageFlow]: {
     AllYogis: 'Yogis',
