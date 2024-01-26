@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
     SafeAreaView,
     StyleSheet,
@@ -24,6 +24,7 @@ import { themeColor, themeFontFamily, themefonts } from '../constants/theme';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {useForm} from 'react-hook-form';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
+import PhoneInput from "react-native-phone-number-input";
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -46,11 +47,27 @@ const SignUpScreen = ({navigation}) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [phoneNumberWithoutCode, setPhoneNumberWithoutCode] = useState('');
     const [passwordRepeat,setPasswordRepeat] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
+    const phoneInput = useRef<PhoneInput>(null);
+
+    console.log("phonenumber", phoneNumberWithoutCode);
+    console.log("formattedphonenumber",phoneNumber);
+
     const onSignUpPressed = async () => {
         try {
+
+          if(password.length < 8){
+            Alert.alert('Error', "Password less than 8 characters. Password should be of length minimum 8, should have 1 number, 1 special character, 1 uppercase, 1 lowercase character.");
+            return;
+          }
+          if( password !== passwordRepeat){
+            Alert.alert('Error', "Repeated Password is different than original.");
+            return;
+          }
+
           setEmail(email.toLowerCase());
           setIsLoading(true);
             await Auth.signUp({
@@ -95,35 +112,83 @@ const SignUpScreen = ({navigation}) => {
             <CustomInput
             value={firstName}
             setValue={setFirstName}
-            placeholder="first name"></CustomInput>
+            placeholder="First Name"></CustomInput>
 
             <CustomInput
               value={lastName}
               setValue={setLastName}
-              placeholder="last name">
+              placeholder="Last Name">
             </CustomInput>
             
             <CustomInput
               value={email}
               setValue={setEmail}
               name="email"
-              placeholder="email"></CustomInput>
+              placeholder="Email"></CustomInput>
 
-            <CustomInput
+            {/* <CustomInput
               value={phoneNumber}
               setValue={setPhoneNumber}
               placeholder="phone number"></CustomInput>
-            <Text style={styles.passwordReq}>Please enter phone number with country code. For example +19999999999</Text>
+            <Text style={styles.passwordReq}>Please enter phone number with country code. For example +19999999999</Text> */}
+
+              <PhoneInput
+                  ref={phoneInput}
+                  defaultValue={phoneNumber}
+                  defaultCode="IN"
+                  layout="first"
+                  onChangeText={(text) => {
+                    setPhoneNumberWithoutCode(text);
+                  }}
+                  onChangeFormattedText={(text) => {
+                    setPhoneNumber(text);
+                  }}
+                  autoFocus
+                  containerStyle = {{backgroundColor:'white',
+                  width: '100%',
+                  height: 44,
+                  borderColor:'#e8e8e8',
+                  // borderColor:'red',
+                  borderWidth:1,
+                  borderRadius: 5,
+                  paddingHorizontal: 10,
+                  marginVertical: 5,
+                  // paddingVertical:10,
+                  }}
+                  textInputStyle = {{
+                    height: 20,
+                    textAlignVertical: 'center',
+                    color:'red'
+                  }}
+                  textContainerStyle = {{
+                    height: 40,
+                    backgroundColor:'white',
+                    borderWidth:1,
+                    borderRadius: 5,
+                    borderColor:'white',
+                    alignSelf:'center',
+                    // borderColor:'transparent',
+                    // opacity:0,
+                    // padding: 2,
+                  }}
+                  codeTextStyle = {{
+                    height: 20,
+                    //marginTop: 19,
+                    // textAlignVertical: 'center',
+                    // justifyContent: 'center'
+                    // borderColor:'red'
+                  }}
+              />
 
             <CustomInput
-                placeholder="password"
+                placeholder="Password"
                 value={password}
                 setValue={setPassword}
                 secureTextEntry={true}
             />
             <Text style={styles.passwordReq}>Length minimum 8, should have 1 number, 1 special character, 1 uppercase, 1 lowercase</Text>
             <CustomInput
-                placeholder="repeat password"
+                placeholder="Repeat Password"
                 value={passwordRepeat}
                 setValue={setPasswordRepeat}
                 secureTextEntry={true}

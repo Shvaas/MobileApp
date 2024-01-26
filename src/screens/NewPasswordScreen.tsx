@@ -54,24 +54,24 @@ const NewPasswordScreen = ({route,navigation}) => {
     <CustomInput
       value={newPasswordEmail}
       setValue={setNewPasswordEmail}
-      placeholder="email"
+      placeholder="Email"
     />
 
     <CustomInput
-      placeholder="code"
+      placeholder="Code"
       value={code}
       setValue={setCode}
     />
 
     <CustomInput
-      placeholder="new password"
+      placeholder="New Password"
       value={password}
       setValue={setPassword}
       secureTextEntry
     />
     <Text style={styles.passwordReq}>Length minimum 8, should have 1 number, 1 special character, 1 uppercase, 1 lowercase</Text>
     <CustomInput
-      placeholder="Repeat new password"
+      placeholder="Repeat New Password"
       value={passwordRepeat}
       setValue={setPasswordRepeat}
       secureTextEntry={true}

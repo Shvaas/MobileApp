@@ -13,12 +13,7 @@
     "phone_number"
   ],
   "passwordPolicyMinLength": 8,
-  "passwordPolicyCharacters": [
-    "Requires Lowercase",
-    "Requires Uppercase",
-    "Requires Numbers",
-    "Requires Symbols"
-  ],
+  "passwordPolicyCharacters": [],
   "mfaConfiguration": "OFF",
   "autoVerifiedAttributes": [
     "email"

@@ -224,7 +224,7 @@ const ConfirmCodeScreen = ({route,navigation}) => {
             <View style={styles.container}>
             <Text style={styles.confirmCodeHeading}>Confirm Code</Text>
             <CustomInput
-            placeholder="email"
+            placeholder="Email"
             value = {confirmEmail}
             setValue = {setConfirmEmail}
             ></CustomInput>

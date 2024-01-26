@@ -64,7 +64,7 @@ const ForgotPasswordScreen = ({navigation}) => {
           <CustomInput
           value={email}
           setValue={setEmail}
-          placeholder="email"/>
+          placeholder="Email"/>
           <SimpleButton
             title='Send'
             containerStyle={styles.primaryButton}

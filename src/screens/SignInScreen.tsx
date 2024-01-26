@@ -187,12 +187,12 @@ const SignInScreen = ({navigation}) => {
             <CustomInput
             value={email}
             setValue={setEmail}
-            placeholder="email"/>
+            placeholder="Email"/>
 
             <CustomInput
             value={password}
             setValue={setPassword}
-            placeholder="password"
+            placeholder="Password"
             secureTextEntry={true}/>
 
             <SimpleButton
