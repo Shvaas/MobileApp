@@ -224,6 +224,7 @@ function getPastDate(numberOfDays: number) {
     let myDate = session[index].start_date;
     let dateObj = new Date(myDate);
     // const key = myDate.substring(0,myDate.search('T'));
+    console.log("dateObj", dateObj.toString());
     const key = dateObj.toString().substring(0,myDate.search('T'));
 
     if (key in sessionMap){
@@ -238,11 +239,14 @@ function getPastDate(numberOfDays: number) {
 
   for (var key in sessionMap) {
     let myDate = new Date(sessionMap[{key}["key"]][0].start_date);
-    console.log("mydate",key, myDate.toISOString().split('T')[0]);
+    console.log("mydate",key, myDate.toString().split('T')[0] , myDate.toISOString().split('T')[0]);
     var sessionItem = {
-      title: myDate.toISOString().split('T')[0],
+      // title: myDate.toISOString().split('T')[0],
+      // title: myDate.toLocaleDateString(),
+      title: myDate.getMonth()+1+"/"+myDate.getDate()+"/"+myDate.getFullYear(),
       data: sessionMap[key]
     }
+    console.log("itemscopy item",sessionItem.title, ": ",sessionItem.data)
     itemsCopy.push(sessionItem)
   };
 
@@ -252,8 +256,11 @@ function getPastDate(numberOfDays: number) {
     const marked = {};
       itemsCopy.forEach((val) => {
         if (val.data && val.data.length>0){
-            console.log("val",val.data[0].start_date.split('T')[0]);
-            marked[val.data[0].start_date.split('T')[0]] = {marked: true};
+            console.log("val",val.title);
+            // marked[val.data[0].start_date.split('T')[0]] = {marked: true};
+            // str = val.title.split('/').join("-");
+            var str = "02-10-2024";
+            marked[str] = {marked: true};
           }
           else{
             marked[val.title] = {disabled: true};
@@ -342,7 +349,9 @@ function getPastDate(numberOfDays: number) {
 
 
     <CalendarProvider
-      date= {todayDate.toISOString().substring(0,todayDate.toISOString().search('T'))}
+      // date= {todayDate.toISOString().substring(0,todayDate.toISOString().search('T'))}
+      // date = {todayDate.toLocaleDateString()}
+      date = {todayDate.getMonth()+1+"/"+todayDate.getDate()+"/"+todayDate.getFullYear()}
       // onDateChanged={onDateChanged}
       // onMonthChange={onMonthChange}
       showTodayButton

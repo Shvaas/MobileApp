@@ -32,6 +32,12 @@ interface PropsType {
     navigation: any;
   }
 
+const HideKeyboard = ({ children }) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
+);
+
 const SignUpScreen = ({navigation}) => {
 
     const {
@@ -60,7 +66,7 @@ const SignUpScreen = ({navigation}) => {
         try {
 
           if(password.length < 8){
-            Alert.alert('Error', "Password less than 8 characters. Password should be of length minimum 8, should have 1 number, 1 special character, 1 uppercase, 1 lowercase character.");
+            Alert.alert('Error', "Password less than 8 characters. Password should have atleast 8 characters.");
             return;
           }
           if( password !== passwordRepeat){
@@ -100,7 +106,8 @@ const SignUpScreen = ({navigation}) => {
     };
 
     return(
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      // <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <HideKeyboard>
       <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
             <Spinner
             visible={isLoading}
@@ -158,7 +165,7 @@ const SignUpScreen = ({navigation}) => {
                   textInputStyle = {{
                     height: 20,
                     textAlignVertical: 'center',
-                    color:'red'
+                    // color:'red'
                   }}
                   textContainerStyle = {{
                     height: 40,
@@ -186,7 +193,7 @@ const SignUpScreen = ({navigation}) => {
                 setValue={setPassword}
                 secureTextEntry={true}
             />
-            <Text style={styles.passwordReq}>Length minimum 8, should have 1 number, 1 special character, 1 uppercase, 1 lowercase</Text>
+            <Text style={styles.passwordReq}>Minimum 8 characters.</Text>
             <CustomInput
                 placeholder="Repeat Password"
                 value={passwordRepeat}
@@ -206,7 +213,8 @@ const SignUpScreen = ({navigation}) => {
             
             </View>
         </ImageBackground>
-        </TouchableWithoutFeedback>
+        </HideKeyboard>
+        // </TouchableWithoutFeedback>
 
     );
 

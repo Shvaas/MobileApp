@@ -40,7 +40,8 @@ const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
                 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
   let myDate = new Date(item.start_date);
-  console.log("myDate", myDate);
+  var timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  console.log("myDate", myDate, "myDate.getDate", myDate.getDate());
   
   let minutes = '';
   if(myDate.getMinutes() < 10){
@@ -48,16 +49,15 @@ const AgendaItem: React.FC<PropsType> = ({item, navigation}) => {
   }else{
     minutes = myDate.getMinutes().toString();
   }
+  
+  let hour = myDate.getHours();
   let am = " am";
   if(myDate.getHours()>= 12){
     am = " pm";
+    hour = myDate.getHours() - 12
   }
   
-  const displayDate = myDate.getDate()
-                      + " " 
-                      + month[myDate.getMonth()]
-                      + ", " 
-                      + myDate.getHours()
+  const displayDate = hour
                       + " : " 
                       + minutes
                       + am;

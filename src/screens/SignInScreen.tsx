@@ -175,7 +175,7 @@ const SignInScreen = ({navigation}) => {
       }
 
     return(
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
         <ImageBackground source={backgroundImageLight} style={{height:'100%', width:'100%'}}>
             <Spinner
             visible={isLoading}
